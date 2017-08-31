@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,25 +7,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = require("@angular/core");
-var common_1 = require("@angular/common");
-var shared_1 = require("../common/shared");
-var inputtext_1 = require("../inputtext/inputtext");
-var tooltip_1 = require("../tooltip/tooltip");
-var domhandler_1 = require("../dom/domhandler");
-var forms_1 = require("@angular/forms");
-exports.CHIPS_VALUE_ACCESSOR = {
-    provide: forms_1.NG_VALUE_ACCESSOR,
-    useExisting: core_1.forwardRef(function () { return Chips; }),
+import { NgModule, Component, ElementRef, Input, Output, EventEmitter, ContentChildren, QueryList, forwardRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { SharedModule, PrimeTemplate } from '../common/shared';
+import { InputTextModule } from '../inputtext/inputtext';
+import { TooltipModule } from '../tooltip/tooltip';
+import { DomHandler } from '../dom/domhandler';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+export var CHIPS_VALUE_ACCESSOR = {
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(function () { return Chips; }),
     multi: true
 };
 var Chips = (function () {
     function Chips(el, domHandler) {
         this.el = el;
         this.domHandler = domHandler;
-        this.onAdd = new core_1.EventEmitter();
-        this.onRemove = new core_1.EventEmitter();
+        this.onAdd = new EventEmitter();
+        this.onRemove = new EventEmitter();
         this.allowDuplicate = true;
         this.onModelChange = function () { };
         this.onModelTouched = function () { };
@@ -168,117 +166,117 @@ var Chips = (function () {
     return Chips;
 }());
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Chips.prototype, "toolTipMessage", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Chips.prototype, "toolTipPosition", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Chips.prototype, "toolTipEvent", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Chips.prototype, "positionStyles", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Chips.prototype, "toolTipDisabled", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Chips.prototype, "toolTipAppendTo", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Chips.prototype, "toolTipStyleClasses", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Chips.prototype, "toolTipEscape", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], Chips.prototype, "style", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Chips.prototype, "styleClass", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Chips.prototype, "disabled", void 0);
 __decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
+    Output(),
+    __metadata("design:type", EventEmitter)
 ], Chips.prototype, "onAdd", void 0);
 __decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
+    Output(),
+    __metadata("design:type", EventEmitter)
 ], Chips.prototype, "onRemove", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Chips.prototype, "field", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Chips.prototype, "placeholder", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Number)
 ], Chips.prototype, "max", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Number)
 ], Chips.prototype, "tabindex", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Chips.prototype, "inputId", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Chips.prototype, "allowDuplicate", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], Chips.prototype, "inputStyle", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], Chips.prototype, "inputStyleClass", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Chips.prototype, "addOnTab", void 0);
 __decorate([
-    core_1.ContentChildren(shared_1.PrimeTemplate),
-    __metadata("design:type", core_1.QueryList)
+    ContentChildren(PrimeTemplate),
+    __metadata("design:type", QueryList)
 ], Chips.prototype, "templates", void 0);
 Chips = __decorate([
-    core_1.Component({
+    Component({
         selector: 'p-chips',
         template: "\n\t\t<div [ngClass]=\"'ui-chips ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n\t\t\t<ul [ngClass]=\"{'ui-inputtext ui-state-default ui-corner-all':true,'ui-state-focus':focus,'ui-state-disabled':disabled}\" (click)=\"inputtext.focus()\">\n\t\t\t\t<li #token *ngFor=\"let item of value; let i = index;\" class=\"ui-chips-token ui-state-highlight ui-corner-all\">\n\t\t\t\t\t<span *ngIf=\"!disabled\" class=\"ui-chips-token-icon fa fa-fw fa-close\" (click)=\"removeItem($event,i)\"></span>\n\t\t\t\t\t<span *ngIf=\"!itemTemplate\" class=\"ui-chips-token-label\">{{field ? resolveFieldData(item, field) : item}}</span>\n\t\t\t\t\t<ng-template *ngIf=\"itemTemplate\" [pTemplateWrapper]=\"itemTemplate\" [item]=\"item\"></ng-template>\n\t\t\t\t</li>\n\t\t\t\t<li class=\"ui-chips-input-token\">\n\t\t\t\t\t<input #inputtext type=\"text\" [attr.id]=\"inputId\" [attr.placeholder]=\"placeholder\" [attr.tabindex]=\"tabindex\" (keydown)=\"onKeydown($event,inputtext)\"\n\t\t\t\t\t\t\t\t (focus)=\"onFocus()\" (blur)=\"onBlur()\" [disabled]=\"maxedOut||disabled\" [disabled]=\"disabled\" [pTooltip]=\"toolTipMessage\" [tooltipPosition]=\"toolTipPosition\" [tooltipEvent]=\"toolTipEvent\"\n\t\t\t\t\t\t\t\t [positionStyle]=\"positionStyles\" [tooltipDisabled]=\"toolTipDisabled\" [tooltipStyleClass]=\"toolTipStyleClasses\" [escape]=\"toolTipEscape\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\">\n\t\t\t\t</li>\n\t\t\t</ul>\n\t\t</div>\n\t",
-        providers: [domhandler_1.DomHandler, exports.CHIPS_VALUE_ACCESSOR]
+        providers: [DomHandler, CHIPS_VALUE_ACCESSOR]
     }),
-    __metadata("design:paramtypes", [core_1.ElementRef, domhandler_1.DomHandler])
+    __metadata("design:paramtypes", [ElementRef, DomHandler])
 ], Chips);
-exports.Chips = Chips;
+export { Chips };
 var ChipsModule = (function () {
     function ChipsModule() {
     }
     return ChipsModule;
 }());
 ChipsModule = __decorate([
-    core_1.NgModule({
-        imports: [common_1.CommonModule, inputtext_1.InputTextModule, shared_1.SharedModule, tooltip_1.TooltipModule],
-        exports: [Chips, inputtext_1.InputTextModule, shared_1.SharedModule],
+    NgModule({
+        imports: [CommonModule, InputTextModule, SharedModule, TooltipModule],
+        exports: [Chips, InputTextModule, SharedModule],
         declarations: [Chips]
     })
 ], ChipsModule);
-exports.ChipsModule = ChipsModule;
+export { ChipsModule };
 //# sourceMappingURL=chips.js.map

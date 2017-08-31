@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,12 +7,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = require("@angular/core");
-var animations_1 = require("@angular/animations");
-var common_1 = require("@angular/common");
-var domhandler_1 = require("../dom/domhandler");
-var shared_1 = require("../common/shared");
+import { NgModule, Component, ElementRef, Input, Output, EventEmitter, Renderer2, ContentChild, ViewChild } from '@angular/core';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+import { CommonModule } from '@angular/common';
+import { DomHandler } from '../dom/domhandler';
+import { Header, Footer, SharedModule } from '../common/shared';
 var Dialog = (function () {
     function Dialog(el, domHandler, renderer) {
         this.el = el;
@@ -29,9 +27,9 @@ var Dialog = (function () {
         this.showHeader = true;
         this.breakpoint = 640;
         this.blockScroll = false;
-        this.onShow = new core_1.EventEmitter();
-        this.onHide = new core_1.EventEmitter();
-        this.visibleChange = new core_1.EventEmitter();
+        this.onShow = new EventEmitter();
+        this.onHide = new EventEmitter();
+        this.visibleChange = new EventEmitter();
     }
     Object.defineProperty(Dialog.prototype, "visible", {
         get: function () {
@@ -62,7 +60,7 @@ var Dialog = (function () {
     };
     Dialog.prototype.show = function () {
         this.executePostDisplayActions = true;
-        this.containerViewChild.nativeElement.style.zIndex = String(++domhandler_1.DomHandler.zindex);
+        this.containerViewChild.nativeElement.style.zIndex = String(++DomHandler.zindex);
         this.bindGlobalListeners();
         if (this.modal) {
             this.enableModality();
@@ -161,7 +159,7 @@ var Dialog = (function () {
         }
     };
     Dialog.prototype.moveOnTop = function () {
-        this.containerViewChild.nativeElement.style.zIndex = String(++domhandler_1.DomHandler.zindex);
+        this.containerViewChild.nativeElement.style.zIndex = String(++DomHandler.zindex);
     };
     Dialog.prototype.onCloseMouseDown = function (event) {
         this.closeIconMouseDown = true;
@@ -301,7 +299,7 @@ var Dialog = (function () {
         var _this = this;
         this.documentEscapeListener = this.renderer.listen('document', 'keydown', function (event) {
             if (event.which == 27) {
-                if (parseInt(_this.containerViewChild.nativeElement.style.zIndex) == domhandler_1.DomHandler.zindex) {
+                if (parseInt(_this.containerViewChild.nativeElement.style.zIndex) == DomHandler.zindex) {
                     _this.close(event);
                 }
             }
@@ -325,162 +323,162 @@ var Dialog = (function () {
     return Dialog;
 }());
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Dialog.prototype, "header", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Dialog.prototype, "draggable", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Dialog.prototype, "resizable", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Number)
 ], Dialog.prototype, "minWidth", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Number)
 ], Dialog.prototype, "minHeight", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], Dialog.prototype, "width", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], Dialog.prototype, "height", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Number)
 ], Dialog.prototype, "positionLeft", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Number)
 ], Dialog.prototype, "positionTop", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], Dialog.prototype, "contentStyle", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Dialog.prototype, "modal", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Dialog.prototype, "closeOnEscape", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Dialog.prototype, "dismissableMask", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Dialog.prototype, "rtl", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Dialog.prototype, "closable", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Dialog.prototype, "responsive", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], Dialog.prototype, "appendTo", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], Dialog.prototype, "style", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Dialog.prototype, "styleClass", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Dialog.prototype, "showHeader", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Number)
 ], Dialog.prototype, "breakpoint", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Dialog.prototype, "blockScroll", void 0);
 __decorate([
-    core_1.ContentChild(shared_1.Header),
+    ContentChild(Header),
     __metadata("design:type", Object)
 ], Dialog.prototype, "headerFacet", void 0);
 __decorate([
-    core_1.ContentChild(shared_1.Footer),
+    ContentChild(Footer),
     __metadata("design:type", Object)
 ], Dialog.prototype, "footerFacet", void 0);
 __decorate([
-    core_1.ViewChild('container'),
-    __metadata("design:type", core_1.ElementRef)
+    ViewChild('container'),
+    __metadata("design:type", ElementRef)
 ], Dialog.prototype, "containerViewChild", void 0);
 __decorate([
-    core_1.ViewChild('titlebar'),
-    __metadata("design:type", core_1.ElementRef)
+    ViewChild('titlebar'),
+    __metadata("design:type", ElementRef)
 ], Dialog.prototype, "headerViewChild", void 0);
 __decorate([
-    core_1.ViewChild('content'),
-    __metadata("design:type", core_1.ElementRef)
+    ViewChild('content'),
+    __metadata("design:type", ElementRef)
 ], Dialog.prototype, "contentViewChild", void 0);
 __decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
+    Output(),
+    __metadata("design:type", EventEmitter)
 ], Dialog.prototype, "onShow", void 0);
 __decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
+    Output(),
+    __metadata("design:type", EventEmitter)
 ], Dialog.prototype, "onHide", void 0);
 __decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
+    Output(),
+    __metadata("design:type", EventEmitter)
 ], Dialog.prototype, "visibleChange", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean),
     __metadata("design:paramtypes", [Boolean])
 ], Dialog.prototype, "visible", null);
 Dialog = __decorate([
-    core_1.Component({
+    Component({
         selector: 'p-dialog',
         template: "\n        <div #container [ngClass]=\"{'ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow':true,'ui-dialog-rtl':rtl,'ui-dialog-draggable':draggable}\" [ngStyle]=\"style\" [class]=\"styleClass\"\n            [style.display]=\"visible ? 'block' : 'none'\" [style.width.px]=\"width\" [style.height.px]=\"height\" [style.minWidth.px]=\"minWidth\" (mousedown)=\"moveOnTop()\" [@dialogState]=\"visible ? 'visible' : 'hidden'\">\n            <div #titlebar class=\"ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top\"\n                (mousedown)=\"initDrag($event)\" (mouseup)=\"endDrag($event)\" *ngIf=\"showHeader\">\n                <span class=\"ui-dialog-title\" *ngIf=\"header\">{{header}}</span>\n                <span class=\"ui-dialog-title\" *ngIf=\"headerFacet\">\n                    <ng-content select=\"p-header\"></ng-content>\n                </span>\n                <a *ngIf=\"closable\" [ngClass]=\"{'ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all':true}\" href=\"#\" role=\"button\" (click)=\"close($event)\" (mousedown)=\"onCloseMouseDown($event)\">\n                    <span class=\"fa fa-fw fa-close\"></span>\n                </a>\n            </div>\n            <div #content class=\"ui-dialog-content ui-widget-content\" [ngStyle]=\"contentStyle\">\n                <ng-content></ng-content>\n            </div>\n            <div class=\"ui-dialog-footer ui-widget-content\" *ngIf=\"footerFacet\">\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n            <div *ngIf=\"resizable\" class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"\n                (mousedown)=\"initResize($event)\"></div>\n        </div>\n    ",
         animations: [
-            animations_1.trigger('dialogState', [
-                animations_1.state('hidden', animations_1.style({
+            trigger('dialogState', [
+                state('hidden', style({
                     opacity: 0
                 })),
-                animations_1.state('visible', animations_1.style({
+                state('visible', style({
                     opacity: 1
                 })),
-                animations_1.transition('visible => hidden', animations_1.animate('400ms ease-in')),
-                animations_1.transition('hidden => visible', animations_1.animate('400ms ease-out'))
+                transition('visible => hidden', animate('400ms ease-in')),
+                transition('hidden => visible', animate('400ms ease-out'))
             ])
         ],
-        providers: [domhandler_1.DomHandler]
+        providers: [DomHandler]
     }),
-    __metadata("design:paramtypes", [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer2])
+    __metadata("design:paramtypes", [ElementRef, DomHandler, Renderer2])
 ], Dialog);
-exports.Dialog = Dialog;
+export { Dialog };
 var DialogModule = (function () {
     function DialogModule() {
     }
     return DialogModule;
 }());
 DialogModule = __decorate([
-    core_1.NgModule({
-        imports: [common_1.CommonModule],
-        exports: [Dialog, shared_1.SharedModule],
+    NgModule({
+        imports: [CommonModule],
+        exports: [Dialog, SharedModule],
         declarations: [Dialog]
     })
 ], DialogModule);
-exports.DialogModule = DialogModule;
+export { DialogModule };
 //# sourceMappingURL=dialog.js.map

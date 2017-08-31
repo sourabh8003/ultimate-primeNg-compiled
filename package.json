@@ -8,7 +8,11 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "build-components": "tsc -p tsconfig-aot.json",
+    "build-assets": "gulp build-assets",
+    "build-styles": "node-sass src/assets/components -o src/assets/components",
+    "postinstall": "npm run build-components && npm run build-assets && npm run build-styles"
   },
   "repository": {
     "type": "git",

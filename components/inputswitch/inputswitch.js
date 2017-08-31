@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,14 +7,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = require("@angular/core");
-var common_1 = require("@angular/common");
-var forms_1 = require("@angular/forms");
-var domhandler_1 = require("../dom/domhandler");
-exports.INPUTSWITCH_VALUE_ACCESSOR = {
-    provide: forms_1.NG_VALUE_ACCESSOR,
-    useExisting: core_1.forwardRef(function () { return InputSwitch; }),
+import { NgModule, Component, ElementRef, Input, forwardRef, EventEmitter, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { DomHandler } from '../dom/domhandler';
+export var INPUTSWITCH_VALUE_ACCESSOR = {
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(function () { return InputSwitch; }),
     multi: true
 };
 var InputSwitch = (function () {
@@ -25,7 +23,7 @@ var InputSwitch = (function () {
         this.onLabel = 'On';
         this.offLabel = 'Off';
         this.ariaLabelTemplate = "InputSwitch {0}";
-        this.onChange = new core_1.EventEmitter();
+        this.onChange = new EventEmitter();
         this.checked = false;
         this.focused = false;
         this.onModelChange = function () { };
@@ -134,61 +132,61 @@ var InputSwitch = (function () {
     return InputSwitch;
 }());
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], InputSwitch.prototype, "onLabel", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], InputSwitch.prototype, "offLabel", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], InputSwitch.prototype, "disabled", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], InputSwitch.prototype, "style", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], InputSwitch.prototype, "styleClass", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Number)
 ], InputSwitch.prototype, "tabindex", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], InputSwitch.prototype, "inputId", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], InputSwitch.prototype, "ariaLabelTemplate", void 0);
 __decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
+    Output(),
+    __metadata("design:type", EventEmitter)
 ], InputSwitch.prototype, "onChange", void 0);
 InputSwitch = __decorate([
-    core_1.Component({
+    Component({
         selector: 'p-inputSwitch',
         template: "\n        <div [ngClass]=\"{'ui-inputswitch ui-widget ui-widget-content ui-corner-all': true,\n            'ui-state-disabled': disabled,'ui-inputswitch-checked':checked, 'ui-state-focus':focused}\" (click)=\"toggle($event, in)\"\n            [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-inputswitch-off\">\n                <span class=\"ui-inputswitch-offlabel\">{{offLabel}}</span>\n            </div>\n            <div class=\"ui-inputswitch-on\">\n                <span class=\"ui-inputswitch-onlabel\">{{onLabel}}</span>\n            </div>\n            <div [ngClass]=\"{'ui-inputswitch-handle ui-state-default':true, 'ui-state-focus':focused}\"></div>\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #in type=\"checkbox\" [attr.aria-label]=\"ariaLabel\" [attr.aria-labelledby]=\"ariaLabelledBy\" aria-live=\"polite\" [attr.id]=\"inputId\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\" readonly=\"readonly\" [attr.tabindex]=\"tabindex\"/>\n            </div>\n        </div>\n    ",
-        providers: [exports.INPUTSWITCH_VALUE_ACCESSOR, domhandler_1.DomHandler]
+        providers: [INPUTSWITCH_VALUE_ACCESSOR, DomHandler]
     }),
-    __metadata("design:paramtypes", [core_1.ElementRef, domhandler_1.DomHandler])
+    __metadata("design:paramtypes", [ElementRef, DomHandler])
 ], InputSwitch);
-exports.InputSwitch = InputSwitch;
+export { InputSwitch };
 var InputSwitchModule = (function () {
     function InputSwitchModule() {
     }
     return InputSwitchModule;
 }());
 InputSwitchModule = __decorate([
-    core_1.NgModule({
-        imports: [common_1.CommonModule],
+    NgModule({
+        imports: [CommonModule],
         exports: [InputSwitch],
         declarations: [InputSwitch]
     })
 ], InputSwitchModule);
-exports.InputSwitchModule = InputSwitchModule;
+export { InputSwitchModule };
 //# sourceMappingURL=inputswitch.js.map

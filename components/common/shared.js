@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,34 +7,33 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = require("@angular/core");
-var common_1 = require("@angular/common");
-var core_2 = require("@angular/core");
+import { NgModule, EventEmitter, Directive, ViewContainerRef, Input, Output, ContentChildren, ContentChild, TemplateRef, QueryList } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 var Header = (function () {
     function Header() {
     }
     return Header;
 }());
 Header = __decorate([
-    core_2.Component({
+    Component({
         selector: 'p-header',
         template: '<ng-content></ng-content>'
     })
 ], Header);
-exports.Header = Header;
+export { Header };
 var Footer = (function () {
     function Footer() {
     }
     return Footer;
 }());
 Footer = __decorate([
-    core_2.Component({
+    Component({
         selector: 'p-footer',
         template: '<ng-content></ng-content>'
     })
 ], Footer);
-exports.Footer = Footer;
+export { Footer };
 var PrimeTemplate = (function () {
     function PrimeTemplate(template) {
         this.template = template;
@@ -46,21 +44,21 @@ var PrimeTemplate = (function () {
     return PrimeTemplate;
 }());
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], PrimeTemplate.prototype, "type", void 0);
 __decorate([
-    core_1.Input('pTemplate'),
+    Input('pTemplate'),
     __metadata("design:type", String)
 ], PrimeTemplate.prototype, "name", void 0);
 PrimeTemplate = __decorate([
-    core_1.Directive({
+    Directive({
         selector: '[pTemplate]',
         host: {}
     }),
-    __metadata("design:paramtypes", [core_1.TemplateRef])
+    __metadata("design:paramtypes", [TemplateRef])
 ], PrimeTemplate);
-exports.PrimeTemplate = PrimeTemplate;
+export { PrimeTemplate };
 var TemplateWrapper = (function () {
     function TemplateWrapper(viewContainer) {
         this.viewContainer = viewContainer;
@@ -77,28 +75,28 @@ var TemplateWrapper = (function () {
     return TemplateWrapper;
 }());
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], TemplateWrapper.prototype, "item", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Number)
 ], TemplateWrapper.prototype, "index", void 0);
 __decorate([
-    core_1.Input('pTemplateWrapper'),
-    __metadata("design:type", core_1.TemplateRef)
+    Input('pTemplateWrapper'),
+    __metadata("design:type", TemplateRef)
 ], TemplateWrapper.prototype, "templateRef", void 0);
 TemplateWrapper = __decorate([
-    core_1.Directive({
+    Directive({
         selector: '[pTemplateWrapper]'
     }),
-    __metadata("design:paramtypes", [core_1.ViewContainerRef])
+    __metadata("design:paramtypes", [ViewContainerRef])
 ], TemplateWrapper);
-exports.TemplateWrapper = TemplateWrapper;
+export { TemplateWrapper };
 var Column = (function () {
     function Column() {
         this.filterType = 'text';
-        this.sortFunction = new core_1.EventEmitter();
+        this.sortFunction = new EventEmitter();
     }
     Column.prototype.ngAfterContentInit = function () {
         var _this = this;
@@ -128,156 +126,156 @@ var Column = (function () {
     return Column;
 }());
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Column.prototype, "field", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Column.prototype, "colId", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Column.prototype, "sortField", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Column.prototype, "filterField", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Column.prototype, "header", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Column.prototype, "footer", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], Column.prototype, "sortable", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Column.prototype, "editable", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Column.prototype, "filter", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Column.prototype, "filterMatchMode", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Column.prototype, "filterType", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Number)
 ], Column.prototype, "rowspan", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Number)
 ], Column.prototype, "colspan", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], Column.prototype, "style", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Column.prototype, "styleClass", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Column.prototype, "hidden", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Column.prototype, "expander", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Column.prototype, "selectionMode", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Column.prototype, "filterPlaceholder", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Number)
 ], Column.prototype, "filterMaxlength", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Column.prototype, "frozen", void 0);
 __decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
+    Output(),
+    __metadata("design:type", EventEmitter)
 ], Column.prototype, "sortFunction", void 0);
 __decorate([
-    core_1.ContentChildren(PrimeTemplate),
-    __metadata("design:type", core_1.QueryList)
+    ContentChildren(PrimeTemplate),
+    __metadata("design:type", QueryList)
 ], Column.prototype, "templates", void 0);
 __decorate([
-    core_1.ContentChild(core_1.TemplateRef),
-    __metadata("design:type", core_1.TemplateRef)
+    ContentChild(TemplateRef),
+    __metadata("design:type", TemplateRef)
 ], Column.prototype, "template", void 0);
 Column = __decorate([
-    core_2.Component({
+    Component({
         selector: 'p-column',
         template: ""
     })
 ], Column);
-exports.Column = Column;
+export { Column };
 var Row = (function () {
     function Row() {
     }
     return Row;
 }());
 __decorate([
-    core_1.ContentChildren(Column),
-    __metadata("design:type", core_1.QueryList)
+    ContentChildren(Column),
+    __metadata("design:type", QueryList)
 ], Row.prototype, "columns", void 0);
 Row = __decorate([
-    core_2.Component({
+    Component({
         selector: 'p-row',
         template: ""
     })
 ], Row);
-exports.Row = Row;
+export { Row };
 var HeaderColumnGroup = (function () {
     function HeaderColumnGroup() {
     }
     return HeaderColumnGroup;
 }());
 __decorate([
-    core_1.ContentChildren(Row),
-    __metadata("design:type", core_1.QueryList)
+    ContentChildren(Row),
+    __metadata("design:type", QueryList)
 ], HeaderColumnGroup.prototype, "rows", void 0);
 HeaderColumnGroup = __decorate([
-    core_2.Component({
+    Component({
         selector: 'p-headerColumnGroup',
         template: ""
     })
 ], HeaderColumnGroup);
-exports.HeaderColumnGroup = HeaderColumnGroup;
+export { HeaderColumnGroup };
 var FooterColumnGroup = (function () {
     function FooterColumnGroup() {
     }
     return FooterColumnGroup;
 }());
 __decorate([
-    core_1.ContentChildren(Row),
-    __metadata("design:type", core_1.QueryList)
+    ContentChildren(Row),
+    __metadata("design:type", QueryList)
 ], FooterColumnGroup.prototype, "rows", void 0);
 FooterColumnGroup = __decorate([
-    core_2.Component({
+    Component({
         selector: 'p-footerColumnGroup',
         template: ""
     })
 ], FooterColumnGroup);
-exports.FooterColumnGroup = FooterColumnGroup;
+export { FooterColumnGroup };
 var ColumnBodyTemplateLoader = (function () {
     function ColumnBodyTemplateLoader(viewContainer) {
         this.viewContainer = viewContainer;
@@ -303,25 +301,25 @@ var ColumnBodyTemplateLoader = (function () {
     return ColumnBodyTemplateLoader;
 }());
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], ColumnBodyTemplateLoader.prototype, "column", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], ColumnBodyTemplateLoader.prototype, "rowData", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Number)
 ], ColumnBodyTemplateLoader.prototype, "rowIndex", void 0);
 ColumnBodyTemplateLoader = __decorate([
-    core_2.Component({
+    Component({
         selector: 'p-columnBodyTemplateLoader',
         template: ""
     }),
-    __metadata("design:paramtypes", [core_1.ViewContainerRef])
+    __metadata("design:paramtypes", [ViewContainerRef])
 ], ColumnBodyTemplateLoader);
-exports.ColumnBodyTemplateLoader = ColumnBodyTemplateLoader;
+export { ColumnBodyTemplateLoader };
 var ColumnHeaderTemplateLoader = (function () {
     function ColumnHeaderTemplateLoader(viewContainer) {
         this.viewContainer = viewContainer;
@@ -337,17 +335,17 @@ var ColumnHeaderTemplateLoader = (function () {
     return ColumnHeaderTemplateLoader;
 }());
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], ColumnHeaderTemplateLoader.prototype, "column", void 0);
 ColumnHeaderTemplateLoader = __decorate([
-    core_2.Component({
+    Component({
         selector: 'p-columnHeaderTemplateLoader',
         template: ""
     }),
-    __metadata("design:paramtypes", [core_1.ViewContainerRef])
+    __metadata("design:paramtypes", [ViewContainerRef])
 ], ColumnHeaderTemplateLoader);
-exports.ColumnHeaderTemplateLoader = ColumnHeaderTemplateLoader;
+export { ColumnHeaderTemplateLoader };
 var ColumnFooterTemplateLoader = (function () {
     function ColumnFooterTemplateLoader(viewContainer) {
         this.viewContainer = viewContainer;
@@ -363,17 +361,17 @@ var ColumnFooterTemplateLoader = (function () {
     return ColumnFooterTemplateLoader;
 }());
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], ColumnFooterTemplateLoader.prototype, "column", void 0);
 ColumnFooterTemplateLoader = __decorate([
-    core_2.Component({
+    Component({
         selector: 'p-columnFooterTemplateLoader',
         template: ""
     }),
-    __metadata("design:paramtypes", [core_1.ViewContainerRef])
+    __metadata("design:paramtypes", [ViewContainerRef])
 ], ColumnFooterTemplateLoader);
-exports.ColumnFooterTemplateLoader = ColumnFooterTemplateLoader;
+export { ColumnFooterTemplateLoader };
 var ColumnFilterTemplateLoader = (function () {
     function ColumnFilterTemplateLoader(viewContainer) {
         this.viewContainer = viewContainer;
@@ -389,17 +387,17 @@ var ColumnFilterTemplateLoader = (function () {
     return ColumnFilterTemplateLoader;
 }());
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], ColumnFilterTemplateLoader.prototype, "column", void 0);
 ColumnFilterTemplateLoader = __decorate([
-    core_2.Component({
+    Component({
         selector: 'p-columnFilterTemplateLoader',
         template: ""
     }),
-    __metadata("design:paramtypes", [core_1.ViewContainerRef])
+    __metadata("design:paramtypes", [ViewContainerRef])
 ], ColumnFilterTemplateLoader);
-exports.ColumnFilterTemplateLoader = ColumnFilterTemplateLoader;
+export { ColumnFilterTemplateLoader };
 var ColumnEditorTemplateLoader = (function () {
     function ColumnEditorTemplateLoader(viewContainer) {
         this.viewContainer = viewContainer;
@@ -417,25 +415,25 @@ var ColumnEditorTemplateLoader = (function () {
     return ColumnEditorTemplateLoader;
 }());
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], ColumnEditorTemplateLoader.prototype, "column", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], ColumnEditorTemplateLoader.prototype, "rowData", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], ColumnEditorTemplateLoader.prototype, "rowIndex", void 0);
 ColumnEditorTemplateLoader = __decorate([
-    core_2.Component({
+    Component({
         selector: 'p-columnEditorTemplateLoader',
         template: ""
     }),
-    __metadata("design:paramtypes", [core_1.ViewContainerRef])
+    __metadata("design:paramtypes", [ViewContainerRef])
 ], ColumnEditorTemplateLoader);
-exports.ColumnEditorTemplateLoader = ColumnEditorTemplateLoader;
+export { ColumnEditorTemplateLoader };
 var TemplateLoader = (function () {
     function TemplateLoader(viewContainer) {
         this.viewContainer = viewContainer;
@@ -454,32 +452,32 @@ var TemplateLoader = (function () {
     return TemplateLoader;
 }());
 __decorate([
-    core_1.Input(),
-    __metadata("design:type", core_1.TemplateRef)
+    Input(),
+    __metadata("design:type", TemplateRef)
 ], TemplateLoader.prototype, "template", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], TemplateLoader.prototype, "data", void 0);
 TemplateLoader = __decorate([
-    core_2.Component({
+    Component({
         selector: 'p-templateLoader',
         template: ""
     }),
-    __metadata("design:paramtypes", [core_1.ViewContainerRef])
+    __metadata("design:paramtypes", [ViewContainerRef])
 ], TemplateLoader);
-exports.TemplateLoader = TemplateLoader;
+export { TemplateLoader };
 var SharedModule = (function () {
     function SharedModule() {
     }
     return SharedModule;
 }());
 SharedModule = __decorate([
-    core_1.NgModule({
-        imports: [common_1.CommonModule],
+    NgModule({
+        imports: [CommonModule],
         exports: [Header, Footer, Column, TemplateWrapper, ColumnHeaderTemplateLoader, ColumnBodyTemplateLoader, ColumnFooterTemplateLoader, ColumnFilterTemplateLoader, PrimeTemplate, TemplateLoader, Row, HeaderColumnGroup, FooterColumnGroup, ColumnEditorTemplateLoader],
         declarations: [Header, Footer, Column, TemplateWrapper, ColumnHeaderTemplateLoader, ColumnBodyTemplateLoader, ColumnFooterTemplateLoader, ColumnFilterTemplateLoader, PrimeTemplate, TemplateLoader, Row, HeaderColumnGroup, FooterColumnGroup, ColumnEditorTemplateLoader]
     })
 ], SharedModule);
-exports.SharedModule = SharedModule;
+export { SharedModule };
 //# sourceMappingURL=shared.js.map

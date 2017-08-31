@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,19 +7,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = require("@angular/core");
-var common_1 = require("@angular/common");
-var forms_1 = require("@angular/forms");
-exports.RADIO_VALUE_ACCESSOR = {
-    provide: forms_1.NG_VALUE_ACCESSOR,
-    useExisting: core_1.forwardRef(function () { return RadioButton; }),
+import { NgModule, Component, Input, Output, ElementRef, EventEmitter, forwardRef, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+export var RADIO_VALUE_ACCESSOR = {
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(function () { return RadioButton; }),
     multi: true
 };
 var RadioButton = (function () {
     function RadioButton(cd) {
         this.cd = cd;
-        this.onClick = new core_1.EventEmitter();
+        this.onClick = new EventEmitter();
         this.onModelChange = function () { };
         this.onModelTouched = function () { };
     }
@@ -66,65 +64,65 @@ var RadioButton = (function () {
     return RadioButton;
 }());
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], RadioButton.prototype, "value", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], RadioButton.prototype, "name", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], RadioButton.prototype, "disabled", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], RadioButton.prototype, "label", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Number)
 ], RadioButton.prototype, "tabindex", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], RadioButton.prototype, "inputId", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], RadioButton.prototype, "style", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], RadioButton.prototype, "styleClass", void 0);
 __decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
+    Output(),
+    __metadata("design:type", EventEmitter)
 ], RadioButton.prototype, "onClick", void 0);
 __decorate([
-    core_1.ViewChild('rb'),
-    __metadata("design:type", core_1.ElementRef)
+    ViewChild('rb'),
+    __metadata("design:type", ElementRef)
 ], RadioButton.prototype, "inputViewChild", void 0);
 RadioButton = __decorate([
-    core_1.Component({
+    Component({
         selector: 'p-radioButton',
         template: "\n        <div [ngStyle]=\"style\" [ngClass]=\"'ui-radiobutton ui-widget'\" [class]=\"styleClass\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #rb type=\"radio\" [attr.id]=\"inputId\" [attr.name]=\"name\" [attr.value]=\"value\" [attr.tabindex]=\"tabindex\" \n                    [checked]=\"checked\" (change)=\"onChange($event)\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\">\n            </div>\n            <div (click)=\"handleClick()\"\n                [ngClass]=\"{'ui-radiobutton-box ui-widget ui-state-default':true,\n                'ui-state-active':rb.checked,'ui-state-disabled':disabled,'ui-state-focus':focused}\">\n                <span class=\"ui-radiobutton-icon ui-clickable\" [ngClass]=\"{'fa fa-circle':rb.checked}\"></span>\n            </div>\n        </div>\n        <label class=\"ui-radiobutton-label\" (click)=\"select()\" \n            [ngClass]=\"{'ui-label-active':rb.checked,'ui-label-disabled':disabled,'ui-label-focus':focused}\"\n            *ngIf=\"label\" [attr.for]=\"inputId\">{{label}}</label>\n    ",
-        providers: [exports.RADIO_VALUE_ACCESSOR]
+        providers: [RADIO_VALUE_ACCESSOR]
     }),
-    __metadata("design:paramtypes", [core_1.ChangeDetectorRef])
+    __metadata("design:paramtypes", [ChangeDetectorRef])
 ], RadioButton);
-exports.RadioButton = RadioButton;
+export { RadioButton };
 var RadioButtonModule = (function () {
     function RadioButtonModule() {
     }
     return RadioButtonModule;
 }());
 RadioButtonModule = __decorate([
-    core_1.NgModule({
-        imports: [common_1.CommonModule],
+    NgModule({
+        imports: [CommonModule],
         exports: [RadioButton],
         declarations: [RadioButton]
     })
 ], RadioButtonModule);
-exports.RadioButtonModule = RadioButtonModule;
+export { RadioButtonModule };
 //# sourceMappingURL=radiobutton.js.map

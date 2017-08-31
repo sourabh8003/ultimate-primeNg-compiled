@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,17 +7,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = require("@angular/core");
-var animations_1 = require("@angular/animations");
-var common_1 = require("@angular/common");
-var shared_1 = require("../common/shared");
-var domhandler_1 = require("../dom/domhandler");
-var objectutils_1 = require("../utils/objectutils");
-var forms_1 = require("@angular/forms");
-exports.DROPDOWN_VALUE_ACCESSOR = {
-    provide: forms_1.NG_VALUE_ACCESSOR,
-    useExisting: core_1.forwardRef(function () { return Dropdown; }),
+import { NgModule, Component, ElementRef, Input, Output, Renderer2, EventEmitter, ContentChildren, QueryList, ViewChild, forwardRef, ChangeDetectorRef, NgZone } from '@angular/core';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+import { CommonModule } from '@angular/common';
+import { SharedModule, PrimeTemplate } from '../common/shared';
+import { DomHandler } from '../dom/domhandler';
+import { ObjectUtils } from '../utils/objectutils';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+export var DROPDOWN_VALUE_ACCESSOR = {
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(function () { return Dropdown; }),
     multi: true
 };
 var Dropdown = (function () {
@@ -33,9 +31,9 @@ var Dropdown = (function () {
         this.autoWidth = true;
         this.filterBy = 'label';
         this.lazy = true;
-        this.onChange = new core_1.EventEmitter();
-        this.onFocus = new core_1.EventEmitter();
-        this.onBlur = new core_1.EventEmitter();
+        this.onChange = new EventEmitter();
+        this.onFocus = new EventEmitter();
+        this.onBlur = new EventEmitter();
         this.onModelChange = function () { };
         this.onModelTouched = function () { };
         this.panelVisible = false;
@@ -232,7 +230,7 @@ var Dropdown = (function () {
         if (this.appendTo) {
             this.panel.style.minWidth = this.domHandler.getWidth(this.container) + 'px';
         }
-        this.panel.style.zIndex = String(++domhandler_1.DomHandler.zindex);
+        this.panel.style.zIndex = String(++DomHandler.zindex);
         this.panelVisible = true;
         this.shown = true;
     };
@@ -379,163 +377,163 @@ var Dropdown = (function () {
     return Dropdown;
 }());
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Dropdown.prototype, "scrollHeight", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Dropdown.prototype, "filter", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], Dropdown.prototype, "style", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], Dropdown.prototype, "panelStyle", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Dropdown.prototype, "styleClass", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Dropdown.prototype, "panelStyleClass", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Dropdown.prototype, "disabled", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Dropdown.prototype, "readonly", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Dropdown.prototype, "autoWidth", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Dropdown.prototype, "required", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Dropdown.prototype, "editable", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], Dropdown.prototype, "appendTo", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Number)
 ], Dropdown.prototype, "tabindex", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Dropdown.prototype, "placeholder", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Dropdown.prototype, "filterPlaceholder", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Dropdown.prototype, "inputId", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Dropdown.prototype, "dataKey", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Dropdown.prototype, "filterBy", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Dropdown.prototype, "lazy", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Dropdown.prototype, "autofocus", void 0);
 __decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
+    Output(),
+    __metadata("design:type", EventEmitter)
 ], Dropdown.prototype, "onChange", void 0);
 __decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
+    Output(),
+    __metadata("design:type", EventEmitter)
 ], Dropdown.prototype, "onFocus", void 0);
 __decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
+    Output(),
+    __metadata("design:type", EventEmitter)
 ], Dropdown.prototype, "onBlur", void 0);
 __decorate([
-    core_1.ViewChild('container'),
-    __metadata("design:type", core_1.ElementRef)
+    ViewChild('container'),
+    __metadata("design:type", ElementRef)
 ], Dropdown.prototype, "containerViewChild", void 0);
 __decorate([
-    core_1.ViewChild('panel'),
-    __metadata("design:type", core_1.ElementRef)
+    ViewChild('panel'),
+    __metadata("design:type", ElementRef)
 ], Dropdown.prototype, "panelViewChild", void 0);
 __decorate([
-    core_1.ViewChild('itemswrapper'),
-    __metadata("design:type", core_1.ElementRef)
+    ViewChild('itemswrapper'),
+    __metadata("design:type", ElementRef)
 ], Dropdown.prototype, "itemsWrapperViewChild", void 0);
 __decorate([
-    core_1.ViewChild('filter'),
-    __metadata("design:type", core_1.ElementRef)
+    ViewChild('filter'),
+    __metadata("design:type", ElementRef)
 ], Dropdown.prototype, "filterViewChild", void 0);
 __decorate([
-    core_1.ViewChild('in'),
-    __metadata("design:type", core_1.ElementRef)
+    ViewChild('in'),
+    __metadata("design:type", ElementRef)
 ], Dropdown.prototype, "focusViewChild", void 0);
 __decorate([
-    core_1.ViewChild('editableInput'),
-    __metadata("design:type", core_1.ElementRef)
+    ViewChild('editableInput'),
+    __metadata("design:type", ElementRef)
 ], Dropdown.prototype, "editableInputViewChild", void 0);
 __decorate([
-    core_1.ContentChildren(shared_1.PrimeTemplate),
-    __metadata("design:type", core_1.QueryList)
+    ContentChildren(PrimeTemplate),
+    __metadata("design:type", QueryList)
 ], Dropdown.prototype, "templates", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Array),
     __metadata("design:paramtypes", [Array])
 ], Dropdown.prototype, "options", null);
 Dropdown = __decorate([
-    core_1.Component({
+    Component({
         selector: 'p-dropdown',
         template: "\n         <div #container [ngClass]=\"{'ui-dropdown ui-widget ui-state-default ui-corner-all ui-helper-clearfix':true,\n            'ui-state-disabled':disabled,'ui-dropdown-open':panelVisible,'ui-state-focus':focus}\"\n            (click)=\"onMouseclick($event)\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-helper-hidden-accessible\" *ngIf=\"autoWidth\">\n                <select [required]=\"required\" name=\"options\" [attr.aria-label]=\"selectedOption ? selectedOption.label : ' '\" tabindex=\"-1\" aria-hidden=\"true\">\n                    <option *ngFor=\"let option of options\" [value]=\"option.value\" [selected]=\"selectedOption == option\">{{option.label}}</option>\n                </select>\n            </div>\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #in [attr.id]=\"inputId\" type=\"text\" [attr.aria-label]=\"selectedOption ? selectedOption.label : ' '\" readonly (focus)=\"onInputFocus($event)\" role=\"listbox\"\n                    (blur)=\"onInputBlur($event)\" (keydown)=\"onKeydown($event)\" [disabled]=\"disabled\" [attr.tabindex]=\"tabindex\" [attr.autofocus]=\"autofocus\">\n            </div>\n            <label [ngClass]=\"{'ui-dropdown-label ui-inputtext ui-corner-all':true,'ui-dropdown-label-empty':(label !== null)}\" *ngIf=\"!editable&&(label !== null)\">{{label||'empty'}}</label>\n            <label [ngClass]=\"{'ui-dropdown-label ui-inputtext ui-corner-all ui-placeholder':true}\" *ngIf=\"!editable&&(label === null)\">{{placeholder}}</label>\n            <input #editableInput type=\"text\" [attr.aria-label]=\"selectedOption ? selectedOption.label : ' '\" class=\"ui-dropdown-label ui-inputtext ui-corner-all\" *ngIf=\"editable\" [disabled]=\"disabled\" [attr.placeholder]=\"placeholder\"\n                        (click)=\"onEditableInputClick($event)\" (input)=\"onEditableInputChange($event)\" (focus)=\"onEditableInputFocus($event)\" (blur)=\"onInputBlur($event)\">\n            <div class=\"ui-dropdown-trigger ui-state-default ui-corner-right\">\n                <span class=\"fa fa-fw fa-caret-down ui-clickable\"></span>\n            </div>\n            <div #panel [ngClass]=\"'ui-dropdown-panel ui-widget-content ui-corner-all ui-helper-hidden ui-shadow'\" [@panelState]=\"panelVisible ? 'visible' : 'hidden'\"\n                [style.display]=\"panelVisible ? 'block' : 'none'\" [ngStyle]=\"panelStyle\" [class]=\"panelStyleClass\">\n                <div *ngIf=\"filter\" class=\"ui-dropdown-filter-container\" (input)=\"onFilter($event)\" (click)=\"$event.stopPropagation()\">\n                    <input #filter type=\"text\" autocomplete=\"off\" class=\"ui-dropdown-filter ui-inputtext ui-widget ui-state-default ui-corner-all\" [attr.placeholder]=\"filterPlaceholder\"\n                    (keydown.enter)=\"$event.preventDefault()\" (keydown)=\"onKeydown($event)\">\n                    <span class=\"fa fa-search\"></span>\n                </div>\n                <div #itemswrapper class=\"ui-dropdown-items-wrapper\" [style.max-height]=\"scrollHeight||'auto'\">\n                    <ul class=\"ui-dropdown-items ui-dropdown-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\" *ngIf=\"lazy ? panelVisible : true\">\n                        <li *ngFor=\"let option of optionsToDisplay;let i=index\" \n                            [ngClass]=\"{'ui-dropdown-item ui-corner-all':true, 'ui-state-highlight':(selectedOption == option), \n                            'ui-dropdown-item-empty':!option.label||option.label.length === 0}\"\n                            (click)=\"onItemClick($event, option)\">\n                            <span *ngIf=\"!itemTemplate\">{{option.label||'empty'}}</span>\n                            <ng-template [pTemplateWrapper]=\"itemTemplate\" [item]=\"option\" *ngIf=\"itemTemplate\"></ng-template>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    ",
         animations: [
-            animations_1.trigger('panelState', [
-                animations_1.state('hidden', animations_1.style({
+            trigger('panelState', [
+                state('hidden', style({
                     opacity: 0
                 })),
-                animations_1.state('visible', animations_1.style({
+                state('visible', style({
                     opacity: 1
                 })),
-                animations_1.transition('visible => hidden', animations_1.animate('400ms ease-in')),
-                animations_1.transition('hidden => visible', animations_1.animate('400ms ease-out'))
+                transition('visible => hidden', animate('400ms ease-in')),
+                transition('hidden => visible', animate('400ms ease-out'))
             ])
         ],
-        providers: [domhandler_1.DomHandler, objectutils_1.ObjectUtils, exports.DROPDOWN_VALUE_ACCESSOR]
+        providers: [DomHandler, ObjectUtils, DROPDOWN_VALUE_ACCESSOR]
     }),
-    __metadata("design:paramtypes", [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer2, core_1.ChangeDetectorRef,
-        objectutils_1.ObjectUtils, core_1.NgZone])
+    __metadata("design:paramtypes", [ElementRef, DomHandler, Renderer2, ChangeDetectorRef,
+        ObjectUtils, NgZone])
 ], Dropdown);
-exports.Dropdown = Dropdown;
+export { Dropdown };
 var DropdownModule = (function () {
     function DropdownModule() {
     }
     return DropdownModule;
 }());
 DropdownModule = __decorate([
-    core_1.NgModule({
-        imports: [common_1.CommonModule, shared_1.SharedModule],
-        exports: [Dropdown, shared_1.SharedModule],
+    NgModule({
+        imports: [CommonModule, SharedModule],
+        exports: [Dropdown, SharedModule],
         declarations: [Dropdown]
     })
 ], DropdownModule);
-exports.DropdownModule = DropdownModule;
+export { DropdownModule };
 //# sourceMappingURL=dropdown.js.map

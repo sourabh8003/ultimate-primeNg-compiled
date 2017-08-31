@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,9 +7,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = require("@angular/core");
-var common_1 = require("@angular/common");
+import { NgModule, Directive, ElementRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
 var CodeHighlighter = (function () {
     function CodeHighlighter(el) {
         this.el = el;
@@ -21,23 +19,23 @@ var CodeHighlighter = (function () {
     return CodeHighlighter;
 }());
 CodeHighlighter = __decorate([
-    core_1.Directive({
+    Directive({
         selector: '[pCode]'
     }),
-    __metadata("design:paramtypes", [core_1.ElementRef])
+    __metadata("design:paramtypes", [ElementRef])
 ], CodeHighlighter);
-exports.CodeHighlighter = CodeHighlighter;
+export { CodeHighlighter };
 var CodeHighlighterModule = (function () {
     function CodeHighlighterModule() {
     }
     return CodeHighlighterModule;
 }());
 CodeHighlighterModule = __decorate([
-    core_1.NgModule({
-        imports: [common_1.CommonModule],
+    NgModule({
+        imports: [CommonModule],
         exports: [CodeHighlighter],
         declarations: [CodeHighlighter]
     })
 ], CodeHighlighterModule);
-exports.CodeHighlighterModule = CodeHighlighterModule;
+export { CodeHighlighterModule };
 //# sourceMappingURL=codehighlighter.js.map

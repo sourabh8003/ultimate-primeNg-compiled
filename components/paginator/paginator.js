@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,13 +7,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = require("@angular/core");
-var common_1 = require("@angular/common");
+import { NgModule, Component, Input, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
 var Paginator = (function () {
     function Paginator() {
         this.pageLinkSize = 5;
-        this.onPageChange = new core_1.EventEmitter();
+        this.onPageChange = new EventEmitter();
         this.alwaysShow = true;
         this._totalRecords = 0;
         this._first = 0;
@@ -121,62 +119,62 @@ var Paginator = (function () {
     return Paginator;
 }());
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Number)
 ], Paginator.prototype, "pageLinkSize", void 0);
 __decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
+    Output(),
+    __metadata("design:type", EventEmitter)
 ], Paginator.prototype, "onPageChange", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Object)
 ], Paginator.prototype, "style", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", String)
 ], Paginator.prototype, "styleClass", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Array)
 ], Paginator.prototype, "rowsPerPageOptions", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Boolean)
 ], Paginator.prototype, "alwaysShow", void 0);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Number),
     __metadata("design:paramtypes", [Number])
 ], Paginator.prototype, "totalRecords", null);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Number),
     __metadata("design:paramtypes", [Number])
 ], Paginator.prototype, "first", null);
 __decorate([
-    core_1.Input(),
+    Input(),
     __metadata("design:type", Number),
     __metadata("design:paramtypes", [Number])
 ], Paginator.prototype, "rows", null);
 Paginator = __decorate([
-    core_1.Component({
+    Component({
         selector: 'p-paginator',
         template: "\n        <div [class]=\"styleClass\" [ngStyle]=\"style\" [ngClass]=\"'ui-paginator ui-widget ui-widget-header ui-unselectable-text'\"\n            *ngIf=\"alwaysShow ? true : (pageLinks && pageLinks.length > 1)\">\n            <a href=\"#\" class=\"ui-paginator-first ui-paginator-element ui-state-default ui-corner-all\"\n                    (click)=\"changePageToFirst($event)\" [ngClass]=\"{'ui-state-disabled':isFirstPage()}\" [tabindex]=\"isFirstPage() ? -1 : null\">\n                <span class=\"fa fa-step-backward\"></span>\n            </a>\n            <a href=\"#\" class=\"ui-paginator-prev ui-paginator-element ui-state-default ui-corner-all\"\n                    (click)=\"changePageToPrev($event)\" [ngClass]=\"{'ui-state-disabled':isFirstPage()}\" [tabindex]=\"isFirstPage() ? -1 : null\">\n                <span class=\"fa fa-backward\"></span>\n            </a>\n            <span class=\"ui-paginator-pages\">\n                <a href=\"#\" *ngFor=\"let pageLink of pageLinks\" class=\"ui-paginator-page ui-paginator-element ui-state-default ui-corner-all\"\n                    (click)=\"changePage(pageLink - 1, $event)\" [ngClass]=\"{'ui-state-active': (pageLink-1 == getPage())}\">{{pageLink}}</a>\n            </span>\n            <a href=\"#\" class=\"ui-paginator-next ui-paginator-element ui-state-default ui-corner-all\"\n                    (click)=\"changePageToNext($event)\" [ngClass]=\"{'ui-state-disabled':isLastPage()}\" [tabindex]=\"isLastPage() ? -1 : null\">\n                <span class=\"fa fa-forward\"></span>\n            </a>\n            <a href=\"#\" class=\"ui-paginator-last ui-paginator-element ui-state-default ui-corner-all\"\n                    (click)=\"changePageToLast($event)\" [ngClass]=\"{'ui-state-disabled':isLastPage()}\" [tabindex]=\"isLastPage() ? -1 : null\">\n                <span class=\"fa fa-step-forward\"></span>\n            </a>\n            <select class=\"ui-paginator-rpp-options ui-widget ui-state-default\" *ngIf=\"rowsPerPageOptions\" (change)=\"onRppChange($event)\">\n                <option *ngFor=\"let opt of rowsPerPageOptions\" [value]=\"opt\" [selected]=\"rows == opt\">{{opt}}</option>\n            </select>\n        </div>\n    "
     })
 ], Paginator);
-exports.Paginator = Paginator;
+export { Paginator };
 var PaginatorModule = (function () {
     function PaginatorModule() {
     }
     return PaginatorModule;
 }());
 PaginatorModule = __decorate([
-    core_1.NgModule({
-        imports: [common_1.CommonModule],
+    NgModule({
+        imports: [CommonModule],
         exports: [Paginator],
         declarations: [Paginator]
     })
 ], PaginatorModule);
-exports.PaginatorModule = PaginatorModule;
+export { PaginatorModule };
 //# sourceMappingURL=paginator.js.map
