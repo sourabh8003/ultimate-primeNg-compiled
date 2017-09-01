@@ -1,11 +1,13 @@
-import { ObjectUtils } from './objectutils';
-import { inject, TestBed } from '@angular/core/testing';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var objectutils_1 = require("./objectutils");
+var testing_1 = require("@angular/core/testing");
 describe('ObjectUtils Suite', function () {
     var objectUtils = null;
-    beforeEach(function () { return TestBed.configureTestingModule({
-        providers: [ObjectUtils]
+    beforeEach(function () { return testing_1.TestBed.configureTestingModule({
+        providers: [objectutils_1.ObjectUtils]
     }); });
-    beforeEach(inject([ObjectUtils], function (s) {
+    beforeEach(testing_1.inject([objectutils_1.ObjectUtils], function (s) {
         objectUtils = s;
     }));
     var data = [

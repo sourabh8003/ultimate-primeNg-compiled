@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -10,15 +11,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-import { NgModule, Component, Input, Output, EventEmitter, Optional } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MessageService } from '../common/messageservice';
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var common_1 = require("@angular/common");
+var messageservice_1 = require("../common/messageservice");
 var Messages = (function () {
     function Messages(messageService) {
         var _this = this;
         this.messageService = messageService;
         this.closable = true;
-        this.valueChange = new EventEmitter();
+        this.valueChange = new core_1.EventEmitter();
         if (messageService) {
             this.subscription = messageService.messageObserver.subscribe(function (messages) {
                 if (messages instanceof Array)
@@ -78,37 +80,37 @@ var Messages = (function () {
     return Messages;
 }());
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", Array)
 ], Messages.prototype, "value", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", Boolean)
 ], Messages.prototype, "closable", void 0);
 __decorate([
-    Output(),
-    __metadata("design:type", EventEmitter)
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
 ], Messages.prototype, "valueChange", void 0);
 Messages = __decorate([
-    Component({
+    core_1.Component({
         selector: 'p-messages',
         template: "\n        <div *ngIf=\"hasMessages()\" class=\"ui-messages ui-widget ui-corner-all\" style=\"display:block\"\n                    [ngClass]=\"{'ui-messages-info':(value[0].severity === 'info'),\n                    'ui-messages-warn':(value[0].severity === 'warn'),\n                    'ui-messages-error':(value[0].severity === 'error'),\n                    'ui-messages-success':(value[0].severity === 'success')}\">\n            <a href=\"#\" class=\"ui-messages-close\" (click)=\"clear($event)\" *ngIf=\"closable\">\n                <i class=\"fa fa-close\"></i>\n            </a>\n            <span class=\"ui-messages-icon fa fa-fw fa-2x\" [ngClass]=\"icon\"></span>\n            <ul>\n                <li *ngFor=\"let msg of value\">\n                    <span class=\"ui-messages-summary\" [innerHTML]=\"msg.summary\"></span>\n                    <span class=\"ui-messages-detail\" [innerHTML]=\"msg.detail\"></span>\n                </li>\n            </ul>\n        </div>\n    "
     }),
-    __param(0, Optional()),
-    __metadata("design:paramtypes", [MessageService])
+    __param(0, core_1.Optional()),
+    __metadata("design:paramtypes", [messageservice_1.MessageService])
 ], Messages);
-export { Messages };
+exports.Messages = Messages;
 var MessagesModule = (function () {
     function MessagesModule() {
     }
     return MessagesModule;
 }());
 MessagesModule = __decorate([
-    NgModule({
-        imports: [CommonModule],
+    core_1.NgModule({
+        imports: [common_1.CommonModule],
         exports: [Messages],
         declarations: [Messages]
     })
 ], MessagesModule);
-export { MessagesModule };
+exports.MessagesModule = MessagesModule;
 //# sourceMappingURL=messages.js.map

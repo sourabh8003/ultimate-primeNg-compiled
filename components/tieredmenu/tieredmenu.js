@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7,10 +8,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { NgModule, Component, ElementRef, Input, Renderer2 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { DomHandler } from '../dom/domhandler';
-import { RouterModule } from '@angular/router';
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var common_1 = require("@angular/common");
+var domhandler_1 = require("../dom/domhandler");
+var router_1 = require("@angular/router");
 var TieredMenuSub = (function () {
     function TieredMenuSub(domHandler) {
         this.domHandler = domHandler;
@@ -23,7 +25,7 @@ var TieredMenuSub = (function () {
         var nextElement = item.children[0].nextElementSibling;
         if (nextElement) {
             var sublist = nextElement.children[0];
-            sublist.style.zIndex = String(++DomHandler.zindex);
+            sublist.style.zIndex = String(++domhandler_1.DomHandler.zindex);
             sublist.style.top = '0px';
             sublist.style.left = this.domHandler.getOuterWidth(item.children[0]) + 'px';
         }
@@ -52,22 +54,22 @@ var TieredMenuSub = (function () {
     return TieredMenuSub;
 }());
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", Object)
 ], TieredMenuSub.prototype, "item", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", Boolean)
 ], TieredMenuSub.prototype, "root", void 0);
 TieredMenuSub = __decorate([
-    Component({
+    core_1.Component({
         selector: 'p-tieredMenuSub',
         template: "\n        <ul [ngClass]=\"{'ui-helper-reset':root, 'ui-widget-content ui-corner-all ui-helper-clearfix ui-menu-child ui-shadow':!root}\" class=\"ui-menu-list\"\n            (click)=\"listClick($event)\">\n            <ng-template ngFor let-child [ngForOf]=\"(root ? item : item.items)\">\n                <li *ngIf=\"child.separator\" class=\"ui-menu-separator ui-widget-content\">\n                <li *ngIf=\"!child.separator\" #listItem [ngClass]=\"{'ui-menuitem ui-widget ui-corner-all':true,'ui-menu-parent':child.items,'ui-menuitem-active':listItem==activeItem}\"\n                    (mouseenter)=\"onItemMouseEnter($event, listItem, child)\" (mouseleave)=\"onItemMouseLeave($event)\">\n                    <a *ngIf=\"!child.routerLink\" [href]=\"child.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" [attr.target]=\"child.target\" [attr.title]=\"child.title\"\n                        [ngClass]=\"{'ui-state-disabled':child.disabled}\" (click)=\"itemClick($event, child)\">\n                        <span class=\"ui-submenu-icon fa fa-fw fa-caret-right\" *ngIf=\"child.items\"></span>\n                        <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"child.icon\" [ngClass]=\"child.icon\"></span>\n                        <span class=\"ui-menuitem-text\">{{child.label}}</span>\n                    </a>\n                    <a *ngIf=\"child.routerLink\" [routerLink]=\"child.routerLink\" [routerLinkActive]=\"'ui-state-active'\" \n                        [routerLinkActiveOptions]=\"child.routerLinkActiveOptions||{exact:false}\" [href]=\"child.url||'#'\" \n                        class=\"ui-menuitem-link ui-corner-all\" [attr.target]=\"child.target\" [attr.title]=\"child.title\"\n                        [ngClass]=\"{'ui-state-disabled':child.disabled}\" (click)=\"itemClick($event, child)\">\n                        <span class=\"ui-submenu-icon fa fa-fw fa-caret-right\" *ngIf=\"child.items\"></span>\n                        <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"child.icon\" [ngClass]=\"child.icon\"></span>\n                        <span class=\"ui-menuitem-text\">{{child.label}}</span>\n                    </a>\n                    <p-tieredMenuSub class=\"ui-submenu\" [item]=\"child\" *ngIf=\"child.items\"></p-tieredMenuSub>\n                </li>\n            </ng-template>\n        </ul>\n    ",
-        providers: [DomHandler]
+        providers: [domhandler_1.DomHandler]
     }),
-    __metadata("design:paramtypes", [DomHandler])
+    __metadata("design:paramtypes", [domhandler_1.DomHandler])
 ], TieredMenuSub);
-export { TieredMenuSub };
+exports.TieredMenuSub = TieredMenuSub;
 var TieredMenu = (function () {
     function TieredMenu(el, domHandler, renderer) {
         this.el = el;
@@ -130,45 +132,45 @@ var TieredMenu = (function () {
     return TieredMenu;
 }());
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", Array)
 ], TieredMenu.prototype, "model", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", Boolean)
 ], TieredMenu.prototype, "popup", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", Object)
 ], TieredMenu.prototype, "style", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", String)
 ], TieredMenu.prototype, "styleClass", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", Object)
 ], TieredMenu.prototype, "appendTo", void 0);
 TieredMenu = __decorate([
-    Component({
+    core_1.Component({
         selector: 'p-tieredMenu',
         template: "\n        <div [ngClass]=\"{'ui-tieredmenu ui-menu ui-widget ui-widget-content ui-corner-all ui-helper-clearfix':true,'ui-menu-dynamic ui-shadow':popup}\" \n            [class]=\"styleClass\" [ngStyle]=\"style\">\n            <p-tieredMenuSub [item]=\"model\" root=\"root\"></p-tieredMenuSub>\n        </div>\n    ",
-        providers: [DomHandler]
+        providers: [domhandler_1.DomHandler]
     }),
-    __metadata("design:paramtypes", [ElementRef, DomHandler, Renderer2])
+    __metadata("design:paramtypes", [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer2])
 ], TieredMenu);
-export { TieredMenu };
+exports.TieredMenu = TieredMenu;
 var TieredMenuModule = (function () {
     function TieredMenuModule() {
     }
     return TieredMenuModule;
 }());
 TieredMenuModule = __decorate([
-    NgModule({
-        imports: [CommonModule, RouterModule],
-        exports: [TieredMenu, RouterModule],
+    core_1.NgModule({
+        imports: [common_1.CommonModule, router_1.RouterModule],
+        exports: [TieredMenu, router_1.RouterModule],
         declarations: [TieredMenu, TieredMenuSub]
     })
 ], TieredMenuModule);
-export { TieredMenuModule };
+exports.TieredMenuModule = TieredMenuModule;
 //# sourceMappingURL=tieredmenu.js.map

@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7,14 +8,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { NgModule, Component, ElementRef, Input, Output, EventEmitter, forwardRef, Renderer2, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { trigger, state, style, transition, animate } from '@angular/animations';
-import { CommonModule } from '@angular/common';
-import { DomHandler } from '../dom/domhandler';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
-export var COLORPICKER_VALUE_ACCESSOR = {
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(function () { return ColorPicker; }),
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var animations_1 = require("@angular/animations");
+var common_1 = require("@angular/common");
+var domhandler_1 = require("../dom/domhandler");
+var forms_1 = require("@angular/forms");
+exports.COLORPICKER_VALUE_ACCESSOR = {
+    provide: forms_1.NG_VALUE_ACCESSOR,
+    useExisting: core_1.forwardRef(function () { return ColorPicker; }),
     multi: true
 };
 var ColorPicker = (function () {
@@ -24,7 +26,7 @@ var ColorPicker = (function () {
         this.renderer = renderer;
         this.cd = cd;
         this.format = 'hex';
-        this.onChange = new EventEmitter();
+        this.onChange = new core_1.EventEmitter();
         this.defaultColor = 'ff0000';
         this.onModelChange = function () { };
         this.onModelTouched = function () { };
@@ -131,7 +133,7 @@ var ColorPicker = (function () {
         this.onModelTouched();
     };
     ColorPicker.prototype.show = function () {
-        this.panelViewChild.nativeElement.style.zIndex = String(++DomHandler.zindex);
+        this.panelViewChild.nativeElement.style.zIndex = String(++domhandler_1.DomHandler.zindex);
         this.panelVisible = true;
         this.shown = true;
     };
@@ -388,97 +390,97 @@ var ColorPicker = (function () {
     return ColorPicker;
 }());
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", Object)
 ], ColorPicker.prototype, "style", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", String)
 ], ColorPicker.prototype, "styleClass", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", Boolean)
 ], ColorPicker.prototype, "inline", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", String)
 ], ColorPicker.prototype, "format", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", String)
 ], ColorPicker.prototype, "appendTo", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", Boolean)
 ], ColorPicker.prototype, "disabled", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", String)
 ], ColorPicker.prototype, "tabindex", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", String)
 ], ColorPicker.prototype, "inputId", void 0);
 __decorate([
-    Output(),
-    __metadata("design:type", EventEmitter)
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
 ], ColorPicker.prototype, "onChange", void 0);
 __decorate([
-    ViewChild('panel'),
-    __metadata("design:type", ElementRef)
+    core_1.ViewChild('panel'),
+    __metadata("design:type", core_1.ElementRef)
 ], ColorPicker.prototype, "panelViewChild", void 0);
 __decorate([
-    ViewChild('colorSelector'),
-    __metadata("design:type", ElementRef)
+    core_1.ViewChild('colorSelector'),
+    __metadata("design:type", core_1.ElementRef)
 ], ColorPicker.prototype, "colorSelectorViewChild", void 0);
 __decorate([
-    ViewChild('colorHandle'),
-    __metadata("design:type", ElementRef)
+    core_1.ViewChild('colorHandle'),
+    __metadata("design:type", core_1.ElementRef)
 ], ColorPicker.prototype, "colorHandleViewChild", void 0);
 __decorate([
-    ViewChild('hue'),
-    __metadata("design:type", ElementRef)
+    core_1.ViewChild('hue'),
+    __metadata("design:type", core_1.ElementRef)
 ], ColorPicker.prototype, "hueViewChild", void 0);
 __decorate([
-    ViewChild('hueHandle'),
-    __metadata("design:type", ElementRef)
+    core_1.ViewChild('hueHandle'),
+    __metadata("design:type", core_1.ElementRef)
 ], ColorPicker.prototype, "hueHandleViewChild", void 0);
 __decorate([
-    ViewChild('input'),
-    __metadata("design:type", ElementRef)
+    core_1.ViewChild('input'),
+    __metadata("design:type", core_1.ElementRef)
 ], ColorPicker.prototype, "inputViewChild", void 0);
 ColorPicker = __decorate([
-    Component({
+    core_1.Component({
         selector: 'p-colorPicker',
         template: "\n        <div [ngStyle]=\"style\" [class]=\"styleClass\" [ngClass]=\"{'ui-colorpicker ui-widget':true,'ui-colorpicker-overlay':!inline,'ui-colorpicker-dragging':colorDragging||hueDragging}\">\n            <input #input type=\"text\" *ngIf=\"!inline\" class=\"ui-colorpicker-preview ui-inputtext ui-state-default ui-corner-all\" readonly=\"readonly\" [ngClass]=\"{'ui-state-disabled': disabled}\"\n                (focus)=\"onInputFocus()\" (click)=\"onInputClick()\" (keydown)=\"onInputKeydown($event)\" [attr.id]=\"inputId\" [attr.tabindex]=\"tabindex\" [disabled]=\"disabled\"\n                [style.backgroundColor]=\"inputBgColor\">\n            <div #panel [ngClass]=\"{'ui-colorpicker-panel ui-corner-all': true, 'ui-colorpicker-overlay-panel ui-shadow':!inline, 'ui-state-disabled': disabled}\" (click)=\"onPanelClick()\"\n                [@panelState]=\"inline ? 'visible' : (panelVisible ? 'visible' : 'hidden')\" [style.display]=\"inline ? 'block' : (panelVisible ? 'block' : 'none')\">\n                <div class=\"ui-colorpicker-content\">\n                    <div #colorSelector class=\"ui-colorpicker-color-selector\" (mousedown)=\"onColorMousedown($event)\">\n                        <div class=\"ui-colorpicker-color\">\n                            <div #colorHandle class=\"ui-colorpicker-color-handle\"></div>\n                        </div>\n                    </div>\n                    <div #hue class=\"ui-colorpicker-hue\" (mousedown)=\"onHueMousedown($event)\">\n                        <div #hueHandle class=\"ui-colorpicker-hue-handle\"></div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    ",
         animations: [
-            trigger('panelState', [
-                state('hidden', style({
+            animations_1.trigger('panelState', [
+                animations_1.state('hidden', animations_1.style({
                     opacity: 0
                 })),
-                state('visible', style({
+                animations_1.state('visible', animations_1.style({
                     opacity: 1
                 })),
-                transition('visible => hidden', animate('400ms ease-in')),
-                transition('hidden => visible', animate('400ms ease-out'))
+                animations_1.transition('visible => hidden', animations_1.animate('400ms ease-in')),
+                animations_1.transition('hidden => visible', animations_1.animate('400ms ease-out'))
             ])
         ],
-        providers: [DomHandler, COLORPICKER_VALUE_ACCESSOR]
+        providers: [domhandler_1.DomHandler, exports.COLORPICKER_VALUE_ACCESSOR]
     }),
-    __metadata("design:paramtypes", [ElementRef, DomHandler, Renderer2, ChangeDetectorRef])
+    __metadata("design:paramtypes", [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer2, core_1.ChangeDetectorRef])
 ], ColorPicker);
-export { ColorPicker };
+exports.ColorPicker = ColorPicker;
 var ColorPickerModule = (function () {
     function ColorPickerModule() {
     }
     return ColorPickerModule;
 }());
 ColorPickerModule = __decorate([
-    NgModule({
-        imports: [CommonModule],
+    core_1.NgModule({
+        imports: [common_1.CommonModule],
         exports: [ColorPicker],
         declarations: [ColorPicker]
     })
 ], ColorPickerModule);
-export { ColorPickerModule };
+exports.ColorPickerModule = ColorPickerModule;
 //# sourceMappingURL=colorpicker.js.map

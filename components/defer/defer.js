@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7,16 +8,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { NgModule, Directive, ElementRef, TemplateRef, ViewContainerRef, Renderer2, EventEmitter, Output, ContentChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { DomHandler } from '../dom/domhandler';
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var common_1 = require("@angular/common");
+var domhandler_1 = require("../dom/domhandler");
 var DeferredLoader = (function () {
     function DeferredLoader(el, domHandler, renderer, viewContainer) {
         this.el = el;
         this.domHandler = domHandler;
         this.renderer = renderer;
         this.viewContainer = viewContainer;
-        this.onLoad = new EventEmitter();
+        this.onLoad = new core_1.EventEmitter();
     }
     DeferredLoader.prototype.ngAfterViewInit = function () {
         var _this = this;
@@ -51,33 +53,33 @@ var DeferredLoader = (function () {
     return DeferredLoader;
 }());
 __decorate([
-    Output(),
-    __metadata("design:type", EventEmitter)
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
 ], DeferredLoader.prototype, "onLoad", void 0);
 __decorate([
-    ContentChild(TemplateRef),
-    __metadata("design:type", TemplateRef)
+    core_1.ContentChild(core_1.TemplateRef),
+    __metadata("design:type", core_1.TemplateRef)
 ], DeferredLoader.prototype, "template", void 0);
 DeferredLoader = __decorate([
-    Directive({
+    core_1.Directive({
         selector: '[pDefer]',
         host: {},
-        providers: [DomHandler]
+        providers: [domhandler_1.DomHandler]
     }),
-    __metadata("design:paramtypes", [ElementRef, DomHandler, Renderer2, ViewContainerRef])
+    __metadata("design:paramtypes", [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer2, core_1.ViewContainerRef])
 ], DeferredLoader);
-export { DeferredLoader };
+exports.DeferredLoader = DeferredLoader;
 var DeferModule = (function () {
     function DeferModule() {
     }
     return DeferModule;
 }());
 DeferModule = __decorate([
-    NgModule({
-        imports: [CommonModule],
+    core_1.NgModule({
+        imports: [common_1.CommonModule],
         exports: [DeferredLoader],
         declarations: [DeferredLoader]
     })
 ], DeferModule);
-export { DeferModule };
+exports.DeferModule = DeferModule;
 //# sourceMappingURL=defer.js.map

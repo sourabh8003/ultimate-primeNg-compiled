@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7,12 +8,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { NgModule, Component, ElementRef, Input, Output, ContentChildren, QueryList, EventEmitter, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ButtonModule } from '../button/button';
-import { SharedModule, PrimeTemplate } from '../common/shared';
-import { DomHandler } from '../dom/domhandler';
-import { ObjectUtils } from '../utils/objectutils';
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = require("@angular/core");
+var common_1 = require("@angular/common");
+var button_1 = require("../button/button");
+var shared_1 = require("../common/shared");
+var domhandler_1 = require("../dom/domhandler");
+var objectutils_1 = require("../utils/objectutils");
 var PickList = (function () {
     function PickList(el, domHandler, objectUtils) {
         this.el = el;
@@ -21,12 +23,12 @@ var PickList = (function () {
         this.metaKeySelection = true;
         this.showSourceControls = true;
         this.showTargetControls = true;
-        this.onMoveToSource = new EventEmitter();
-        this.onMoveAllToSource = new EventEmitter();
-        this.onMoveAllToTarget = new EventEmitter();
-        this.onMoveToTarget = new EventEmitter();
-        this.onSourceReorder = new EventEmitter();
-        this.onTargetReorder = new EventEmitter();
+        this.onMoveToSource = new core_1.EventEmitter();
+        this.onMoveAllToSource = new core_1.EventEmitter();
+        this.onMoveAllToTarget = new core_1.EventEmitter();
+        this.onMoveToTarget = new core_1.EventEmitter();
+        this.onSourceReorder = new core_1.EventEmitter();
+        this.onTargetReorder = new core_1.EventEmitter();
         this.selectedItemsSource = [];
         this.selectedItemsTarget = [];
     }
@@ -377,129 +379,129 @@ var PickList = (function () {
     return PickList;
 }());
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", Array)
 ], PickList.prototype, "source", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", Array)
 ], PickList.prototype, "target", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", String)
 ], PickList.prototype, "sourceHeader", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", String)
 ], PickList.prototype, "targetHeader", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", Boolean)
 ], PickList.prototype, "responsive", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", String)
 ], PickList.prototype, "filterBy", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", Boolean)
 ], PickList.prototype, "metaKeySelection", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", Boolean)
 ], PickList.prototype, "dragdrop", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", String)
 ], PickList.prototype, "dragdropScope", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", Object)
 ], PickList.prototype, "style", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", String)
 ], PickList.prototype, "styleClass", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", Object)
 ], PickList.prototype, "sourceStyle", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", Object)
 ], PickList.prototype, "targetStyle", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", Boolean)
 ], PickList.prototype, "showSourceControls", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", Boolean)
 ], PickList.prototype, "showTargetControls", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", String)
 ], PickList.prototype, "sourceFilterPlaceholder", void 0);
 __decorate([
-    Input(),
+    core_1.Input(),
     __metadata("design:type", String)
 ], PickList.prototype, "targetFilterPlaceholder", void 0);
 __decorate([
-    Output(),
-    __metadata("design:type", EventEmitter)
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
 ], PickList.prototype, "onMoveToSource", void 0);
 __decorate([
-    Output(),
-    __metadata("design:type", EventEmitter)
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
 ], PickList.prototype, "onMoveAllToSource", void 0);
 __decorate([
-    Output(),
-    __metadata("design:type", EventEmitter)
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
 ], PickList.prototype, "onMoveAllToTarget", void 0);
 __decorate([
-    Output(),
-    __metadata("design:type", EventEmitter)
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
 ], PickList.prototype, "onMoveToTarget", void 0);
 __decorate([
-    Output(),
-    __metadata("design:type", EventEmitter)
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
 ], PickList.prototype, "onSourceReorder", void 0);
 __decorate([
-    Output(),
-    __metadata("design:type", EventEmitter)
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
 ], PickList.prototype, "onTargetReorder", void 0);
 __decorate([
-    ViewChild('sourcelist'),
-    __metadata("design:type", ElementRef)
+    core_1.ViewChild('sourcelist'),
+    __metadata("design:type", core_1.ElementRef)
 ], PickList.prototype, "listViewSourceChild", void 0);
 __decorate([
-    ViewChild('targetlist'),
-    __metadata("design:type", ElementRef)
+    core_1.ViewChild('targetlist'),
+    __metadata("design:type", core_1.ElementRef)
 ], PickList.prototype, "listViewTargetChild", void 0);
 __decorate([
-    ContentChildren(PrimeTemplate),
-    __metadata("design:type", QueryList)
+    core_1.ContentChildren(shared_1.PrimeTemplate),
+    __metadata("design:type", core_1.QueryList)
 ], PickList.prototype, "templates", void 0);
 PickList = __decorate([
-    Component({
+    core_1.Component({
         selector: 'p-pickList',
         template: "\n        <div [class]=\"styleClass\" [ngStyle]=\"style\" [ngClass]=\"{'ui-picklist ui-widget ui-helper-clearfix': true,'ui-picklist-responsive': responsive}\">\n            <div class=\"ui-picklist-source-controls ui-picklist-buttons\" *ngIf=\"showSourceControls\">\n                <div class=\"ui-picklist-buttons-cell\">\n                    <button type=\"button\" pButton icon=\"fa-angle-up\" (click)=\"moveUp(sourcelist,source,selectedItemsSource,onSourceReorder)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-up\" (click)=\"moveTop(sourcelist,source,selectedItemsSource,onSourceReorder)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-down\" (click)=\"moveDown(sourcelist,source,selectedItemsSource,onSourceReorder)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-down\" (click)=\"moveBottom(sourcelist,source,selectedItemsSource,onSourceReorder)\"></button>\n                </div>\n            </div>\n            <div class=\"ui-picklist-listwrapper ui-picklist-source-wrapper\" [ngClass]=\"{'ui-picklist-listwrapper-nocontrols':!showSourceControls}\">\n                <div class=\"ui-picklist-caption ui-widget-header ui-corner-tl ui-corner-tr\" *ngIf=\"sourceHeader\">{{sourceHeader}}</div>\n                <div class=\"ui-picklist-filter-container ui-widget-content\" *ngIf=\"filterBy\">\n                    <input type=\"text\" role=\"textbox\" (keyup)=\"onFilter($event,source,-1)\" class=\"ui-picklist-filter ui-inputtext ui-widget ui-state-default ui-corner-all\" [disabled]=\"disabled\" [attr.placeholder]=\"sourceFilterPlaceholder\">\n                    <span class=\"fa fa-search\"></span>\n                </div>\n                <ul #sourcelist class=\"ui-widget-content ui-picklist-list ui-picklist-source ui-corner-bottom\" [ngClass]=\"{'ui-picklist-highlight': listHighlightSource}\" [ngStyle]=\"sourceStyle\" (dragover)=\"onListMouseMove($event,-1)\" (dragleave)=\"onListDragLeave()\" (drop)=\"onListDrop($event, -1)\">\n                    <ng-template ngFor let-item [ngForOf]=\"source\" let-i=\"index\" let-l=\"last\">\n                        <li class=\"ui-picklist-droppoint\" *ngIf=\"dragdrop\" (dragover)=\"onDragOver($event, i, -1)\" (drop)=\"onDrop($event, i, -1)\" (dragleave)=\"onDragLeave($event, -1)\" \n                        [ngClass]=\"{'ui-picklist-droppoint-highlight': (i === dragOverItemIndexSource)}\" [style.display]=\"isItemVisible(item, -1) ? 'block' : 'none'\"></li>\n                        <li [ngClass]=\"{'ui-picklist-item':true,'ui-state-highlight':isSelected(item,selectedItemsSource)}\"\n                            (click)=\"onItemClick($event,item,selectedItemsSource)\" (dblclick)=\"onSourceItemDblClick()\" (touchend)=\"onItemTouchEnd($event)\"\n                            [style.display]=\"isItemVisible(item, -1) ? 'block' : 'none'\"\n                            [draggable]=\"dragdrop\" (dragstart)=\"onDragStart($event, i, -1)\" (dragend)=\"onDragEnd($event)\">\n                            <ng-template [pTemplateWrapper]=\"itemTemplate\" [item]=\"item\"></ng-template>\n                        </li>\n                        <li class=\"ui-picklist-droppoint\" *ngIf=\"dragdrop&&l\" (dragover)=\"onDragOver($event, i + 1, -1)\" (drop)=\"onDrop($event, i + 1, -1)\" (dragleave)=\"onDragLeave($event, -1)\" \n                        [ngClass]=\"{'ui-picklist-droppoint-highlight': (i + 1 === dragOverItemIndexSource)}\"></li>\n                    </ng-template>\n                </ul>\n            </div>\n            <div class=\"ui-picklist-buttons\">\n                <div class=\"ui-picklist-buttons-cell\">\n                    <button type=\"button\" pButton icon=\"fa-angle-right\" (click)=\"moveRight()\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-right\" (click)=\"moveAllRight()\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-left\" (click)=\"moveLeft()\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-left\" (click)=\"moveAllLeft()\"></button>\n                </div>\n            </div>\n            <div class=\"ui-picklist-listwrapper ui-picklist-target-wrapper\" [ngClass]=\"{'ui-picklist-listwrapper-nocontrols':!showTargetControls}\">\n                <div class=\"ui-picklist-caption ui-widget-header ui-corner-tl ui-corner-tr\" *ngIf=\"targetHeader\">{{targetHeader}}</div>\n                <div class=\"ui-picklist-filter-container ui-widget-content\" *ngIf=\"filterBy\">\n                    <input type=\"text\" role=\"textbox\" (keyup)=\"onFilter($event,target,1)\" class=\"ui-picklist-filter ui-inputtext ui-widget ui-state-default ui-corner-all\" [disabled]=\"disabled\" [attr.placeholder]=\"targetFilterPlaceholder\">\n                    <span class=\"fa fa-search\"></span>\n                </div>\n                <ul #targetlist class=\"ui-widget-content ui-picklist-list ui-picklist-target ui-corner-bottom\" [ngClass]=\"{'ui-picklist-highlight': listHighlightTarget}\" [ngStyle]=\"targetStyle\" (dragover)=\"onListMouseMove($event,1)\" (dragleave)=\"onListDragLeave()\" (drop)=\"onListDrop($event,1)\">\n                    <ng-template ngFor let-item [ngForOf]=\"target\" let-i=\"index\" let-l=\"last\">\n                        <li class=\"ui-picklist-droppoint\" *ngIf=\"dragdrop\" (dragover)=\"onDragOver($event, i, 1)\" (drop)=\"onDrop($event, i, 1)\" (dragleave)=\"onDragLeave($event, 1)\" \n                        [ngClass]=\"{'ui-picklist-droppoint-highlight': (i === dragOverItemIndexTarget)}\" [style.display]=\"isItemVisible(item, 1) ? 'block' : 'none'\"></li>\n                        <li [ngClass]=\"{'ui-picklist-item':true,'ui-state-highlight':isSelected(item,selectedItemsTarget)}\"\n                            (click)=\"onItemClick($event,item,selectedItemsTarget)\" (dblclick)=\"onTargetItemDblClick()\" (touchend)=\"onItemTouchEnd($event)\"\n                            [style.display]=\"isItemVisible(item, 1) ? 'block' : 'none'\"\n                            [draggable]=\"dragdrop\" (dragstart)=\"onDragStart($event, i, 1)\" (dragend)=\"onDragEnd($event)\">\n                            <ng-template [pTemplateWrapper]=\"itemTemplate\" [item]=\"item\"></ng-template>\n                        </li>\n                        <li class=\"ui-picklist-droppoint\" *ngIf=\"dragdrop&&l\" (dragover)=\"onDragOver($event, i + 1, 1)\" (drop)=\"onDrop($event, i + 1, 1)\" (dragleave)=\"onDragLeave($event, 1)\" \n                        [ngClass]=\"{'ui-picklist-droppoint-highlight': (i + 1 === dragOverItemIndexTarget)}\"></li>\n                    </ng-template>\n                </ul>\n            </div>\n            <div class=\"ui-picklist-target-controls ui-picklist-buttons\" *ngIf=\"showTargetControls\">\n                <div class=\"ui-picklist-buttons-cell\">\n                    <button type=\"button\" pButton icon=\"fa-angle-up\" (click)=\"moveUp(targetlist,target,selectedItemsTarget,onTargetReorder)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-up\" (click)=\"moveTop(targetlist,target,selectedItemsTarget,onTargetReorder)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-down\" (click)=\"moveDown(targetlist,target,selectedItemsTarget,onTargetReorder)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-down\" (click)=\"moveBottom(targetlist,target,selectedItemsTarget,onTargetReorder)\"></button>\n                </div>\n            </div>\n        </div>\n    ",
-        providers: [DomHandler, ObjectUtils]
+        providers: [domhandler_1.DomHandler, objectutils_1.ObjectUtils]
     }),
-    __metadata("design:paramtypes", [ElementRef, DomHandler, ObjectUtils])
+    __metadata("design:paramtypes", [core_1.ElementRef, domhandler_1.DomHandler, objectutils_1.ObjectUtils])
 ], PickList);
-export { PickList };
+exports.PickList = PickList;
 var PickListModule = (function () {
     function PickListModule() {
     }
     return PickListModule;
 }());
 PickListModule = __decorate([
-    NgModule({
-        imports: [CommonModule, ButtonModule, SharedModule],
-        exports: [PickList, SharedModule],
+    core_1.NgModule({
+        imports: [common_1.CommonModule, button_1.ButtonModule, shared_1.SharedModule],
+        exports: [PickList, shared_1.SharedModule],
         declarations: [PickList]
     })
 ], PickListModule);
-export { PickListModule };
+exports.PickListModule = PickListModule;
 //# sourceMappingURL=picklist.js.map

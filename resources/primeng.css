@@ -387,17 +387,6 @@
 .ui-fluid .ui-autocomplete .ui-autocomplete-dropdown.ui-button {
     width: 2em;
 }
-.ui-blockui {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.ui-blockui-document {
-    position: fixed;
-}
 /** Breadcrumb **/
 .ui-breadcrumb {
     margin: 0;
@@ -417,6 +406,17 @@
 
 .ui-breadcrumb ul li .ui-menuitem-link {
     text-decoration: none;
+}
+.ui-blockui {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.ui-blockui-document {
+    position: fixed;
 }
 /* Button */
 .ui-button { 
