@@ -20,15 +20,10 @@ var Tooltip = (function () {
         this.tooltipPosition = 'right';
         this.tooltipEvent = 'hover';
         this.appendTo = 'body';
-        this.tooltipZIndex = 'auto';
         this.escape = true;
     }
     Tooltip.prototype.onMouseEnter = function (e) {
         if (this.tooltipEvent === 'hover') {
-            if (this.hideTimeout) {
-                clearTimeout(this.hideTimeout);
-                this.destroy();
-            }
             this.activate();
         }
     };
@@ -120,10 +115,7 @@ var Tooltip = (function () {
             this.container.className = this.container.className + ' ' + this.tooltipStyleClass;
         }
         this.domHandler.fadeIn(this.container, 250);
-        if (this.tooltipZIndex === 'auto')
-            this.container.style.zIndex = ++domhandler_1.DomHandler.zindex;
-        else
-            this.container.style.zIndex = this.tooltipZIndex;
+        this.container.style.zIndex = ++domhandler_1.DomHandler.zindex;
         this.bindDocumentResizeListener();
     };
     Tooltip.prototype.hide = function () {
@@ -283,10 +275,6 @@ __decorate([
     core_1.Input(),
     __metadata("design:type", String)
 ], Tooltip.prototype, "tooltipStyleClass", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], Tooltip.prototype, "tooltipZIndex", void 0);
 __decorate([
     core_1.Input("tooltipDisabled"),
     __metadata("design:type", Boolean)

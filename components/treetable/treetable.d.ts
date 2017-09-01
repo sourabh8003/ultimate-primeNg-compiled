@@ -38,8 +38,6 @@ export declare class TreeTable implements AfterContentInit {
     toggleColumnIndex: number;
     tableStyle: any;
     tableStyleClass: string;
-    collapsedIcon: string;
-    expandedIcon: string;
     onRowDblclick: EventEmitter<any>;
     selectionChange: EventEmitter<any>;
     onNodeSelect: EventEmitter<any>;

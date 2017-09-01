@@ -44,7 +44,6 @@ export declare class TableBody {
     dt: DataTable;
     constructor(dt: DataTable);
     columns: Column[];
-    data: any[];
     visibleColumns(): Column[];
 }
 export declare class ScrollableView implements AfterViewInit, AfterViewChecked, OnDestroy {
@@ -134,7 +133,6 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
     sortMode: string;
     sortField: string;
     sortOrder: number;
-    defaultSortOrder: number;
     groupField: string;
     multiSortMeta: SortMeta[];
     contextMenu: any;
@@ -146,7 +144,6 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
     metaKeySelection: boolean;
     rowTrackBy: Function;
     immutable: boolean;
-    frozenValue: any[];
     compareSelectionBy: string;
     onEditInit: EventEmitter<any>;
     onEditComplete: EventEmitter<any>;
@@ -162,11 +159,8 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
     expandableRowGroups: boolean;
     rowExpandMode: string;
     expandedRowsGroups: any[];
-    expandedIcon: string;
-    collapsedIcon: string;
     tabindex: number;
     rowStyleClass: Function;
-    rowStyleMap: Object;
     rowGroupMode: string;
     sortableRowGroup: boolean;
     sortFile: string;
@@ -177,7 +171,6 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
     dataKey: string;
     loading: boolean;
     loadingIcon: string;
-    valueChange: EventEmitter<any[]>;
     firstChange: EventEmitter<number>;
     onRowExpand: EventEmitter<any>;
     onRowCollapse: EventEmitter<any>;
@@ -233,7 +226,6 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
     totalRecordsChanged: boolean;
     anchorRowIndex: number;
     rangeRowIndex: number;
-    initialized: boolean;
     constructor(el: ElementRef, domHandler: DomHandler, differs: IterableDiffers, renderer: Renderer2, changeDetector: ChangeDetectorRef, objectUtils: ObjectUtils, zone: NgZone);
     ngOnInit(): void;
     ngAfterContentInit(): void;
@@ -336,7 +328,6 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
     getRowStyleClass(rowData: any, rowIndex: number): string;
     visibleColumns(): Column[];
     readonly containerWidth: any;
-    hasFrozenColumns(): boolean;
     ngOnDestroy(): void;
 }
 export declare class DataTableModule {

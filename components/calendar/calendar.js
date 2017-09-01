@@ -14,7 +14,6 @@ var animations_1 = require("@angular/animations");
 var common_1 = require("@angular/common");
 var button_1 = require("../button/button");
 var domhandler_1 = require("../dom/domhandler");
-var shared_1 = require("../common/shared");
 var forms_1 = require("@angular/forms");
 exports.CALENDAR_VALUE_ACCESSOR = {
     provide: forms_1.NG_VALUE_ACCESSOR,
@@ -44,26 +43,20 @@ var Calendar = (function () {
         this.showSeconds = false;
         this.showOnFocus = true;
         this.dataType = 'date';
-        this.selectionMode = 'single';
-        this.todayButtonStyleClass = 'ui-button-secondary';
-        this.clearButtonStyleClass = 'ui-button-secondary';
         this.onFocus = new core_1.EventEmitter();
         this.onBlur = new core_1.EventEmitter();
         this.onClose = new core_1.EventEmitter();
         this.onSelect = new core_1.EventEmitter();
         this.onInput = new core_1.EventEmitter();
-        this.onTodayClick = new core_1.EventEmitter();
-        this.onClearClick = new core_1.EventEmitter();
         this._locale = {
             firstDayOfWeek: 0,
             dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
             dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
             dayNamesMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
             monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-            monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-            today: 'Today',
-            clear: 'Clear'
+            monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         };
+        this.closeOverlay = true;
         this.onModelChange = function () { };
         this.onModelTouched = function () { };
         this.inputFieldValue = null;
@@ -75,9 +68,7 @@ var Calendar = (function () {
         },
         set: function (date) {
             this._minDate = date;
-            if (this.currentMonth && this.currentYear) {
-                this.createMonth(this.currentMonth, this.currentYear);
-            }
+            this.createMonth(this.currentMonth, this.currentYear);
         },
         enumerable: true,
         configurable: true
@@ -88,48 +79,7 @@ var Calendar = (function () {
         },
         set: function (date) {
             this._maxDate = date;
-            if (this.currentMonth && this.currentYear) {
-                this.createMonth(this.currentMonth, this.currentYear);
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Calendar.prototype, "disabledDates", {
-        get: function () {
-            return this._disabledDates;
-        },
-        set: function (disabledDates) {
-            this._disabledDates = disabledDates;
-            if (this.currentMonth && this.currentYear) {
-                this.createMonth(this.currentMonth, this.currentYear);
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Calendar.prototype, "disabledDays", {
-        get: function () {
-            return this._disabledDays;
-        },
-        set: function (disabledDays) {
-            this._disabledDays = disabledDays;
-            if (this.currentMonth && this.currentYear) {
-                this.createMonth(this.currentMonth, this.currentYear);
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Calendar.prototype, "showTime", {
-        get: function () {
-            return this._showTime;
-        },
-        set: function (showTime) {
-            this._showTime = showTime;
-            if (this.currentHour === undefined) {
-                this.initTime(this.value || new Date());
-            }
+            this.createMonth(this.currentMonth, this.currentYear);
         },
         enumerable: true,
         configurable: true
@@ -151,7 +101,20 @@ var Calendar = (function () {
         this.createWeekDays();
         this.currentMonth = date.getMonth();
         this.currentYear = date.getFullYear();
-        this.initTime(date);
+        this.pm = date.getHours() > 11;
+        if (this.showTime) {
+            this.currentMinute = date.getMinutes();
+            this.currentSecond = date.getSeconds();
+            if (this.hourFormat == '12')
+                this.currentHour = date.getHours() == 0 ? 12 : date.getHours() % 12;
+            else
+                this.currentHour = date.getHours();
+        }
+        else if (this.timeOnly) {
+            this.currentMinute = 0;
+            this.currentHour = 0;
+            this.currentSecond = 0;
+        }
         this.createMonth(this.currentMonth, this.currentYear);
         this.ticksTo1970 = (((1970 - 1) * 365 + Math.floor(1970 / 4) - Math.floor(1970 / 100) +
             Math.floor(1970 / 400)) * 24 * 60 * 60 * 10000000);
@@ -176,19 +139,6 @@ var Calendar = (function () {
             this.alignOverlay();
             this.overlayShown = false;
         }
-    };
-    Calendar.prototype.ngAfterContentInit = function () {
-        var _this = this;
-        this.templates.forEach(function (item) {
-            switch (item.getType()) {
-                case 'date':
-                    _this.dateTemplate = item.template;
-                    break;
-                default:
-                    _this.dateTemplate = item.template;
-                    break;
-            }
-        });
     };
     Calendar.prototype.createWeekDays = function () {
         this.weekDays = [];
@@ -242,22 +192,6 @@ var Calendar = (function () {
             this.dates.push(week);
         }
     };
-    Calendar.prototype.initTime = function (date) {
-        this.pm = date.getHours() > 11;
-        if (this.showTime) {
-            this.currentMinute = date.getMinutes();
-            this.currentSecond = date.getSeconds();
-            if (this.hourFormat == '12')
-                this.currentHour = date.getHours() == 0 ? 12 : date.getHours() % 12;
-            else
-                this.currentHour = date.getHours();
-        }
-        else if (this.timeOnly) {
-            this.currentMinute = 0;
-            this.currentHour = 0;
-            this.currentSecond = 0;
-        }
-    };
     Calendar.prototype.prevMonth = function (event) {
         if (this.disabled) {
             event.preventDefault();
@@ -295,136 +229,74 @@ var Calendar = (function () {
         event.preventDefault();
     };
     Calendar.prototype.onDateSelect = function (event, dateMeta) {
-        var _this = this;
         if (this.disabled || !dateMeta.selectable) {
             event.preventDefault();
             return;
         }
-        if (this.isMultipleSelection() && this.isSelected(dateMeta)) {
-            this.value = this.value.filter(function (date, i) {
-                return !_this.isDateEquals(date, dateMeta);
-            });
-        }
-        else {
-            if (this.shouldSelectDate(dateMeta)) {
-                if (dateMeta.otherMonth) {
-                    if (this.selectOtherMonths) {
-                        this.currentMonth = dateMeta.month;
-                        this.currentYear = dateMeta.year;
-                        this.createMonth(this.currentMonth, this.currentYear);
-                        this.selectDate(dateMeta);
-                    }
-                }
-                else {
-                    this.selectDate(dateMeta);
-                }
+        if (dateMeta.otherMonth) {
+            if (this.selectOtherMonths) {
+                this.currentMonth = dateMeta.month;
+                this.currentYear = dateMeta.year;
+                this.createMonth(this.currentMonth, this.currentYear);
+                this.selectDate(dateMeta);
             }
         }
-        if (this.isSingleSelection()) {
-            this.overlayVisible = false;
+        else {
+            this.selectDate(dateMeta);
         }
+        this.dateClick = true;
         this.updateInputfield();
         event.preventDefault();
     };
-    Calendar.prototype.shouldSelectDate = function (dateMeta) {
-        if (this.isMultipleSelection())
-            return !this.maxDateCount || !this.value || this.maxDateCount > this.value.length;
-        else
-            return true;
-    };
     Calendar.prototype.updateInputfield = function () {
-        var formattedValue = '';
         if (this.value) {
-            if (this.isSingleSelection()) {
-                formattedValue = this.formatDateTime(this.value);
+            var formattedValue = void 0;
+            if (this.timeOnly) {
+                formattedValue = this.formatTime(this.value);
             }
-            else if (this.isMultipleSelection()) {
-                for (var i = 0; i < this.value.length; i++) {
-                    var dateAsString = this.formatDateTime(this.value[i]);
-                    formattedValue += dateAsString;
-                    if (i !== (this.value.length - 1)) {
-                        formattedValue += ', ';
-                    }
+            else {
+                formattedValue = this.formatDate(this.value, this.dateFormat);
+                if (this.showTime) {
+                    formattedValue += ' ' + this.formatTime(this.value);
                 }
             }
-            else if (this.isRangeSelection()) {
-                if (this.value && this.value.length) {
-                    var startDate = this.value[0];
-                    var endDate = this.value[1];
-                    formattedValue = this.formatDateTime(startDate);
-                    if (endDate) {
-                        formattedValue += ' - ' + this.formatDateTime(endDate);
-                    }
-                }
-            }
+            this.inputFieldValue = formattedValue;
         }
-        this.inputFieldValue = formattedValue;
+        else {
+            this.inputFieldValue = '';
+        }
         this.updateFilledState();
         if (this.inputfieldViewChild && this.inputfieldViewChild.nativeElement) {
             this.inputfieldViewChild.nativeElement.value = this.inputFieldValue;
         }
     };
-    Calendar.prototype.formatDateTime = function (date) {
-        var formattedValue = null;
-        if (date) {
-            if (this.timeOnly) {
-                formattedValue = this.formatTime(date);
-            }
-            else {
-                formattedValue = this.formatDate(date, this.dateFormat);
-                if (this.showTime) {
-                    formattedValue += ' ' + this.formatTime(date);
-                }
-            }
-        }
-        return formattedValue;
-    };
     Calendar.prototype.selectDate = function (dateMeta) {
-        var date;
         if (this.utc)
-            date = new Date(Date.UTC(dateMeta.year, dateMeta.month, dateMeta.day));
+            this.value = new Date(Date.UTC(dateMeta.year, dateMeta.month, dateMeta.day));
         else
-            date = new Date(dateMeta.year, dateMeta.month, dateMeta.day);
+            this.value = new Date(dateMeta.year, dateMeta.month, dateMeta.day);
         if (this.showTime) {
             if (this.hourFormat === '12' && this.pm && this.currentHour != 12)
-                date.setHours(this.currentHour + 12);
+                this.value.setHours(this.currentHour + 12);
             else
-                date.setHours(this.currentHour);
-            date.setMinutes(this.currentMinute);
-            date.setSeconds(this.currentSecond);
+                this.value.setHours(this.currentHour);
+            this.value.setMinutes(this.currentMinute);
+            this.value.setSeconds(this.currentSecond);
         }
         this._isValid = true;
-        if (this.isSingleSelection()) {
-            this.updateModel(date);
-        }
-        else if (this.isMultipleSelection()) {
-            this.updateModel(this.value ? this.value.concat([date]) : [date]);
-        }
-        else if (this.isRangeSelection()) {
-            if (this.value && this.value.length) {
-                var startDate = this.value[0];
-                var endDate = this.value[1];
-                if (!endDate && date.getTime() > startDate.getTime()) {
-                    endDate = date;
-                }
-                else {
-                    startDate = date;
-                    endDate = null;
-                }
-                this.updateModel([startDate, endDate]);
-            }
-            else {
-                this.updateModel([date, null]);
-            }
-        }
-        this.onSelect.emit(date);
+        this.updateModel();
+        this.onSelect.emit(this.value);
     };
-    Calendar.prototype.updateModel = function (value) {
-        this.value = value;
-        if (this.dataType == 'date')
+    Calendar.prototype.updateModel = function () {
+        if (this.dataType == 'date') {
             this.onModelChange(this.value);
-        else if (this.dataType == 'string')
-            this.onModelChange(this.formatDateTime(this.value));
+        }
+        else if (this.dataType == 'string') {
+            if (this.timeOnly)
+                this.onModelChange(this.formatTime(this.value));
+            else
+                this.onModelChange(this.formatDate(this.value, this.dateFormat));
+        }
     };
     Calendar.prototype.getFirstDayOfMonthIndex = function (month, year) {
         var day = new Date();
@@ -469,54 +341,10 @@ var Calendar = (function () {
         return this.locale.firstDayOfWeek > 0 ? 7 - this.locale.firstDayOfWeek : 0;
     };
     Calendar.prototype.isSelected = function (dateMeta) {
-        if (this.value) {
-            if (this.isSingleSelection()) {
-                return this.isDateEquals(this.value, dateMeta);
-            }
-            else if (this.isMultipleSelection()) {
-                var selected = false;
-                for (var _i = 0, _a = this.value; _i < _a.length; _i++) {
-                    var date = _a[_i];
-                    selected = this.isDateEquals(date, dateMeta);
-                    if (selected) {
-                        break;
-                    }
-                }
-                return selected;
-            }
-            else if (this.isRangeSelection()) {
-                if (this.value[1])
-                    return this.isDateEquals(this.value[0], dateMeta) || this.isDateEquals(this.value[1], dateMeta) || this.isDateBetween(this.value[0], this.value[1], dateMeta);
-                else
-                    return this.isDateEquals(this.value[0], dateMeta);
-            }
-        }
+        if (this.value)
+            return this.value.getDate() === dateMeta.day && this.value.getMonth() === dateMeta.month && this.value.getFullYear() === dateMeta.year;
         else
             return false;
-    };
-    Calendar.prototype.isDateEquals = function (value, dateMeta) {
-        if (value)
-            return value.getDate() === dateMeta.day && value.getMonth() === dateMeta.month && value.getFullYear() === dateMeta.year;
-        else
-            return false;
-    };
-    Calendar.prototype.isDateBetween = function (start, end, dateMeta) {
-        if (start && end) {
-            return start.getDate() < dateMeta.day && start.getMonth() <= dateMeta.month && start.getFullYear() <= dateMeta.year &&
-                end.getDate() > dateMeta.day && end.getMonth() >= dateMeta.month && end.getFullYear() >= dateMeta.year;
-        }
-        else {
-            return false;
-        }
-    };
-    Calendar.prototype.isSingleSelection = function () {
-        return this.selectionMode === 'single';
-    };
-    Calendar.prototype.isRangeSelection = function () {
-        return this.selectionMode === 'range';
-    };
-    Calendar.prototype.isMultipleSelection = function () {
-        return this.selectionMode === 'multiple';
     };
     Calendar.prototype.isToday = function (today, day, month, year) {
         return today.getDate() === day && today.getMonth() === month && today.getFullYear() === year;
@@ -597,13 +425,13 @@ var Calendar = (function () {
         this.onModelTouched();
     };
     Calendar.prototype.onButtonClick = function (event, inputfield) {
+        this.closeOverlay = false;
         if (!this.overlayViewChild.nativeElement.offsetParent || this.overlayViewChild.nativeElement.style.display === 'none') {
             inputfield.focus();
             this.showOverlay();
         }
         else
-            this.overlayVisible = false;
-        this.datepickerClick = true;
+            this.closeOverlay = true;
     };
     Calendar.prototype.onInputKeydown = function (event) {
         this.isKeydown = true;
@@ -662,15 +490,15 @@ var Calendar = (function () {
         event.preventDefault();
     };
     Calendar.prototype.updateTime = function () {
-        var value = this.value || new Date();
+        this.value = this.value || new Date();
         if (this.hourFormat === '12' && this.pm && this.currentHour != 12)
-            value.setHours(this.currentHour + 12);
+            this.value.setHours(this.currentHour + 12);
         else
-            value.setHours(this.currentHour);
-        value.setMinutes(this.currentMinute);
-        value.setSeconds(this.currentSecond);
-        this.updateModel(value);
-        this.onSelect.emit(value);
+            this.value.setHours(this.currentHour);
+        this.value.setMinutes(this.currentMinute);
+        this.value.setSeconds(this.currentSecond);
+        this.updateModel();
+        this.onSelect.emit(this.value);
         this.updateInputfield();
     };
     Calendar.prototype.toggleAMPM = function (event) {
@@ -686,61 +514,39 @@ var Calendar = (function () {
         this.isKeydown = false;
         var val = event.target.value;
         try {
-            var value = this.parseValueFromString(val);
-            this.updateModel(value);
+            this.value = this.parseValueFromString(val);
             this.updateUI();
             this._isValid = true;
         }
         catch (err) {
             //invalid date
-            this.updateModel(null);
+            this.value = null;
             this._isValid = false;
         }
         this.filled = val != null && val.length;
+        this.updateModel();
         this.onInput.emit(event);
     };
     Calendar.prototype.parseValueFromString = function (text) {
         if (!text || text.trim().length === 0) {
             return null;
         }
-        var value;
-        if (this.isSingleSelection()) {
-            value = this.parseDateTime(text);
-        }
-        else if (this.isMultipleSelection()) {
-            var tokens = text.split(',');
-            value = [];
-            for (var _i = 0, tokens_1 = tokens; _i < tokens_1.length; _i++) {
-                var token = tokens_1[_i];
-                value.push(this.parseDateTime(token.trim()));
-            }
-        }
-        else if (this.isRangeSelection()) {
-            var tokens = text.split(' - ');
-            value = [];
-            for (var i = 0; i < tokens.length; i++) {
-                value[i] = this.parseDateTime(tokens[i].trim());
-            }
-        }
-        return value;
-    };
-    Calendar.prototype.parseDateTime = function (text) {
-        var date;
+        var dateValue;
         var parts = text.split(' ');
         if (this.timeOnly) {
-            date = new Date();
-            this.populateTime(date, parts[0], parts[1]);
+            dateValue = new Date();
+            this.populateTime(dateValue, parts[0], parts[1]);
         }
         else {
             if (this.showTime) {
-                date = this.parseDate(parts[0], this.dateFormat);
-                this.populateTime(date, parts[1], parts[2]);
+                dateValue = this.parseDate(parts[0], this.dateFormat);
+                this.populateTime(dateValue, parts[1], parts[2]);
             }
             else {
-                date = this.parseDate(text, this.dateFormat);
+                dateValue = this.parseDate(text, this.dateFormat);
             }
         }
-        return date;
+        return dateValue;
     };
     Calendar.prototype.populateTime = function (value, timeString, ampm) {
         if (this.hourFormat == '12' && !ampm) {
@@ -773,7 +579,7 @@ var Calendar = (function () {
         }
     };
     Calendar.prototype.onDatePickerClick = function (event) {
-        this.datepickerClick = true;
+        this.closeOverlay = this.dateClick;
     };
     Calendar.prototype.showOverlay = function () {
         this.overlayVisible = true;
@@ -1065,27 +871,16 @@ var Calendar = (function () {
     Calendar.prototype.updateFilledState = function () {
         this.filled = this.inputFieldValue && this.inputFieldValue != '';
     };
-    Calendar.prototype.onTodayButtonClick = function (event) {
-        var date = new Date();
-        var dateMeta = { day: date.getDate(), month: date.getMonth(), year: date.getFullYear(), today: true, selectable: true };
-        this.onDateSelect(event, dateMeta);
-        this.onTodayClick.emit(event);
-    };
-    Calendar.prototype.onClearButtonClick = function (event) {
-        this.updateModel(null);
-        this.updateInputfield();
-        this.overlayVisible = false;
-        this.onClearClick.emit(event);
-    };
     Calendar.prototype.bindDocumentClickListener = function () {
         var _this = this;
         if (!this.documentClickListener) {
             this.documentClickListener = this.renderer.listen('document', 'click', function (event) {
-                if (!_this.datepickerClick) {
+                if (_this.closeOverlay) {
                     _this.overlayVisible = false;
                     _this.onClose.emit(event);
                 }
-                _this.datepickerClick = false;
+                _this.closeOverlay = true;
+                _this.dateClick = false;
                 _this.cd.detectChanges();
             });
         }
@@ -1130,10 +925,6 @@ __decorate([
     core_1.Input(),
     __metadata("design:type", String)
 ], Calendar.prototype, "inputId", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], Calendar.prototype, "name", void 0);
 __decorate([
     core_1.Input(),
     __metadata("design:type", String)
@@ -1196,6 +987,10 @@ __decorate([
 ], Calendar.prototype, "yearRange", void 0);
 __decorate([
     core_1.Input(),
+    __metadata("design:type", Boolean)
+], Calendar.prototype, "showTime", void 0);
+__decorate([
+    core_1.Input(),
     __metadata("design:type", String)
 ], Calendar.prototype, "hourFormat", void 0);
 __decorate([
@@ -1232,28 +1027,16 @@ __decorate([
 ], Calendar.prototype, "dataType", void 0);
 __decorate([
     core_1.Input(),
+    __metadata("design:type", Array)
+], Calendar.prototype, "disabledDates", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Array)
+], Calendar.prototype, "disabledDays", void 0);
+__decorate([
+    core_1.Input(),
     __metadata("design:type", Boolean)
 ], Calendar.prototype, "utc", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], Calendar.prototype, "selectionMode", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Number)
-], Calendar.prototype, "maxDateCount", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], Calendar.prototype, "showButtonBar", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], Calendar.prototype, "todayButtonStyleClass", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], Calendar.prototype, "clearButtonStyleClass", void 0);
 __decorate([
     core_1.Output(),
     __metadata("design:type", core_1.EventEmitter)
@@ -1274,18 +1057,6 @@ __decorate([
     core_1.Output(),
     __metadata("design:type", core_1.EventEmitter)
 ], Calendar.prototype, "onInput", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], Calendar.prototype, "onTodayClick", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], Calendar.prototype, "onClearClick", void 0);
-__decorate([
-    core_1.ContentChildren(shared_1.PrimeTemplate),
-    __metadata("design:type", core_1.QueryList)
-], Calendar.prototype, "templates", void 0);
 __decorate([
     core_1.Input(),
     __metadata("design:type", Number)
@@ -1310,28 +1081,13 @@ __decorate([
 ], Calendar.prototype, "maxDate", null);
 __decorate([
     core_1.Input(),
-    __metadata("design:type", Array),
-    __metadata("design:paramtypes", [Array])
-], Calendar.prototype, "disabledDates", null);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Array),
-    __metadata("design:paramtypes", [Array])
-], Calendar.prototype, "disabledDays", null);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean),
-    __metadata("design:paramtypes", [Boolean])
-], Calendar.prototype, "showTime", null);
-__decorate([
-    core_1.Input(),
     __metadata("design:type", Object),
     __metadata("design:paramtypes", [Object])
 ], Calendar.prototype, "locale", null);
 Calendar = __decorate([
     core_1.Component({
         selector: 'p-calendar',
-        template: "\n        <span [ngClass]=\"{'ui-calendar':true,'ui-calendar-w-btn':showIcon}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ng-template [ngIf]=\"!inline\">\n                <input #inputfield type=\"text\" [attr.id]=\"inputId\" [attr.name]=\"name\" [attr.required]=\"required\" [value]=\"inputFieldValue\" (focus)=\"onInputFocus($event)\" (keydown)=\"onInputKeydown($event)\" (click)=\"datepickerClick=true\" (blur)=\"onInputBlur($event)\"\n                    [readonly]=\"readonlyInput\" (input)=\"onUserInput($event)\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\" [placeholder]=\"placeholder||''\" [disabled]=\"disabled\" [attr.tabindex]=\"tabindex\"\n                    [ngClass]=\"'ui-inputtext ui-widget ui-state-default ui-corner-all'\"\n                    ><button type=\"button\" [icon]=\"icon\" pButton *ngIf=\"showIcon\" (click)=\"onButtonClick($event,inputfield)\" class=\"ui-datepicker-trigger ui-calendar-button\"\n                    [ngClass]=\"{'ui-state-disabled':disabled}\" [disabled]=\"disabled\" tabindex=\"-1\"></button>\n            </ng-template>\n            <div #datepicker class=\"ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all\" [ngClass]=\"{'ui-datepicker-inline':inline,'ui-shadow':!inline,'ui-state-disabled':disabled,'ui-datepicker-timeonly':timeOnly}\" \n                [ngStyle]=\"{'display': inline ? 'inline-block' : (overlayVisible ? 'block' : 'none')}\" (click)=\"onDatePickerClick($event)\" [@overlayState]=\"inline ? 'visible' : (overlayVisible ? 'visible' : 'hidden')\">\n\n                <div class=\"ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all\" *ngIf=\"!timeOnly && (overlayVisible || inline)\">\n                    <ng-content select=\"p-header\"></ng-content>\n                    <a class=\"ui-datepicker-prev ui-corner-all\" href=\"#\" (click)=\"prevMonth($event)\">\n                        <span class=\"fa fa-angle-left\"></span>\n                    </a>\n                    <a class=\"ui-datepicker-next ui-corner-all\" href=\"#\" (click)=\"nextMonth($event)\">\n                        <span class=\"fa fa-angle-right\"></span>\n                    </a>\n                    <div class=\"ui-datepicker-title\">\n                        <span class=\"ui-datepicker-month\" *ngIf=\"!monthNavigator\">{{locale.monthNames[currentMonth]}}</span>\n                        <select class=\"ui-datepicker-month\" *ngIf=\"monthNavigator\" (change)=\"onMonthDropdownChange($event.target.value)\">\n                            <option [value]=\"i\" *ngFor=\"let month of locale.monthNames;let i = index\" [selected]=\"i == currentMonth\">{{month}}</option>\n                        </select>\n                        <select class=\"ui-datepicker-year\" *ngIf=\"yearNavigator\" (change)=\"onYearDropdownChange($event.target.value)\">\n                            <option [value]=\"year\" *ngFor=\"let year of yearOptions\" [selected]=\"year == currentYear\">{{year}}</option>\n                        </select>\n                        <span class=\"ui-datepicker-year\" *ngIf=\"!yearNavigator\">{{currentYear}}</span>\n                    </div>\n                </div>\n                <table class=\"ui-datepicker-calendar\" *ngIf=\"!timeOnly && (overlayVisible || inline)\">\n                    <thead>\n                        <tr>\n                            <th scope=\"col\" *ngFor=\"let weekDay of weekDays;let begin = first; let end = last\">\n                                <span>{{weekDay}}</span>\n                            </th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        <tr *ngFor=\"let week of dates\">\n                            <td *ngFor=\"let date of week\" [ngClass]=\"{'ui-datepicker-other-month ui-state-disabled':date.otherMonth,\n                                'ui-datepicker-current-day':isSelected(date),'ui-datepicker-today':date.today}\">\n                                <a class=\"ui-state-default\" href=\"#\" *ngIf=\"date.otherMonth ? showOtherMonths : true\" \n                                    [ngClass]=\"{'ui-state-active':isSelected(date), 'ui-state-highlight':date.today, 'ui-state-disabled':!date.selectable}\"\n                                    (click)=\"onDateSelect($event,date)\">\n                                    <span *ngIf=\"!dateTemplate\">{{date.day}}</span>\n                                    <ng-template [pTemplateWrapper]=\"dateTemplate\" [item]=\"date\" *ngIf=\"dateTemplate\"></ng-template>\n                                </a>\n                            </td>\n                        </tr>\n                    </tbody>\n                </table>\n                <div class=\"ui-timepicker ui-widget-header ui-corner-all\" *ngIf=\"showTime||timeOnly\">\n                    <div class=\"ui-hour-picker\">\n                        <a href=\"#\" (click)=\"incrementHour($event)\">\n                            <span class=\"fa fa-angle-up\"></span>\n                        </a>\n                        <span [ngStyle]=\"{'display': currentHour < 10 ? 'inline': 'none'}\">0</span><span>{{currentHour}}</span>\n                        <a href=\"#\" (click)=\"decrementHour($event)\">\n                            <span class=\"fa fa-angle-down\"></span>\n                        </a>\n                    </div>\n                    <div class=\"ui-separator\">\n                        <a href=\"#\">\n                            <span class=\"fa fa-angle-up\"></span>\n                        </a>\n                        <span>:</span>\n                        <a href=\"#\">\n                            <span class=\"fa fa-angle-down\"></span>\n                        </a>\n                    </div>\n                    <div class=\"ui-minute-picker\">\n                        <a href=\"#\" (click)=\"incrementMinute($event)\">\n                            <span class=\"fa fa-angle-up\"></span>\n                        </a>\n                        <span [ngStyle]=\"{'display': currentMinute < 10 ? 'inline': 'none'}\">0</span><span>{{currentMinute}}</span>\n                        <a href=\"#\" (click)=\"decrementMinute($event)\">\n                            <span class=\"fa fa-angle-down\"></span>\n                        </a>\n                    </div>\n                    <div class=\"ui-separator\" *ngIf=\"showSeconds\">\n                        <a href=\"#\">\n                            <span class=\"fa fa-angle-up\"></span>\n                        </a>\n                        <span>:</span>\n                        <a href=\"#\">\n                            <span class=\"fa fa-angle-down\"></span>\n                        </a>\n                    </div>\n                    <div class=\"ui-second-picker\" *ngIf=\"showSeconds\">\n                        <a href=\"#\" (click)=\"incrementSecond($event)\">\n                            <span class=\"fa fa-angle-up\"></span>\n                        </a>\n                        <span [ngStyle]=\"{'display': currentSecond < 10 ? 'inline': 'none'}\">0</span><span>{{currentSecond}}</span>\n                        <a href=\"#\" (click)=\"decrementSecond($event)\">\n                            <span class=\"fa fa-angle-down\"></span>\n                        </a>\n                    </div>\n                    <div class=\"ui-ampm-picker\" *ngIf=\"hourFormat=='12'\">\n                        <a href=\"#\" (click)=\"toggleAMPM($event)\">\n                            <span class=\"fa fa-angle-up\"></span>\n                        </a>\n                        <span>{{pm ? 'PM' : 'AM'}}</span>\n                        <a href=\"#\" (click)=\"toggleAMPM($event)\">\n                            <span class=\"fa fa-angle-down\"></span>\n                        </a>\n                    </div>\n                </div>\n                <div class=\"ui-datepicker-buttonbar ui-widget-header\" *ngIf=\"showButtonBar\">\n                    <div class=\"ui-g\">\n                        <div class=\"ui-g-6\">\n                            <button type=\"button\" [label]=\"_locale.today\" (click)=\"onTodayButtonClick($event)\" pButton [ngClass]=\"[todayButtonStyleClass]\"></button>\n                        </div>\n                        <div class=\"ui-g-6\">\n                            <button type=\"button\" [label]=\"_locale.clear\" (click)=\"onClearButtonClick($event)\" pButton [ngClass]=\"[clearButtonStyleClass]\"></button>\n                        </div>\n                    </div>\n                </div>\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n        </span>\n    ",
+        template: "\n        <span [ngClass]=\"{'ui-calendar':true,'ui-calendar-w-btn':showIcon}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ng-template [ngIf]=\"!inline\">\n                <input #inputfield type=\"text\" [attr.id]=\"inputId\" [attr.required]=\"required\" [value]=\"inputFieldValue\" (focus)=\"onInputFocus($event)\" (keydown)=\"onInputKeydown($event)\" (click)=\"closeOverlay=false\" (blur)=\"onInputBlur($event)\"\n                    [readonly]=\"readonlyInput\" (input)=\"onUserInput($event)\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\" [placeholder]=\"placeholder||''\" [disabled]=\"disabled\" [attr.tabindex]=\"tabindex\"\n                    [ngClass]=\"'ui-inputtext ui-widget ui-state-default ui-corner-all'\"\n                    ><button type=\"button\" [icon]=\"icon\" pButton *ngIf=\"showIcon\" (click)=\"onButtonClick($event,inputfield)\"\n                    [ngClass]=\"{'ui-datepicker-trigger':true,'ui-state-disabled':disabled}\" [disabled]=\"disabled\" tabindex=\"-1\"></button>\n            </ng-template>\n            <div #datepicker class=\"ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all\" [ngClass]=\"{'ui-datepicker-inline':inline,'ui-shadow':!inline,'ui-state-disabled':disabled,'ui-datepicker-timeonly':timeOnly}\" \n                [ngStyle]=\"{'display': inline ? 'inline-block' : (overlayVisible ? 'block' : 'none')}\" (click)=\"onDatePickerClick($event)\" [@overlayState]=\"inline ? 'visible' : (overlayVisible ? 'visible' : 'hidden')\">\n\n                <div class=\"ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all\" *ngIf=\"!timeOnly && (overlayVisible || inline)\">\n                    <ng-content select=\"p-header\"></ng-content>\n                    <a class=\"ui-datepicker-prev ui-corner-all\" href=\"#\" (click)=\"prevMonth($event)\">\n                        <span class=\"fa fa-angle-left\"></span>\n                    </a>\n                    <a class=\"ui-datepicker-next ui-corner-all\" href=\"#\" (click)=\"nextMonth($event)\">\n                        <span class=\"fa fa-angle-right\"></span>\n                    </a>\n                    <div class=\"ui-datepicker-title\">\n                        <span class=\"ui-datepicker-month\" *ngIf=\"!monthNavigator\">{{locale.monthNames[currentMonth]}}</span>\n                        <select class=\"ui-datepicker-month\" *ngIf=\"monthNavigator\" (change)=\"onMonthDropdownChange($event.target.value)\">\n                            <option [value]=\"i\" *ngFor=\"let month of locale.monthNames;let i = index\" [selected]=\"i == currentMonth\">{{month}}</option>\n                        </select>\n                        <select class=\"ui-datepicker-year\" *ngIf=\"yearNavigator\" (change)=\"onYearDropdownChange($event.target.value)\">\n                            <option [value]=\"year\" *ngFor=\"let year of yearOptions\" [selected]=\"year == currentYear\">{{year}}</option>\n                        </select>\n                        <span class=\"ui-datepicker-year\" *ngIf=\"!yearNavigator\">{{currentYear}}</span>\n                    </div>\n                </div>\n                <table class=\"ui-datepicker-calendar\" *ngIf=\"!timeOnly && (overlayVisible || inline)\">\n                    <thead>\n                        <tr>\n                            <th scope=\"col\" *ngFor=\"let weekDay of weekDays;let begin = first; let end = last\">\n                                <span>{{weekDay}}</span>\n                            </th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        <tr *ngFor=\"let week of dates\">\n                            <td *ngFor=\"let date of week\" [ngClass]=\"{'ui-datepicker-other-month ui-state-disabled':date.otherMonth,\n                                'ui-datepicker-current-day':isSelected(date),'ui-datepicker-today':date.today}\">\n                                <a class=\"ui-state-default\" href=\"#\" *ngIf=\"date.otherMonth ? showOtherMonths : true\" \n                                    [ngClass]=\"{'ui-state-active':isSelected(date), 'ui-state-highlight':date.today, 'ui-state-disabled':!date.selectable}\"\n                                    (click)=\"onDateSelect($event,date)\">{{date.day}}</a>\n                            </td>\n                        </tr>\n                    </tbody>\n                </table>\n                <div class=\"ui-timepicker ui-widget-header ui-corner-all\" *ngIf=\"showTime||timeOnly\">\n                    <div class=\"ui-hour-picker\">\n                        <a href=\"#\" (click)=\"incrementHour($event)\">\n                            <span class=\"fa fa-angle-up\"></span>\n                        </a>\n                        <span [ngStyle]=\"{'display': currentHour < 10 ? 'inline': 'none'}\">0</span><span>{{currentHour}}</span>\n                        <a href=\"#\" (click)=\"decrementHour($event)\">\n                            <span class=\"fa fa-angle-down\"></span>\n                        </a>\n                    </div>\n                    <div class=\"ui-separator\">\n                        <a href=\"#\">\n                            <span class=\"fa fa-angle-up\"></span>\n                        </a>\n                        <span>:</span>\n                        <a href=\"#\">\n                            <span class=\"fa fa-angle-down\"></span>\n                        </a>\n                    </div>\n                    <div class=\"ui-minute-picker\">\n                        <a href=\"#\" (click)=\"incrementMinute($event)\">\n                            <span class=\"fa fa-angle-up\"></span>\n                        </a>\n                        <span [ngStyle]=\"{'display': currentMinute < 10 ? 'inline': 'none'}\">0</span><span>{{currentMinute}}</span>\n                        <a href=\"#\" (click)=\"decrementMinute($event)\">\n                            <span class=\"fa fa-angle-down\"></span>\n                        </a>\n                    </div>\n                    <div class=\"ui-separator\" *ngIf=\"showSeconds\">\n                        <a href=\"#\">\n                            <span class=\"fa fa-angle-up\"></span>\n                        </a>\n                        <span>:</span>\n                        <a href=\"#\">\n                            <span class=\"fa fa-angle-down\"></span>\n                        </a>\n                    </div>\n                    <div class=\"ui-second-picker\" *ngIf=\"showSeconds\">\n                        <a href=\"#\" (click)=\"incrementSecond($event)\">\n                            <span class=\"fa fa-angle-up\"></span>\n                        </a>\n                        <span [ngStyle]=\"{'display': currentSecond < 10 ? 'inline': 'none'}\">0</span><span>{{currentSecond}}</span>\n                        <a href=\"#\" (click)=\"decrementSecond($event)\">\n                            <span class=\"fa fa-angle-down\"></span>\n                        </a>\n                    </div>\n                    <div class=\"ui-ampm-picker\" *ngIf=\"hourFormat=='12'\">\n                        <a href=\"#\" (click)=\"toggleAMPM($event)\">\n                            <span class=\"fa fa-angle-up\"></span>\n                        </a>\n                        <span>{{pm ? 'PM' : 'AM'}}</span>\n                        <a href=\"#\" (click)=\"toggleAMPM($event)\">\n                            <span class=\"fa fa-angle-down\"></span>\n                        </a>\n                    </div>\n                </div>\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n        </span>\n    ",
         animations: [
             animations_1.trigger('overlayState', [
                 animations_1.state('hidden', animations_1.style({
@@ -1360,8 +1116,8 @@ var CalendarModule = (function () {
 }());
 CalendarModule = __decorate([
     core_1.NgModule({
-        imports: [common_1.CommonModule, button_1.ButtonModule, shared_1.SharedModule],
-        exports: [Calendar, button_1.ButtonModule, shared_1.SharedModule],
+        imports: [common_1.CommonModule, button_1.ButtonModule],
+        exports: [Calendar, button_1.ButtonModule],
         declarations: [Calendar]
     })
 ], CalendarModule);

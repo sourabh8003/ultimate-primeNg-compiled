@@ -1,11 +1,8 @@
-import { OnInit, OnDestroy, EventEmitter, TemplateRef, AfterViewInit, AfterContentInit, QueryList, ElementRef, NgZone } from '@angular/core';
+import { OnInit, EventEmitter, TemplateRef, AfterContentInit, QueryList } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { DomHandler } from '../dom/domhandler';
 import { Message } from '../common/message';
-export declare class FileUpload implements OnInit, AfterViewInit, AfterContentInit, OnDestroy {
-    domHandler: DomHandler;
-    sanitizer: DomSanitizer;
-    zone: NgZone;
+export declare class FileUpload implements OnInit, AfterContentInit {
+    private sanitizer;
     name: string;
     url: string;
     method: string;
@@ -39,9 +36,6 @@ export declare class FileUpload implements OnInit, AfterViewInit, AfterContentIn
     onProgress: EventEmitter<any>;
     uploadHandler: EventEmitter<any>;
     templates: QueryList<any>;
-    advancedFileInput: ElementRef;
-    basicFileInput: ElementRef;
-    content: ElementRef;
     files: File[];
     progress: number;
     dragHighlight: boolean;
@@ -50,10 +44,9 @@ export declare class FileUpload implements OnInit, AfterViewInit, AfterContentIn
     contentTemplate: TemplateRef<any>;
     toolbarTemplate: TemplateRef<any>;
     focus: boolean;
-    constructor(domHandler: DomHandler, sanitizer: DomSanitizer, zone: NgZone);
+    constructor(sanitizer: DomSanitizer);
     ngOnInit(): void;
     ngAfterContentInit(): void;
-    ngAfterViewInit(): void;
     onFileSelect(event: any): void;
     validate(file: File): boolean;
     private isFileTypeValid(file);
@@ -65,7 +58,6 @@ export declare class FileUpload implements OnInit, AfterViewInit, AfterContentIn
     upload(): void;
     clear(): void;
     remove(event: Event, index: number): void;
-    clearInputElement(): void;
     hasFiles(): boolean;
     onDragEnter(e: any): void;
     onDragOver(e: any): void;
@@ -75,7 +67,6 @@ export declare class FileUpload implements OnInit, AfterViewInit, AfterContentIn
     onBlur(): void;
     formatSize(bytes: any): string;
     onSimpleUploaderClick(event: Event): void;
-    ngOnDestroy(): void;
 }
 export declare class FileUploadModule {
 }

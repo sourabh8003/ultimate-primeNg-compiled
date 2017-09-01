@@ -1,10 +1,10 @@
-import { ElementRef, OnInit, AfterViewInit, AfterContentInit, AfterViewChecked, DoCheck, OnDestroy, Renderer2, EventEmitter, IterableDiffers, ChangeDetectorRef, TemplateRef, QueryList } from '@angular/core';
+import { ElementRef, OnInit, AfterViewInit, AfterViewChecked, DoCheck, OnDestroy, Renderer2, EventEmitter, IterableDiffers, ChangeDetectorRef } from '@angular/core';
 import { SelectItem } from '../common/selectitem';
 import { DomHandler } from '../dom/domhandler';
 import { ObjectUtils } from '../utils/objectutils';
 import { ControlValueAccessor } from '@angular/forms';
 export declare const MULTISELECT_VALUE_ACCESSOR: any;
-export declare class MultiSelect implements OnInit, AfterViewInit, AfterContentInit, AfterViewChecked, DoCheck, OnDestroy, ControlValueAccessor {
+export declare class MultiSelect implements OnInit, AfterViewInit, AfterViewChecked, DoCheck, OnDestroy, ControlValueAccessor {
     el: ElementRef;
     domHandler: DomHandler;
     renderer: Renderer2;
@@ -17,8 +17,6 @@ export declare class MultiSelect implements OnInit, AfterViewInit, AfterContentI
     defaultLabel: string;
     style: any;
     styleClass: string;
-    panelStyle: any;
-    panelStyleClass: string;
     inputId: string;
     disabled: boolean;
     filter: boolean;
@@ -31,7 +29,6 @@ export declare class MultiSelect implements OnInit, AfterViewInit, AfterContentI
     selectedItemsLabel: string;
     containerViewChild: ElementRef;
     panelViewChild: ElementRef;
-    templates: QueryList<any>;
     value: any[];
     onModelChange: Function;
     onModelTouched: Function;
@@ -47,10 +44,8 @@ export declare class MultiSelect implements OnInit, AfterViewInit, AfterContentI
     filtered: boolean;
     valueDiffer: any;
     optionsDiffer: any;
-    itemTemplate: TemplateRef<any>;
     constructor(el: ElementRef, domHandler: DomHandler, renderer: Renderer2, differs: IterableDiffers, objectUtils: ObjectUtils, cd: ChangeDetectorRef);
     ngOnInit(): void;
-    ngAfterContentInit(): void;
     ngAfterViewInit(): void;
     ngAfterViewChecked(): void;
     ngDoCheck(): void;

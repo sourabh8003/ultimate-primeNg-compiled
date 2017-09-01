@@ -29,11 +29,9 @@ export declare class AutoComplete implements AfterViewInit, AfterViewChecked, Do
     readonly: boolean;
     disabled: boolean;
     maxlength: number;
-    required: boolean;
     size: number;
     appendTo: any;
     autoHighlight: boolean;
-    forceSelection: boolean;
     type: string;
     completeMethod: EventEmitter<any>;
     onSelect: EventEmitter<any>;
@@ -75,8 +73,6 @@ export declare class AutoComplete implements AfterViewInit, AfterViewChecked, Do
     inputKeyDown: boolean;
     noResults: boolean;
     differ: any;
-    inputFieldValue: string;
-    loading: boolean;
     constructor(el: ElementRef, domHandler: DomHandler, renderer: Renderer2, objectUtils: ObjectUtils, cd: ChangeDetectorRef, differs: IterableDiffers);
     suggestions: any[];
     ngDoCheck(): void;
@@ -105,7 +101,6 @@ export declare class AutoComplete implements AfterViewInit, AfterViewChecked, Do
     isSelected(val: any): boolean;
     findOptionIndex(option: any): number;
     updateFilledState(): void;
-    updateInputField(): void;
     bindDocumentClickListener(): void;
     unbindDocumentClickListener(): void;
     ngOnDestroy(): void;

@@ -37,8 +37,6 @@ export declare class ContextMenu implements AfterViewInit, OnDestroy {
     hide(): void;
     toggle(event?: MouseEvent): void;
     position(event?: MouseEvent): void;
-    bindDocumentClickListener(): void;
-    unbindDocumentClickListener(): void;
     ngOnDestroy(): void;
 }
 export declare class ContextMenuModule {

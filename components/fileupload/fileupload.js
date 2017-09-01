@@ -15,13 +15,10 @@ var platform_browser_1 = require("@angular/platform-browser");
 var button_1 = require("../button/button");
 var messages_1 = require("../messages/messages");
 var progressbar_1 = require("../progressbar/progressbar");
-var domhandler_1 = require("../dom/domhandler");
 var shared_1 = require("../common/shared");
 var FileUpload = (function () {
-    function FileUpload(domHandler, sanitizer, zone) {
-        this.domHandler = domHandler;
+    function FileUpload(sanitizer) {
         this.sanitizer = sanitizer;
-        this.zone = zone;
         this.method = 'POST';
         this.invalidFileSizeMessageSummary = '{0}: Invalid file size, ';
         this.invalidFileSizeMessageDetail = 'maximum upload size is {0}.';
@@ -67,14 +64,6 @@ var FileUpload = (function () {
             }
         });
     };
-    FileUpload.prototype.ngAfterViewInit = function () {
-        var _this = this;
-        if (this.mode === 'advanced') {
-            this.zone.runOutsideAngular(function () {
-                _this.content.nativeElement.addEventListener('dragover', _this.onDragOver.bind(_this));
-            });
-        }
-    };
     FileUpload.prototype.onFileSelect = function (event) {
         this.msgs = [];
         if (!this.multiple) {
@@ -94,7 +83,6 @@ var FileUpload = (function () {
         if (this.hasFiles() && this.auto) {
             this.upload();
         }
-        this.clearInputElement();
     };
     FileUpload.prototype.validate = function (file) {
         if (this.accept && !this.isFileTypeValid(file)) {
@@ -187,18 +175,10 @@ var FileUpload = (function () {
     FileUpload.prototype.clear = function () {
         this.files = [];
         this.onClear.emit();
-        this.clearInputElement();
     };
     FileUpload.prototype.remove = function (event, index) {
-        this.clearInputElement();
         this.onRemove.emit({ originalEvent: event, file: this.files[index] });
         this.files.splice(index, 1);
-    };
-    FileUpload.prototype.clearInputElement = function () {
-        var inputViewChild = this.advancedFileInput || this.basicFileInput;
-        if (inputViewChild && inputViewChild.nativeElement) {
-            inputViewChild.nativeElement.value = '';
-        }
     };
     FileUpload.prototype.hasFiles = function () {
         return this.files && this.files.length > 0;
@@ -211,7 +191,6 @@ var FileUpload = (function () {
     };
     FileUpload.prototype.onDragOver = function (e) {
         if (!this.disabled) {
-            this.domHandler.addClass(this.content.nativeElement, 'ui-fileupload-highlight');
             this.dragHighlight = true;
             e.stopPropagation();
             e.preventDefault();
@@ -219,12 +198,12 @@ var FileUpload = (function () {
     };
     FileUpload.prototype.onDragLeave = function (event) {
         if (!this.disabled) {
-            this.domHandler.removeClass(this.content.nativeElement, 'ui-fileupload-highlight');
+            this.dragHighlight = false;
         }
     };
     FileUpload.prototype.onDrop = function (event) {
         if (!this.disabled) {
-            this.domHandler.removeClass(this.content.nativeElement, 'ui-fileupload-highlight');
+            this.dragHighlight = false;
             event.stopPropagation();
             event.preventDefault();
             var files = event.dataTransfer ? event.dataTransfer.files : event.target.files;
@@ -250,11 +229,6 @@ var FileUpload = (function () {
     FileUpload.prototype.onSimpleUploaderClick = function (event) {
         if (this.hasFiles()) {
             this.upload();
-        }
-    };
-    FileUpload.prototype.ngOnDestroy = function () {
-        if (this.content && this.content.nativeElement) {
-            this.content.nativeElement.removeEventListener('dragover', this.onDragOver);
         }
     };
     return FileUpload;
@@ -391,29 +365,12 @@ __decorate([
     core_1.ContentChildren(shared_1.PrimeTemplate),
     __metadata("design:type", core_1.QueryList)
 ], FileUpload.prototype, "templates", void 0);
-__decorate([
-    core_1.ViewChild('advancedfileinput'),
-    __metadata("design:type", core_1.ElementRef)
-], FileUpload.prototype, "advancedFileInput", void 0);
-__decorate([
-    core_1.ViewChild('basicfileinput'),
-    __metadata("design:type", core_1.ElementRef)
-], FileUpload.prototype, "basicFileInput", void 0);
-__decorate([
-    core_1.ViewChild('content'),
-    __metadata("design:type", core_1.ElementRef)
-], FileUpload.prototype, "content", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Array)
-], FileUpload.prototype, "files", void 0);
 FileUpload = __decorate([
     core_1.Component({
         selector: 'p-fileUpload',
-        template: "\n        <div [ngClass]=\"'ui-fileupload ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\" *ngIf=\"mode === 'advanced'\">\n            <div class=\"ui-fileupload-buttonbar ui-widget-header ui-corner-top\">\n                <span class=\"ui-fileupload-choose\" [label]=\"chooseLabel\" icon=\"fa-plus\" pButton  [ngClass]=\"{'ui-fileupload-choose-selected': hasFiles(),'ui-state-focus': focus}\" [attr.disabled]=\"disabled\" > \n                    <input #advancedfileinput type=\"file\" (change)=\"onFileSelect($event)\" [multiple]=\"multiple\" [accept]=\"accept\" [disabled]=\"disabled\" (focus)=\"onFocus()\" (blur)=\"onBlur()\" >\n                </span>\n\n                <button *ngIf=\"!auto&&showUploadButton\" type=\"button\" [label]=\"uploadLabel\" icon=\"fa-upload\" pButton (click)=\"upload()\" [disabled]=\"!hasFiles()\"></button>\n                <button *ngIf=\"!auto&&showCancelButton\" type=\"button\" [label]=\"cancelLabel\" icon=\"fa-close\" pButton (click)=\"clear()\" [disabled]=\"!hasFiles()\"></button>\n            \n                <p-templateLoader [template]=\"toolbarTemplate\"></p-templateLoader>\n            </div>\n            <div #content [ngClass]=\"{'ui-fileupload-content ui-widget-content ui-corner-bottom':true}\" \n                (dragenter)=\"onDragEnter($event)\" (dragleave)=\"onDragLeave($event)\" (drop)=\"onDrop($event)\">\n                <p-progressBar [value]=\"progress\" [showValue]=\"false\" *ngIf=\"hasFiles()\"></p-progressBar>\n                \n                <p-messages [value]=\"msgs\"></p-messages>\n                \n                <div class=\"ui-fileupload-files\" *ngIf=\"hasFiles()\">\n                    <div *ngIf=\"!fileTemplate\">\n                        <div class=\"ui-fileupload-row\" *ngFor=\"let file of files; let i = index;\">\n                            <div><img [src]=\"file.objectURL\" *ngIf=\"isImage(file)\" [width]=\"previewWidth\" /></div>\n                            <div>{{file.name}}</div>\n                            <div>{{formatSize(file.size)}}</div>\n                            <div><button type=\"button\" icon=\"fa-close\" pButton (click)=\"remove($event,i)\"></button></div>\n                        </div>\n                    </div>\n                    <div *ngIf=\"fileTemplate\">\n                        <ng-template ngFor [ngForOf]=\"files\" [ngForTemplate]=\"fileTemplate\"></ng-template>\n                    </div>\n                </div>\n                <p-templateLoader [template]=\"contentTemplate\"></p-templateLoader>\n            </div>\n        </div>\n        <span class=\"ui-button ui-fileupload-choose ui-widget ui-state-default ui-corner-all ui-button-text-icon-left\" *ngIf=\"mode === 'basic'\" \n        (mouseup)=\"onSimpleUploaderClick($event)\"\n        [ngClass]=\"{'ui-fileupload-choose-selected': hasFiles(),'ui-state-focus': focus}\">\n            <span class=\"ui-button-icon-left fa\" [ngClass]=\"{'fa-plus': !hasFiles()||auto, 'fa-upload': hasFiles()&&!auto}\"></span>\n            <span class=\"ui-button-text ui-clickable\">{{auto ? chooseLabel : hasFiles() ? files[0].name : chooseLabel}}</span>\n            <input #basicfileinput type=\"file\" [accept]=\"accept\" [multiple]=\"multiple\" [disabled]=\"disabled\"\n                (change)=\"onFileSelect($event)\" *ngIf=\"!hasFiles()\" (focus)=\"onFocus()\" (blur)=\"onBlur()\">\n        </span>\n    ",
-        providers: [domhandler_1.DomHandler]
+        template: "\n        <div [ngClass]=\"'ui-fileupload ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\" *ngIf=\"mode === 'advanced'\">\n            <div class=\"ui-fileupload-buttonbar ui-widget-header ui-corner-top\">\n                <span class=\"ui-fileupload-choose\" [label]=\"chooseLabel\" icon=\"fa-plus\" pButton  [ngClass]=\"{'ui-fileupload-choose-selected': hasFiles(),'ui-state-focus': focus}\" [attr.disabled]=\"disabled\" > \n                    <input #fileinput type=\"file\" (change)=\"onFileSelect($event)\" [multiple]=\"multiple\" [accept]=\"accept\" [disabled]=\"disabled\" (focus)=\"onFocus()\" (blur)=\"onBlur()\">\n                </span>\n\n                <button *ngIf=\"!auto&&showUploadButton\" type=\"button\" [label]=\"uploadLabel\" icon=\"fa-upload\" pButton (click)=\"upload()\" [disabled]=\"!hasFiles()\"></button>\n                <button *ngIf=\"!auto&&showCancelButton\" type=\"button\" [label]=\"cancelLabel\" icon=\"fa-close\" pButton (click)=\"clear()\" [disabled]=\"!hasFiles()\"></button>\n            \n                <p-templateLoader [template]=\"toolbarTemplate\"></p-templateLoader>\n            </div>\n            <div [ngClass]=\"{'ui-fileupload-content ui-widget-content ui-corner-bottom':true,'ui-fileupload-highlight':dragHighlight}\" \n                (dragenter)=\"onDragEnter($event)\" (dragover)=\"onDragOver($event)\" (dragleave)=\"onDragLeave($event)\" (drop)=\"onDrop($event)\">\n                <p-progressBar [value]=\"progress\" [showValue]=\"false\" *ngIf=\"hasFiles()\"></p-progressBar>\n                \n                <p-messages [value]=\"msgs\"></p-messages>\n                \n                <div class=\"ui-fileupload-files\" *ngIf=\"hasFiles()\">\n                    <div *ngIf=\"!fileTemplate\">\n                        <div class=\"ui-fileupload-row\" *ngFor=\"let file of files; let i = index;\">\n                            <div><img [src]=\"file.objectURL\" *ngIf=\"isImage(file)\" [width]=\"previewWidth\" /></div>\n                            <div>{{file.name}}</div>\n                            <div>{{formatSize(file.size)}}</div>\n                            <div><button type=\"button\" icon=\"fa-close\" pButton (click)=\"remove($event,i)\"></button></div>\n                        </div>\n                    </div>\n                    <div *ngIf=\"fileTemplate\">\n                        <ng-template ngFor [ngForOf]=\"files\" [ngForTemplate]=\"fileTemplate\"></ng-template>\n                    </div>\n                </div>\n                <p-templateLoader [template]=\"contentTemplate\"></p-templateLoader>\n            </div>\n        </div>\n        <span class=\"ui-button ui-fileupload-choose ui-widget ui-state-default ui-corner-all ui-button-text-icon-left\" *ngIf=\"mode === 'basic'\" \n        (mouseup)=\"onSimpleUploaderClick($event)\"\n        [ngClass]=\"{'ui-fileupload-choose-selected': hasFiles(),'ui-state-focus': focus}\">\n            <span class=\"ui-button-icon-left fa\" [ngClass]=\"{'fa-plus': !hasFiles()||auto, 'fa-upload': hasFiles()&&!auto}\"></span>\n            <span class=\"ui-button-text ui-clickable\">{{auto ? chooseLabel : hasFiles() ? files[0].name : chooseLabel}}</span>\n            <input type=\"file\" [accept]=\"accept\" [multiple]=\"multiple\" [disabled]=\"disabled\"\n                (change)=\"onFileSelect($event)\" *ngIf=\"!hasFiles()\" (focus)=\"onFocus()\" (blur)=\"onBlur()\">\n        </span>\n    "
     }),
-    __metadata("design:paramtypes", [domhandler_1.DomHandler, platform_browser_1.DomSanitizer, core_1.NgZone])
+    __metadata("design:paramtypes", [platform_browser_1.DomSanitizer])
 ], FileUpload);
 exports.FileUpload = FileUpload;
 var FileUploadModule = (function () {

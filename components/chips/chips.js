@@ -28,8 +28,10 @@ var Chips = (function () {
         this.onAdd = new core_1.EventEmitter();
         this.onRemove = new core_1.EventEmitter();
         this.allowDuplicate = true;
-        this.onModelChange = function () { };
-        this.onModelTouched = function () { };
+        this.onModelChange = function () {
+        };
+        this.onModelTouched = function () {
+        };
     }
     Chips.prototype.ngAfterContentInit = function () {
         var _this = this;
@@ -92,19 +94,6 @@ var Chips = (function () {
             originalEvent: event,
             value: removedItem
         });
-    };
-    Chips.prototype.addItem = function (event, item) {
-        this.value = this.value || [];
-        if (item && item.trim().length && (!this.max || this.max > item.length)) {
-            if (this.allowDuplicate || !this.value.includes(item)) {
-                this.value = this.value.concat([item]);
-                this.onModelChange(this.value);
-                this.onAdd.emit({
-                    originalEvent: event,
-                    value: item
-                });
-            }
-        }
     };
     Chips.prototype.onKeydown = function (event, inputEL) {
         switch (event.which) {
@@ -252,17 +241,13 @@ __decorate([
     __metadata("design:type", Object)
 ], Chips.prototype, "inputStyleClass", void 0);
 __decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], Chips.prototype, "addOnTab", void 0);
-__decorate([
     core_1.ContentChildren(shared_1.PrimeTemplate),
     __metadata("design:type", core_1.QueryList)
 ], Chips.prototype, "templates", void 0);
 Chips = __decorate([
     core_1.Component({
         selector: 'p-chips',
-        template: "\n\t\t<div [ngClass]=\"'ui-chips ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n\t\t\t<ul [ngClass]=\"{'ui-inputtext ui-state-default ui-corner-all':true,'ui-state-focus':focus,'ui-state-disabled':disabled}\" (click)=\"inputtext.focus()\">\n\t\t\t\t<li #token *ngFor=\"let item of value; let i = index;\" class=\"ui-chips-token ui-state-highlight ui-corner-all\">\n\t\t\t\t\t<span *ngIf=\"!disabled\" class=\"ui-chips-token-icon fa fa-fw fa-close\" (click)=\"removeItem($event,i)\"></span>\n\t\t\t\t\t<span *ngIf=\"!itemTemplate\" class=\"ui-chips-token-label\">{{field ? resolveFieldData(item, field) : item}}</span>\n\t\t\t\t\t<ng-template *ngIf=\"itemTemplate\" [pTemplateWrapper]=\"itemTemplate\" [item]=\"item\"></ng-template>\n\t\t\t\t</li>\n\t\t\t\t<li class=\"ui-chips-input-token\">\n\t\t\t\t\t<input #inputtext type=\"text\" [attr.id]=\"inputId\" [attr.placeholder]=\"placeholder\" [attr.tabindex]=\"tabindex\" (keydown)=\"onKeydown($event,inputtext)\"\n\t\t\t\t\t\t\t\t (focus)=\"onFocus()\" (blur)=\"onBlur()\" [disabled]=\"maxedOut||disabled\" [disabled]=\"disabled\" [pTooltip]=\"toolTipMessage\" [tooltipPosition]=\"toolTipPosition\" [tooltipEvent]=\"toolTipEvent\"\n\t\t\t\t\t\t\t\t [positionStyle]=\"positionStyles\" [tooltipDisabled]=\"toolTipDisabled\" [tooltipStyleClass]=\"toolTipStyleClasses\" [escape]=\"toolTipEscape\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\">\n\t\t\t\t</li>\n\t\t\t</ul>\n\t\t</div>\n\t",
+        template: "\n\t\t<div [ngClass]=\"'ui-chips ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n\t\t\t<ul [ngClass]=\"{'ui-inputtext ui-state-default ui-corner-all':true,'ui-state-focus':focus,'ui-state-disabled':disabled}\" (click)=\"inputtext.focus()\">\n\t\t\t\t<li #token *ngFor=\"let item of value; let i = index;\" class=\"ui-chips-token ui-state-highlight ui-corner-all\">\n\t\t\t\t\t<span *ngIf=\"!disabled\" class=\"ui-chips-token-icon fa fa-fw fa-close\" (click)=\"removeItem($event,i)\"></span>\n\t\t\t\t\t<span *ngIf=\"!itemTemplate\" class=\"ui-chips-token-label\">{{field ? resolveFieldData(item, field) : item}}</span>\n\t\t\t\t\t<ng-template *ngIf=\"itemTemplate\" [pTemplateWrapper]=\"itemTemplate\" [item]=\"item\"></ng-template>\n\t\t\t\t</li>\n\t\t\t\t<li class=\"ui-chips-input-token\">\n\t\t\t\t\t<input #inputtext type=\"text\" [attr.id]=\"inputId\" [attr.placeholder]=\"placeholder\" [attr.tabindex]=\"tabindex\" (keydown)=\"onKeydown($event,inputtext)\"\n\t\t\t\t\t\t\t\t (focus)=\"onFocus()\" (blur)=\"onBlur()\" [disabled]=\"maxedOut||disabled\" [disabled]=\"disabled\" [pTooltip]=\"toolTipMessage\" [tooltipPosition]=\"toolTipPosition\" [tooltipEvent]=\"toolTipEvent\"\n\t\t\t\t\t\t\t\t [positionStyle]=\"positionStyles\" [tooltipDisabled]=\"toolTipDisabled\" [tooltipStyleClass]=\"toolTipStyleClasses\" [escape]=\"toolTipEscape\">\n\t\t\t\t</li>\n\t\t\t</ul>\n\t\t</div>\n\t",
         providers: [domhandler_1.DomHandler, exports.CHIPS_VALUE_ACCESSOR]
     }),
     __metadata("design:paramtypes", [core_1.ElementRef, domhandler_1.DomHandler])

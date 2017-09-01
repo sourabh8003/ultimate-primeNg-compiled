@@ -27,7 +27,6 @@ export declare class SlideMenu implements AfterViewInit, OnDestroy {
     effectDuration: any;
     easing: string;
     backLabel: string;
-    appendTo: any;
     containerViewChild: ElementRef;
     backwardViewChild: ElementRef;
     slideMenuContentViewChild: ElementRef;

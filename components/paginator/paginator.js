@@ -99,9 +99,7 @@ var Paginator = (function () {
         return Math.floor(this.first / this.rows);
     };
     Paginator.prototype.changePageToFirst = function (event) {
-        if (!this.isFirstPage()) {
-            this.changePage(0, event);
-        }
+        this.changePage(0, event);
     };
     Paginator.prototype.changePageToPrev = function (event) {
         this.changePage(this.getPage() - 1, event);
@@ -110,9 +108,7 @@ var Paginator = (function () {
         this.changePage(this.getPage() + 1, event);
     };
     Paginator.prototype.changePageToLast = function (event) {
-        if (!this.isLastPage()) {
-            this.changePage(this.getPageCount() - 1, event);
-        }
+        this.changePage(this.getPageCount() - 1, event);
     };
     Paginator.prototype.onRppChange = function (event) {
         this.rows = this.rowsPerPageOptions[event.target.selectedIndex];

@@ -1,13 +1,10 @@
 import { ElementRef, AfterViewInit, DoCheck, OnDestroy, EventEmitter, IterableDiffers } from '@angular/core';
 import { Message } from '../common/message';
 import { DomHandler } from '../dom/domhandler';
-import { MessageService } from '../common/messageservice';
-import { Subscription } from 'rxjs/Subscription';
 export declare class Growl implements AfterViewInit, DoCheck, OnDestroy {
     el: ElementRef;
     domHandler: DomHandler;
     differs: IterableDiffers;
-    messageService: MessageService;
     sticky: boolean;
     life: number;
     style: any;
@@ -23,14 +20,12 @@ export declare class Growl implements AfterViewInit, DoCheck, OnDestroy {
     timeout: any;
     preventRerender: boolean;
     differ: any;
-    subscription: Subscription;
-    closeIconClick: boolean;
-    constructor(el: ElementRef, domHandler: DomHandler, differs: IterableDiffers, messageService: MessageService);
+    constructor(el: ElementRef, domHandler: DomHandler, differs: IterableDiffers);
     ngAfterViewInit(): void;
     value: Message[];
     ngDoCheck(): void;
     handleValueChange(): void;
-    initTimeout(): void;
+    clearTrigger(): void;
     remove(index: number, msgel: any): void;
     removeAll(): void;
     onMessageClick(i: number): void;

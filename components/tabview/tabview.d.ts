@@ -1,4 +1,4 @@
-import { ElementRef, OnDestroy, EventEmitter, AfterContentInit, QueryList, TemplateRef, EmbeddedViewRef, ViewContainerRef } from '@angular/core';
+import { ElementRef, EventEmitter, AfterContentInit, QueryList } from '@angular/core';
 import { BlockableUI } from '../common/blockableui';
 export declare class TabViewNav {
     tabs: TabPanel[];
@@ -9,26 +9,17 @@ export declare class TabViewNav {
     clickTab(event: any, tab: TabPanel): void;
     clickClose(event: any, tab: TabPanel): void;
 }
-export declare class TabPanel implements AfterContentInit, OnDestroy {
-    viewContainer: ViewContainerRef;
+export declare class TabPanel {
     header: string;
+    selected: boolean;
     disabled: boolean;
     closable: boolean;
     headerStyle: any;
     headerStyleClass: string;
     leftIcon: string;
     rightIcon: string;
-    cache: boolean;
-    templates: QueryList<any>;
-    contentTemplate: TemplateRef<any>;
-    constructor(viewContainer: ViewContainerRef);
     closed: boolean;
-    view: EmbeddedViewRef<any>;
-    _selected: boolean;
-    loaded: boolean;
-    ngAfterContentInit(): void;
-    selected: boolean;
-    ngOnDestroy(): void;
+    lazy: boolean;
 }
 export declare class TabView implements AfterContentInit, BlockableUI {
     el: ElementRef;
@@ -36,15 +27,14 @@ export declare class TabView implements AfterContentInit, BlockableUI {
     style: any;
     styleClass: string;
     controlClose: boolean;
+    lazy: boolean;
     tabPanels: QueryList<TabPanel>;
     onChange: EventEmitter<any>;
     onClose: EventEmitter<any>;
     initialized: boolean;
     tabs: TabPanel[];
-    _activeIndex: number;
-    _lazy: boolean;
+    private _activeIndex;
     constructor(el: ElementRef);
-    lazy: boolean;
     ngAfterContentInit(): void;
     initTabs(): void;
     open(event: Event, tab: TabPanel): void;
