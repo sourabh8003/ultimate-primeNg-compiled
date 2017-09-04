@@ -9,6 +9,7 @@ export declare class Tooltip implements OnDestroy {
     appendTo: any;
     positionStyle: string;
     tooltipStyleClass: string;
+    tooltipZIndex: string;
     disabled: boolean;
     escape: boolean;
     showDelay: number;

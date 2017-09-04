@@ -218,13 +218,13 @@ var PickList = (function () {
             for (var i = 0; i < this.source.length; i++) {
                 this.target.push(this.source[i]);
             }
+            var sourceItems = this.source.splice(0, this.source.length);
             this.onMoveToTarget.emit({
-                items: this.source
+                items: sourceItems
             });
             this.onMoveAllToTarget.emit({
-                items: this.source
+                items: sourceItems
             });
-            this.source.splice(0, this.source.length);
             this.selectedItemsSource = [];
         }
     };
@@ -247,13 +247,13 @@ var PickList = (function () {
             for (var i = 0; i < this.target.length; i++) {
                 this.source.push(this.target[i]);
             }
+            var targetItems = this.target.splice(0, this.target.length);
             this.onMoveToSource.emit({
-                items: this.target
+                items: targetItems
             });
             this.onMoveAllToSource.emit({
-                items: this.target
+                items: targetItems
             });
-            this.target.splice(0, this.target.length);
             this.selectedItemsTarget = [];
         }
     };
