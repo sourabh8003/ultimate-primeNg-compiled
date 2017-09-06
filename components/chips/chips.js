@@ -113,34 +113,15 @@ var Chips = (function () {
                 break;
             //enter
             case 13:
-                this.value = this.value || [];
-                if (inputEL.value && inputEL.value.trim().length && (!this.max || this.max > this.value.length)) {
-                    if (this.allowDuplicate || !this.value.includes(inputEL.value)) {
-                        this.value = this.value.concat([inputEL.value]);
-                        this.onModelChange(this.value);
-                        this.onAdd.emit({
-                            originalEvent: event,
-                            value: inputEL.value
-                        });
-                    }
-                }
+                this.addItem(event, inputEL.value);
                 inputEL.value = '';
                 event.preventDefault();
                 break;
-            //tab key (remove unwanted chips on click of Tab keywords)
             case 9:
-                this.value = this.value || [];
-                if (inputEL.value && inputEL.value.trim().length && (!this.max || this.max > this.value.length)) {
-                    if (this.allowDuplicate || !this.value.includes(inputEL.value)) {
-                        this.value = this.value.concat([inputEL.value]);
-                        this.onModelChange(this.value);
-                        this.onAdd.emit({
-                            originalEvent: event,
-                            value: inputEL.value
-                        });
-                    }
+                if (this.addOnTab && inputEL.value !== '') {
+                    this.addItem(event, inputEL.value);
+                    inputEL.value = '';
                 }
-                inputEL.value = '';
                 break;
             default:
                 if (this.max && this.value && this.max === this.value.length) {
@@ -161,7 +142,7 @@ var Chips = (function () {
 Chips.decorators = [
     { type: core_1.Component, args: [{
                 selector: 'p-chips',
-                template: "\n\t\t<div [ngClass]=\"'ui-chips ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n\t\t\t<ul [ngClass]=\"{'ui-inputtext ui-state-default ui-corner-all':true,'ui-state-focus':focus,'ui-state-disabled':disabled}\" (click)=\"inputtext.focus()\">\n\t\t\t\t<li #token *ngFor=\"let item of value; let i = index;\" class=\"ui-chips-token ui-state-highlight ui-corner-all\">\n\t\t\t\t\t<span *ngIf=\"!disabled\" class=\"ui-chips-token-icon fa fa-fw fa-close\" (click)=\"removeItem($event,i)\"></span>\n\t\t\t\t\t<span *ngIf=\"!itemTemplate\" class=\"ui-chips-token-label\">{{field ? resolveFieldData(item, field) : item}}</span>\n\t\t\t\t\t<ng-template *ngIf=\"itemTemplate\" [pTemplateWrapper]=\"itemTemplate\" [item]=\"item\"></ng-template>\n\t\t\t\t</li>\n\t\t\t\t<li class=\"ui-chips-input-token\">\n\t\t\t\t\t<input #inputtext type=\"text\" [attr.id]=\"inputId\" [attr.placeholder]=\"placeholder\" [attr.tabindex]=\"tabindex\" (keydown)=\"onKeydown($event,inputtext)\"\n\t\t\t\t\t\t\t\t (focus)=\"onFocus()\" (blur)=\"onBlur()\" [disabled]=\"maxedOut||disabled\" [disabled]=\"disabled\" [pTooltip]=\"toolTipMessage\" [tooltipPosition]=\"toolTipPosition\" [tooltipEvent]=\"toolTipEvent\"\n\t\t\t\t\t\t\t\t [positionStyle]=\"positionStyles\" [tooltipDisabled]=\"toolTipDisabled\" [tooltipStyleClass]=\"toolTipStyleClasses\" [escape]=\"toolTipEscape\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\">\n\t\t\t\t</li>\n\t\t\t</ul>\n\t\t</div>\n\t",
+                template: "\n        <div [ngClass]=\"'ui-chips ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ul [ngClass]=\"{'ui-inputtext ui-state-default ui-corner-all':true,'ui-state-focus':focus,'ui-state-disabled':disabled}\" (click)=\"inputtext.focus()\">\n                <li #token *ngFor=\"let item of value; let i = index;\" class=\"ui-chips-token ui-state-highlight ui-corner-all\">\n                    <span *ngIf=\"!disabled\" class=\"ui-chips-token-icon fa fa-fw fa-close\" (click)=\"removeItem($event,i)\"></span>\n                    <span *ngIf=\"!itemTemplate\" class=\"ui-chips-token-label\">{{field ? resolveFieldData(item,field) : item}}</span>\n                    <ng-template *ngIf=\"itemTemplate\" [pTemplateWrapper]=\"itemTemplate\" [item]=\"item\"></ng-template>\n                </li>\n                <li class=\"ui-chips-input-token\">\n                    <input #inputtext type=\"text\" [attr.id]=\"inputId\" [attr.placeholder]=\"placeholder\" [attr.tabindex]=\"tabindex\" (keydown)=\"onKeydown($event,inputtext)\" \n                        (focus)=\"onFocus()\" (blur)=\"onBlur()\" [disabled]=\"maxedOut||disabled\" [disabled]=\"disabled\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\"\n                           [pTooltip]=\"toolTipMessage\" [tooltipPosition]=\"toolTipPosition\" [tooltipEvent]=\"toolTipEvent\" [positionStyle]=\"positionStyles\" [tooltipDisabled]=\"toolTipDisabled\" [tooltipStyleClass]=\"toolTipStyleClasses\" [escape]=\"toolTipEscape\">\n                </li>\n            </ul>\n        </div>\n    ",
                 providers: [domhandler_1.DomHandler, exports.CHIPS_VALUE_ACCESSOR]
             },] },
 ];

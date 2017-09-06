@@ -186,9 +186,8 @@ var FileUpload = (function () {
         this.files.splice(index, 1);
     };
     FileUpload.prototype.clearInputElement = function () {
-        var inputViewChild = this.advancedFileInput || this.basicFileInput;
-        if (inputViewChild && inputViewChild.nativeElement) {
-            inputViewChild.nativeElement.value = '';
+        if (this.advancedFileInput && this.advancedFileInput.nativeElement) {
+            this.advancedFileInput.nativeElement.value = '';
         }
     };
     FileUpload.prototype.hasFiles = function () {

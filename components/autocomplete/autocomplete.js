@@ -30,8 +30,6 @@ var AutoComplete = (function () {
         this.onUnselect = new core_1.EventEmitter();
         this.onFocus = new core_1.EventEmitter();
         this.onBlur = new core_1.EventEmitter();
-        // @sourabh
-        this.onAdd = new core_1.EventEmitter();
         this.onDropdownClick = new core_1.EventEmitter();
         this.onClear = new core_1.EventEmitter();
         this.onKeyUp = new core_1.EventEmitter();
@@ -183,6 +181,7 @@ var AutoComplete = (function () {
         if (query === undefined || query === null) {
             return;
         }
+        this.loading = true;
         this.completeMethod.emit({
             originalEvent: event,
             query: query
@@ -202,17 +201,7 @@ var AutoComplete = (function () {
             this.value = option;
             this.onModelChange(this.value);
         }
-        // @sourabh singh
-        if (typeof option === 'object') {
-            this.onSelect.emit(option);
-        }
-        else {
-            this.onSelect.emit(option);
-            this.onAdd.emit({
-                originalEvent: event,
-                value: option
-            });
-        }
+        this.onSelect.emit(option);
         this.focusInput();
     };
     AutoComplete.prototype.show = function () {
@@ -449,7 +438,7 @@ var AutoComplete = (function () {
 AutoComplete.decorators = [
     { type: core_1.Component, args: [{
                 selector: 'p-autoComplete',
-                template: "\n        <span [ngClass]=\"{'ui-autocomplete ui-widget':true,'ui-autocomplete-dd':dropdown,'ui-autocomplete-multiple':multiple}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <input *ngIf=\"!multiple\" #in [attr.type]=\"type\" [attr.id]=\"inputId\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\" autocomplete=\"off\" [attr.required]=\"required\"\n            [ngClass]=\"'ui-inputtext ui-widget ui-state-default ui-corner-all ui-autocomplete-input'\" [value]=\"inputFieldValue\"\n            (click)=\"onInputClick($event)\" (input)=\"onInput($event)\" (keydown)=\"onKeydown($event)\" (keyup)=\"onKeyup($event)\" (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\"\n            [attr.placeholder]=\"placeholder\" [attr.size]=\"size\" [attr.maxlength]=\"maxlength\" [attr.tabindex]=\"tabindex\" [readonly]=\"readonly\" [disabled]=\"disabled\"\n            ><ul *ngIf=\"multiple\" #multiContainer class=\"ui-autocomplete-multiple-container ui-widget ui-inputtext ui-state-default ui-corner-all\" [ngClass]=\"{'ui-state-disabled':disabled,'ui-state-focus':focus}\" (click)=\"multiIn.focus()\">\n                <li #token *ngFor=\"let val of value\" class=\"ui-autocomplete-token ui-state-highlight ui-corner-all\">\n                    <span class=\"ui-autocomplete-token-icon fa fa-fw fa-close\" (click)=\"removeItem(token)\" *ngIf=\"!disabled\"></span>\n                    <span *ngIf=\"!selectedItemTemplate\" class=\"ui-autocomplete-token-label\">{{field ? val[field] : val}}</span>\n                    <ng-template *ngIf=\"selectedItemTemplate\" [pTemplateWrapper]=\"selectedItemTemplate\" [item]=\"val\"></ng-template>\n                </li>\n                <li class=\"ui-autocomplete-input-token\">\n                    <input #multiIn [attr.type]=\"type\" [attr.id]=\"inputId\" [disabled]=\"disabled\" [attr.placeholder]=\"(value&&value.length ? null : placeholder)\" [attr.tabindex]=\"tabindex\" (input)=\"onInput($event)\"  (click)=\"onInputClick($event)\"\n\t\t\t\t\t\t\t\t\t\t\t\t\t (keydown)=\"onKeydown($event)\" (keyup)=\"onKeyup($event)\" (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\" autocomplete=\"off\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\"\n\t\t\t\t\t\t\t\t\t\t\t\t\t [pTooltip]=\"toolTipMessage\" [tooltipPosition]=\"toolTipPosition\" [tooltipEvent]=\"toolTipEvent\" [positionStyle]=\"positionStyles\" [tooltipDisabled]=\"toolTipDisabled\" [tooltipStyleClass]=\"toolTipStyleClasses\" [escape]=\"toolTipEscape\">\n                </li>\n            </ul\n            ><i *ngIf=\"loading\" class=\"ui-autocomplete-loader fa fa-circle-o-notch fa-spin fa-fw\"></i><button type=\"button\" pButton icon=\"fa-fw fa-caret-down\" class=\"ui-autocomplete-dropdown\" [disabled]=\"disabled\"\n                (click)=\"handleDropdownClick($event)\" *ngIf=\"dropdown\"></button>\n            <div #panel class=\"ui-autocomplete-panel ui-widget-content ui-corner-all ui-shadow\" [style.display]=\"panelVisible ? 'block' : 'none'\" [style.width]=\"appendTo ? 'auto' : '100%'\" [style.max-height]=\"scrollHeight\">\n                <ul class=\"ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\" *ngIf=\"panelVisible\">\n                    <li *ngFor=\"let option of suggestions; let idx = index\" [ngClass]=\"{'ui-autocomplete-list-item ui-corner-all':true,'ui-state-highlight':(highlightOption==option)}\"\n                        (mouseenter)=\"highlightOption=option\" (mouseleave)=\"highlightOption=null\" (click)=\"selectItem(option)\">\n                        <span *ngIf=\"!itemTemplate\">{{field ? option[field] : option}}</span>\n                        <ng-template *ngIf=\"itemTemplate\" [pTemplateWrapper]=\"itemTemplate\" [item]=\"option\" [index]=\"idx\"></ng-template>\n                    </li>\n                    <li *ngIf=\"noResults && emptyMessage\" class=\"ui-autocomplete-list-item ui-corner-all\">{{emptyMessage}}</li>\n                </ul>\n            </div>\n        </span>\n    ",
+                template: "\n        <span [ngClass]=\"{'ui-autocomplete ui-widget':true,'ui-autocomplete-dd':dropdown,'ui-autocomplete-multiple':multiple}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <input *ngIf=\"!multiple\" #in [attr.type]=\"type\" [attr.id]=\"inputId\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\" autocomplete=\"off\" [attr.required]=\"required\"\n            [ngClass]=\"'ui-inputtext ui-widget ui-state-default ui-corner-all ui-autocomplete-input'\" [value]=\"inputFieldValue\"\n            (click)=\"onInputClick($event)\" (input)=\"onInput($event)\" (keydown)=\"onKeydown($event)\" (keyup)=\"onKeyup($event)\" (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\"\n            [attr.placeholder]=\"placeholder\" [attr.size]=\"size\" [attr.maxlength]=\"maxlength\" [attr.tabindex]=\"tabindex\" [readonly]=\"readonly\" [disabled]=\"disabled\"\n            ><ul *ngIf=\"multiple\" #multiContainer class=\"ui-autocomplete-multiple-container ui-widget ui-inputtext ui-state-default ui-corner-all\" [ngClass]=\"{'ui-state-disabled':disabled,'ui-state-focus':focus}\" (click)=\"multiIn.focus()\">\n                <li #token *ngFor=\"let val of value\" class=\"ui-autocomplete-token ui-state-highlight ui-corner-all\">\n                    <span class=\"ui-autocomplete-token-icon fa fa-fw fa-close\" (click)=\"removeItem(token)\" *ngIf=\"!disabled\"></span>\n                    <span *ngIf=\"!selectedItemTemplate\" class=\"ui-autocomplete-token-label\">{{field ? val[field] : val}}</span>\n                    <ng-template *ngIf=\"selectedItemTemplate\" [pTemplateWrapper]=\"selectedItemTemplate\" [item]=\"val\"></ng-template>\n                </li>\n                <li class=\"ui-autocomplete-input-token\">\n                    <input #multiIn [attr.type]=\"type\" [attr.id]=\"inputId\" [disabled]=\"disabled\" [attr.placeholder]=\"(value&&value.length ? null : placeholder)\" [attr.tabindex]=\"tabindex\" (input)=\"onInput($event)\"  (click)=\"onInputClick($event)\"\n                            (keydown)=\"onKeydown($event)\" (keyup)=\"onKeyup($event)\" (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\" autocomplete=\"off\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\">\n                </li>\n            </ul\n            ><i *ngIf=\"loading\" class=\"ui-autocomplete-loader fa fa-circle-o-notch fa-spin fa-fw\"></i><button type=\"button\" pButton icon=\"fa-fw fa-caret-down\" class=\"ui-autocomplete-dropdown\" [disabled]=\"disabled\"\n                (click)=\"handleDropdownClick($event)\" *ngIf=\"dropdown\"></button>\n            <div #panel class=\"ui-autocomplete-panel ui-widget-content ui-corner-all ui-shadow\" [style.display]=\"panelVisible ? 'block' : 'none'\" [style.width]=\"appendTo ? 'auto' : '100%'\" [style.max-height]=\"scrollHeight\">\n                <ul class=\"ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\" *ngIf=\"panelVisible\">\n                    <li *ngFor=\"let option of suggestions; let idx = index\" [ngClass]=\"{'ui-autocomplete-list-item ui-corner-all':true,'ui-state-highlight':(highlightOption==option)}\"\n                        (mouseenter)=\"highlightOption=option\" (mouseleave)=\"highlightOption=null\" (click)=\"selectItem(option)\">\n                        <span *ngIf=\"!itemTemplate\">{{field ? option[field] : option}}</span>\n                        <ng-template *ngIf=\"itemTemplate\" [pTemplateWrapper]=\"itemTemplate\" [item]=\"option\" [index]=\"idx\"></ng-template>\n                    </li>\n                    <li *ngIf=\"noResults && emptyMessage\" class=\"ui-autocomplete-list-item ui-corner-all\">{{emptyMessage}}</li>\n                </ul>\n            </div>\n        </span>\n    ",
                 host: {
                     '[class.ui-inputwrapper-filled]': 'filled',
                     '[class.ui-inputwrapper-focus]': 'focus'
@@ -497,7 +486,6 @@ AutoComplete.propDecorators = {
     'onUnselect': [{ type: core_1.Output },],
     'onFocus': [{ type: core_1.Output },],
     'onBlur': [{ type: core_1.Output },],
-    'onAdd': [{ type: core_1.Output },],
     'onDropdownClick': [{ type: core_1.Output },],
     'onClear': [{ type: core_1.Output },],
     'onKeyUp': [{ type: core_1.Output },],
@@ -525,7 +513,7 @@ var AutoCompleteModule = (function () {
 AutoCompleteModule.decorators = [
     { type: core_1.NgModule, args: [{
                 imports: [common_1.CommonModule, inputtext_1.InputTextModule, button_1.ButtonModule, shared_1.SharedModule, tooltip_1.TooltipModule],
-                exports: [AutoComplete, shared_1.SharedModule, inputtext_1.InputTextModule],
+                exports: [AutoComplete, shared_1.SharedModule],
                 declarations: [AutoComplete]
             },] },
 ];

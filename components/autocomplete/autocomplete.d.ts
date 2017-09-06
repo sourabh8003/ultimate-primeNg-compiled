@@ -40,7 +40,6 @@ export declare class AutoComplete implements AfterViewInit, AfterViewChecked, Do
     onUnselect: EventEmitter<any>;
     onFocus: EventEmitter<any>;
     onBlur: EventEmitter<any>;
-    onAdd: EventEmitter<any>;
     onDropdownClick: EventEmitter<any>;
     onClear: EventEmitter<any>;
     onKeyUp: EventEmitter<any>;
