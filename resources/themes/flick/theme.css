@@ -108,6 +108,9 @@
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px; }
 
+.ui-float-label input.ng-dirty.ng-invalid ~ label {
+  color: #222222; }
+
 .ui-autocomplete .ui-autocomplete-multiple-container:not(.ui-state-disabled):hover {
   border-color: #0073ea; }
 
@@ -233,6 +236,9 @@
   color: #ffffff; }
   .ui-paginator a:not(.ui-state-disabled):not(.ui-state-active):hover a {
     color: #ffffff; }
+
+.ui-paginator a {
+  color: #0073ea; }
 
 .ui-datatable .ui-rowgroup-header a {
   color: #444444; }

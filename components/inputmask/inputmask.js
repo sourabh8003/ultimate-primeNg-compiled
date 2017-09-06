@@ -1,13 +1,4 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 /*
     Port of jQuery MaskedInput by DigitalBush as a Native Angular2 Component in Typescript without jQuery
@@ -474,111 +465,58 @@ var InputMask = (function () {
     };
     return InputMask;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], InputMask.prototype, "type", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], InputMask.prototype, "slotChar", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], InputMask.prototype, "autoClear", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], InputMask.prototype, "style", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], InputMask.prototype, "inputId", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], InputMask.prototype, "styleClass", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], InputMask.prototype, "placeholder", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Number)
-], InputMask.prototype, "size", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Number)
-], InputMask.prototype, "maxlength", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], InputMask.prototype, "tabindex", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], InputMask.prototype, "disabled", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], InputMask.prototype, "readonly", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], InputMask.prototype, "unmask", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], InputMask.prototype, "name", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], InputMask.prototype, "required", void 0);
-__decorate([
-    core_1.ViewChild('input'),
-    __metadata("design:type", core_1.ElementRef)
-], InputMask.prototype, "inputViewChild", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], InputMask.prototype, "onComplete", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], InputMask.prototype, "onFocus", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], InputMask.prototype, "onBlur", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String),
-    __metadata("design:paramtypes", [String])
-], InputMask.prototype, "mask", null);
-InputMask = __decorate([
-    core_1.Component({
-        selector: 'p-inputMask',
-        template: "<input #input pInputText [attr.id]=\"inputId\" [attr.type]=\"type\" [attr.name]=\"name\" [ngStyle]=\"style\" [ngClass]=\"styleClass\" [attr.placeholder]=\"placeholder\"\n        [attr.size]=\"size\" [attr.maxlength]=\"maxlength\" [attr.tabindex]=\"tabindex\" [disabled]=\"disabled\" [readonly]=\"readonly\" [attr.required]=\"required\"\n        (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\" (keydown)=\"onKeyDown($event)\" (keypress)=\"onKeyPress($event)\"\n        (input)=\"onInput($event)\" (paste)=\"handleInputChange($event)\">",
-        host: {
-            '[class.ui-inputwrapper-filled]': 'filled',
-            '[class.ui-inputwrapper-focus]': 'focus'
-        },
-        providers: [exports.INPUTMASK_VALUE_ACCESSOR, domhandler_1.DomHandler]
-    }),
-    __metadata("design:paramtypes", [core_1.ElementRef, domhandler_1.DomHandler])
-], InputMask);
+InputMask.decorators = [
+    { type: core_1.Component, args: [{
+                selector: 'p-inputMask',
+                template: "<input #input pInputText [attr.id]=\"inputId\" [attr.type]=\"type\" [attr.name]=\"name\" [ngStyle]=\"style\" [ngClass]=\"styleClass\" [attr.placeholder]=\"placeholder\"\n        [attr.size]=\"size\" [attr.maxlength]=\"maxlength\" [attr.tabindex]=\"tabindex\" [disabled]=\"disabled\" [readonly]=\"readonly\" [attr.required]=\"required\"\n        (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\" (keydown)=\"onKeyDown($event)\" (keypress)=\"onKeyPress($event)\"\n        (input)=\"onInput($event)\" (paste)=\"handleInputChange($event)\">",
+                host: {
+                    '[class.ui-inputwrapper-filled]': 'filled',
+                    '[class.ui-inputwrapper-focus]': 'focus'
+                },
+                providers: [exports.INPUTMASK_VALUE_ACCESSOR, domhandler_1.DomHandler]
+            },] },
+];
+/** @nocollapse */
+InputMask.ctorParameters = function () { return [
+    { type: core_1.ElementRef, },
+    { type: domhandler_1.DomHandler, },
+]; };
+InputMask.propDecorators = {
+    'type': [{ type: core_1.Input },],
+    'slotChar': [{ type: core_1.Input },],
+    'autoClear': [{ type: core_1.Input },],
+    'style': [{ type: core_1.Input },],
+    'inputId': [{ type: core_1.Input },],
+    'styleClass': [{ type: core_1.Input },],
+    'placeholder': [{ type: core_1.Input },],
+    'size': [{ type: core_1.Input },],
+    'maxlength': [{ type: core_1.Input },],
+    'tabindex': [{ type: core_1.Input },],
+    'disabled': [{ type: core_1.Input },],
+    'readonly': [{ type: core_1.Input },],
+    'unmask': [{ type: core_1.Input },],
+    'name': [{ type: core_1.Input },],
+    'required': [{ type: core_1.Input },],
+    'inputViewChild': [{ type: core_1.ViewChild, args: ['input',] },],
+    'onComplete': [{ type: core_1.Output },],
+    'onFocus': [{ type: core_1.Output },],
+    'onBlur': [{ type: core_1.Output },],
+    'mask': [{ type: core_1.Input },],
+};
 exports.InputMask = InputMask;
 var InputMaskModule = (function () {
     function InputMaskModule() {
     }
     return InputMaskModule;
 }());
-InputMaskModule = __decorate([
-    core_1.NgModule({
-        imports: [common_1.CommonModule, inputtext_1.InputTextModule],
-        exports: [InputMask],
-        declarations: [InputMask]
-    })
-], InputMaskModule);
+InputMaskModule.decorators = [
+    { type: core_1.NgModule, args: [{
+                imports: [common_1.CommonModule, inputtext_1.InputTextModule],
+                exports: [InputMask],
+                declarations: [InputMask]
+            },] },
+];
+/** @nocollapse */
+InputMaskModule.ctorParameters = function () { return []; };
 exports.InputMaskModule = InputMaskModule;
 //# sourceMappingURL=inputmask.js.map

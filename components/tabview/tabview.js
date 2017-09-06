@@ -1,13 +1,4 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
@@ -39,35 +30,27 @@ var TabViewNav = (function () {
     };
     return TabViewNav;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Array)
-], TabViewNav.prototype, "tabs", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], TabViewNav.prototype, "orientation", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], TabViewNav.prototype, "onTabClick", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], TabViewNav.prototype, "onTabCloseClick", void 0);
-TabViewNav = __decorate([
-    core_1.Component({
-        selector: '[p-tabViewNav]',
-        host: {
-            '[class.ui-tabview-nav]': 'true',
-            '[class.ui-helper-reset]': 'true',
-            '[class.ui-helper-clearfix]': 'true',
-            '[class.ui-widget-header]': 'true',
-            '[class.ui-corner-all]': 'true'
-        },
-        template: "\n        <ng-template ngFor let-tab [ngForOf]=\"tabs\">\n            <li [class]=\"getDefaultHeaderClass(tab)\" [ngStyle]=\"tab.headerStyle\" role=\"tab\"\n                [ngClass]=\"{'ui-tabview-selected ui-state-active': tab.selected, 'ui-state-disabled': tab.disabled}\"\n                (click)=\"clickTab($event,tab)\" *ngIf=\"!tab.closed\"\n                [attr.aria-expanded]=\"tab.selected\" [attr.aria-selected]=\"tab.selected\">\n                <a href=\"#\">\n                    <span class=\"ui-tabview-left-icon fa\" [ngClass]=\"tab.leftIcon\" *ngIf=\"tab.leftIcon\"></span>\n                    <span class=\"ui-tabview-title\">{{tab.header}}</span>\n                    <span class=\"ui-tabview-right-icon fa\" [ngClass]=\"tab.rightIcon\" *ngIf=\"tab.rightIcon\"></span>\n                </a>\n                <span *ngIf=\"tab.closable\" class=\"ui-tabview-close fa fa-close\" (click)=\"clickClose($event,tab)\"></span>\n            </li>\n        </ng-template>\n    ",
-    })
-], TabViewNav);
+TabViewNav.decorators = [
+    { type: core_1.Component, args: [{
+                selector: '[p-tabViewNav]',
+                host: {
+                    '[class.ui-tabview-nav]': 'true',
+                    '[class.ui-helper-reset]': 'true',
+                    '[class.ui-helper-clearfix]': 'true',
+                    '[class.ui-widget-header]': 'true',
+                    '[class.ui-corner-all]': 'true'
+                },
+                template: "\n        <ng-template ngFor let-tab [ngForOf]=\"tabs\">\n            <li [class]=\"getDefaultHeaderClass(tab)\" [ngStyle]=\"tab.headerStyle\" role=\"tab\"\n                [ngClass]=\"{'ui-tabview-selected ui-state-active': tab.selected, 'ui-state-disabled': tab.disabled}\"\n                (click)=\"clickTab($event,tab)\" *ngIf=\"!tab.closed\"\n                [attr.aria-expanded]=\"tab.selected\" [attr.aria-selected]=\"tab.selected\">\n                <a href=\"#\">\n                    <span class=\"ui-tabview-left-icon fa\" [ngClass]=\"tab.leftIcon\" *ngIf=\"tab.leftIcon\"></span>\n                    <span class=\"ui-tabview-title\">{{tab.header}}</span>\n                    <span class=\"ui-tabview-right-icon fa\" [ngClass]=\"tab.rightIcon\" *ngIf=\"tab.rightIcon\"></span>\n                </a>\n                <span *ngIf=\"tab.closable\" class=\"ui-tabview-close fa fa-close\" (click)=\"clickClose($event,tab)\"></span>\n            </li>\n        </ng-template>\n    ",
+            },] },
+];
+/** @nocollapse */
+TabViewNav.ctorParameters = function () { return []; };
+TabViewNav.propDecorators = {
+    'tabs': [{ type: core_1.Input },],
+    'orientation': [{ type: core_1.Input },],
+    'onTabClick': [{ type: core_1.Output },],
+    'onTabCloseClick': [{ type: core_1.Output },],
+};
 exports.TabViewNav = TabViewNav;
 var TabPanel = (function () {
     function TabPanel(viewContainer) {
@@ -103,54 +86,28 @@ var TabPanel = (function () {
     };
     return TabPanel;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], TabPanel.prototype, "header", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], TabPanel.prototype, "disabled", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], TabPanel.prototype, "closable", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Object)
-], TabPanel.prototype, "headerStyle", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], TabPanel.prototype, "headerStyleClass", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], TabPanel.prototype, "leftIcon", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], TabPanel.prototype, "rightIcon", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], TabPanel.prototype, "cache", void 0);
-__decorate([
-    core_1.ContentChildren(shared_1.PrimeTemplate),
-    __metadata("design:type", core_1.QueryList)
-], TabPanel.prototype, "templates", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean),
-    __metadata("design:paramtypes", [Boolean])
-], TabPanel.prototype, "selected", null);
-TabPanel = __decorate([
-    core_1.Component({
-        selector: 'p-tabPanel',
-        template: "\n        <div class=\"ui-tabview-panel ui-widget-content\" [style.display]=\"selected ? 'block' : 'none'\" \n            role=\"tabpanel\" [attr.aria-hidden]=\"!selected\" *ngIf=\"!closed\">\n            <ng-content></ng-content>\n            <p-templateLoader [template]=\"contentTemplate\" *ngIf=\"contentTemplate&&(cache ? loaded : selected)\"></p-templateLoader>\n        </div>\n    "
-    }),
-    __metadata("design:paramtypes", [core_1.ViewContainerRef])
-], TabPanel);
+TabPanel.decorators = [
+    { type: core_1.Component, args: [{
+                selector: 'p-tabPanel',
+                template: "\n        <div class=\"ui-tabview-panel ui-widget-content\" [style.display]=\"selected ? 'block' : 'none'\" \n            role=\"tabpanel\" [attr.aria-hidden]=\"!selected\" *ngIf=\"!closed\">\n            <ng-content></ng-content>\n            <p-templateLoader [template]=\"contentTemplate\" *ngIf=\"contentTemplate&&(cache ? loaded : selected)\"></p-templateLoader>\n        </div>\n    "
+            },] },
+];
+/** @nocollapse */
+TabPanel.ctorParameters = function () { return [
+    { type: core_1.ViewContainerRef, },
+]; };
+TabPanel.propDecorators = {
+    'header': [{ type: core_1.Input },],
+    'disabled': [{ type: core_1.Input },],
+    'closable': [{ type: core_1.Input },],
+    'headerStyle': [{ type: core_1.Input },],
+    'headerStyleClass': [{ type: core_1.Input },],
+    'leftIcon': [{ type: core_1.Input },],
+    'rightIcon': [{ type: core_1.Input },],
+    'cache': [{ type: core_1.Input },],
+    'templates': [{ type: core_1.ContentChildren, args: [shared_1.PrimeTemplate,] },],
+    'selected': [{ type: core_1.Input },],
+};
 exports.TabPanel = TabPanel;
 var TabView = (function () {
     function TabView(el) {
@@ -276,63 +233,41 @@ var TabView = (function () {
     });
     return TabView;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], TabView.prototype, "orientation", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Object)
-], TabView.prototype, "style", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], TabView.prototype, "styleClass", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], TabView.prototype, "controlClose", void 0);
-__decorate([
-    core_1.ContentChildren(TabPanel),
-    __metadata("design:type", core_1.QueryList)
-], TabView.prototype, "tabPanels", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], TabView.prototype, "onChange", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], TabView.prototype, "onClose", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean),
-    __metadata("design:paramtypes", [Boolean])
-], TabView.prototype, "lazy", null);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Number),
-    __metadata("design:paramtypes", [Number])
-], TabView.prototype, "activeIndex", null);
-TabView = __decorate([
-    core_1.Component({
-        selector: 'p-tabView',
-        template: "\n        <div [ngClass]=\"'ui-tabview ui-widget ui-widget-content ui-corner-all ui-tabview-' + orientation\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ul p-tabViewNav role=\"tablist\" *ngIf=\"orientation!='bottom'\" [tabs]=\"tabs\" [orientation]=\"orientation\" \n                (onTabClick)=\"open($event.originalEvent, $event.tab)\" (onTabCloseClick)=\"close($event.originalEvent, $event.tab)\"></ul>\n            <div class=\"ui-tabview-panels\">\n                <ng-content></ng-content>\n            </div>\n            <ul p-tabViewNav role=\"tablist\" *ngIf=\"orientation=='bottom'\" [tabs]=\"tabs\" [orientation]=\"orientation\"\n                (onTabClick)=\"open($event.originalEvent, $event.tab)\" (onTabCloseClick)=\"close($event.originalEvent, $event.tab)\"></ul>\n        </div>\n    ",
-    }),
-    __metadata("design:paramtypes", [core_1.ElementRef])
-], TabView);
+TabView.decorators = [
+    { type: core_1.Component, args: [{
+                selector: 'p-tabView',
+                template: "\n        <div [ngClass]=\"'ui-tabview ui-widget ui-widget-content ui-corner-all ui-tabview-' + orientation\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ul p-tabViewNav role=\"tablist\" *ngIf=\"orientation!='bottom'\" [tabs]=\"tabs\" [orientation]=\"orientation\" \n                (onTabClick)=\"open($event.originalEvent, $event.tab)\" (onTabCloseClick)=\"close($event.originalEvent, $event.tab)\"></ul>\n            <div class=\"ui-tabview-panels\">\n                <ng-content></ng-content>\n            </div>\n            <ul p-tabViewNav role=\"tablist\" *ngIf=\"orientation=='bottom'\" [tabs]=\"tabs\" [orientation]=\"orientation\"\n                (onTabClick)=\"open($event.originalEvent, $event.tab)\" (onTabCloseClick)=\"close($event.originalEvent, $event.tab)\"></ul>\n        </div>\n    ",
+            },] },
+];
+/** @nocollapse */
+TabView.ctorParameters = function () { return [
+    { type: core_1.ElementRef, },
+]; };
+TabView.propDecorators = {
+    'orientation': [{ type: core_1.Input },],
+    'style': [{ type: core_1.Input },],
+    'styleClass': [{ type: core_1.Input },],
+    'controlClose': [{ type: core_1.Input },],
+    'tabPanels': [{ type: core_1.ContentChildren, args: [TabPanel,] },],
+    'onChange': [{ type: core_1.Output },],
+    'onClose': [{ type: core_1.Output },],
+    'lazy': [{ type: core_1.Input },],
+    'activeIndex': [{ type: core_1.Input },],
+};
 exports.TabView = TabView;
 var TabViewModule = (function () {
     function TabViewModule() {
     }
     return TabViewModule;
 }());
-TabViewModule = __decorate([
-    core_1.NgModule({
-        imports: [common_1.CommonModule, shared_1.SharedModule],
-        exports: [TabView, TabPanel, TabViewNav, shared_1.SharedModule],
-        declarations: [TabView, TabPanel, TabViewNav]
-    })
-], TabViewModule);
+TabViewModule.decorators = [
+    { type: core_1.NgModule, args: [{
+                imports: [common_1.CommonModule, shared_1.SharedModule],
+                exports: [TabView, TabPanel, TabViewNav, shared_1.SharedModule],
+                declarations: [TabView, TabPanel, TabViewNav]
+            },] },
+];
+/** @nocollapse */
+TabViewModule.ctorParameters = function () { return []; };
 exports.TabViewModule = TabViewModule;
 //# sourceMappingURL=tabview.js.map
