@@ -135,7 +135,7 @@ function View_AutoComplete_3(_l) {
     }, null);
 }
 function View_AutoComplete_2(_l) {
-    return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, [[4, 0], ['multiContainer', 1]], null, 12, 'ul', [['class', 'ui-autocomplete-multiple-container ui-widget ui-inputtext ui-state-default ui-corner-all']], null, [[null, 'click']], function (_v, en, $event) {
+    return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, [[4, 0], ['multiContainer', 1]], null, 14, 'ul', [['class', 'ui-autocomplete-multiple-container ui-widget ui-inputtext ui-state-default ui-corner-all']], null, [[null, 'click']], function (_v, en, $event) {
             var ad = true;
             if (('click' === en)) {
                 var pd_0 = (i0.ɵnov(_v, 9).focus() !== false);
@@ -146,41 +146,61 @@ function View_AutoComplete_2(_l) {
             i0.KeyValueDiffers, i0.ElementRef, i0.Renderer], { klass: [0, 'klass'], ngClass: [1,
                 'ngClass'] }, null), i0.ɵpod({ 'ui-state-disabled': 0, 'ui-state-focus': 1 }),
         (_l()(), i0.ɵted(null, ['\n                '])), (_l()(), i0.ɵand(16777216, null, null, 1, null, View_AutoComplete_3)), i0.ɵdid(802816, null, 0, i2.NgForOf, [i0.ViewContainerRef, i0.TemplateRef, i0.IterableDiffers], { ngForOf: [0, 'ngForOf'] }, null), (_l()(), i0.ɵted(null, ['\n                '])),
-        (_l()(), i0.ɵeld(0, null, null, 4, 'li', [['class', 'ui-autocomplete-input-token']], null, null, null, null, null)),
-        (_l()(), i0.ɵted(null, ['\n                    '])), (_l()(), i0.ɵeld(0, [[2, 0], ['multiIn', 1]], null, 1, 'input', [['autocomplete', 'off']], [[1,
+        (_l()(), i0.ɵeld(0, null, null, 6, 'li', [['class', 'ui-autocomplete-input-token']], null, null, null, null, null)),
+        (_l()(), i0.ɵted(null, ['\n                    '])), (_l()(), i0.ɵeld(0, [[2, 0], ['multiIn', 1]], null, 3, 'input', [['autocomplete', 'off']], [[1,
                 'type', 0], [1, 'id', 0], [8, 'disabled', 0], [1, 'placeholder', 0], [1, 'tabindex',
                 0], [8, 'className', 0]], [[null, 'input'], [null, 'click'],
             [null, 'keydown'], [null, 'keyup'], [null, 'focus'],
-            [null, 'blur']], function (_v, en, $event) {
+            [null, 'blur'], [null, 'mouseenter'], [null, 'mouseleave']], function (_v, en, $event) {
             var ad = true;
             var _co = _v.component;
-            if (('input' === en)) {
-                var pd_0 = (_co.onInput($event) !== false);
+            if (('mouseenter' === en)) {
+                var pd_0 = (i0.ɵnov(_v, 12).onMouseEnter($event) !== false);
                 ad = (pd_0 && ad);
             }
-            if (('click' === en)) {
-                var pd_1 = (_co.onInputClick($event) !== false);
+            if (('mouseleave' === en)) {
+                var pd_1 = (i0.ɵnov(_v, 12).onMouseLeave($event) !== false);
                 ad = (pd_1 && ad);
             }
-            if (('keydown' === en)) {
-                var pd_2 = (_co.onKeydown($event) !== false);
+            if (('focus' === en)) {
+                var pd_2 = (i0.ɵnov(_v, 12).onFocus($event) !== false);
                 ad = (pd_2 && ad);
             }
-            if (('keyup' === en)) {
-                var pd_3 = (_co.onKeyup($event) !== false);
+            if (('blur' === en)) {
+                var pd_3 = (i0.ɵnov(_v, 12).onBlur($event) !== false);
                 ad = (pd_3 && ad);
             }
-            if (('focus' === en)) {
-                var pd_4 = (_co.onInputFocus($event) !== false);
+            if (('input' === en)) {
+                var pd_4 = (_co.onInput($event) !== false);
                 ad = (pd_4 && ad);
             }
-            if (('blur' === en)) {
-                var pd_5 = (_co.onInputBlur($event) !== false);
+            if (('click' === en)) {
+                var pd_5 = (_co.onInputClick($event) !== false);
                 ad = (pd_5 && ad);
+            }
+            if (('keydown' === en)) {
+                var pd_6 = (_co.onKeydown($event) !== false);
+                ad = (pd_6 && ad);
+            }
+            if (('keyup' === en)) {
+                var pd_7 = (_co.onKeyup($event) !== false);
+                ad = (pd_7 && ad);
+            }
+            if (('focus' === en)) {
+                var pd_8 = (_co.onInputFocus($event) !== false);
+                ad = (pd_8 && ad);
+            }
+            if (('blur' === en)) {
+                var pd_9 = (_co.onInputBlur($event) !== false);
+                ad = (pd_9 && ad);
             }
             return ad;
         }, null, null)), i0.ɵdid(278528, null, 0, i2.NgStyle, [i0.KeyValueDiffers, i0.ElementRef, i0.Renderer], { ngStyle: [0, 'ngStyle'] }, null),
-        (_l()(), i0.ɵted(null, ['\n                '])), (_l()(), i0.ɵted(null, ['\n            ']))], function (_ck, _v) {
+        i0.ɵprd(512, null, i7.DomHandler, i7.DomHandler, []), i0.ɵdid(147456, null, 0, i6.Tooltip, [i0.ElementRef, i7.DomHandler, i0.Renderer2], { tooltipPosition: [0,
+                'tooltipPosition'], tooltipEvent: [1, 'tooltipEvent'], positionStyle: [2,
+                'positionStyle'], tooltipStyleClass: [3, 'tooltipStyleClass'], disabled: [4,
+                'disabled'], escape: [5, 'escape'], text: [6, 'text'] }, null), (_l()(),
+            i0.ɵted(null, ['\n                '])), (_l()(), i0.ɵted(null, ['\n            ']))], function (_ck, _v) {
         var _co = _v.component;
         var currVal_0 = 'ui-autocomplete-multiple-container ui-widget ui-inputtext ui-state-default ui-corner-all';
         var currVal_1 = _ck(_v, 2, 0, _co.disabled, _co.focus);
@@ -189,6 +209,14 @@ function View_AutoComplete_2(_l) {
         _ck(_v, 5, 0, currVal_2);
         var currVal_9 = _co.inputStyle;
         _ck(_v, 10, 0, currVal_9);
+        var currVal_10 = _co.toolTipPosition;
+        var currVal_11 = _co.toolTipEvent;
+        var currVal_12 = _co.positionStyles;
+        var currVal_13 = _co.toolTipStyleClasses;
+        var currVal_14 = _co.toolTipDisabled;
+        var currVal_15 = _co.toolTipEscape;
+        var currVal_16 = _co.toolTipMessage;
+        _ck(_v, 12, 0, currVal_10, currVal_11, currVal_12, currVal_13, currVal_14, currVal_15, currVal_16);
     }, function (_ck, _v) {
         var _co = _v.component;
         var currVal_3 = _co.type;
