@@ -12,14 +12,15 @@ var i2 = require("@angular/common");
 var i3 = require("@angular/forms");
 var i4 = require("../common/shared");
 var i5 = require("../paginator/paginator");
-var i6 = require("../paginator/paginator.ngfactory");
-var i7 = require("../dom/domhandler");
-var i8 = require("../utils/objectutils");
-var i9 = require("../common/shared.ngfactory");
+var i6 = require("../tooltip/tooltip");
+var i7 = require("../paginator/paginator.ngfactory");
+var i8 = require("../dom/domhandler");
+var i9 = require("../utils/objectutils");
+var i10 = require("../common/shared.ngfactory");
 exports.DataTableModuleNgFactory = i0.ɵcmf(i1.DataTableModule, [], function (_l) {
     return i0.ɵmod([i0.ɵmpd(512, i0.ComponentFactoryResolver, i0.ɵCodegenComponentFactoryResolver, [[8, []], [3, i0.ComponentFactoryResolver], i0.NgModuleRef]), i0.ɵmpd(4608, i2.NgLocalization, i2.NgLocaleLocalization, [i0.LOCALE_ID]), i0.ɵmpd(4608, i3.ɵi, i3.ɵi, []), i0.ɵmpd(512, i2.CommonModule, i2.CommonModule, []),
         i0.ɵmpd(512, i4.SharedModule, i4.SharedModule, []), i0.ɵmpd(512, i5.PaginatorModule, i5.PaginatorModule, []), i0.ɵmpd(512, i3.ɵba, i3.ɵba, []),
-        i0.ɵmpd(512, i3.FormsModule, i3.FormsModule, []), i0.ɵmpd(512, i1.DataTableModule, i1.DataTableModule, [])]);
+        i0.ɵmpd(512, i3.FormsModule, i3.FormsModule, []), i0.ɵmpd(512, i6.TooltipModule, i6.TooltipModule, []), i0.ɵmpd(512, i1.DataTableModule, i1.DataTableModule, [])]);
 });
 var styles_DataTable = [];
 exports.RenderType_DataTable = i0.ɵcrt({ encapsulation: 2, styles: styles_DataTable,
@@ -51,7 +52,7 @@ function View_DataTable_4(_l) {
                 ad = (pd_0 && ad);
             }
             return ad;
-        }, i6.View_Paginator_0, i6.RenderType_Paginator)), i0.ɵdid(49152, null, 0, i5.Paginator, [], { pageLinkSize: [0, 'pageLinkSize'], styleClass: [1,
+        }, i7.View_Paginator_0, i7.RenderType_Paginator)), i0.ɵdid(49152, null, 0, i5.Paginator, [], { pageLinkSize: [0, 'pageLinkSize'], styleClass: [1,
                 'styleClass'], rowsPerPageOptions: [2, 'rowsPerPageOptions'], alwaysShow: [3,
                 'alwaysShow'], totalRecords: [4, 'totalRecords'], first: [5, 'first'], rows: [6,
                 'rows'] }, { onPageChange: 'onPageChange' })], function (_ck, _v) {
@@ -145,8 +146,12 @@ function View_DataTable_5(_l) {
         (_l()(), i0.ɵted(null, ['\n                    '])), (_l()(), i0.ɵand(16777216, null, null, 1, null, View_DataTable_9)), i0.ɵdid(16384, null, 0, i2.NgIf, [i0.ViewContainerRef, i0.TemplateRef], { ngIf: [0, 'ngIf'] }, null), (_l()(), i0.ɵted(null, ['\n                    '])),
         (_l()(), i0.ɵeld(0, null, null, 3, 'tbody', [], null, null, null, View_TableBody_0, exports.RenderType_TableBody)), i0.ɵdid(278528, null, 0, i2.NgClass, [i0.IterableDiffers, i0.KeyValueDiffers, i0.ElementRef,
             i0.Renderer], { ngClass: [0, 'ngClass'] }, null), i0.ɵpod({ 'ui-datatable-data ui-widget-content': 0,
-            'ui-datatable-hoverable-rows': 1 }), i0.ɵdid(49152, null, 0, i1.TableBody, [i1.DataTable], { columns: [0, 'columns'], data: [1, 'data'] }, null), (_l()(),
-            i0.ɵted(null, ['\n                '])), (_l()(), i0.ɵted(null, ['\n            ']))], function (_ck, _v) {
+            'ui-datatable-hoverable-rows': 1 }), i0.ɵdid(49152, null, 0, i1.TableBody, [i1.DataTable], { toolTipMsg: [0, 'toolTipMsg'], toolTipPos: [1, 'toolTipPos'],
+            toolTipEve: [2, 'toolTipEve'], toolTipPosStyle: [3, 'toolTipPosStyle'], toolTipDis: [4,
+                'toolTipDis'], toolTipAppendTo: [5, 'toolTipAppendTo'], toolTipStyleClasess: [6,
+                'toolTipStyleClasess'], toolTipEsc: [7, 'toolTipEsc'], columns: [8, 'columns'],
+            data: [9, 'data'] }, null), (_l()(), i0.ɵted(null, ['\n                '])),
+        (_l()(), i0.ɵted(null, ['\n            ']))], function (_ck, _v) {
         var _co = _v.component;
         var currVal_0 = _co.tableStyleClass;
         _ck(_v, 3, 0, currVal_0);
@@ -160,9 +165,17 @@ function View_DataTable_5(_l) {
         _ck(_v, 16, 0, currVal_4);
         var currVal_5 = _ck(_v, 20, 0, true, (_co.rowHover || _co.selectionMode));
         _ck(_v, 19, 0, currVal_5);
-        var currVal_6 = _co.columns;
-        var currVal_7 = _co.dataToRender;
-        _ck(_v, 21, 0, currVal_6, currVal_7);
+        var currVal_6 = _co.toolTipMessage;
+        var currVal_7 = _co.toolTipPosition;
+        var currVal_8 = _co.toolTipEvent;
+        var currVal_9 = _co.positionStyles;
+        var currVal_10 = _co.toolTipDisabled;
+        var currVal_11 = _co.toolTipAppendTo;
+        var currVal_12 = _co.toolTipStyleClasses;
+        var currVal_13 = _co.toolTipEscape;
+        var currVal_14 = _co.columns;
+        var currVal_15 = _co.dataToRender;
+        _ck(_v, 21, 0, currVal_6, currVal_7, currVal_8, currVal_9, currVal_10, currVal_11, currVal_12, currVal_13, currVal_14, currVal_15);
     }, null);
 }
 function View_DataTable_14(_l) {
@@ -170,7 +183,7 @@ function View_DataTable_14(_l) {
                 'ui-datatable-scrollable-view ui-datatable-frozen-view'], ['frozen', 'true']], null, null, null, View_ScrollableView_0, exports.RenderType_ScrollableView)),
         i0.ɵdid(278528, null, 0, i2.NgStyle, [i0.KeyValueDiffers, i0.ElementRef,
             i0.Renderer], { ngStyle: [0, 'ngStyle'] }, null), i0.ɵpod({ 'width': 0 }),
-        i0.ɵdid(12763136, null, 0, i1.ScrollableView, [i1.DataTable, i7.DomHandler,
+        i0.ɵdid(12763136, null, 0, i1.ScrollableView, [i1.DataTable, i8.DomHandler,
             i0.ElementRef, i0.Renderer2, i0.NgZone], { columns: [0, 'columns'], frozen: [1, 'frozen'] }, null)], function (_ck, _v) {
         var _co = _v.component;
         var currVal_0 = _ck(_v, 2, 0, _co.frozenWidth);
@@ -200,7 +213,7 @@ function View_DataTable_13(_l) {
         }, View_ScrollableView_0, exports.RenderType_ScrollableView)), i0.ɵdid(278528, null, 0, i2.NgClass, [i0.IterableDiffers, i0.KeyValueDiffers, i0.ElementRef, i0.Renderer], { klass: [0, 'klass'], ngClass: [1, 'ngClass'] }, null), i0.ɵpod({ 'ui-datatable-unfrozen-view': 0 }),
         i0.ɵdid(278528, null, 0, i2.NgStyle, [i0.KeyValueDiffers, i0.ElementRef,
             i0.Renderer], { ngStyle: [0, 'ngStyle'] }, null), i0.ɵpod({ 'width': 0, 'left': 1 }),
-        i0.ɵdid(12763136, null, 0, i1.ScrollableView, [i1.DataTable, i7.DomHandler,
+        i0.ɵdid(12763136, null, 0, i1.ScrollableView, [i1.DataTable, i8.DomHandler,
             i0.ElementRef, i0.Renderer2, i0.NgZone], { columns: [0, 'columns'], virtualScroll: [1,
                 'virtualScroll'] }, { onVirtualScroll: 'onVirtualScroll' }), (_l()(), i0.ɵted(null, ['\n                '])), (_l()(), i0.ɵted(null, ['\n            ']))], function (_ck, _v) {
         var _co = _v.component;
@@ -228,7 +241,7 @@ function View_DataTable_15(_l) {
                 ad = (pd_0 && ad);
             }
             return ad;
-        }, i6.View_Paginator_0, i6.RenderType_Paginator)), i0.ɵdid(49152, null, 0, i5.Paginator, [], { pageLinkSize: [0, 'pageLinkSize'], styleClass: [1,
+        }, i7.View_Paginator_0, i7.RenderType_Paginator)), i0.ɵdid(49152, null, 0, i5.Paginator, [], { pageLinkSize: [0, 'pageLinkSize'], styleClass: [1,
                 'styleClass'], rowsPerPageOptions: [2, 'rowsPerPageOptions'], alwaysShow: [3,
                 'alwaysShow'], totalRecords: [4, 'totalRecords'], first: [5, 'first'], rows: [6,
                 'rows'] }, { onPageChange: 'onPageChange' })], function (_ck, _v) {
@@ -296,14 +309,17 @@ function View_DataTable_0(_l) {
 exports.View_DataTable_0 = View_DataTable_0;
 function View_DataTable_Host_0(_l) {
     return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, null, null, 9, 'p-dataTable', [], null, null, null, View_DataTable_0, exports.RenderType_DataTable)),
-        i0.ɵprd(512, null, i7.DomHandler, i7.DomHandler, []), i0.ɵprd(512, null, i8.ObjectUtils, i8.ObjectUtils, []), i0.ɵdid(14139392, null, 6, i1.DataTable, [i0.ElementRef, i7.DomHandler, i0.IterableDiffers,
-            i0.Renderer2, i0.ChangeDetectorRef, i8.ObjectUtils, i0.NgZone], null, null), i0.ɵqud(335544320, 1, { header: 0 }), i0.ɵqud(335544320, 2, { footer: 0 }),
+        i0.ɵprd(512, null, i8.DomHandler, i8.DomHandler, []), i0.ɵprd(512, null, i9.ObjectUtils, i9.ObjectUtils, []), i0.ɵdid(14139392, null, 6, i1.DataTable, [i0.ElementRef, i8.DomHandler, i0.IterableDiffers,
+            i0.Renderer2, i0.ChangeDetectorRef, i9.ObjectUtils, i0.NgZone], null, null), i0.ɵqud(335544320, 1, { header: 0 }), i0.ɵqud(335544320, 2, { footer: 0 }),
         i0.ɵqud(603979776, 3, { templates: 1 }), i0.ɵqud(603979776, 4, { cols: 1 }), i0.ɵqud(335544320, 5, { headerColumnGroup: 0 }), i0.ɵqud(335544320, 6, { footerColumnGroup: 0 })], function (_ck, _v) {
         _ck(_v, 3, 0);
     }, null);
 }
 exports.View_DataTable_Host_0 = View_DataTable_Host_0;
-exports.DataTableNgFactory = i0.ɵccf('p-dataTable', i1.DataTable, View_DataTable_Host_0, { paginator: 'paginator', rows: 'rows', pageLinks: 'pageLinks',
+exports.DataTableNgFactory = i0.ɵccf('p-dataTable', i1.DataTable, View_DataTable_Host_0, { toolTipMessage: 'toolTipMessage', toolTipPosition: 'toolTipPosition',
+    toolTipEvent: 'toolTipEvent', positionStyles: 'positionStyles', toolTipDisabled: 'toolTipDisabled',
+    toolTipAppendTo: 'toolTipAppendTo', toolTipStyleClasses: 'toolTipStyleClasses',
+    toolTipEscape: 'toolTipEscape', paginator: 'paginator', rows: 'rows', pageLinks: 'pageLinks',
     rowsPerPageOptions: 'rowsPerPageOptions', responsive: 'responsive', stacked: 'stacked',
     selectionMode: 'selectionMode', editable: 'editable', headerCheckboxToggleAllPages: 'headerCheckboxToggleAllPages',
     filterDelay: 'filterDelay', lazy: 'lazy', resizableColumns: 'resizableColumns',
@@ -461,7 +477,7 @@ function View_ColumnHeaders_3(_l) {
 function View_ColumnHeaders_4(_l) {
     return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, null, null, 4, 'span', [['class',
                 'ui-column-title']], null, null, null, null, null)), (_l()(), i0.ɵted(null, ['\n                    '])), (_l()(),
-            i0.ɵeld(16777216, null, null, 1, 'p-columnHeaderTemplateLoader', [], null, null, null, i9.View_ColumnHeaderTemplateLoader_0, i9.RenderType_ColumnHeaderTemplateLoader)), i0.ɵdid(245760, null, 0, i4.ColumnHeaderTemplateLoader, [i0.ViewContainerRef], { column: [0, 'column'] }, null), (_l()(), i0.ɵted(null, ['\n                ']))], function (_ck, _v) {
+            i0.ɵeld(16777216, null, null, 1, 'p-columnHeaderTemplateLoader', [], null, null, null, i10.View_ColumnHeaderTemplateLoader_0, i10.RenderType_ColumnHeaderTemplateLoader)), i0.ɵdid(245760, null, 0, i4.ColumnHeaderTemplateLoader, [i0.ViewContainerRef], { column: [0, 'column'] }, null), (_l()(), i0.ɵted(null, ['\n                ']))], function (_ck, _v) {
         var currVal_0 = _v.parent.context.$implicit;
         _ck(_v, 3, 0, currVal_0);
     }, null);
@@ -503,7 +519,7 @@ function View_ColumnHeaders_6(_l) {
     });
 }
 function View_ColumnHeaders_7(_l) {
-    return i0.ɵvid(0, [(_l()(), i0.ɵeld(16777216, null, null, 1, 'p-columnFilterTemplateLoader', [], null, null, null, i9.View_ColumnFilterTemplateLoader_0, i9.RenderType_ColumnFilterTemplateLoader)), i0.ɵdid(245760, null, 0, i4.ColumnFilterTemplateLoader, [i0.ViewContainerRef], { column: [0, 'column'] }, null), (_l()(), i0.ɵand(0, null, null, 0))], function (_ck, _v) {
+    return i0.ɵvid(0, [(_l()(), i0.ɵeld(16777216, null, null, 1, 'p-columnFilterTemplateLoader', [], null, null, null, i10.View_ColumnFilterTemplateLoader_0, i10.RenderType_ColumnFilterTemplateLoader)), i0.ɵdid(245760, null, 0, i4.ColumnFilterTemplateLoader, [i0.ViewContainerRef], { column: [0, 'column'] }, null), (_l()(), i0.ɵand(0, null, null, 0))], function (_ck, _v) {
         var currVal_0 = _v.parent.context.$implicit;
         _ck(_v, 1, 0, currVal_0);
     }, null);
@@ -637,7 +653,7 @@ function View_ColumnFooters_2(_l) {
 function View_ColumnFooters_3(_l) {
     return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, null, null, 4, 'span', [['class',
                 'ui-column-footer']], null, null, null, null, null)), (_l()(), i0.ɵted(null, ['\n                '])), (_l()(),
-            i0.ɵeld(16777216, null, null, 1, 'p-columnFooterTemplateLoader', [], null, null, null, i9.View_ColumnFooterTemplateLoader_0, i9.RenderType_ColumnFooterTemplateLoader)), i0.ɵdid(245760, null, 0, i4.ColumnFooterTemplateLoader, [i0.ViewContainerRef], { column: [0, 'column'] }, null), (_l()(), i0.ɵted(null, ['\n            ']))], function (_ck, _v) {
+            i0.ɵeld(16777216, null, null, 1, 'p-columnFooterTemplateLoader', [], null, null, null, i10.View_ColumnFooterTemplateLoader_0, i10.RenderType_ColumnFooterTemplateLoader)), i0.ɵdid(245760, null, 0, i4.ColumnFooterTemplateLoader, [i0.ViewContainerRef], { column: [0, 'column'] }, null), (_l()(), i0.ɵted(null, ['\n            ']))], function (_ck, _v) {
         var currVal_0 = _v.parent.context.$implicit;
         _ck(_v, 3, 0, currVal_0);
     }, null);
@@ -723,7 +739,7 @@ function View_TableBody_2(_l) {
         i0.ɵdid(16384, null, 0, i2.NgIf, [i0.ViewContainerRef, i0.TemplateRef], { ngIf: [0,
                 'ngIf'] }, null), (_l()(), i0.ɵted(null, ['\n                    '])),
         (_l()(), i0.ɵeld(0, null, null, 4, 'span', [['class', 'ui-rowgroup-header-name']], null, null, null, null, null)),
-        (_l()(), i0.ɵted(null, ['\n                        '])), (_l()(), i0.ɵeld(16777216, null, null, 1, 'p-templateLoader', [], null, null, null, i9.View_TemplateLoader_0, i9.RenderType_TemplateLoader)),
+        (_l()(), i0.ɵted(null, ['\n                        '])), (_l()(), i0.ɵeld(16777216, null, null, 1, 'p-templateLoader', [], null, null, null, i10.View_TemplateLoader_0, i10.RenderType_TemplateLoader)),
         i0.ɵdid(245760, null, 0, i4.TemplateLoader, [i0.ViewContainerRef], { template: [0,
                 'template'], data: [1, 'data'] }, null), (_l()(), i0.ɵted(null, ['\n                    '])), (_l()(), i0.ɵted(null, ['\n                '])),
         (_l()(), i0.ɵted(null, ['\n            ']))], function (_ck, _v) {
@@ -749,9 +765,9 @@ function View_TableBody_7(_l) {
     });
 }
 function View_TableBody_8(_l) {
-    return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, null, null, 1, 'span', [['class',
+    return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, null, null, 2, 'span', [['class',
                 'ui-cell-data']], null, null, null, null, null)),
-        (_l()(), i0.ɵted(null, ['', '']))], null, function (_ck, _v) {
+        (_l()(), i0.ɵted(null, ['', ''])), (_l()(), i0.ɵeld(0, null, null, 0, 'i', [['aria-hidden', 'true'], ['class', 'fa fa-pencil-square-o editable-cell-icon']], null, null, null, null, null))], null, function (_ck, _v) {
         var _co = _v.component;
         var currVal_0 = _co.dt.resolveFieldData(_v.parent.parent.parent.parent.context.$implicit, _v.parent.parent.context.$implicit.field);
         _ck(_v, 1, 0, currVal_0);
@@ -760,7 +776,7 @@ function View_TableBody_8(_l) {
 function View_TableBody_9(_l) {
     return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, null, null, 4, 'span', [['class',
                 'ui-cell-data']], null, null, null, null, null)),
-        (_l()(), i0.ɵted(null, ['\n                            '])), (_l()(), i0.ɵeld(16777216, null, null, 1, 'p-columnBodyTemplateLoader', [], null, null, null, i9.View_ColumnBodyTemplateLoader_0, i9.RenderType_ColumnBodyTemplateLoader)), i0.ɵdid(770048, null, 0, i4.ColumnBodyTemplateLoader, [i0.ViewContainerRef], { column: [0, 'column'], rowData: [1,
+        (_l()(), i0.ɵted(null, ['\n                            '])), (_l()(), i0.ɵeld(16777216, null, null, 1, 'p-columnBodyTemplateLoader', [], null, null, null, i10.View_ColumnBodyTemplateLoader_0, i10.RenderType_ColumnBodyTemplateLoader)), i0.ɵdid(770048, null, 0, i4.ColumnBodyTemplateLoader, [i0.ViewContainerRef], { column: [0, 'column'], rowData: [1,
                 'rowData'], rowIndex: [2, 'rowIndex'] }, null), (_l()(), i0.ɵted(null, ['\n                        ']))], function (_ck, _v) {
         var _co = _v.component;
         var currVal_0 = _v.parent.parent.context.$implicit;
@@ -842,7 +858,7 @@ function View_TableBody_12(_l) {
         }, null, null))], null, null);
 }
 function View_TableBody_13(_l) {
-    return i0.ɵvid(0, [(_l()(), i0.ɵeld(16777216, null, null, 1, 'p-columnEditorTemplateLoader', [], null, null, null, i9.View_ColumnEditorTemplateLoader_0, i9.RenderType_ColumnEditorTemplateLoader)), i0.ɵdid(245760, null, 0, i4.ColumnEditorTemplateLoader, [i0.ViewContainerRef], { column: [0, 'column'], rowData: [1, 'rowData'], rowIndex: [2,
+    return i0.ɵvid(0, [(_l()(), i0.ɵeld(16777216, null, null, 1, 'p-columnEditorTemplateLoader', [], null, null, null, i10.View_ColumnEditorTemplateLoader_0, i10.RenderType_ColumnEditorTemplateLoader)), i0.ɵdid(245760, null, 0, i4.ColumnEditorTemplateLoader, [i0.ViewContainerRef], { column: [0, 'column'], rowData: [1, 'rowData'], rowIndex: [2,
                 'rowIndex'] }, null), (_l()(), i0.ɵand(0, null, null, 0))], function (_ck, _v) {
         var currVal_0 = _v.parent.parent.parent.context.$implicit;
         var currVal_1 = _v.parent.parent.parent.parent.parent.context.$implicit;
@@ -936,19 +952,39 @@ function View_TableBody_17(_l) {
     }, null);
 }
 function View_TableBody_6(_l) {
-    return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, [['cell', 1]], null, 25, 'td', [], [[1, 'rowspan', 0]], [[null, 'click']], function (_v, en, $event) {
+    return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, [['cell', 1]], null, 27, 'td', [], [[1, 'rowspan', 0]], [[null, 'click'], [null, 'mouseenter'], [null,
+                'mouseleave'], [null, 'focus'], [null, 'blur']], function (_v, en, $event) {
             var ad = true;
             var _co = _v.component;
-            if (('click' === en)) {
-                var pd_0 = (_co.dt.switchCellToEditMode(i0.ɵnov(_v, 0), _v.parent.context.$implicit, _v.parent.parent.parent.context.$implicit) !== false);
+            if (('mouseenter' === en)) {
+                var pd_0 = (i0.ɵnov(_v, 5).onMouseEnter($event) !== false);
                 ad = (pd_0 && ad);
+            }
+            if (('mouseleave' === en)) {
+                var pd_1 = (i0.ɵnov(_v, 5).onMouseLeave($event) !== false);
+                ad = (pd_1 && ad);
+            }
+            if (('focus' === en)) {
+                var pd_2 = (i0.ɵnov(_v, 5).onFocus($event) !== false);
+                ad = (pd_2 && ad);
+            }
+            if (('blur' === en)) {
+                var pd_3 = (i0.ɵnov(_v, 5).onBlur($event) !== false);
+                ad = (pd_3 && ad);
+            }
+            if (('click' === en)) {
+                var pd_4 = (_co.dt.switchCellToEditMode(i0.ɵnov(_v, 0), _v.parent.context.$implicit, _v.parent.parent.parent.context.$implicit) !== false);
+                ad = (pd_4 && ad);
             }
             return ad;
         }, null, null)), i0.ɵdid(278528, null, 0, i2.NgClass, [i0.IterableDiffers,
             i0.KeyValueDiffers, i0.ElementRef, i0.Renderer], { klass: [0, 'klass'], ngClass: [1,
                 'ngClass'] }, null), i0.ɵpod({ 'ui-editable-column': 0, 'ui-selection-column': 1,
             'ui-helper-hidden': 2 }), i0.ɵdid(278528, null, 0, i2.NgStyle, [i0.KeyValueDiffers,
-            i0.ElementRef, i0.Renderer], { ngStyle: [0, 'ngStyle'] }, null), (_l()(), i0.ɵted(null, ['\n                        '])), (_l()(), i0.ɵand(16777216, null, null, 1, null, View_TableBody_7)), i0.ɵdid(16384, null, 0, i2.NgIf, [i0.ViewContainerRef,
+            i0.ElementRef, i0.Renderer], { ngStyle: [0, 'ngStyle'] }, null), i0.ɵprd(512, null, i8.DomHandler, i8.DomHandler, []), i0.ɵdid(147456, null, 0, i6.Tooltip, [i0.ElementRef, i8.DomHandler, i0.Renderer2], { tooltipPosition: [0,
+                'tooltipPosition'], tooltipEvent: [1, 'tooltipEvent'], positionStyle: [2, 'positionStyle'],
+            tooltipStyleClass: [3, 'tooltipStyleClass'], disabled: [4, 'disabled'], escape: [5,
+                'escape'], text: [6, 'text'] }, null), (_l()(), i0.ɵted(null, ['\n                        '])), (_l()(), i0.ɵand(16777216, null, null, 1, null, View_TableBody_7)), i0.ɵdid(16384, null, 0, i2.NgIf, [i0.ViewContainerRef,
             i0.TemplateRef], { ngIf: [0, 'ngIf'] }, null), (_l()(), i0.ɵted(null, ['\n                        '])), (_l()(), i0.ɵand(16777216, null, null, 1, null, View_TableBody_8)), i0.ɵdid(16384, null, 0, i2.NgIf, [i0.ViewContainerRef,
             i0.TemplateRef], { ngIf: [0, 'ngIf'] }, null), (_l()(), i0.ɵted(null, ['\n                        '])), (_l()(), i0.ɵand(16777216, null, null, 1, null, View_TableBody_9)), i0.ɵdid(16384, null, 0, i2.NgIf, [i0.ViewContainerRef,
             i0.TemplateRef], { ngIf: [0, 'ngIf'] }, null), (_l()(), i0.ɵted(null, ['\n                        '])), (_l()(), i0.ɵand(16777216, null, null, 1, null, View_TableBody_10)), i0.ɵdid(16384, null, 0, i2.NgIf, [i0.ViewContainerRef,
@@ -962,20 +998,28 @@ function View_TableBody_6(_l) {
         _ck(_v, 1, 0, currVal_1, currVal_2);
         var currVal_3 = _v.parent.context.$implicit.style;
         _ck(_v, 3, 0, currVal_3);
-        var currVal_4 = _co.dt.responsive;
-        _ck(_v, 6, 0, currVal_4);
-        var currVal_5 = ((!_v.parent.context.$implicit.bodyTemplate && !_v.parent.context.$implicit.expander) && !_v.parent.context.$implicit.selectionMode);
-        _ck(_v, 9, 0, currVal_5);
-        var currVal_6 = _v.parent.context.$implicit.bodyTemplate;
-        _ck(_v, 12, 0, currVal_6);
-        var currVal_7 = _v.parent.context.$implicit.editable;
-        _ck(_v, 15, 0, currVal_7);
-        var currVal_8 = _v.parent.context.$implicit.expander;
-        _ck(_v, 18, 0, currVal_8);
-        var currVal_9 = (_v.parent.context.$implicit.selectionMode == 'single');
-        _ck(_v, 21, 0, currVal_9);
-        var currVal_10 = (_v.parent.context.$implicit.selectionMode == 'multiple');
-        _ck(_v, 24, 0, currVal_10);
+        var currVal_4 = _co.toolTipPos;
+        var currVal_5 = _co.toolTipEve;
+        var currVal_6 = _co.toolTipPosStyle;
+        var currVal_7 = _co.toolTipStyleClasses;
+        var currVal_8 = _co.toolTipDis;
+        var currVal_9 = _co.toolTipEscape;
+        var currVal_10 = _co.toolTipMsg;
+        _ck(_v, 5, 0, currVal_4, currVal_5, currVal_6, currVal_7, currVal_8, currVal_9, currVal_10);
+        var currVal_11 = _co.dt.responsive;
+        _ck(_v, 8, 0, currVal_11);
+        var currVal_12 = ((!_v.parent.context.$implicit.bodyTemplate && !_v.parent.context.$implicit.expander) && !_v.parent.context.$implicit.selectionMode);
+        _ck(_v, 11, 0, currVal_12);
+        var currVal_13 = _v.parent.context.$implicit.bodyTemplate;
+        _ck(_v, 14, 0, currVal_13);
+        var currVal_14 = _v.parent.context.$implicit.editable;
+        _ck(_v, 17, 0, currVal_14);
+        var currVal_15 = _v.parent.context.$implicit.expander;
+        _ck(_v, 20, 0, currVal_15);
+        var currVal_16 = (_v.parent.context.$implicit.selectionMode == 'single');
+        _ck(_v, 23, 0, currVal_16);
+        var currVal_17 = (_v.parent.context.$implicit.selectionMode == 'multiple');
+        _ck(_v, 26, 0, currVal_17);
     }, function (_ck, _v) {
         var _co = _v.component;
         var currVal_0 = ((((_co.dt.rowGroupMode == 'rowspan') && (_co.dt.sortField == _v.parent.context.$implicit.field)) && (_co.dt.rowGroupMetadata[_co.dt.resolveFieldData(_v.parent.parent.parent.context.$implicit, _co.dt.sortField)].index == _v.parent.parent.parent.context.index)) ? _co.dt.rowGroupMetadata[_co.dt.resolveFieldData(_v.parent.parent.parent.context.$implicit, _co.dt.sortField)].size : null);
@@ -1028,7 +1072,7 @@ function View_TableBody_18(_l) {
     return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, null, null, 4, 'tr', [['class',
                 'ui-widget-header']], null, null, null, null, null)), (_l()(), i0.ɵted(null, ['\n                '])), (_l()(),
             i0.ɵeld(16777216, null, null, 1, 'p-templateLoader', [['class',
-                    'ui-helper-hidden']], null, null, null, i9.View_TemplateLoader_0, i9.RenderType_TemplateLoader)), i0.ɵdid(245760, null, 0, i4.TemplateLoader, [i0.ViewContainerRef], { template: [0, 'template'], data: [1, 'data'] }, null),
+                    'ui-helper-hidden']], null, null, null, i10.View_TemplateLoader_0, i10.RenderType_TemplateLoader)), i0.ɵdid(245760, null, 0, i4.TemplateLoader, [i0.ViewContainerRef], { template: [0, 'template'], data: [1, 'data'] }, null),
         (_l()(), i0.ɵted(null, ['\n            ']))], function (_ck, _v) {
         var _co = _v.component;
         var currVal_0 = _co.dt.rowGroupFooterTemplate;
@@ -1100,7 +1144,10 @@ function View_TableBody_Host_0(_l) {
     }, null);
 }
 exports.View_TableBody_Host_0 = View_TableBody_Host_0;
-exports.TableBodyNgFactory = i0.ɵccf('[pTableBody]', i1.TableBody, View_TableBody_Host_0, { columns: 'pTableBody', data: 'data' }, {}, []);
+exports.TableBodyNgFactory = i0.ɵccf('[pTableBody]', i1.TableBody, View_TableBody_Host_0, { toolTipMsg: 'pTooltipMsg', toolTipPos: 'pTooltipPos',
+    toolTipEve: 'pTooltipEve', toolTipPosStyle: 'pToolTipPosStyle', toolTipDis: 'pTooltipDis',
+    toolTipAppendTo: 'pTooltipAppendTo', toolTipStyleClasess: 'pTooltipStyleClasess',
+    toolTipEsc: 'pTooltipEscape', columns: 'pTableBody', data: 'data' }, {}, []);
 var styles_ScrollableView = [];
 exports.RenderType_ScrollableView = i0.ɵcrt({ encapsulation: 2,
     styles: styles_ScrollableView, data: {} });
@@ -1273,7 +1320,7 @@ exports.View_ScrollableView_0 = View_ScrollableView_0;
 function View_ScrollableView_Host_0(_l) {
     return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, null, null, 1, 'div', [['pScrollableView',
                 '']], null, null, null, View_ScrollableView_0, exports.RenderType_ScrollableView)),
-        i0.ɵdid(12763136, null, 0, i1.ScrollableView, [i1.DataTable, i7.DomHandler,
+        i0.ɵdid(12763136, null, 0, i1.ScrollableView, [i1.DataTable, i8.DomHandler,
             i0.ElementRef, i0.Renderer2, i0.NgZone], { columns: [0, 'columns'] }, null)], function (_ck, _v) {
         var currVal_0 = '';
         _ck(_v, 1, 0, currVal_0);

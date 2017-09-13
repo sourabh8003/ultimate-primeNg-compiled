@@ -43,6 +43,14 @@ export declare class ColumnFooters {
 export declare class TableBody {
     dt: DataTable;
     constructor(dt: DataTable);
+    toolTipMsg: string;
+    toolTipPos: string;
+    toolTipEve: string;
+    toolTipPosStyle: string;
+    toolTipDis: string;
+    toolTipAppendTo: string;
+    toolTipStyleClasess: string;
+    toolTipEsc: string;
     columns: Column[];
     data: any[];
     visibleColumns(): Column[];
@@ -96,6 +104,14 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
     changeDetector: ChangeDetectorRef;
     objectUtils: ObjectUtils;
     zone: NgZone;
+    toolTipMessage: string;
+    toolTipPosition: string;
+    toolTipEvent: string;
+    positionStyles: string;
+    toolTipDisabled: boolean;
+    toolTipAppendTo: string;
+    toolTipStyleClasses: string;
+    toolTipEscape: boolean;
     paginator: boolean;
     rows: number;
     pageLinks: number;

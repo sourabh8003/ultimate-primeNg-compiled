@@ -229,6 +229,17 @@
 .ui-rtl .ui-accordion .ui-accordion-header > .fa-caret-right:before {
     content: '\f0d9';
 }
+.ui-blockui {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.ui-blockui-document {
+    position: fixed;
+}
 .ui-autocomplete {
     width: auto;
     zoom: 1;
@@ -386,17 +397,6 @@
 
 .ui-fluid .ui-autocomplete .ui-autocomplete-dropdown.ui-button {
     width: 2em;
-}
-.ui-blockui {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.ui-blockui-document {
-    position: fixed;
 }
 /** Breadcrumb **/
 .ui-breadcrumb {
@@ -963,32 +963,6 @@ button.ui-button::-moz-focus-inner {
 .ui-carousel .ui-carousel-mobiledropdown {
     display: none;
 }
-.ui-chkbox {
-    display: inline-block;
-    cursor: pointer;
-    vertical-align: middle;
-    margin-right: .25em;
-}
-
-.ui-chkbox .ui-chkbox-box {
-    width: 1.125em;
-    height: 1.125em;
-    line-height: 1.125em;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
-    text-align: center;
-}
-
-.ui-chkbox .ui-chkbox-icon {
-    display: block;
-}
-
-.ui-chkbox-label {
-    vertical-align: middle;  
-}
-
-
 .ui-chips > ul.ui-inputtext {
     clear: left;
     cursor: text;
@@ -1048,6 +1022,32 @@ button.ui-button::-moz-focus-inner {
     -webkit-border-radius: 0;
     border-radius: 0;
 }
+.ui-chkbox {
+    display: inline-block;
+    cursor: pointer;
+    vertical-align: middle;
+    margin-right: .25em;
+}
+
+.ui-chkbox .ui-chkbox-box {
+    width: 1.125em;
+    height: 1.125em;
+    line-height: 1.125em;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    text-align: center;
+}
+
+.ui-chkbox .ui-chkbox-icon {
+    display: block;
+}
+
+.ui-chkbox-label {
+    vertical-align: middle;  
+}
+
+
 .ui-colorpicker {
     display: inline-block;
 } 
@@ -1519,7 +1519,7 @@ button.ui-button::-moz-focus-inner {
 }
 
 .ui-datatable-scrollable-view {
-    
+
 }
 
 .ui-datatable-frozen-view .ui-datatable-scrollable-body {
@@ -1594,11 +1594,20 @@ button.ui-button::-moz-focus-inner {
         margin: -.4em 1em -.4em -.4em;
         font-weight: bold;
     }
-    
+
     .ui-datatable-reflow.ui-datatable-scrollable .ui-datatable-scrollable-body colgroup {
         display: block;
     }
 }
+.editable-cell-icon {
+  float: right;
+  display: none;
+}
+.ui-editable-column:hover > .ui-cell-data > .editable-cell-icon {
+  display: block;
+  opacity: 0.6;
+}
+
 .ui-dialog {
     position: fixed;
     padding: 0;
@@ -1999,6 +2008,71 @@ button.ui-button::-moz-focus-inner {
 
 .ui-galleria-panel-content {
     padding: 1em 1.4em;
+}
+.ui-growl {
+	position:fixed;
+	top: 20px;
+	right: 20px;
+	width: 20em;
+}
+
+.ui-growl-item-container {
+	position:relative;
+	margin:0 0 10px 0;
+	opacity:0.95;
+	filter:alpha(opacity=95);
+}
+
+.ui-growl-item {
+    position: relative;
+	display: block;
+	padding: .5em 1em;
+}
+
+.ui-growl-item p {
+	padding: 0;
+	margin: 0;
+}
+
+.ui-growl-icon-close {
+	position: absolute;
+	top: 4px;
+	right: 4px;
+	cursor: pointer;
+}
+
+.ui-growl-title {
+	font-weight: bold;
+	padding: 0 0 .5em 0;
+	display: block;
+}
+
+.ui-growl-image {
+    position: absolute;
+    display: inline-block;
+    left: .5em;
+    top: .25em;
+    padding: 0;
+}
+
+.ui-growl-message {
+	padding: 0 0 .25em 0;
+    margin-left: 2.5em;
+}
+
+.ui-growl-message p {
+	font-weight: normal;
+}
+.ui-inplace .ui-inplace-display {
+    display: inline;
+    cursor: pointer;
+    border: 0 none;
+    padding: .25em;
+    font-weight: normal;
+}
+
+.ui-inplace .ui-inplace-content {
+    display: inline;
 }
 /* Deprecated Grid CSS */
 .ui-grid {
@@ -2775,71 +2849,6 @@ button.ui-button::-moz-focus-inner {
     padding: 0;
 }
 
-.ui-growl {
-	position:fixed;
-	top: 20px;
-	right: 20px;
-	width: 20em;
-}
-
-.ui-growl-item-container {
-	position:relative;
-	margin:0 0 10px 0;
-	opacity:0.95;
-	filter:alpha(opacity=95);
-}
-
-.ui-growl-item {
-    position: relative;
-	display: block;
-	padding: .5em 1em;
-}
-
-.ui-growl-item p {
-	padding: 0;
-	margin: 0;
-}
-
-.ui-growl-icon-close {
-	position: absolute;
-	top: 4px;
-	right: 4px;
-	cursor: pointer;
-}
-
-.ui-growl-title {
-	font-weight: bold;
-	padding: 0 0 .5em 0;
-	display: block;
-}
-
-.ui-growl-image {
-    position: absolute;
-    display: inline-block;
-    left: .5em;
-    top: .25em;
-    padding: 0;
-}
-
-.ui-growl-message {
-	padding: 0 0 .25em 0;
-    margin-left: 2.5em;
-}
-
-.ui-growl-message p {
-	font-weight: normal;
-}
-.ui-inplace .ui-inplace-display {
-    display: inline;
-    cursor: pointer;
-    border: 0 none;
-    padding: .25em;
-    font-weight: normal;
-}
-
-.ui-inplace .ui-inplace-content {
-    display: inline;
-}
 .ui-inputswitch {
 	display: inline-block;
 	padding: 0;
@@ -3958,26 +3967,6 @@ button.ui-button::-moz-focus-inner {
 .ui-panel-content-wrapper-overflown {
     overflow: hidden;
 }     
-.ui-password-panel {
-    padding: .25em .5em;
-    width: 10em;
-    margin-top: 2px;
-}
-
-.ui-password-panel .ui-password-meter { 
-    height: 10px; 
-    background:transparent url("./images/password-meter.png") no-repeat left top; 
-    padding: 0;
-    margin: 0;
-}
-
-.ui-password-info { 
-    margin-top: .25em;
-}
-
-.ui-password-panel-overlay { 
-    position: absolute; 
-}
 .ui-picklist > div {
     float: left;
 }
@@ -4181,6 +4170,26 @@ button.ui-button::-moz-focus-inner {
     }
 }
 
+.ui-password-panel {
+    padding: .25em .5em;
+    width: 10em;
+    margin-top: 2px;
+}
+
+.ui-password-panel .ui-password-meter { 
+    height: 10px; 
+    background:transparent url("./images/password-meter.png") no-repeat left top; 
+    padding: 0;
+    margin: 0;
+}
+
+.ui-password-info { 
+    margin-top: .25em;
+}
+
+.ui-password-panel-overlay { 
+    position: absolute; 
+}
 .ui-progressbar { 
     height: 1.2em; 
     text-align: left; 
