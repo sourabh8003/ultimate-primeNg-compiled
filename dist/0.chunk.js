@@ -2410,8 +2410,9 @@ var _a, _b, _c, _d, _e, _f;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_shared__ = __webpack_require__("./src/app/components/common/shared.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__paginator_paginator__ = __webpack_require__("./src/app/components/paginator/paginator.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_objectutils__ = __webpack_require__("./src/app/components/utils/objectutils.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__tooltip_tooltip__ = __webpack_require__("./src/app/components/tooltip/tooltip.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__utils_objectutils__ = __webpack_require__("./src/app/components/utils/objectutils.ts");
 /* unused harmony export DTRadioButton */
 /* unused harmony export DTCheckbox */
 /* unused harmony export RowExpansionLoader */
@@ -2433,6 +2434,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+
 
 
 
@@ -2578,6 +2580,38 @@ var TableBody = (function () {
     return TableBody;
 }());
 __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])("pTooltipMsg"),
+    __metadata("design:type", String)
+], TableBody.prototype, "toolTipMsg", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])("pTooltipPos"),
+    __metadata("design:type", String)
+], TableBody.prototype, "toolTipPos", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])("pTooltipEve"),
+    __metadata("design:type", String)
+], TableBody.prototype, "toolTipEve", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])("pToolTipPosStyle"),
+    __metadata("design:type", String)
+], TableBody.prototype, "toolTipPosStyle", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])("pTooltipDis"),
+    __metadata("design:type", String)
+], TableBody.prototype, "toolTipDis", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])("pTooltipAppendTo"),
+    __metadata("design:type", String)
+], TableBody.prototype, "toolTipAppendTo", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])("pTooltipStyleClasess"),
+    __metadata("design:type", String)
+], TableBody.prototype, "toolTipStyleClasess", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])("pTooltipEscape"),
+    __metadata("design:type", String)
+], TableBody.prototype, "toolTipEsc", void 0);
+__decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])("pTableBody"),
     __metadata("design:type", Array)
 ], TableBody.prototype, "columns", void 0);
@@ -2588,7 +2622,7 @@ __decorate([
 TableBody = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
         selector: '[pTableBody]',
-        template: "\n        <ng-template ngFor let-rowData [ngForOf]=\"data\" let-even=\"even\" let-odd=\"odd\" let-rowIndex=\"index\" [ngForTrackBy]=\"dt.rowTrackBy\">\n            <tr #rowGroupElement class=\"ui-widget-header ui-rowgroup-header\" \n                *ngIf=\"dt.rowGroupMode=='subheader' && (rowIndex === 0||(dt.resolveFieldData(rowData,dt.groupField) !== dt.resolveFieldData(dt.dataToRender[rowIndex - 1], dt.groupField)))\"\n                (click)=\"dt.onRowGroupClick($event)\" [ngStyle]=\"{'cursor': dt.sortableRowGroup ? 'pointer' : 'auto'}\">\n                <td [attr.colspan]=\"dt.visibleColumns().length\">\n                    <a href=\"#\" *ngIf=\"dt.expandableRowGroups\" (click)=\"dt.toggleRowGroup($event,rowData)\">\n                        <span class=\"fa fa-fw\" [ngClass]=\"dt.isRowGroupExpanded(rowData) ? dt.expandedIcon : dt.collapsedIcon\"></span>\n                    </a>\n                    <span class=\"ui-rowgroup-header-name\">\n                        <p-templateLoader [template]=\"dt.rowGroupHeaderTemplate\" [data]=\"rowData\"></p-templateLoader>\n                    </span>\n                </td>\n            </tr>\n            <tr #rowElement *ngIf=\"!dt.expandableRowGroups||dt.isRowGroupExpanded(rowData)\"\n                    (click)=\"dt.handleRowClick($event, rowData, rowIndex)\" (dblclick)=\"dt.rowDblclick($event,rowData)\" (contextmenu)=\"dt.onRowRightClick($event,rowData)\" (touchend)=\"dt.handleRowTouchEnd($event)\"\n                    [ngClass]=\"[even&&dt.rowGroupMode!='rowspan'? 'ui-datatable-even':'',\n                                odd&&dt.rowGroupMode!='rowspan'?'ui-datatable-odd':'',\n                                dt.isSelected(rowData)? 'ui-state-highlight': '', \n                                dt.getRowStyleClass(rowData,rowIndex)]\">\n                <ng-template ngFor let-col [ngForOf]=\"columns\" let-colIndex=\"index\">\n                    <td #cell *ngIf=\"!dt.rowGroupMode || (dt.rowGroupMode == 'subheader') ||\n                        (dt.rowGroupMode=='rowspan' && ((dt.sortField==col.field && dt.rowGroupMetadata[dt.resolveFieldData(rowData,dt.sortField)].index == rowIndex) || (dt.sortField!=col.field)))\"\n                        [ngStyle]=\"col.style\" [class]=\"col.styleClass\" (click)=\"dt.switchCellToEditMode(cell,col,rowData)\"\n                        [ngClass]=\"{'ui-editable-column':col.editable,'ui-selection-column':col.selectionMode, 'ui-helper-hidden': col.hidden}\"\n                        [attr.rowspan]=\"(dt.rowGroupMode=='rowspan' && dt.sortField == col.field && dt.rowGroupMetadata[dt.resolveFieldData(rowData,dt.sortField)].index == rowIndex) ? dt.rowGroupMetadata[dt.resolveFieldData(rowData,dt.sortField)].size : null\">\n                        <span class=\"ui-column-title\" *ngIf=\"dt.responsive\">{{col.header}}</span>\n                        <span class=\"ui-cell-data\" *ngIf=\"!col.bodyTemplate && !col.expander && !col.selectionMode\">{{dt.resolveFieldData(rowData,col.field)}}</span>\n                        <span class=\"ui-cell-data\" *ngIf=\"col.bodyTemplate\">\n                            <p-columnBodyTemplateLoader [column]=\"col\" [rowData]=\"rowData\" [rowIndex]=\"rowIndex + dt.first\"></p-columnBodyTemplateLoader>\n                        </span>\n                        <div class=\"ui-cell-editor\" *ngIf=\"col.editable\">\n                            <input *ngIf=\"!col.editorTemplate\" type=\"text\" [(ngModel)]=\"rowData[col.field]\" required=\"true\"\n                                (keydown)=\"dt.onCellEditorKeydown($event, col, rowData, rowIndex)\" class=\"ui-inputtext ui-widget ui-state-default ui-corner-all\"/>\n                            <a *ngIf=\"col.editorTemplate\" class=\"ui-cell-editor-proxy-focus\" href=\"#\" (focus)=\"dt.onCustomEditorFocusPrev($event, colIndex)\"></a>\n                            <p-columnEditorTemplateLoader *ngIf=\"col.editorTemplate\" [column]=\"col\" [rowData]=\"rowData\" [rowIndex]=\"rowIndex\"></p-columnEditorTemplateLoader>\n                            <a *ngIf=\"col.editorTemplate\" class=\"ui-cell-editor-proxy-focus\" href=\"#\" (focus)=\"dt.onCustomEditorFocusNext($event, colIndex)\"></a>\n                        </div>\n                        <a href=\"#\" *ngIf=\"col.expander\" (click)=\"dt.toggleRow(rowData,$event)\">\n                            <span class=\"ui-row-toggler fa fa-fw ui-clickable\" [ngClass]=\"dt.isRowExpanded(rowData) ? dt.expandedIcon : dt.collapsedIcon\"></span>\n                        </a>\n                        <p-dtRadioButton *ngIf=\"col.selectionMode=='single'\" (onClick)=\"dt.selectRowWithRadio($event, rowData)\" [checked]=\"dt.isSelected(rowData)\"></p-dtRadioButton>\n                        <p-dtCheckbox *ngIf=\"col.selectionMode=='multiple'\" (onChange)=\"dt.toggleRowWithCheckbox($event,rowData)\" [checked]=\"dt.isSelected(rowData)\"></p-dtCheckbox>\n                    </td>\n                </ng-template>\n            </tr>\n            <tr class=\"ui-widget-header\" *ngIf=\"dt.rowGroupFooterTemplate && dt.rowGroupMode=='subheader' && ((rowIndex === dt.dataToRender.length - 1)||(dt.resolveFieldData(rowData,dt.groupField) !== dt.resolveFieldData(dt.dataToRender[rowIndex + 1],dt.groupField))) && (!dt.expandableRowGroups || dt.isRowGroupExpanded(rowData))\">\n                <p-templateLoader class=\"ui-helper-hidden\" [data]=\"rowData\" [template]=\"dt.rowGroupFooterTemplate\"></p-templateLoader>\n            </tr>\n            <tr *ngIf=\"dt.expandableRows && dt.isRowExpanded(rowData)\">\n                <td [attr.colspan]=\"dt.visibleColumns().length\">\n                    <p-rowExpansionLoader [rowData]=\"rowData\" [rowIndex]=\"rowIndex\" [template]=\"dt.rowExpansionTemplate\"></p-rowExpansionLoader>\n                </td>\n            </tr>\n        </ng-template>\n\n        <tr *ngIf=\"dt.isEmpty()\" class=\"ui-widget-content ui-datatable-emptymessage-row\">\n            <td [attr.colspan]=\"dt.visibleColumns().length\" class=\"ui-datatable-emptymessage\">{{dt.emptyMessage}}</td>\n        </tr>\n    "
+        template: "\n        <ng-template ngFor let-rowData [ngForOf]=\"data\" let-even=\"even\" let-odd=\"odd\" let-rowIndex=\"index\" [ngForTrackBy]=\"dt.rowTrackBy\">\n            <tr #rowGroupElement class=\"ui-widget-header ui-rowgroup-header\" \n                *ngIf=\"dt.rowGroupMode=='subheader' && (rowIndex === 0||(dt.resolveFieldData(rowData,dt.groupField) !== dt.resolveFieldData(dt.dataToRender[rowIndex - 1], dt.groupField)))\"\n                (click)=\"dt.onRowGroupClick($event)\" [ngStyle]=\"{'cursor': dt.sortableRowGroup ? 'pointer' : 'auto'}\">\n                <td [attr.colspan]=\"dt.visibleColumns().length\">\n                    <a href=\"#\" *ngIf=\"dt.expandableRowGroups\" (click)=\"dt.toggleRowGroup($event,rowData)\">\n                        <span class=\"fa fa-fw\" [ngClass]=\"dt.isRowGroupExpanded(rowData) ? dt.expandedIcon : dt.collapsedIcon\"></span>\n                    </a>\n                    <span class=\"ui-rowgroup-header-name\">\n                        <p-templateLoader [template]=\"dt.rowGroupHeaderTemplate\" [data]=\"rowData\"></p-templateLoader>\n                    </span>\n                </td>\n            </tr>\n            <tr #rowElement *ngIf=\"!dt.expandableRowGroups||dt.isRowGroupExpanded(rowData)\"\n                    (click)=\"dt.handleRowClick($event, rowData, rowIndex)\" (dblclick)=\"dt.rowDblclick($event,rowData)\" (contextmenu)=\"dt.onRowRightClick($event,rowData)\" (touchend)=\"dt.handleRowTouchEnd($event)\"\n                    [ngClass]=\"[even&&dt.rowGroupMode!='rowspan'? 'ui-datatable-even':'',\n                                odd&&dt.rowGroupMode!='rowspan'?'ui-datatable-odd':'',\n                                dt.isSelected(rowData)? 'ui-state-highlight': '', \n                                dt.getRowStyleClass(rowData,rowIndex)]\">\n                <ng-template ngFor let-col [ngForOf]=\"columns\" let-colIndex=\"index\">\n                    <td #cell *ngIf=\"!dt.rowGroupMode || (dt.rowGroupMode == 'subheader') ||\n                        (dt.rowGroupMode=='rowspan' && ((dt.sortField==col.field && dt.rowGroupMetadata[dt.resolveFieldData(rowData,dt.sortField)].index == rowIndex) || (dt.sortField!=col.field)))\"\n                        [ngStyle]=\"col.style\" [class]=\"col.styleClass\" (click)=\"dt.switchCellToEditMode(cell,col,rowData)\"\n                        [ngClass]=\"{'ui-editable-column':col.editable,'ui-selection-column':col.selectionMode, 'ui-helper-hidden': col.hidden}\"\n                        [attr.rowspan]=\"(dt.rowGroupMode=='rowspan' && dt.sortField == col.field && dt.rowGroupMetadata[dt.resolveFieldData(rowData,dt.sortField)].index == rowIndex) ? dt.rowGroupMetadata[dt.resolveFieldData(rowData,dt.sortField)].size : null\"\n                        [pTooltip]=\"toolTipMsg\" [tooltipPosition]=\"toolTipPos\" [tooltipEvent]=\"toolTipEve\" [positionStyle]=\"toolTipPosStyle\" [tooltipDisabled]=\"toolTipDis\" [tooltipStyleClass]=\"toolTipStyleClasses\" [escape]=\"toolTipEscape\">\n                        <span class=\"ui-column-title\" *ngIf=\"dt.responsive\">{{col.header}}</span>\n                        <span class=\"ui-cell-data\" *ngIf=\"!col.bodyTemplate && !col.expander && !col.selectionMode\">{{dt.resolveFieldData(rowData,col.field)}}<i class=\"fa fa-pencil-square-o editable-cell-icon\" aria-hidden=\"true\"></i></span>\n                        <span class=\"ui-cell-data\" *ngIf=\"col.bodyTemplate\">\n                            <p-columnBodyTemplateLoader [column]=\"col\" [rowData]=\"rowData\" [rowIndex]=\"rowIndex + dt.first\"></p-columnBodyTemplateLoader>\n                        </span>\n                        <div class=\"ui-cell-editor\" *ngIf=\"col.editable\">\n                            <input *ngIf=\"!col.editorTemplate\" type=\"text\" [(ngModel)]=\"rowData[col.field]\" required=\"true\"\n                                (keydown)=\"dt.onCellEditorKeydown($event, col, rowData, rowIndex)\" class=\"ui-inputtext ui-widget ui-state-default ui-corner-all\"/>\n                            <a *ngIf=\"col.editorTemplate\" class=\"ui-cell-editor-proxy-focus\" href=\"#\" (focus)=\"dt.onCustomEditorFocusPrev($event, colIndex)\"></a>\n                            <p-columnEditorTemplateLoader *ngIf=\"col.editorTemplate\" [column]=\"col\" [rowData]=\"rowData\" [rowIndex]=\"rowIndex\"></p-columnEditorTemplateLoader>\n                            <a *ngIf=\"col.editorTemplate\" class=\"ui-cell-editor-proxy-focus\" href=\"#\" (focus)=\"dt.onCustomEditorFocusNext($event, colIndex)\"></a>\n                        </div>\n                        <a href=\"#\" *ngIf=\"col.expander\" (click)=\"dt.toggleRow(rowData,$event)\">\n                            <span class=\"ui-row-toggler fa fa-fw ui-clickable\" [ngClass]=\"dt.isRowExpanded(rowData) ? dt.expandedIcon : dt.collapsedIcon\"></span>\n                        </a>\n                        <p-dtRadioButton *ngIf=\"col.selectionMode=='single'\" (onClick)=\"dt.selectRowWithRadio($event, rowData)\" [checked]=\"dt.isSelected(rowData)\"></p-dtRadioButton>\n                        <p-dtCheckbox *ngIf=\"col.selectionMode=='multiple'\" (onChange)=\"dt.toggleRowWithCheckbox($event,rowData)\" [checked]=\"dt.isSelected(rowData)\"></p-dtCheckbox>\n                    </td>\n                </ng-template>\n            </tr>\n            <tr class=\"ui-widget-header\" *ngIf=\"dt.rowGroupFooterTemplate && dt.rowGroupMode=='subheader' && ((rowIndex === dt.dataToRender.length - 1)||(dt.resolveFieldData(rowData,dt.groupField) !== dt.resolveFieldData(dt.dataToRender[rowIndex + 1],dt.groupField))) && (!dt.expandableRowGroups || dt.isRowGroupExpanded(rowData))\">\n                <p-templateLoader class=\"ui-helper-hidden\" [data]=\"rowData\" [template]=\"dt.rowGroupFooterTemplate\"></p-templateLoader>\n            </tr>\n            <tr *ngIf=\"dt.expandableRows && dt.isRowExpanded(rowData)\">\n                <td [attr.colspan]=\"dt.visibleColumns().length\">\n                    <p-rowExpansionLoader [rowData]=\"rowData\" [rowIndex]=\"rowIndex\" [template]=\"dt.rowExpansionTemplate\"></p-rowExpansionLoader>\n                </td>\n            </tr>\n        </ng-template>\n\n        <tr *ngIf=\"dt.isEmpty()\" class=\"ui-widget-content ui-datatable-emptymessage-row\">\n            <td [attr.colspan]=\"dt.visibleColumns().length\" class=\"ui-datatable-emptymessage\">{{dt.emptyMessage}}</td>\n        </tr>\n    "
     }),
     __param(0, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Inject */])(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return DataTable; }))),
     __metadata("design:paramtypes", [DataTable])
@@ -2742,7 +2776,7 @@ ScrollableView = __decorate([
         template: "\n        <div #scrollHeader class=\"ui-widget-header ui-datatable-scrollable-header\" [ngStyle]=\"{'width': width}\">\n            <div #scrollHeaderBox  class=\"ui-datatable-scrollable-header-box\">\n                <table [ngClass]=\"dt.tableStyleClass\" [ngStyle]=\"dt.tableStyle\">\n                    <thead class=\"ui-datatable-thead\">\n                        <tr *ngIf=\"!dt.headerColumnGroup\" class=\"ui-state-default\" [pColumnHeaders]=\"columns\"></tr>\n                        <ng-template [ngIf]=\"dt.headerColumnGroup\">\n                            <tr *ngFor=\"let headerRow of dt.headerColumnGroup.rows\" class=\"ui-state-default\" [pColumnHeaders]=\"headerRow.columns\"></tr>\n                        </ng-template>\n                    </thead>\n                    <tbody *ngIf=\"dt.frozenValue\" [ngClass]=\"{'ui-datatable-data ui-widget-content': true, 'ui-datatable-hoverable-rows': (dt.rowHover||dt.selectionMode)}\" [pTableBody]=\"columns\" [data]=\"dt.frozenValue\"></tbody>\n                </table>\n            </div>\n        </div>\n        <div #scrollBody class=\"ui-datatable-scrollable-body\" [ngStyle]=\"{'width': width,'max-height':dt.scrollHeight}\">\n            <div #scrollTableWrapper class=\"ui-datatable-scrollable-table-wrapper\" style=\"position:relative\">\n                <table #scrollTable [class]=\"dt.tableStyleClass\" [ngStyle]=\"dt.tableStyle\" [ngClass]=\"{'ui-datatable-virtual-table':virtualScroll}\" style=\"top:0px\">\n                    <colgroup class=\"ui-datatable-scrollable-colgroup\">\n                        <col *ngFor=\"let col of columns\" [ngStyle]=\"col.style\" [ngClass]=\"{'ui-helper-hidden': col.hidden}\"/>\n                    </colgroup>\n                    <tbody [ngClass]=\"{'ui-datatable-data ui-widget-content': true, 'ui-datatable-hoverable-rows': (dt.rowHover||dt.selectionMode)}\" [pTableBody]=\"columns\" [data]=\"dt.dataToRender\"></tbody>\n                </table>\n            </div>\n        </div>\n        <div #scrollFooter class=\"ui-widget-header ui-datatable-scrollable-footer\" [ngStyle]=\"{'width': width}\" *ngIf=\"dt.hasFooter()\">\n            <div #scrollFooterBox  class=\"ui-datatable-scrollable-footer-box\">\n                <table [ngClass]=\"dt.tableStyleClass\" [ngStyle]=\"dt.tableStyle\">\n                    <tfoot class=\"ui-datatable-tfoot\">\n                        <tr *ngIf=\"!dt.footerColumnGroup\" [pColumnFooters]=\"columns\" class=\"ui-state-default\"></tr>\n                        <ng-template [ngIf]=\"dt.footerColumnGroup\">\n                            <tr *ngFor=\"let footerRow of dt.footerColumnGroup.rows\" class=\"ui-state-default\" [pColumnFooters]=\"footerRow.columns\"></tr>\n                        </ng-template>\n                    </tfoot>\n                </table>\n            </div>\n        </div>\n    "
     }),
     __param(0, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Inject */])(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return DataTable; }))),
-    __metadata("design:paramtypes", [DataTable, typeof (_o = typeof __WEBPACK_IMPORTED_MODULE_5__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__dom_domhandler__["a" /* DomHandler */]) === "function" && _o || Object, typeof (_p = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _p || Object, typeof (_q = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */]) === "function" && _q || Object, typeof (_r = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* NgZone */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* NgZone */]) === "function" && _r || Object])
+    __metadata("design:paramtypes", [DataTable, typeof (_o = typeof __WEBPACK_IMPORTED_MODULE_6__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__dom_domhandler__["a" /* DomHandler */]) === "function" && _o || Object, typeof (_p = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _p || Object, typeof (_q = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */]) === "function" && _q || Object, typeof (_r = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* NgZone */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* NgZone */]) === "function" && _r || Object])
 ], ScrollableView);
 
 var DataTable = (function () {
@@ -4201,7 +4235,7 @@ var DataTable = (function () {
                 }
             }
         }
-        //body        
+        //body
         data.forEach(function (record, i) {
             csv += '\n';
             for (var i_1 = 0; i_1 < _this.columns.length; i_1++) {
@@ -4292,6 +4326,38 @@ var DataTable = (function () {
     };
     return DataTable;
 }());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], DataTable.prototype, "toolTipMessage", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], DataTable.prototype, "toolTipPosition", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], DataTable.prototype, "toolTipEvent", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], DataTable.prototype, "positionStyles", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], DataTable.prototype, "toolTipDisabled", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], DataTable.prototype, "toolTipAppendTo", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], DataTable.prototype, "toolTipStyleClasses", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], DataTable.prototype, "toolTipEscape", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Boolean)
@@ -4671,10 +4737,10 @@ __decorate([
 DataTable = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
         selector: 'p-dataTable',
-        template: "\n        <div [ngStyle]=\"style\" [class]=\"styleClass\" [style.width]=\"containerWidth\"\n            [ngClass]=\"{'ui-datatable ui-widget':true,'ui-datatable-reflow':responsive,'ui-datatable-stacked':stacked,'ui-datatable-resizable':resizableColumns,'ui-datatable-scrollable':scrollable}\">\n            <div class=\"ui-datatable-loading ui-widget-overlay\" *ngIf=\"loading\"></div>\n            <div class=\"ui-datatable-loading-content\" *ngIf=\"loading\">\n                <i [class]=\"'fa fa-spin fa-2x ' + loadingIcon\"></i>\n            </div>\n            <div class=\"ui-datatable-header ui-widget-header\" *ngIf=\"header\">\n                <ng-content select=\"p-header\"></ng-content>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" styleClass=\"ui-paginator-top\" [alwaysShow]=\"alwaysShowPaginator\"\n                (onPageChange)=\"onPageChange($event)\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && paginatorPosition =='top' || paginatorPosition =='both'\"></p-paginator>\n            <div class=\"ui-datatable-tablewrapper\" *ngIf=\"!scrollable\">\n                <table [ngClass]=\"tableStyleClass\" [ngStyle]=\"tableStyle\">\n                    <thead class=\"ui-datatable-thead\">\n                        <tr *ngIf=\"!headerColumnGroup\" class=\"ui-state-default\" [pColumnHeaders]=\"columns\"></tr>\n                        <ng-template [ngIf]=\"headerColumnGroup\">\n                            <tr *ngFor=\"let headerRow of headerColumnGroup.rows\" class=\"ui-state-default\" [pColumnHeaders]=\"headerRow.columns\"></tr>\n                        </ng-template>\n                    </thead>\n                    <tfoot *ngIf=\"hasFooter()\" class=\"ui-datatable-tfoot\">\n                        <tr *ngIf=\"!footerColumnGroup\" class=\"ui-state-default\" [pColumnFooters]=\"columns\"></tr>\n                        <ng-template [ngIf]=\"footerColumnGroup\">\n                            <tr *ngFor=\"let footerRow of footerColumnGroup.rows\" class=\"ui-state-default\" [pColumnFooters]=\"footerRow.columns\"></tr>\n                        </ng-template>\n                    </tfoot>\n                    <tbody [ngClass]=\"{'ui-datatable-data ui-widget-content': true, 'ui-datatable-hoverable-rows': (rowHover||selectionMode)}\" [pTableBody]=\"columns\" [data]=\"dataToRender\"></tbody>\n                </table>\n            </div>\n            \n            <ng-template [ngIf]=\"scrollable\">\n                <div class=\"ui-datatable-scrollable-wrapper ui-helper-clearfix\" [ngClass]=\"{'max-height':scrollHeight}\">\n                    <div *ngIf=\"hasFrozenColumns()\" [pScrollableView]=\"frozenColumns\" frozen=\"true\" \n                        [ngStyle]=\"{'width':this.frozenWidth}\" class=\"ui-datatable-scrollable-view ui-datatable-frozen-view\"></div>\n                    <div [pScrollableView]=\"scrollableColumns\" [ngStyle]=\"{'width':this.unfrozenWidth, 'left': this.frozenWidth}\"\n                        class=\"ui-datatable-scrollable-view\" [virtualScroll]=\"virtualScroll\" (onVirtualScroll)=\"onVirtualScroll($event)\"\n                        [ngClass]=\"{'ui-datatable-unfrozen-view': hasFrozenColumns()}\"></div>\n                </div>\n            </ng-template>\n            \n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" styleClass=\"ui-paginator-bottom\" [alwaysShow]=\"alwaysShowPaginator\"\n                (onPageChange)=\"onPageChange($event)\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && paginatorPosition =='bottom' || paginatorPosition =='both'\"></p-paginator>\n            <div class=\"ui-datatable-footer ui-widget-header\" *ngIf=\"footer\">\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n            \n            <div class=\"ui-column-resizer-helper ui-state-highlight\" style=\"display:none\"></div>\n            <span class=\"fa fa-arrow-down ui-datatable-reorder-indicator-up\" style=\"position: absolute; display: none;\"></span>\n            <span class=\"fa fa-arrow-up ui-datatable-reorder-indicator-down\" style=\"position: absolute; display: none;\"></span>\n        </div>\n    ",
-        providers: [__WEBPACK_IMPORTED_MODULE_5__dom_domhandler__["a" /* DomHandler */], __WEBPACK_IMPORTED_MODULE_6__utils_objectutils__["a" /* ObjectUtils */]]
+        template: "\n        <div [ngStyle]=\"style\" [class]=\"styleClass\" [style.width]=\"containerWidth\"\n            [ngClass]=\"{'ui-datatable ui-widget':true,'ui-datatable-reflow':responsive,'ui-datatable-stacked':stacked,'ui-datatable-resizable':resizableColumns,'ui-datatable-scrollable':scrollable}\">\n            <div class=\"ui-datatable-loading ui-widget-overlay\" *ngIf=\"loading\"></div>\n            <div class=\"ui-datatable-loading-content\" *ngIf=\"loading\">\n                <i [class]=\"'fa fa-spin fa-2x ' + loadingIcon\"></i>\n            </div>\n            <div class=\"ui-datatable-header ui-widget-header\" *ngIf=\"header\">\n                <ng-content select=\"p-header\"></ng-content>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" styleClass=\"ui-paginator-top\" [alwaysShow]=\"alwaysShowPaginator\"\n                (onPageChange)=\"onPageChange($event)\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && paginatorPosition =='top' || paginatorPosition =='both'\"></p-paginator>\n            <div class=\"ui-datatable-tablewrapper\" *ngIf=\"!scrollable\">\n                <table [ngClass]=\"tableStyleClass\" [ngStyle]=\"tableStyle\">\n                    <thead class=\"ui-datatable-thead\">\n                        <tr *ngIf=\"!headerColumnGroup\" class=\"ui-state-default\" [pColumnHeaders]=\"columns\"></tr>\n                        <ng-template [ngIf]=\"headerColumnGroup\">\n                            <tr *ngFor=\"let headerRow of headerColumnGroup.rows\" class=\"ui-state-default\" [pColumnHeaders]=\"headerRow.columns\"></tr>\n                        </ng-template>\n                    </thead>\n                    <tfoot *ngIf=\"hasFooter()\" class=\"ui-datatable-tfoot\">\n                        <tr *ngIf=\"!footerColumnGroup\" class=\"ui-state-default\" [pColumnFooters]=\"columns\"></tr>\n                        <ng-template [ngIf]=\"footerColumnGroup\">\n                            <tr *ngFor=\"let footerRow of footerColumnGroup.rows\" class=\"ui-state-default\" [pColumnFooters]=\"footerRow.columns\"></tr>\n                        </ng-template>\n                    </tfoot>\n                    <tbody [ngClass]=\"{'ui-datatable-data ui-widget-content': true, 'ui-datatable-hoverable-rows': (rowHover||selectionMode)}\" [pTableBody]=\"columns\" [data]=\"dataToRender\" \n                           [pTooltipMsg]=\"toolTipMessage\" [pTooltipPos]=\"toolTipPosition\" [pTooltipEve]=\"toolTipEvent\" [pToolTipPosStyle]=\"positionStyles\" [pTooltipDis]=\"toolTipDisabled\" [pTooltipAppendTo]=\"toolTipAppendTo\" [pTooltipStyleClasess]=\"toolTipStyleClasses\" [pTooltipEscape]=\"toolTipEscape\"></tbody>\n                </table>\n            </div>\n            \n            <ng-template [ngIf]=\"scrollable\">\n                <div class=\"ui-datatable-scrollable-wrapper ui-helper-clearfix\" [ngClass]=\"{'max-height':scrollHeight}\">\n                    <div *ngIf=\"hasFrozenColumns()\" [pScrollableView]=\"frozenColumns\" frozen=\"true\" \n                        [ngStyle]=\"{'width':this.frozenWidth}\" class=\"ui-datatable-scrollable-view ui-datatable-frozen-view\"></div>\n                    <div [pScrollableView]=\"scrollableColumns\" [ngStyle]=\"{'width':this.unfrozenWidth, 'left': this.frozenWidth}\"\n                        class=\"ui-datatable-scrollable-view\" [virtualScroll]=\"virtualScroll\" (onVirtualScroll)=\"onVirtualScroll($event)\"\n                        [ngClass]=\"{'ui-datatable-unfrozen-view': hasFrozenColumns()}\"></div>\n                </div>\n            </ng-template>\n            \n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" styleClass=\"ui-paginator-bottom\" [alwaysShow]=\"alwaysShowPaginator\"\n                (onPageChange)=\"onPageChange($event)\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && paginatorPosition =='bottom' || paginatorPosition =='both'\"></p-paginator>\n            <div class=\"ui-datatable-footer ui-widget-header\" *ngIf=\"footer\">\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n            \n            <div class=\"ui-column-resizer-helper ui-state-highlight\" style=\"display:none\"></div>\n            <span class=\"fa fa-arrow-down ui-datatable-reorder-indicator-up\" style=\"position: absolute; display: none;\"></span>\n            <span class=\"fa fa-arrow-up ui-datatable-reorder-indicator-down\" style=\"position: absolute; display: none;\"></span>\n        </div>\n    ",
+        providers: [__WEBPACK_IMPORTED_MODULE_6__dom_domhandler__["a" /* DomHandler */], __WEBPACK_IMPORTED_MODULE_7__utils_objectutils__["a" /* ObjectUtils */]]
     }),
-    __metadata("design:paramtypes", [typeof (_19 = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _19 || Object, typeof (_20 = typeof __WEBPACK_IMPORTED_MODULE_5__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__dom_domhandler__["a" /* DomHandler */]) === "function" && _20 || Object, typeof (_21 = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* IterableDiffers */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* IterableDiffers */]) === "function" && _21 || Object, typeof (_22 = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */]) === "function" && _22 || Object, typeof (_23 = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */]) === "function" && _23 || Object, typeof (_24 = typeof __WEBPACK_IMPORTED_MODULE_6__utils_objectutils__["a" /* ObjectUtils */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__utils_objectutils__["a" /* ObjectUtils */]) === "function" && _24 || Object, typeof (_25 = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* NgZone */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* NgZone */]) === "function" && _25 || Object])
+    __metadata("design:paramtypes", [typeof (_19 = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _19 || Object, typeof (_20 = typeof __WEBPACK_IMPORTED_MODULE_6__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__dom_domhandler__["a" /* DomHandler */]) === "function" && _20 || Object, typeof (_21 = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* IterableDiffers */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* IterableDiffers */]) === "function" && _21 || Object, typeof (_22 = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */]) === "function" && _22 || Object, typeof (_23 = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */]) === "function" && _23 || Object, typeof (_24 = typeof __WEBPACK_IMPORTED_MODULE_7__utils_objectutils__["a" /* ObjectUtils */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_7__utils_objectutils__["a" /* ObjectUtils */]) === "function" && _24 || Object, typeof (_25 = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* NgZone */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* NgZone */]) === "function" && _25 || Object])
 ], DataTable);
 
 var DataTableModule = (function () {
@@ -4684,7 +4750,7 @@ var DataTableModule = (function () {
 }());
 DataTableModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_3__common_shared__["b" /* SharedModule */], __WEBPACK_IMPORTED_MODULE_4__paginator_paginator__["a" /* PaginatorModule */], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */]],
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_3__common_shared__["b" /* SharedModule */], __WEBPACK_IMPORTED_MODULE_4__paginator_paginator__["a" /* PaginatorModule */], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */], __WEBPACK_IMPORTED_MODULE_5__tooltip_tooltip__["a" /* TooltipModule */]],
         exports: [DataTable, __WEBPACK_IMPORTED_MODULE_3__common_shared__["b" /* SharedModule */]],
         declarations: [DataTable, DTRadioButton, DTCheckbox, ColumnHeaders, ColumnFooters, TableBody, ScrollableView, RowExpansionLoader]
     })
@@ -7698,6 +7764,373 @@ TabViewModule = __decorate([
 
 var _a, _b, _c, _d, _e, _f, _g, _h;
 //# sourceMappingURL=tabview.js.map
+
+/***/ }),
+
+/***/ "./src/app/components/tooltip/tooltip.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
+/* unused harmony export Tooltip */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TooltipModule; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var Tooltip = (function () {
+    function Tooltip(el, domHandler, renderer) {
+        this.el = el;
+        this.domHandler = domHandler;
+        this.renderer = renderer;
+        this.tooltipPosition = 'right';
+        this.tooltipEvent = 'hover';
+        this.appendTo = 'body';
+        this.tooltipZIndex = 'auto';
+        this.escape = true;
+    }
+    Tooltip.prototype.onMouseEnter = function (e) {
+        if (this.tooltipEvent === 'hover') {
+            if (this.hideTimeout) {
+                clearTimeout(this.hideTimeout);
+                this.destroy();
+            }
+            this.activate();
+        }
+    };
+    Tooltip.prototype.onMouseLeave = function (e) {
+        if (this.tooltipEvent === 'hover') {
+            this.deactivate();
+        }
+    };
+    Tooltip.prototype.onFocus = function (e) {
+        if (this.tooltipEvent === 'focus') {
+            this.activate();
+        }
+    };
+    Tooltip.prototype.onBlur = function (e) {
+        if (this.tooltipEvent === 'focus') {
+            this.deactivate();
+        }
+    };
+    Tooltip.prototype.activate = function () {
+        var _this = this;
+        this.active = true;
+        if (this.hideTimeout) {
+            clearTimeout(this.hideTimeout);
+        }
+        if (this.showDelay)
+            this.showTimeout = setTimeout(function () { _this.show(); }, this.showDelay);
+        else
+            this.show();
+    };
+    Tooltip.prototype.deactivate = function () {
+        var _this = this;
+        this.active = false;
+        if (this.showTimeout) {
+            clearTimeout(this.showTimeout);
+        }
+        if (this.hideDelay)
+            this.hideTimeout = setTimeout(function () { _this.hide(); }, this.hideDelay);
+        else
+            this.hide();
+    };
+    Object.defineProperty(Tooltip.prototype, "text", {
+        get: function () {
+            return this._text;
+        },
+        set: function (text) {
+            this._text = text;
+            if (this.active) {
+                if (this._text) {
+                    if (this.container && this.container.offsetParent)
+                        this.updateText();
+                    else
+                        this.show();
+                }
+                else {
+                    this.hide();
+                }
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Tooltip.prototype.create = function () {
+        this.container = document.createElement('div');
+        var tooltipArrow = document.createElement('div');
+        tooltipArrow.className = 'ui-tooltip-arrow';
+        this.container.appendChild(tooltipArrow);
+        this.tooltipText = document.createElement('div');
+        this.tooltipText.className = 'ui-tooltip-text ui-shadow ui-corner-all';
+        this.updateText();
+        if (this.positionStyle) {
+            this.container.style.position = this.positionStyle;
+        }
+        this.container.appendChild(this.tooltipText);
+        if (this.appendTo === 'body')
+            document.body.appendChild(this.container);
+        else if (this.appendTo === 'target')
+            this.domHandler.appendChild(this.container, this.el.nativeElement);
+        else
+            this.domHandler.appendChild(this.container, this.appendTo);
+        this.container.style.display = 'inline-block';
+    };
+    Tooltip.prototype.show = function () {
+        if (!this.text || this.disabled) {
+            return;
+        }
+        this.create();
+        this.align();
+        if (this.tooltipStyleClass) {
+            this.container.className = this.container.className + ' ' + this.tooltipStyleClass;
+        }
+        this.domHandler.fadeIn(this.container, 250);
+        if (this.tooltipZIndex === 'auto')
+            this.container.style.zIndex = ++__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */].zindex;
+        else
+            this.container.style.zIndex = this.tooltipZIndex;
+        this.bindDocumentResizeListener();
+    };
+    Tooltip.prototype.hide = function () {
+        this.destroy();
+    };
+    Tooltip.prototype.updateText = function () {
+        if (this.escape) {
+            this.tooltipText.innerHTML = '';
+            this.tooltipText.appendChild(document.createTextNode(this._text));
+        }
+        else {
+            this.tooltipText.innerHTML = this._text;
+        }
+    };
+    Tooltip.prototype.align = function () {
+        var position = this.tooltipPosition;
+        switch (position) {
+            case 'top':
+                this.alignTop();
+                if (this.isOutOfBounds()) {
+                    this.alignBottom();
+                }
+                break;
+            case 'bottom':
+                this.alignBottom();
+                if (this.isOutOfBounds()) {
+                    this.alignTop();
+                }
+                break;
+            case 'left':
+                this.alignLeft();
+                if (this.isOutOfBounds()) {
+                    this.alignRight();
+                    if (this.isOutOfBounds()) {
+                        this.alignTop();
+                        if (this.isOutOfBounds()) {
+                            this.alignBottom();
+                        }
+                    }
+                }
+                break;
+            case 'right':
+                this.alignRight();
+                if (this.isOutOfBounds()) {
+                    this.alignLeft();
+                    if (this.isOutOfBounds()) {
+                        this.alignTop();
+                        if (this.isOutOfBounds()) {
+                            this.alignBottom();
+                        }
+                    }
+                }
+                break;
+        }
+    };
+    Tooltip.prototype.getHostOffset = function () {
+        var offset = this.el.nativeElement.getBoundingClientRect();
+        var targetLeft = offset.left + this.domHandler.getWindowScrollLeft();
+        var targetTop = offset.top + this.domHandler.getWindowScrollTop();
+        return { left: targetLeft, top: targetTop };
+    };
+    Tooltip.prototype.alignRight = function () {
+        this.preAlign();
+        this.container.className = 'ui-tooltip ui-widget ui-tooltip-right';
+        var hostOffset = this.getHostOffset();
+        var left = hostOffset.left + this.domHandler.getOuterWidth(this.el.nativeElement);
+        var top = hostOffset.top + (this.domHandler.getOuterHeight(this.el.nativeElement) - this.domHandler.getOuterHeight(this.container)) / 2;
+        this.container.style.left = left + 'px';
+        this.container.style.top = top + 'px';
+    };
+    Tooltip.prototype.alignLeft = function () {
+        this.preAlign();
+        this.container.className = 'ui-tooltip ui-widget ui-tooltip-left';
+        var hostOffset = this.getHostOffset();
+        var left = hostOffset.left - this.domHandler.getOuterWidth(this.container);
+        var top = hostOffset.top + (this.domHandler.getOuterHeight(this.el.nativeElement) - this.domHandler.getOuterHeight(this.container)) / 2;
+        this.container.style.left = left + 'px';
+        this.container.style.top = top + 'px';
+    };
+    Tooltip.prototype.alignTop = function () {
+        this.preAlign();
+        this.container.className = 'ui-tooltip ui-widget ui-tooltip-top';
+        var hostOffset = this.getHostOffset();
+        var left = hostOffset.left + (this.domHandler.getOuterWidth(this.el.nativeElement) - this.domHandler.getOuterWidth(this.container)) / 2;
+        var top = hostOffset.top - this.domHandler.getOuterHeight(this.container);
+        this.container.style.left = left + 'px';
+        this.container.style.top = top + 'px';
+    };
+    Tooltip.prototype.alignBottom = function () {
+        this.preAlign();
+        this.container.className = 'ui-tooltip ui-widget ui-tooltip-bottom';
+        var hostOffset = this.getHostOffset();
+        var left = hostOffset.left + (this.domHandler.getOuterWidth(this.el.nativeElement) - this.domHandler.getOuterWidth(this.container)) / 2;
+        var top = hostOffset.top + this.domHandler.getOuterHeight(this.el.nativeElement);
+        this.container.style.left = left + 'px';
+        this.container.style.top = top + 'px';
+    };
+    Tooltip.prototype.preAlign = function () {
+        this.container.style.left = -999 + 'px';
+        this.container.style.top = -999 + 'px';
+    };
+    Tooltip.prototype.isOutOfBounds = function () {
+        var offset = this.container.getBoundingClientRect();
+        var targetTop = offset.top;
+        var targetLeft = offset.left;
+        var width = this.domHandler.getOuterWidth(this.container);
+        var height = this.domHandler.getOuterHeight(this.container);
+        var viewport = this.domHandler.getViewport();
+        return (targetLeft + width > viewport.width) || (targetLeft < 0) || (targetTop < 0) || (targetTop + height > viewport.height);
+    };
+    Tooltip.prototype.bindDocumentResizeListener = function () {
+        var _this = this;
+        this.documentResizeListener = this.renderer.listen('window', 'resize', function (event) {
+            _this.hide();
+        });
+    };
+    Tooltip.prototype.unbindDocumentResizeListener = function () {
+        if (this.documentResizeListener) {
+            this.documentResizeListener();
+            this.documentResizeListener = null;
+        }
+    };
+    Tooltip.prototype.destroy = function () {
+        this.unbindDocumentResizeListener();
+        if (this.container && this.container.parentElement) {
+            if (this.appendTo === 'body')
+                document.body.removeChild(this.container);
+            else if (this.appendTo === 'target')
+                this.el.nativeElement.removeChild(this.container);
+            else
+                this.domHandler.removeChild(this.container, this.appendTo);
+        }
+        this.container = null;
+    };
+    Tooltip.prototype.ngOnDestroy = function () {
+        this.destroy();
+    };
+    return Tooltip;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Tooltip.prototype, "tooltipPosition", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Tooltip.prototype, "tooltipEvent", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], Tooltip.prototype, "appendTo", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Tooltip.prototype, "positionStyle", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Tooltip.prototype, "tooltipStyleClass", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Tooltip.prototype, "tooltipZIndex", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])("tooltipDisabled"),
+    __metadata("design:type", Boolean)
+], Tooltip.prototype, "disabled", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], Tooltip.prototype, "escape", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], Tooltip.prototype, "showDelay", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], Tooltip.prototype, "hideDelay", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* HostListener */])('mouseenter', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], Tooltip.prototype, "onMouseEnter", null);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* HostListener */])('mouseleave', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], Tooltip.prototype, "onMouseLeave", null);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* HostListener */])('focus', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], Tooltip.prototype, "onFocus", null);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* HostListener */])('blur', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], Tooltip.prototype, "onBlur", null);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])('pTooltip'),
+    __metadata("design:type", String),
+    __metadata("design:paramtypes", [String])
+], Tooltip.prototype, "text", null);
+Tooltip = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* Directive */])({
+        selector: '[pTooltip]',
+        providers: [__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */]) === "function" && _c || Object])
+], Tooltip);
+
+var TooltipModule = (function () {
+    function TooltipModule() {
+    }
+    return TooltipModule;
+}());
+TooltipModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
+        exports: [Tooltip],
+        declarations: [Tooltip]
+    })
+], TooltipModule);
+
+var _a, _b, _c;
+//# sourceMappingURL=tooltip.js.map
 
 /***/ }),
 

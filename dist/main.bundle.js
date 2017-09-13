@@ -82,7 +82,7 @@ var map = {
 	],
 	"./components/defer/deferdemo.module": [
 		"./src/app/showcase/components/defer/deferdemo.module.ts",
-		8
+		7
 	],
 	"./components/dialog/dialogdemo.module": [
 		"./src/app/showcase/components/dialog/dialogdemo.module.ts",
@@ -90,7 +90,7 @@ var map = {
 	],
 	"./components/dragdrop/dragdropdemo.module": [
 		"./src/app/showcase/components/dragdrop/dragdropdemo.module.ts",
-		13
+		10
 	],
 	"./components/dropdown/dropdowndemo.module": [
 		"./src/app/showcase/components/dropdown/dropdowndemo.module.ts",
@@ -106,7 +106,7 @@ var map = {
 	],
 	"./components/fileupload/fileuploaddemo.module": [
 		"./src/app/showcase/components/fileupload/fileuploaddemo.module.ts",
-		11
+		13
 	],
 	"./components/galleria/galleriademo.module": [
 		"./src/app/showcase/components/galleria/galleriademo.module.ts",
@@ -114,7 +114,7 @@ var map = {
 	],
 	"./components/gmap/gmapdemo.module": [
 		"./src/app/showcase/components/gmap/gmapdemo.module.ts",
-		7
+		9
 	],
 	"./components/grid/griddemo.module": [
 		"./src/app/showcase/components/grid/griddemo.module.ts",
@@ -126,7 +126,7 @@ var map = {
 	],
 	"./components/inplace/inplacedemo.module": [
 		"./src/app/showcase/components/inplace/inplacedemo.module.ts",
-		10
+		8
 	],
 	"./components/inputgroup/inputgroupdemo.module": [
 		"./src/app/showcase/components/inputgroup/inputgroupdemo.module.ts",
@@ -186,11 +186,11 @@ var map = {
 	],
 	"./components/organizationchart/organizationchartdemo.module": [
 		"./src/app/showcase/components/organizationchart/organizationchartdemo.module.ts",
-		14
+		15
 	],
 	"./components/overlaypanel/overlaypaneldemo.module": [
 		"./src/app/showcase/components/overlaypanel/overlaypaneldemo.module.ts",
-		15
+		12
 	],
 	"./components/paginator/paginatordemo.module": [
 		"./src/app/showcase/components/paginator/paginatordemo.module.ts",
@@ -234,7 +234,7 @@ var map = {
 	],
 	"./components/schedule/scheduledemo.module": [
 		"./src/app/showcase/components/schedule/scheduledemo.module.ts",
-		12
+		14
 	],
 	"./components/selectbutton/selectbuttondemo.module": [
 		"./src/app/showcase/components/selectbutton/selectbuttondemo.module.ts",
@@ -306,7 +306,7 @@ var map = {
 	],
 	"./components/treetable/treetabledemo.module": [
 		"./src/app/showcase/components/treetable/treetabledemo.module.ts",
-		9
+		11
 	],
 	"./components/tristatecheckbox/tristatecheckboxdemo.module": [
 		"./src/app/showcase/components/tristatecheckbox/tristatecheckboxdemo.module.ts",
@@ -857,8 +857,13 @@ var _a;
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return environment; });
+// The file contents for the current environment will overwrite these during build.
+// The build system defaults to the dev environment which uses `environment.ts`, but if you do
+// `ng build --env=prod` then `environment.prod.ts` will be used instead.
+// The list of which env maps to which file can be found in `.angular-cli.json`.
+// The file contents for the current environment will overwrite these during build.
 var environment = {
-    production: true
+    production: false
 };
 //# sourceMappingURL=environment.js.map
 

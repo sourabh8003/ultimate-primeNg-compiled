@@ -55,8 +55,6 @@ var AutoComplete = (function () {
         this.onUnselect = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
         this.onFocus = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
         this.onBlur = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        // @sourabh
-        this.onAdd = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
         this.onDropdownClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
         this.onClear = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
         this.onKeyUp = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
@@ -208,6 +206,7 @@ var AutoComplete = (function () {
         if (query === undefined || query === null) {
             return;
         }
+        this.loading = true;
         this.completeMethod.emit({
             originalEvent: event,
             query: query
@@ -227,17 +226,7 @@ var AutoComplete = (function () {
             this.value = option;
             this.onModelChange(this.value);
         }
-        // @sourabh singh
-        if (typeof option === 'object') {
-            this.onSelect.emit(option);
-        }
-        else {
-            this.onSelect.emit(option);
-            this.onAdd.emit({
-                originalEvent: event,
-                value: option
-            });
-        }
+        this.onSelect.emit(option);
         this.focusInput();
     };
     AutoComplete.prototype.show = function () {
@@ -337,7 +326,7 @@ var AutoComplete = (function () {
             }
             else if (event.which === 13) {
                 if (event.target.value.trim().length) {
-                    this.selectItem(event.target.value);
+                    this.selectItem({ 'name': event.target.value, code: event.target.value });
                     event.preventDefault();
                 }
                 else {
@@ -346,7 +335,7 @@ var AutoComplete = (function () {
             }
             else if (event.which === 9) {
                 if (event.target.value.trim().length) {
-                    this.selectItem(event.target.value);
+                    this.selectItem({ 'name': event.target.value, code: event.target.value });
                 }
                 else {
                     event.target.value = '';
@@ -594,18 +583,14 @@ __decorate([
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
     __metadata("design:type", typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _f || Object)
-], AutoComplete.prototype, "onAdd", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _g || Object)
 ], AutoComplete.prototype, "onDropdownClick", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _h || Object)
+    __metadata("design:type", typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _g || Object)
 ], AutoComplete.prototype, "onClear", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _j || Object)
+    __metadata("design:type", typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _h || Object)
 ], AutoComplete.prototype, "onKeyUp", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
@@ -641,23 +626,23 @@ __decorate([
 ], AutoComplete.prototype, "immutable", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('in'),
-    __metadata("design:type", typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _k || Object)
+    __metadata("design:type", typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _j || Object)
 ], AutoComplete.prototype, "inputEL", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('multiIn'),
-    __metadata("design:type", typeof (_l = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _l || Object)
+    __metadata("design:type", typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _k || Object)
 ], AutoComplete.prototype, "multiInputEL", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('panel'),
-    __metadata("design:type", typeof (_m = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _m || Object)
+    __metadata("design:type", typeof (_l = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _l || Object)
 ], AutoComplete.prototype, "panelEL", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('multiContainer'),
-    __metadata("design:type", typeof (_o = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _o || Object)
+    __metadata("design:type", typeof (_m = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _m || Object)
 ], AutoComplete.prototype, "multiContainerEL", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* ContentChildren */])(__WEBPACK_IMPORTED_MODULE_5__common_shared__["a" /* PrimeTemplate */]),
-    __metadata("design:type", typeof (_p = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */]) === "function" && _p || Object)
+    __metadata("design:type", typeof (_o = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */]) === "function" && _o || Object)
 ], AutoComplete.prototype, "templates", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
@@ -667,14 +652,14 @@ __decorate([
 AutoComplete = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
         selector: 'p-autoComplete',
-        template: "\n        <span [ngClass]=\"{'ui-autocomplete ui-widget':true,'ui-autocomplete-dd':dropdown,'ui-autocomplete-multiple':multiple}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <input *ngIf=\"!multiple\" #in [attr.type]=\"type\" [attr.id]=\"inputId\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\" autocomplete=\"off\" [attr.required]=\"required\"\n            [ngClass]=\"'ui-inputtext ui-widget ui-state-default ui-corner-all ui-autocomplete-input'\" [value]=\"inputFieldValue\"\n            (click)=\"onInputClick($event)\" (input)=\"onInput($event)\" (keydown)=\"onKeydown($event)\" (keyup)=\"onKeyup($event)\" (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\"\n            [attr.placeholder]=\"placeholder\" [attr.size]=\"size\" [attr.maxlength]=\"maxlength\" [attr.tabindex]=\"tabindex\" [readonly]=\"readonly\" [disabled]=\"disabled\"\n            ><ul *ngIf=\"multiple\" #multiContainer class=\"ui-autocomplete-multiple-container ui-widget ui-inputtext ui-state-default ui-corner-all\" [ngClass]=\"{'ui-state-disabled':disabled,'ui-state-focus':focus}\" (click)=\"multiIn.focus()\">\n                <li #token *ngFor=\"let val of value\" class=\"ui-autocomplete-token ui-state-highlight ui-corner-all\">\n                    <span class=\"ui-autocomplete-token-icon fa fa-fw fa-close\" (click)=\"removeItem(token)\" *ngIf=\"!disabled\"></span>\n                    <span *ngIf=\"!selectedItemTemplate\" class=\"ui-autocomplete-token-label\">{{field ? val[field] : val}}</span>\n                    <ng-template *ngIf=\"selectedItemTemplate\" [pTemplateWrapper]=\"selectedItemTemplate\" [item]=\"val\"></ng-template>\n                </li>\n                <li class=\"ui-autocomplete-input-token\">\n                    <input #multiIn [attr.type]=\"type\" [attr.id]=\"inputId\" [disabled]=\"disabled\" [attr.placeholder]=\"(value&&value.length ? null : placeholder)\" [attr.tabindex]=\"tabindex\" (input)=\"onInput($event)\"  (click)=\"onInputClick($event)\"\n\t\t\t\t\t\t\t\t\t\t\t\t\t (keydown)=\"onKeydown($event)\" (keyup)=\"onKeyup($event)\" (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\" autocomplete=\"off\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\"\n\t\t\t\t\t\t\t\t\t\t\t\t\t [pTooltip]=\"toolTipMessage\" [tooltipPosition]=\"toolTipPosition\" [tooltipEvent]=\"toolTipEvent\" [positionStyle]=\"positionStyles\" [tooltipDisabled]=\"toolTipDisabled\" [tooltipStyleClass]=\"toolTipStyleClasses\" [escape]=\"toolTipEscape\">\n                </li>\n            </ul\n            ><i *ngIf=\"loading\" class=\"ui-autocomplete-loader fa fa-circle-o-notch fa-spin fa-fw\"></i><button type=\"button\" pButton icon=\"fa-fw fa-caret-down\" class=\"ui-autocomplete-dropdown\" [disabled]=\"disabled\"\n                (click)=\"handleDropdownClick($event)\" *ngIf=\"dropdown\"></button>\n            <div #panel class=\"ui-autocomplete-panel ui-widget-content ui-corner-all ui-shadow\" [style.display]=\"panelVisible ? 'block' : 'none'\" [style.width]=\"appendTo ? 'auto' : '100%'\" [style.max-height]=\"scrollHeight\">\n                <ul class=\"ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\" *ngIf=\"panelVisible\">\n                    <li *ngFor=\"let option of suggestions; let idx = index\" [ngClass]=\"{'ui-autocomplete-list-item ui-corner-all':true,'ui-state-highlight':(highlightOption==option)}\"\n                        (mouseenter)=\"highlightOption=option\" (mouseleave)=\"highlightOption=null\" (click)=\"selectItem(option)\">\n                        <span *ngIf=\"!itemTemplate\">{{field ? option[field] : option}}</span>\n                        <ng-template *ngIf=\"itemTemplate\" [pTemplateWrapper]=\"itemTemplate\" [item]=\"option\" [index]=\"idx\"></ng-template>\n                    </li>\n                    <li *ngIf=\"noResults && emptyMessage\" class=\"ui-autocomplete-list-item ui-corner-all\">{{emptyMessage}}</li>\n                </ul>\n            </div>\n        </span>\n    ",
+        template: "\n        <span [ngClass]=\"{'ui-autocomplete ui-widget':true,'ui-autocomplete-dd':dropdown,'ui-autocomplete-multiple':multiple}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <input *ngIf=\"!multiple\" #in [attr.type]=\"type\" [attr.id]=\"inputId\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\" autocomplete=\"off\" [attr.required]=\"required\"\n            [ngClass]=\"'ui-inputtext ui-widget ui-state-default ui-corner-all ui-autocomplete-input'\" [value]=\"inputFieldValue\"\n            (click)=\"onInputClick($event)\" (input)=\"onInput($event)\" (keydown)=\"onKeydown($event)\" (keyup)=\"onKeyup($event)\" (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\"\n            [attr.placeholder]=\"placeholder\" [attr.size]=\"size\" [attr.maxlength]=\"maxlength\" [attr.tabindex]=\"tabindex\" [readonly]=\"readonly\" [disabled]=\"disabled\"\n            ><ul *ngIf=\"multiple\" #multiContainer class=\"ui-autocomplete-multiple-container ui-widget ui-inputtext ui-state-default ui-corner-all\" [ngClass]=\"{'ui-state-disabled':disabled,'ui-state-focus':focus}\" (click)=\"multiIn.focus()\">\n                <li #token *ngFor=\"let val of value\" class=\"ui-autocomplete-token ui-state-highlight ui-corner-all\">\n                    <span class=\"ui-autocomplete-token-icon fa fa-fw fa-close\" (click)=\"removeItem(token)\" *ngIf=\"!disabled\"></span>\n                    <span *ngIf=\"!selectedItemTemplate\" class=\"ui-autocomplete-token-label\">{{field ? val[field] : val}}</span>\n                    <ng-template *ngIf=\"selectedItemTemplate\" [pTemplateWrapper]=\"selectedItemTemplate\" [item]=\"val\"></ng-template>\n                </li>\n                <li class=\"ui-autocomplete-input-token\">\n                    <input #multiIn [attr.type]=\"type\" [attr.id]=\"inputId\" [disabled]=\"disabled\" [attr.placeholder]=\"(value&&value.length ? null : placeholder)\" [attr.tabindex]=\"tabindex\" (input)=\"onInput($event)\"  (click)=\"onInputClick($event)\"\n                            (keydown)=\"onKeydown($event)\" (keyup)=\"onKeyup($event)\" (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\" autocomplete=\"off\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\"\n                           [pTooltip]=\"toolTipMessage\" [tooltipPosition]=\"toolTipPosition\" [tooltipEvent]=\"toolTipEvent\" [positionStyle]=\"positionStyles\" [tooltipDisabled]=\"toolTipDisabled\" [tooltipStyleClass]=\"toolTipStyleClasses\" [escape]=\"toolTipEscape\">\n                </li>\n            </ul\n            ><i *ngIf=\"loading\" class=\"ui-autocomplete-loader fa fa-circle-o-notch fa-spin fa-fw\"></i><button type=\"button\" pButton icon=\"fa-fw fa-caret-down\" class=\"ui-autocomplete-dropdown\" [disabled]=\"disabled\"\n                (click)=\"handleDropdownClick($event)\" *ngIf=\"dropdown\"></button>\n            <div #panel class=\"ui-autocomplete-panel ui-widget-content ui-corner-all ui-shadow\" [style.display]=\"panelVisible ? 'block' : 'none'\" [style.width]=\"appendTo ? 'auto' : '100%'\" [style.max-height]=\"scrollHeight\">\n                <ul class=\"ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\" *ngIf=\"panelVisible\">\n                    <li *ngFor=\"let option of suggestions; let idx = index\" [ngClass]=\"{'ui-autocomplete-list-item ui-corner-all':true,'ui-state-highlight':(highlightOption==option)}\"\n                        (mouseenter)=\"highlightOption=option\" (mouseleave)=\"highlightOption=null\" (click)=\"selectItem(option)\">\n                        <span *ngIf=\"!itemTemplate\">{{field ? option[field] : option}}</span>\n                        <ng-template *ngIf=\"itemTemplate\" [pTemplateWrapper]=\"itemTemplate\" [item]=\"option\" [index]=\"idx\"></ng-template>\n                    </li>\n                    <li *ngIf=\"noResults && emptyMessage\" class=\"ui-autocomplete-list-item ui-corner-all\">{{emptyMessage}}</li>\n                </ul>\n            </div>\n        </span>\n    ",
         host: {
             '[class.ui-inputwrapper-filled]': 'filled',
             '[class.ui-inputwrapper-focus]': 'focus'
         },
         providers: [__WEBPACK_IMPORTED_MODULE_6__dom_domhandler__["a" /* DomHandler */], __WEBPACK_IMPORTED_MODULE_7__utils_objectutils__["a" /* ObjectUtils */], AUTOCOMPLETE_VALUE_ACCESSOR]
     }),
-    __metadata("design:paramtypes", [typeof (_q = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _q || Object, typeof (_r = typeof __WEBPACK_IMPORTED_MODULE_6__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__dom_domhandler__["a" /* DomHandler */]) === "function" && _r || Object, typeof (_s = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */]) === "function" && _s || Object, typeof (_t = typeof __WEBPACK_IMPORTED_MODULE_7__utils_objectutils__["a" /* ObjectUtils */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_7__utils_objectutils__["a" /* ObjectUtils */]) === "function" && _t || Object, typeof (_u = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */]) === "function" && _u || Object, typeof (_v = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* IterableDiffers */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* IterableDiffers */]) === "function" && _v || Object])
+    __metadata("design:paramtypes", [typeof (_p = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _p || Object, typeof (_q = typeof __WEBPACK_IMPORTED_MODULE_6__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__dom_domhandler__["a" /* DomHandler */]) === "function" && _q || Object, typeof (_r = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */]) === "function" && _r || Object, typeof (_s = typeof __WEBPACK_IMPORTED_MODULE_7__utils_objectutils__["a" /* ObjectUtils */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_7__utils_objectutils__["a" /* ObjectUtils */]) === "function" && _s || Object, typeof (_t = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */]) === "function" && _t || Object, typeof (_u = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* IterableDiffers */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* IterableDiffers */]) === "function" && _u || Object])
 ], AutoComplete);
 
 var AutoCompleteModule = (function () {
@@ -685,12 +670,12 @@ var AutoCompleteModule = (function () {
 AutoCompleteModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_2__inputtext_inputtext__["a" /* InputTextModule */], __WEBPACK_IMPORTED_MODULE_4__button_button__["a" /* ButtonModule */], __WEBPACK_IMPORTED_MODULE_5__common_shared__["b" /* SharedModule */], __WEBPACK_IMPORTED_MODULE_3__tooltip_tooltip__["a" /* TooltipModule */]],
-        exports: [AutoComplete, __WEBPACK_IMPORTED_MODULE_5__common_shared__["b" /* SharedModule */], __WEBPACK_IMPORTED_MODULE_2__inputtext_inputtext__["a" /* InputTextModule */]],
+        exports: [AutoComplete, __WEBPACK_IMPORTED_MODULE_2__inputtext_inputtext__["a" /* InputTextModule */], __WEBPACK_IMPORTED_MODULE_5__common_shared__["b" /* SharedModule */]],
         declarations: [AutoComplete]
     })
 ], AutoCompleteModule);
 
-var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v;
+var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u;
 //# sourceMappingURL=autocomplete.js.map
 
 /***/ }),

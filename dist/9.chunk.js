@@ -1,5 +1,315 @@
 webpackJsonp([9],{
 
+/***/ "./src/app/components/button/button.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* unused harmony export Button */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ButtonModule; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var Button = (function () {
+    function Button(el, domHandler) {
+        this.el = el;
+        this.domHandler = domHandler;
+        this.iconPos = 'left';
+        this.cornerStyleClass = 'ui-corner-all';
+    }
+    Button.prototype.ngAfterViewInit = function () {
+        this.domHandler.addMultipleClasses(this.el.nativeElement, this.getStyleClass());
+        if (this.icon) {
+            var iconElement = document.createElement("span");
+            var iconPosClass = (this.iconPos == 'right') ? 'ui-button-icon-right' : 'ui-button-icon-left';
+            iconElement.className = iconPosClass + ' ui-clickable fa fa-fw ' + this.icon;
+            this.el.nativeElement.appendChild(iconElement);
+        }
+        var labelElement = document.createElement("span");
+        labelElement.className = 'ui-button-text ui-clickable';
+        labelElement.appendChild(document.createTextNode(this.label || 'ui-btn'));
+        this.el.nativeElement.appendChild(labelElement);
+        this.initialized = true;
+    };
+    Button.prototype.getStyleClass = function () {
+        var styleClass = 'ui-button ui-widget ui-state-default ' + this.cornerStyleClass;
+        if (this.icon) {
+            if (this.label != null && this.label != undefined) {
+                if (this.iconPos == 'left')
+                    styleClass = styleClass + ' ui-button-text-icon-left';
+                else
+                    styleClass = styleClass + ' ui-button-text-icon-right';
+            }
+            else {
+                styleClass = styleClass + ' ui-button-icon-only';
+            }
+        }
+        else {
+            styleClass = styleClass + ' ui-button-text-only';
+        }
+        return styleClass;
+    };
+    Object.defineProperty(Button.prototype, "label", {
+        get: function () {
+            return this._label;
+        },
+        set: function (val) {
+            this._label = val;
+            if (this.initialized) {
+                this.domHandler.findSingle(this.el.nativeElement, '.ui-button-text').textContent = this._label;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Button.prototype, "icon", {
+        get: function () {
+            return this._icon;
+        },
+        set: function (val) {
+            this._icon = val;
+            if (this.initialized) {
+                var iconPosClass = (this.iconPos == 'right') ? 'ui-button-icon-right' : 'ui-button-icon-left';
+                this.domHandler.findSingle(this.el.nativeElement, '.fa').className =
+                    iconPosClass + ' ui-clickable fa fa-fw ' + this.icon;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Button.prototype.ngOnDestroy = function () {
+        while (this.el.nativeElement.hasChildNodes()) {
+            this.el.nativeElement.removeChild(this.el.nativeElement.lastChild);
+        }
+        this.initialized = false;
+    };
+    return Button;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Button.prototype, "iconPos", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Button.prototype, "cornerStyleClass", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String),
+    __metadata("design:paramtypes", [String])
+], Button.prototype, "label", null);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String),
+    __metadata("design:paramtypes", [String])
+], Button.prototype, "icon", null);
+Button = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* Directive */])({
+        selector: '[pButton]',
+        providers: [__WEBPACK_IMPORTED_MODULE_1__dom_domhandler__["a" /* DomHandler */]]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__dom_domhandler__["a" /* DomHandler */]) === "function" && _b || Object])
+], Button);
+
+var ButtonModule = (function () {
+    function ButtonModule() {
+    }
+    return ButtonModule;
+}());
+ButtonModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+        imports: [__WEBPACK_IMPORTED_MODULE_2__angular_common__["c" /* CommonModule */]],
+        exports: [Button],
+        declarations: [Button]
+    })
+], ButtonModule);
+
+var _a, _b;
+//# sourceMappingURL=button.js.map
+
+/***/ }),
+
+/***/ "./src/app/components/checkbox/checkbox.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
+/* unused harmony export CHECKBOX_VALUE_ACCESSOR */
+/* unused harmony export Checkbox */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CheckboxModule; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var CHECKBOX_VALUE_ACCESSOR = {
+    provide: __WEBPACK_IMPORTED_MODULE_2__angular_forms__["f" /* NG_VALUE_ACCESSOR */],
+    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return Checkbox; }),
+    multi: true
+};
+var Checkbox = (function () {
+    function Checkbox(cd) {
+        this.cd = cd;
+        this.onChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onModelChange = function () { };
+        this.onModelTouched = function () { };
+        this.focused = false;
+        this.checked = false;
+    }
+    Checkbox.prototype.onClick = function (event, checkbox, focus) {
+        event.preventDefault();
+        if (this.disabled) {
+            return;
+        }
+        this.checked = !this.checked;
+        this.updateModel();
+        if (focus) {
+            checkbox.focus();
+        }
+    };
+    Checkbox.prototype.updateModel = function () {
+        if (!this.binary) {
+            if (this.checked)
+                this.addValue();
+            else
+                this.removeValue();
+            this.onModelChange(this.model);
+        }
+        else {
+            this.onModelChange(this.checked);
+        }
+        this.onChange.emit(this.checked);
+    };
+    Checkbox.prototype.handleChange = function (event) {
+        this.checked = event.target.checked;
+        this.updateModel();
+    };
+    Checkbox.prototype.isChecked = function () {
+        if (this.binary)
+            return this.model;
+        else
+            return this.model && this.model.indexOf(this.value) > -1;
+    };
+    Checkbox.prototype.removeValue = function () {
+        var _this = this;
+        this.model = this.model.filter(function (val) { return val !== _this.value; });
+    };
+    Checkbox.prototype.addValue = function () {
+        if (this.model)
+            this.model = this.model.concat([this.value]);
+        else
+            this.model = [this.value];
+    };
+    Checkbox.prototype.onFocus = function (event) {
+        this.focused = true;
+    };
+    Checkbox.prototype.onBlur = function (event) {
+        this.focused = false;
+        this.onModelTouched();
+    };
+    Checkbox.prototype.writeValue = function (model) {
+        this.model = model;
+        this.checked = this.isChecked();
+        this.cd.markForCheck();
+    };
+    Checkbox.prototype.registerOnChange = function (fn) {
+        this.onModelChange = fn;
+    };
+    Checkbox.prototype.registerOnTouched = function (fn) {
+        this.onModelTouched = fn;
+    };
+    Checkbox.prototype.setDisabledState = function (val) {
+        this.disabled = val;
+    };
+    return Checkbox;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], Checkbox.prototype, "value", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Checkbox.prototype, "name", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], Checkbox.prototype, "disabled", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Checkbox.prototype, "binary", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Checkbox.prototype, "label", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], Checkbox.prototype, "tabindex", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Checkbox.prototype, "inputId", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], Checkbox.prototype, "style", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Checkbox.prototype, "styleClass", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
+], Checkbox.prototype, "onChange", void 0);
+Checkbox = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+        selector: 'p-checkbox',
+        template: "\n        <div [ngStyle]=\"style\" [ngClass]=\"'ui-chkbox ui-widget'\" [class]=\"styleClass\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #cb type=\"checkbox\" [attr.id]=\"inputId\" [name]=\"name\" [value]=\"value\" [checked]=\"checked\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\"\n                [ngClass]=\"{'ui-state-focus':focused}\" (change)=\"handleChange($event)\" [disabled]=\"disabled\" [attr.tabindex]=\"tabindex\">\n            </div>\n            <div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\" (click)=\"onClick($event,cb,true)\"\n                        [ngClass]=\"{'ui-state-active':checked,'ui-state-disabled':disabled,'ui-state-focus':focused}\">\n                <span class=\"ui-chkbox-icon ui-clickable\" [ngClass]=\"{'fa fa-check':checked}\"></span>\n            </div>\n        </div>\n        <label class=\"ui-chkbox-label\" (click)=\"onClick($event,cb,true)\" \n                [ngClass]=\"{'ui-label-active':checked, 'ui-label-disabled':disabled, 'ui-label-focus':focused}\"\n                *ngIf=\"label\" [attr.for]=\"inputId\">{{label}}</label>\n    ",
+        providers: [CHECKBOX_VALUE_ACCESSOR]
+    }),
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */]) === "function" && _b || Object])
+], Checkbox);
+
+var CheckboxModule = (function () {
+    function CheckboxModule() {
+    }
+    return CheckboxModule;
+}());
+CheckboxModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
+        exports: [Checkbox],
+        declarations: [Checkbox]
+    })
+], CheckboxModule);
+
+var _a, _b;
+//# sourceMappingURL=checkbox.js.map
+
+/***/ }),
+
 /***/ "./src/app/components/codehighlighter/codehighlighter.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -50,13 +360,6 @@ CodeHighlighterModule = __decorate([
 
 var _a;
 //# sourceMappingURL=codehighlighter.js.map
-
-/***/ }),
-
-/***/ "./src/app/components/common/menuitem.ts":
-/***/ (function(module, exports) {
-
-//# sourceMappingURL=menuitem.js.map
 
 /***/ }),
 
@@ -609,26 +912,17 @@ var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r;
 
 /***/ }),
 
-/***/ "./src/app/components/common/treenode.ts":
-/***/ (function(module, exports) {
-
-//# sourceMappingURL=treenode.js.map
-
-/***/ }),
-
-/***/ "./src/app/components/contextmenu/contextmenu.ts":
+/***/ "./src/app/components/dialog/dialog.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_menuitem__ = __webpack_require__("./src/app/components/common/menuitem.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_menuitem___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__common_menuitem__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* unused harmony export ContextMenuSub */
-/* unused harmony export ContextMenu */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ContextMenuModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_animations__ = __webpack_require__("./node_modules/@angular/animations/@angular/animations.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_shared__ = __webpack_require__("./src/app/components/common/shared.ts");
+/* unused harmony export Dialog */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DialogModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -638,247 +932,482 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 
 
 
 
 
-var ContextMenuSub = (function () {
-    function ContextMenuSub(domHandler, contextMenu) {
-        this.domHandler = domHandler;
-        this.contextMenu = contextMenu;
-    }
-    ContextMenuSub.prototype.onItemMouseEnter = function (event, item, menuitem) {
-        if (menuitem.disabled) {
-            return;
-        }
-        this.activeItem = item;
-        var nextElement = item.children[0].nextElementSibling;
-        if (nextElement) {
-            var sublist = nextElement.children[0];
-            sublist.style.zIndex = ++__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */].zindex;
-            this.position(sublist, item);
-        }
-    };
-    ContextMenuSub.prototype.onItemMouseLeave = function (event, link) {
-        this.activeItem = null;
-    };
-    ContextMenuSub.prototype.itemClick = function (event, item) {
-        if (item.disabled) {
-            event.preventDefault();
-            return;
-        }
-        if (!item.url) {
-            event.preventDefault();
-        }
-        if (item.command) {
-            item.command({
-                originalEvent: event,
-                item: item
-            });
-        }
-    };
-    ContextMenuSub.prototype.listClick = function (event) {
-        this.activeItem = null;
-    };
-    ContextMenuSub.prototype.position = function (sublist, item) {
-        this.containerLeft = this.domHandler.getOffset(item.parentElement);
-        var viewport = this.domHandler.getViewport();
-        var sublistWidth = sublist.offsetParent ? sublist.offsetWidth : this.domHandler.getHiddenElementOuterWidth(sublist);
-        var itemOuterWidth = this.domHandler.getOuterWidth(item.children[0]);
-        sublist.style.top = '0px';
-        if ((parseInt(this.containerLeft.left) + itemOuterWidth + sublistWidth) > (viewport.width - this.calculateScrollbarWidth())) {
-            sublist.style.left = -sublistWidth + 'px';
-        }
-        else {
-            sublist.style.left = itemOuterWidth + 'px';
-        }
-    };
-    ContextMenuSub.prototype.calculateScrollbarWidth = function () {
-        var scrollDiv = document.createElement("div");
-        scrollDiv.className = "ui-scrollbar-measure";
-        document.body.appendChild(scrollDiv);
-        var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
-        document.body.removeChild(scrollDiv);
-        return scrollbarWidth;
-    };
-    return ContextMenuSub;
-}());
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__common_menuitem__["MenuItem"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__common_menuitem__["MenuItem"]) === "function" && _a || Object)
-], ContextMenuSub.prototype, "item", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], ContextMenuSub.prototype, "root", void 0);
-ContextMenuSub = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-contextMenuSub',
-        template: "\n        <ul [ngClass]=\"{'ui-helper-reset':root, 'ui-widget-content ui-corner-all ui-helper-clearfix ui-menu-child ui-shadow':!root}\" class=\"ui-menu-list\"\n            (click)=\"listClick($event)\">\n            <ng-template ngFor let-child [ngForOf]=\"(root ? item : item.items)\">\n                <li *ngIf=\"child.separator\" class=\"ui-menu-separator ui-widget-content\">\n                <li *ngIf=\"!child.separator\" #item [ngClass]=\"{'ui-menuitem ui-widget ui-corner-all':true,'ui-menu-parent':child.items,'ui-menuitem-active':item==activeItem}\"\n                    (mouseenter)=\"onItemMouseEnter($event,item,child)\" (mouseleave)=\"onItemMouseLeave($event,item)\" [style.display]=\"child.visible === false ? 'none' : 'block'\">\n                    <a *ngIf=\"!child.routerLink\" [href]=\"child.url||'#'\" [attr.target]=\"child.target\" [attr.title]=\"child.title\" (click)=\"itemClick($event, child)\"\n                        [ngClass]=\"{'ui-menuitem-link ui-corner-all':true,'ui-state-disabled':child.disabled}\" [ngStyle]=\"child.style\" [class]=\"child.styleClass\">\n                        <span class=\"ui-submenu-icon fa fa-fw fa-caret-right\" *ngIf=\"child.items\"></span>\n                        <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"child.icon\" [ngClass]=\"child.icon\"></span>\n                        <span class=\"ui-menuitem-text\">{{child.label}}</span>\n                    </a>\n                    <a *ngIf=\"child.routerLink\" [routerLink]=\"child.routerLink\" [routerLinkActive]=\"'ui-state-active'\" \n                        [routerLinkActiveOptions]=\"child.routerLinkActiveOptions||{exact:false}\" [attr.target]=\"child.target\" [attr.title]=\"child.title\"\n                        (click)=\"itemClick($event, child)\" [ngClass]=\"{'ui-menuitem-link ui-corner-all':true,'ui-state-disabled':child.disabled}\" \n                        [ngStyle]=\"child.style\" [class]=\"child.styleClass\">\n                        <span class=\"ui-submenu-icon fa fa-fw fa-caret-right\" *ngIf=\"child.items\"></span>\n                        <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"child.icon\" [ngClass]=\"child.icon\"></span>\n                        <span class=\"ui-menuitem-text\">{{child.label}}</span>\n                    </a>\n                    <p-contextMenuSub class=\"ui-submenu\" [item]=\"child\" *ngIf=\"child.items\"></p-contextMenuSub>\n                </li>\n            </ng-template>\n        </ul>\n    ",
-        providers: [__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]]
-    }),
-    __param(1, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Inject */])(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return ContextMenu; }))),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _b || Object, ContextMenu])
-], ContextMenuSub);
-
-var ContextMenu = (function () {
-    function ContextMenu(el, domHandler, renderer) {
+var Dialog = (function () {
+    function Dialog(el, domHandler, renderer) {
         this.el = el;
         this.domHandler = domHandler;
         this.renderer = renderer;
+        this.draggable = true;
+        this.resizable = true;
+        this.minWidth = 150;
+        this.minHeight = 150;
+        this.closeOnEscape = true;
+        this.closable = true;
+        this.responsive = true;
+        this.showHeader = true;
+        this.breakpoint = 640;
+        this.blockScroll = false;
+        this.onShow = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onHide = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.visibleChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
     }
-    ContextMenu.prototype.ngAfterViewInit = function () {
-        var _this = this;
-        this.container = this.containerViewChild.nativeElement;
-        if (this.global) {
-            this.rightClickListener = this.renderer.listen('document', 'contextmenu', function (event) {
-                _this.show(event);
-                event.preventDefault();
-            });
+    Object.defineProperty(Dialog.prototype, "visible", {
+        get: function () {
+            return this._visible;
+        },
+        set: function (val) {
+            this._visible = val;
+            if (this.initialized && this.containerViewChild && this.containerViewChild.nativeElement) {
+                if (this._visible)
+                    this.show();
+                else {
+                    if (this.preventVisibleChangePropagation)
+                        this.preventVisibleChangePropagation = false;
+                    else
+                        this.hide();
+                }
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Dialog.prototype.ngAfterViewChecked = function () {
+        if (this.executePostDisplayActions) {
+            this.onShow.emit({});
+            this.positionOverlay();
+            this.executePostDisplayActions = false;
         }
-        else if (this.target) {
-            this.rightClickListener = this.renderer.listen(this.target, 'contextmenu', function (event) {
-                _this.show(event);
-                event.preventDefault();
-                event.stopPropagation();
-            });
+    };
+    Dialog.prototype.show = function () {
+        this.executePostDisplayActions = true;
+        this.containerViewChild.nativeElement.style.zIndex = String(++__WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */].zindex);
+        this.bindGlobalListeners();
+        if (this.modal) {
+            this.enableModality();
         }
+    };
+    Dialog.prototype.positionOverlay = function () {
+        var viewport = this.domHandler.getViewport();
+        if (this.domHandler.getOuterHeight(this.containerViewChild.nativeElement) > viewport.height) {
+            this.contentViewChild.nativeElement.style.height = (viewport.height * .75) + 'px';
+        }
+        if (this.positionLeft >= 0 && this.positionTop >= 0) {
+            this.containerViewChild.nativeElement.style.left = this.positionLeft + 'px';
+            this.containerViewChild.nativeElement.style.top = this.positionTop + 'px';
+        }
+        else if (this.positionTop >= 0) {
+            this.center();
+            this.containerViewChild.nativeElement.style.top = this.positionTop + 'px';
+        }
+        else {
+            this.center();
+        }
+    };
+    Dialog.prototype.hide = function () {
+        this.onHide.emit({});
+        this.unbindMaskClickListener();
+        this.unbindGlobalListeners();
+        if (this.modal) {
+            this.disableModality();
+        }
+    };
+    Dialog.prototype.close = function (event) {
+        this.preventVisibleChangePropagation = true;
+        this.hide();
+        this.visibleChange.emit(false);
+        event.preventDefault();
+    };
+    Dialog.prototype.ngAfterViewInit = function () {
+        this.initialized = true;
         if (this.appendTo) {
             if (this.appendTo === 'body')
-                document.body.appendChild(this.container);
+                document.body.appendChild(this.containerViewChild.nativeElement);
             else
-                this.domHandler.appendChild(this.container, this.appendTo);
+                this.domHandler.appendChild(this.containerViewChild.nativeElement, this.appendTo);
+        }
+        if (this.visible) {
+            this.show();
         }
     };
-    ContextMenu.prototype.show = function (event) {
-        this.position(event);
-        this.visible = true;
-        this.domHandler.fadeIn(this.container, 250);
-        this.bindDocumentClickListener();
-        if (event) {
-            event.preventDefault();
+    Dialog.prototype.center = function () {
+        var elementWidth = this.domHandler.getOuterWidth(this.containerViewChild.nativeElement);
+        var elementHeight = this.domHandler.getOuterHeight(this.containerViewChild.nativeElement);
+        if (elementWidth == 0 && elementHeight == 0) {
+            this.containerViewChild.nativeElement.style.visibility = 'hidden';
+            this.containerViewChild.nativeElement.style.display = 'block';
+            elementWidth = this.domHandler.getOuterWidth(this.containerViewChild.nativeElement);
+            elementHeight = this.domHandler.getOuterHeight(this.containerViewChild.nativeElement);
+            this.containerViewChild.nativeElement.style.display = 'none';
+            this.containerViewChild.nativeElement.style.visibility = 'visible';
         }
+        var viewport = this.domHandler.getViewport();
+        var x = Math.max((viewport.width - elementWidth) / 2, 0);
+        var y = Math.max((viewport.height - elementHeight) / 2, 0);
+        this.containerViewChild.nativeElement.style.left = x + 'px';
+        this.containerViewChild.nativeElement.style.top = y + 'px';
     };
-    ContextMenu.prototype.hide = function () {
-        this.visible = false;
-        this.unbindDocumentClickListener();
-    };
-    ContextMenu.prototype.toggle = function (event) {
-        if (this.visible)
-            this.hide();
-        else
-            this.show(event);
-    };
-    ContextMenu.prototype.position = function (event) {
-        if (event) {
-            var left = event.pageX + 1;
-            var top = event.pageY + 1;
-            var width = this.container.offsetParent ? this.container.offsetWidth : this.domHandler.getHiddenElementOuterWidth(this.container);
-            var height = this.container.offsetParent ? this.container.offsetHeight : this.domHandler.getHiddenElementOuterHeight(this.container);
-            var viewport = this.domHandler.getViewport();
-            //flip
-            if (left + width - document.body.scrollLeft > viewport.width) {
-                left -= width;
-            }
-            //flip
-            if (top + height - document.body.scrollTop > viewport.height) {
-                top -= height;
-            }
-            //fit
-            if (left < document.body.scrollLeft) {
-                left = document.body.scrollLeft;
-            }
-            //fit
-            if (top < document.body.scrollTop) {
-                top = document.body.scrollTop;
-            }
-            this.container.style.left = left + 'px';
-            this.container.style.top = top + 'px';
-        }
-    };
-    ContextMenu.prototype.bindDocumentClickListener = function () {
+    Dialog.prototype.enableModality = function () {
         var _this = this;
-        if (!this.documentClickListener) {
-            this.documentClickListener = this.renderer.listen('document', 'click', function (event) {
-                if (_this.visible && event.button !== 2) {
-                    _this.hide();
+        if (!this.mask) {
+            this.mask = document.createElement('div');
+            this.mask.style.zIndex = String(parseInt(this.containerViewChild.nativeElement.style.zIndex) - 1);
+            this.domHandler.addMultipleClasses(this.mask, 'ui-widget-overlay ui-dialog-mask');
+            if (this.closable && this.dismissableMask) {
+                this.maskClickListener = this.renderer.listen(this.mask, 'click', function (event) {
+                    _this.close(event);
+                });
+            }
+            document.body.appendChild(this.mask);
+            if (this.blockScroll) {
+                this.domHandler.addClass(document.body, 'ui-overflow-hidden');
+            }
+        }
+    };
+    Dialog.prototype.disableModality = function () {
+        if (this.mask) {
+            document.body.removeChild(this.mask);
+            if (this.blockScroll) {
+                this.domHandler.removeClass(document.body, 'ui-overflow-hidden');
+            }
+            this.mask = null;
+        }
+    };
+    Dialog.prototype.unbindMaskClickListener = function () {
+        if (this.maskClickListener) {
+            this.maskClickListener();
+            this.maskClickListener = null;
+        }
+    };
+    Dialog.prototype.moveOnTop = function () {
+        this.containerViewChild.nativeElement.style.zIndex = String(++__WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */].zindex);
+    };
+    Dialog.prototype.onCloseMouseDown = function (event) {
+        this.closeIconMouseDown = true;
+    };
+    Dialog.prototype.initDrag = function (event) {
+        if (this.closeIconMouseDown) {
+            this.closeIconMouseDown = false;
+            return;
+        }
+        if (this.draggable) {
+            this.dragging = true;
+            this.lastPageX = event.pageX;
+            this.lastPageY = event.pageY;
+        }
+    };
+    Dialog.prototype.onDrag = function (event) {
+        if (this.dragging) {
+            var deltaX = event.pageX - this.lastPageX;
+            var deltaY = event.pageY - this.lastPageY;
+            var leftPos = parseInt(this.containerViewChild.nativeElement.style.left);
+            var topPos = parseInt(this.containerViewChild.nativeElement.style.top);
+            this.containerViewChild.nativeElement.style.left = leftPos + deltaX + 'px';
+            this.containerViewChild.nativeElement.style.top = topPos + deltaY + 'px';
+            this.lastPageX = event.pageX;
+            this.lastPageY = event.pageY;
+        }
+    };
+    Dialog.prototype.endDrag = function (event) {
+        if (this.draggable) {
+            this.dragging = false;
+        }
+    };
+    Dialog.prototype.initResize = function (event) {
+        if (this.resizable) {
+            this.preWidth = null;
+            this.resizing = true;
+            this.lastPageX = event.pageX;
+            this.lastPageY = event.pageY;
+        }
+    };
+    Dialog.prototype.onResize = function (event) {
+        if (this.resizing) {
+            var deltaX = event.pageX - this.lastPageX;
+            var deltaY = event.pageY - this.lastPageY;
+            var containerWidth = this.domHandler.getOuterWidth(this.containerViewChild.nativeElement);
+            var containerHeight = this.domHandler.getOuterHeight(this.containerViewChild.nativeElement);
+            var contentHeight = this.domHandler.getOuterHeight(this.contentViewChild.nativeElement);
+            var newWidth = containerWidth + deltaX;
+            var newHeight = containerHeight + deltaY;
+            if (newWidth > this.minWidth) {
+                this.containerViewChild.nativeElement.style.width = newWidth + 'px';
+            }
+            if (newHeight > this.minHeight) {
+                this.containerViewChild.nativeElement.style.height = newHeight + 'px';
+                this.contentViewChild.nativeElement.style.height = contentHeight + deltaY + 'px';
+            }
+            this.lastPageX = event.pageX;
+            this.lastPageY = event.pageY;
+        }
+    };
+    Dialog.prototype.bindGlobalListeners = function () {
+        if (this.draggable) {
+            this.bindDocumentDragListener();
+        }
+        if (this.resizable) {
+            this.bindDocumentResizeListeners();
+        }
+        if (this.responsive) {
+            this.bindDocumentResponsiveListener();
+        }
+        if (this.closeOnEscape && this.closable) {
+            this.bindDocumentEscapeListener();
+        }
+    };
+    Dialog.prototype.unbindGlobalListeners = function () {
+        this.unbindDocumentDragListener();
+        this.unbindDocumentResizeListeners();
+        this.unbindDocumentResponsiveListener();
+        this.unbindDocumentEscapeListener();
+    };
+    Dialog.prototype.bindDocumentDragListener = function () {
+        var _this = this;
+        this.documentDragListener = this.renderer.listen('document', 'mousemove', function (event) {
+            _this.onDrag(event);
+        });
+    };
+    Dialog.prototype.unbindDocumentDragListener = function () {
+        if (this.documentDragListener) {
+            this.documentDragListener();
+            this.documentDragListener = null;
+        }
+    };
+    Dialog.prototype.bindDocumentResizeListeners = function () {
+        var _this = this;
+        this.documentResizeListener = this.renderer.listen('document', 'mousemove', function (event) {
+            _this.onResize(event);
+        });
+        this.documentResizeEndListener = this.renderer.listen('document', 'mouseup', function (event) {
+            if (_this.resizing) {
+                _this.resizing = false;
+            }
+        });
+    };
+    Dialog.prototype.unbindDocumentResizeListeners = function () {
+        if (this.documentResizeListener && this.documentResizeEndListener) {
+            this.documentResizeListener();
+            this.documentResizeEndListener();
+            this.documentResizeListener = null;
+            this.documentResizeEndListener = null;
+        }
+    };
+    Dialog.prototype.bindDocumentResponsiveListener = function () {
+        var _this = this;
+        this.documentResponsiveListener = this.renderer.listen('window', 'resize', function (event) {
+            var viewport = _this.domHandler.getViewport();
+            var width = _this.domHandler.getOuterWidth(_this.containerViewChild.nativeElement);
+            if (viewport.width <= _this.breakpoint) {
+                if (!_this.preWidth) {
+                    _this.preWidth = width;
                 }
-            });
+                _this.containerViewChild.nativeElement.style.left = '0px';
+                _this.containerViewChild.nativeElement.style.width = '100%';
+            }
+            else {
+                _this.containerViewChild.nativeElement.style.width = _this.preWidth + 'px';
+                _this.positionOverlay();
+            }
+        });
+    };
+    Dialog.prototype.unbindDocumentResponsiveListener = function () {
+        if (this.documentResponsiveListener) {
+            this.documentResponsiveListener();
+            this.documentResponsiveListener = null;
         }
     };
-    ContextMenu.prototype.unbindDocumentClickListener = function () {
-        if (this.documentClickListener) {
-            this.documentClickListener();
-            this.documentClickListener = null;
+    Dialog.prototype.bindDocumentEscapeListener = function () {
+        var _this = this;
+        this.documentEscapeListener = this.renderer.listen('document', 'keydown', function (event) {
+            if (event.which == 27) {
+                if (parseInt(_this.containerViewChild.nativeElement.style.zIndex) == __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */].zindex) {
+                    _this.close(event);
+                }
+            }
+        });
+    };
+    Dialog.prototype.unbindDocumentEscapeListener = function () {
+        if (this.documentEscapeListener) {
+            this.documentEscapeListener();
+            this.documentEscapeListener = null;
         }
     };
-    ContextMenu.prototype.ngOnDestroy = function () {
-        this.unbindDocumentClickListener();
-        if (this.rightClickListener) {
-            this.rightClickListener();
-        }
+    Dialog.prototype.ngOnDestroy = function () {
+        this.initialized = false;
+        this.disableModality();
+        this.unbindGlobalListeners();
         if (this.appendTo) {
-            this.el.nativeElement.appendChild(this.container);
+            this.el.nativeElement.appendChild(this.containerViewChild.nativeElement);
         }
+        this.unbindMaskClickListener();
     };
-    return ContextMenu;
+    return Dialog;
 }());
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Array)
-], ContextMenu.prototype, "model", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], ContextMenu.prototype, "global", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], ContextMenu.prototype, "target", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], ContextMenu.prototype, "style", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", String)
-], ContextMenu.prototype, "styleClass", void 0);
+], Dialog.prototype, "header", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], Dialog.prototype, "draggable", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], Dialog.prototype, "resizable", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], Dialog.prototype, "minWidth", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], Dialog.prototype, "minHeight", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Object)
-], ContextMenu.prototype, "appendTo", void 0);
+], Dialog.prototype, "width", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], Dialog.prototype, "height", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], Dialog.prototype, "positionLeft", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], Dialog.prototype, "positionTop", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], Dialog.prototype, "contentStyle", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], Dialog.prototype, "modal", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], Dialog.prototype, "closeOnEscape", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], Dialog.prototype, "dismissableMask", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], Dialog.prototype, "rtl", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], Dialog.prototype, "closable", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], Dialog.prototype, "responsive", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], Dialog.prototype, "appendTo", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], Dialog.prototype, "style", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], Dialog.prototype, "styleClass", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], Dialog.prototype, "showHeader", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], Dialog.prototype, "breakpoint", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], Dialog.prototype, "blockScroll", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* ContentChild */])(__WEBPACK_IMPORTED_MODULE_4__common_shared__["d" /* Header */]),
+    __metadata("design:type", Object)
+], Dialog.prototype, "headerFacet", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* ContentChild */])(__WEBPACK_IMPORTED_MODULE_4__common_shared__["c" /* Footer */]),
+    __metadata("design:type", Object)
+], Dialog.prototype, "footerFacet", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('container'),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _a || Object)
+], Dialog.prototype, "containerViewChild", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('titlebar'),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _b || Object)
+], Dialog.prototype, "headerViewChild", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('content'),
     __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _c || Object)
-], ContextMenu.prototype, "containerViewChild", void 0);
-ContextMenu = __decorate([
+], Dialog.prototype, "contentViewChild", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _d || Object)
+], Dialog.prototype, "onShow", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _e || Object)
+], Dialog.prototype, "onHide", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _f || Object)
+], Dialog.prototype, "visibleChange", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean),
+    __metadata("design:paramtypes", [Boolean])
+], Dialog.prototype, "visible", null);
+Dialog = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-contextMenu',
-        template: "\n        <div #container [ngClass]=\"'ui-contextmenu ui-menu ui-widget ui-widget-content ui-corner-all ui-helper-clearfix ui-menu-dynamic ui-shadow'\" \n            [class]=\"styleClass\" [ngStyle]=\"style\" [style.display]=\"visible ? 'block' : 'none'\">\n            <p-contextMenuSub [item]=\"model\" root=\"root\"></p-contextMenuSub>\n        </div>\n    ",
-        providers: [__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]]
+        selector: 'p-dialog',
+        template: "\n        <div #container [ngClass]=\"{'ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow':true,'ui-dialog-rtl':rtl,'ui-dialog-draggable':draggable}\" [ngStyle]=\"style\" [class]=\"styleClass\"\n            [style.display]=\"visible ? 'block' : 'none'\" [style.width.px]=\"width\" [style.height.px]=\"height\" [style.minWidth.px]=\"minWidth\" (mousedown)=\"moveOnTop()\" [@dialogState]=\"visible ? 'visible' : 'hidden'\">\n            <div #titlebar class=\"ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top\"\n                (mousedown)=\"initDrag($event)\" (mouseup)=\"endDrag($event)\" *ngIf=\"showHeader\">\n                <span class=\"ui-dialog-title\" *ngIf=\"header\">{{header}}</span>\n                <span class=\"ui-dialog-title\" *ngIf=\"headerFacet\">\n                    <ng-content select=\"p-header\"></ng-content>\n                </span>\n                <a *ngIf=\"closable\" [ngClass]=\"{'ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all':true}\" href=\"#\" role=\"button\" (click)=\"close($event)\" (mousedown)=\"onCloseMouseDown($event)\">\n                    <span class=\"fa fa-fw fa-close\"></span>\n                </a>\n            </div>\n            <div #content class=\"ui-dialog-content ui-widget-content\" [ngStyle]=\"contentStyle\">\n                <ng-content></ng-content>\n            </div>\n            <div class=\"ui-dialog-footer ui-widget-content\" *ngIf=\"footerFacet\">\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n            <div *ngIf=\"resizable\" class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"\n                (mousedown)=\"initResize($event)\"></div>\n        </div>\n    ",
+        animations: [
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["a" /* trigger */])('dialogState', [
+                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["b" /* state */])('hidden', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["c" /* style */])({
+                    opacity: 0
+                })),
+                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["b" /* state */])('visible', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["c" /* style */])({
+                    opacity: 1
+                })),
+                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["d" /* transition */])('visible => hidden', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["e" /* animate */])('400ms ease-in')),
+                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["d" /* transition */])('hidden => visible', __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_animations__["e" /* animate */])('400ms ease-out'))
+            ])
+        ],
+        providers: [__WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */]]
     }),
-    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */]) === "function" && _f || Object])
-], ContextMenu);
+    __metadata("design:paramtypes", [typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__dom_domhandler__["a" /* DomHandler */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */]) === "function" && _j || Object])
+], Dialog);
 
-var ContextMenuModule = (function () {
-    function ContextMenuModule() {
+var DialogModule = (function () {
+    function DialogModule() {
     }
-    return ContextMenuModule;
+    return DialogModule;
 }());
-ContextMenuModule = __decorate([
+DialogModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_4__angular_router__["a" /* RouterModule */]],
-        exports: [ContextMenu, __WEBPACK_IMPORTED_MODULE_4__angular_router__["a" /* RouterModule */]],
-        declarations: [ContextMenu, ContextMenuSub]
+        imports: [__WEBPACK_IMPORTED_MODULE_2__angular_common__["c" /* CommonModule */]],
+        exports: [Dialog, __WEBPACK_IMPORTED_MODULE_4__common_shared__["b" /* SharedModule */]],
+        declarations: [Dialog]
     })
-], ContextMenuModule);
+], DialogModule);
 
-var _a, _b, _c, _d, _e, _f;
-//# sourceMappingURL=contextmenu.js.map
+var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+//# sourceMappingURL=dialog.js.map
 
 /***/ }),
 
@@ -1240,6 +1769,220 @@ DomHandler = __decorate([
 
 /***/ }),
 
+/***/ "./src/app/components/gmap/gmap.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* unused harmony export GMap */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GMapModule; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var GMap = (function () {
+    function GMap(el, differs, cd, zone) {
+        this.el = el;
+        this.cd = cd;
+        this.zone = zone;
+        this.onMapClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onOverlayClick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onOverlayDragStart = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onOverlayDrag = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onOverlayDragEnd = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onMapReady = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onMapDragEnd = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onZoomChanged = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.differ = differs.find([]).create(null);
+    }
+    GMap.prototype.ngAfterViewChecked = function () {
+        if (!this.map && this.el.nativeElement.offsetParent) {
+            this.initialize();
+        }
+    };
+    GMap.prototype.initialize = function () {
+        var _this = this;
+        this.map = new google.maps.Map(this.el.nativeElement.children[0], this.options);
+        this.onMapReady.emit({
+            map: this.map
+        });
+        if (this.overlays) {
+            for (var _i = 0, _a = this.overlays; _i < _a.length; _i++) {
+                var overlay = _a[_i];
+                overlay.setMap(this.map);
+                this.bindOverlayEvents(overlay);
+            }
+        }
+        this.map.addListener('click', function (event) {
+            _this.zone.run(function () {
+                _this.onMapClick.emit(event);
+            });
+        });
+        this.map.addListener('dragend', function (event) {
+            _this.zone.run(function () {
+                _this.onMapDragEnd.emit(event);
+            });
+        });
+        this.map.addListener('zoom_changed', function (event) {
+            _this.zone.run(function () {
+                _this.onZoomChanged.emit(event);
+            });
+        });
+    };
+    GMap.prototype.bindOverlayEvents = function (overlay) {
+        var _this = this;
+        overlay.addListener('click', function (event) {
+            _this.zone.run(function () {
+                _this.onOverlayClick.emit({
+                    originalEvent: event,
+                    'overlay': overlay,
+                    map: _this.map
+                });
+            });
+        });
+        if (overlay.getDraggable()) {
+            this.bindDragEvents(overlay);
+        }
+    };
+    GMap.prototype.ngDoCheck = function () {
+        var _this = this;
+        var changes = this.differ.diff(this.overlays);
+        if (changes && this.map) {
+            changes.forEachRemovedItem(function (record) { record.item.setMap(null); });
+            changes.forEachAddedItem(function (record) {
+                record.item.setMap(_this.map);
+                record.item.addListener('click', function (event) {
+                    _this.zone.run(function () {
+                        _this.onOverlayClick.emit({
+                            originalEvent: event,
+                            overlay: record.item,
+                            map: _this.map
+                        });
+                    });
+                });
+                if (record.item.getDraggable()) {
+                    _this.bindDragEvents(record.item);
+                }
+            });
+        }
+    };
+    GMap.prototype.bindDragEvents = function (overlay) {
+        var _this = this;
+        overlay.addListener('dragstart', function (event) {
+            _this.zone.run(function () {
+                _this.onOverlayDragStart.emit({
+                    originalEvent: event,
+                    overlay: overlay,
+                    map: _this.map
+                });
+            });
+        });
+        overlay.addListener('drag', function (event) {
+            _this.zone.run(function () {
+                _this.onOverlayDrag.emit({
+                    originalEvent: event,
+                    overlay: overlay,
+                    map: _this.map
+                });
+            });
+        });
+        overlay.addListener('dragend', function (event) {
+            _this.zone.run(function () {
+                _this.onOverlayDragEnd.emit({
+                    originalEvent: event,
+                    overlay: overlay,
+                    map: _this.map
+                });
+            });
+        });
+    };
+    GMap.prototype.getMap = function () {
+        return this.map;
+    };
+    return GMap;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], GMap.prototype, "style", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], GMap.prototype, "styleClass", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], GMap.prototype, "options", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Array)
+], GMap.prototype, "overlays", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
+], GMap.prototype, "onMapClick", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _b || Object)
+], GMap.prototype, "onOverlayClick", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _c || Object)
+], GMap.prototype, "onOverlayDragStart", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _d || Object)
+], GMap.prototype, "onOverlayDrag", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _e || Object)
+], GMap.prototype, "onOverlayDragEnd", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _f || Object)
+], GMap.prototype, "onMapReady", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _g || Object)
+], GMap.prototype, "onMapDragEnd", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _h || Object)
+], GMap.prototype, "onZoomChanged", void 0);
+GMap = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+        selector: 'p-gmap',
+        template: "<div [ngStyle]=\"style\" [class]=\"styleClass\"></div>"
+    }),
+    __metadata("design:paramtypes", [typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _j || Object, typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* IterableDiffers */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* IterableDiffers */]) === "function" && _k || Object, typeof (_l = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */]) === "function" && _l || Object, typeof (_m = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* NgZone */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* NgZone */]) === "function" && _m || Object])
+], GMap);
+
+var GMapModule = (function () {
+    function GMapModule() {
+    }
+    return GMapModule;
+}());
+GMapModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
+        exports: [GMap],
+        declarations: [GMap]
+    })
+], GMapModule);
+
+var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
+//# sourceMappingURL=gmap.js.map
+
+/***/ }),
+
 /***/ "./src/app/components/growl/growl.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1450,6 +2193,79 @@ GrowlModule = __decorate([
 
 var _a, _b, _c, _d, _e, _f, _g, _h;
 //# sourceMappingURL=growl.js.map
+
+/***/ }),
+
+/***/ "./src/app/components/inputtext/inputtext.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* unused harmony export InputText */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InputTextModule; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var InputText = (function () {
+    function InputText(el) {
+        this.el = el;
+    }
+    InputText.prototype.ngDoCheck = function () {
+        this.updateFilledState();
+    };
+    //To trigger change detection to manage ui-state-filled for material labels when there is no value binding
+    InputText.prototype.onInput = function (e) {
+        this.updateFilledState();
+    };
+    InputText.prototype.updateFilledState = function () {
+        this.filled = this.el.nativeElement.value && this.el.nativeElement.value.length;
+    };
+    return InputText;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* HostListener */])('input', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], InputText.prototype, "onInput", null);
+InputText = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* Directive */])({
+        selector: '[pInputText]',
+        host: {
+            '[class.ui-inputtext]': 'true',
+            '[class.ui-corner-all]': 'true',
+            '[class.ui-state-default]': 'true',
+            '[class.ui-widget]': 'true',
+            '[class.ui-state-filled]': 'filled'
+        }
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _a || Object])
+], InputText);
+
+var InputTextModule = (function () {
+    function InputTextModule() {
+    }
+    return InputTextModule;
+}());
+InputTextModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
+        exports: [InputText],
+        declarations: [InputText]
+    })
+], InputTextModule);
+
+var _a;
+//# sourceMappingURL=inputtext.js.map
 
 /***/ }),
 
@@ -1804,484 +2620,14 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ "./src/app/components/treetable/treetable.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_treenode__ = __webpack_require__("./src/app/components/common/treenode.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_treenode___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__common_treenode__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_shared__ = __webpack_require__("./src/app/components/common/shared.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
-/* unused harmony export UITreeRow */
-/* unused harmony export TreeTable */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TreeTableModule; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-
-
-
-
-
-
-var UITreeRow = (function () {
-    function UITreeRow(treeTable) {
-        this.treeTable = treeTable;
-        this.level = 0;
-        this.labelExpand = "Expand";
-        this.labelCollapse = "Collapse";
-    }
-    UITreeRow.prototype.ngOnInit = function () {
-        this.node.parent = this.parentNode;
-    };
-    UITreeRow.prototype.toggle = function (event) {
-        if (this.node.expanded)
-            this.treeTable.onNodeCollapse.emit({ originalEvent: event, node: this.node });
-        else
-            this.treeTable.onNodeExpand.emit({ originalEvent: event, node: this.node });
-        this.node.expanded = !this.node.expanded;
-        event.preventDefault();
-    };
-    UITreeRow.prototype.isLeaf = function () {
-        return this.node.leaf == false ? false : !(this.node.children && this.node.children.length);
-    };
-    UITreeRow.prototype.isSelected = function () {
-        return this.treeTable.isSelected(this.node);
-    };
-    UITreeRow.prototype.onRowClick = function (event) {
-        this.treeTable.onRowClick(event, this.node);
-    };
-    UITreeRow.prototype.onRowRightClick = function (event) {
-        this.treeTable.onRowRightClick(event, this.node);
-    };
-    UITreeRow.prototype.rowDblClick = function (event) {
-        this.treeTable.onRowDblclick.emit({ originalEvent: event, node: this.node });
-    };
-    UITreeRow.prototype.onRowTouchEnd = function () {
-        this.treeTable.onRowTouchEnd();
-    };
-    UITreeRow.prototype.resolveFieldData = function (data, field) {
-        if (data && field) {
-            if (field.indexOf('.') == -1) {
-                return data[field];
-            }
-            else {
-                var fields = field.split('.');
-                var value = data;
-                for (var i = 0, len = fields.length; i < len; ++i) {
-                    value = value[fields[i]];
-                }
-                return value;
-            }
-        }
-        else {
-            return null;
-        }
-    };
-    return UITreeRow;
-}());
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__common_treenode__["TreeNode"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__common_treenode__["TreeNode"]) === "function" && _a || Object)
-], UITreeRow.prototype, "node", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__common_treenode__["TreeNode"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__common_treenode__["TreeNode"]) === "function" && _b || Object)
-], UITreeRow.prototype, "parentNode", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Number)
-], UITreeRow.prototype, "level", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], UITreeRow.prototype, "labelExpand", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], UITreeRow.prototype, "labelCollapse", void 0);
-UITreeRow = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: '[pTreeRow]',
-        template: "\n        <div class=\"ui-treetable-row\" [ngClass]=\"{'ui-state-highlight':isSelected(),'ui-treetable-row-selectable':treeTable.selectionMode && node.selectable !== false}\">\n            <td *ngFor=\"let col of treeTable.columns; let i=index\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" (click)=\"onRowClick($event)\" (dblclick)=\"rowDblClick($event)\" (touchend)=\"onRowTouchEnd()\" (contextmenu)=\"onRowRightClick($event)\">\n                <a href=\"#\" *ngIf=\"i == treeTable.toggleColumnIndex\" class=\"ui-treetable-toggler fa fa-fw ui-clickable\" [ngClass]=\"node.expanded ? treeTable.expandedIcon : treeTable.collapsedIcon\"\n                    [ngStyle]=\"{'margin-left':level*16 + 'px','visibility': isLeaf() ? 'hidden' : 'visible'}\"\n                    (click)=\"toggle($event)\"\n                    [title]=\"node.expanded ? labelCollapse : labelExpand\">\n                </a>\n                <div class=\"ui-chkbox ui-treetable-checkbox\" *ngIf=\"treeTable.selectionMode == 'checkbox' && i==0\"><div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\">\n                    <span class=\"ui-chkbox-icon ui-clickable fa\" \n                        [ngClass]=\"{'fa-check':isSelected(),'fa-minus':node.partialSelected}\"></span></div></div\n                ><span *ngIf=\"!col.template\">{{resolveFieldData(node.data,col.field)}}</span>\n                <p-columnBodyTemplateLoader [column]=\"col\" [rowData]=\"node\" *ngIf=\"col.template\"></p-columnBodyTemplateLoader>\n            </td>\n        </div>\n        <div *ngIf=\"node.children && node.expanded\" class=\"ui-treetable-row\" style=\"display:table-row\">\n            <td [attr.colspan]=\"treeTable.columns.length\" class=\"ui-treetable-child-table-container\">\n                <table [class]=\"treeTable.tableStyleClass\" [ngStyle]=\"treeTable.tableStyle\">\n                    <tbody pTreeRow *ngFor=\"let childNode of node.children\" [node]=\"childNode\" [level]=\"level+1\" [labelExpand]=\"labelExpand\" [labelCollapse]=\"labelCollapse\" [parentNode]=\"node\"></tbody>\n                </table>\n            </td>\n        </div>\n    "
-    }),
-    __param(0, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Inject */])(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return TreeTable; }))),
-    __metadata("design:paramtypes", [TreeTable])
-], UITreeRow);
-
-var TreeTable = (function () {
-    function TreeTable(el, domHandler, changeDetector, renderer) {
-        this.el = el;
-        this.domHandler = domHandler;
-        this.changeDetector = changeDetector;
-        this.renderer = renderer;
-        this.labelExpand = "Expand";
-        this.labelCollapse = "Collapse";
-        this.metaKeySelection = true;
-        this.toggleColumnIndex = 0;
-        this.collapsedIcon = "fa-caret-right";
-        this.expandedIcon = "fa-caret-down";
-        this.onRowDblclick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.selectionChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onNodeSelect = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onNodeUnselect = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onNodeExpand = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onNodeCollapse = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onContextMenuSelect = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-    }
-    TreeTable.prototype.ngAfterContentInit = function () {
-        var _this = this;
-        this.initColumns();
-        this.columnsSubscription = this.cols.changes.subscribe(function (_) {
-            _this.initColumns();
-            _this.changeDetector.markForCheck();
-        });
-    };
-    TreeTable.prototype.initColumns = function () {
-        this.columns = this.cols.toArray();
-    };
-    TreeTable.prototype.onRowClick = function (event, node) {
-        var eventTarget = event.target;
-        if (eventTarget.className && eventTarget.className.indexOf('ui-treetable-toggler') === 0) {
-            return;
-        }
-        else if (this.selectionMode) {
-            if (node.selectable === false) {
-                return;
-            }
-            var metaSelection = this.rowTouched ? false : this.metaKeySelection;
-            var index_1 = this.findIndexInSelection(node);
-            var selected = (index_1 >= 0);
-            if (this.isCheckboxSelectionMode()) {
-                if (selected) {
-                    this.propagateSelectionDown(node, false);
-                    if (node.parent) {
-                        this.propagateSelectionUp(node.parent, false);
-                    }
-                    this.selectionChange.emit(this.selection);
-                    this.onNodeUnselect.emit({ originalEvent: event, node: node });
-                }
-                else {
-                    this.propagateSelectionDown(node, true);
-                    if (node.parent) {
-                        this.propagateSelectionUp(node.parent, true);
-                    }
-                    this.selectionChange.emit(this.selection);
-                    this.onNodeSelect.emit({ originalEvent: event, node: node });
-                }
-            }
-            else {
-                if (metaSelection) {
-                    var metaKey = (event.metaKey || event.ctrlKey);
-                    if (selected && metaKey) {
-                        if (this.isSingleSelectionMode()) {
-                            this.selectionChange.emit(null);
-                        }
-                        else {
-                            this.selection = this.selection.filter(function (val, i) { return i != index_1; });
-                            this.selectionChange.emit(this.selection);
-                        }
-                        this.onNodeUnselect.emit({ originalEvent: event, node: node });
-                    }
-                    else {
-                        if (this.isSingleSelectionMode()) {
-                            this.selectionChange.emit(node);
-                        }
-                        else if (this.isMultipleSelectionMode()) {
-                            this.selection = (!metaKey) ? [] : this.selection || [];
-                            this.selection = this.selection.concat([node]);
-                            this.selectionChange.emit(this.selection);
-                        }
-                        this.onNodeSelect.emit({ originalEvent: event, node: node });
-                    }
-                }
-                else {
-                    if (this.isSingleSelectionMode()) {
-                        if (selected) {
-                            this.selection = null;
-                            this.onNodeUnselect.emit({ originalEvent: event, node: node });
-                        }
-                        else {
-                            this.selection = node;
-                            this.onNodeSelect.emit({ originalEvent: event, node: node });
-                        }
-                    }
-                    else {
-                        if (selected) {
-                            this.selection = this.selection.filter(function (val, i) { return i != index_1; });
-                            this.onNodeUnselect.emit({ originalEvent: event, node: node });
-                        }
-                        else {
-                            this.selection = (this.selection || []).concat([node]);
-                            this.onNodeSelect.emit({ originalEvent: event, node: node });
-                        }
-                    }
-                    this.selectionChange.emit(this.selection);
-                }
-            }
-        }
-        this.rowTouched = false;
-    };
-    TreeTable.prototype.onRowTouchEnd = function () {
-        this.rowTouched = true;
-    };
-    TreeTable.prototype.onRowRightClick = function (event, node) {
-        if (this.contextMenu) {
-            var index = this.findIndexInSelection(node);
-            var selected = (index >= 0);
-            if (!selected) {
-                if (this.isSingleSelectionMode()) {
-                    this.selection = node;
-                }
-                else if (this.isMultipleSelectionMode()) {
-                    this.selection = [node];
-                    this.selectionChange.emit(this.selection);
-                }
-                this.selectionChange.emit(this.selection);
-            }
-            this.contextMenu.show(event);
-            this.onContextMenuSelect.emit({ originalEvent: event, node: node });
-        }
-    };
-    TreeTable.prototype.findIndexInSelection = function (node) {
-        var index = -1;
-        if (this.selectionMode && this.selection) {
-            if (this.isSingleSelectionMode()) {
-                index = (this.selection == node) ? 0 : -1;
-            }
-            else {
-                for (var i = 0; i < this.selection.length; i++) {
-                    if (this.selection[i] == node) {
-                        index = i;
-                        break;
-                    }
-                }
-            }
-        }
-        return index;
-    };
-    TreeTable.prototype.propagateSelectionUp = function (node, select) {
-        if (node.children && node.children.length) {
-            var selectedCount = 0;
-            var childPartialSelected = false;
-            for (var _i = 0, _a = node.children; _i < _a.length; _i++) {
-                var child = _a[_i];
-                if (this.isSelected(child)) {
-                    selectedCount++;
-                }
-                else if (child.partialSelected) {
-                    childPartialSelected = true;
-                }
-            }
-            if (select && selectedCount == node.children.length) {
-                this.selection = (this.selection || []).concat([node]);
-                node.partialSelected = false;
-            }
-            else {
-                if (!select) {
-                    var index_2 = this.findIndexInSelection(node);
-                    if (index_2 >= 0) {
-                        this.selection = this.selection.filter(function (val, i) { return i != index_2; });
-                    }
-                }
-                if (childPartialSelected || selectedCount > 0 && selectedCount != node.children.length)
-                    node.partialSelected = true;
-                else
-                    node.partialSelected = false;
-            }
-        }
-        var parent = node.parent;
-        if (parent) {
-            this.propagateSelectionUp(parent, select);
-        }
-    };
-    TreeTable.prototype.propagateSelectionDown = function (node, select) {
-        var index = this.findIndexInSelection(node);
-        if (select && index == -1) {
-            this.selection = (this.selection || []).concat([node]);
-        }
-        else if (!select && index > -1) {
-            this.selection = this.selection.filter(function (val, i) { return i != index; });
-        }
-        node.partialSelected = false;
-        if (node.children && node.children.length) {
-            for (var _i = 0, _a = node.children; _i < _a.length; _i++) {
-                var child = _a[_i];
-                this.propagateSelectionDown(child, select);
-            }
-        }
-    };
-    TreeTable.prototype.isSelected = function (node) {
-        return this.findIndexInSelection(node) != -1;
-    };
-    TreeTable.prototype.isSingleSelectionMode = function () {
-        return this.selectionMode && this.selectionMode == 'single';
-    };
-    TreeTable.prototype.isMultipleSelectionMode = function () {
-        return this.selectionMode && this.selectionMode == 'multiple';
-    };
-    TreeTable.prototype.isCheckboxSelectionMode = function () {
-        return this.selectionMode && this.selectionMode == 'checkbox';
-    };
-    TreeTable.prototype.hasFooter = function () {
-        if (this.columns) {
-            var columnsArr = this.cols.toArray();
-            for (var i = 0; i < columnsArr.length; i++) {
-                if (columnsArr[i].footer) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    };
-    return TreeTable;
-}());
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Array)
-], TreeTable.prototype, "value", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], TreeTable.prototype, "selectionMode", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], TreeTable.prototype, "selection", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], TreeTable.prototype, "style", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], TreeTable.prototype, "styleClass", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], TreeTable.prototype, "labelExpand", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], TreeTable.prototype, "labelCollapse", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], TreeTable.prototype, "metaKeySelection", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], TreeTable.prototype, "contextMenu", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Number)
-], TreeTable.prototype, "toggleColumnIndex", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], TreeTable.prototype, "tableStyle", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], TreeTable.prototype, "tableStyleClass", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], TreeTable.prototype, "collapsedIcon", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], TreeTable.prototype, "expandedIcon", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _c || Object)
-], TreeTable.prototype, "onRowDblclick", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _d || Object)
-], TreeTable.prototype, "selectionChange", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _e || Object)
-], TreeTable.prototype, "onNodeSelect", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _f || Object)
-], TreeTable.prototype, "onNodeUnselect", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _g || Object)
-], TreeTable.prototype, "onNodeExpand", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _h || Object)
-], TreeTable.prototype, "onNodeCollapse", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _j || Object)
-], TreeTable.prototype, "onContextMenuSelect", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* ContentChild */])(__WEBPACK_IMPORTED_MODULE_3__common_shared__["d" /* Header */]),
-    __metadata("design:type", typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_3__common_shared__["d" /* Header */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__common_shared__["d" /* Header */]) === "function" && _k || Object)
-], TreeTable.prototype, "header", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* ContentChild */])(__WEBPACK_IMPORTED_MODULE_3__common_shared__["c" /* Footer */]),
-    __metadata("design:type", typeof (_l = typeof __WEBPACK_IMPORTED_MODULE_3__common_shared__["c" /* Footer */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__common_shared__["c" /* Footer */]) === "function" && _l || Object)
-], TreeTable.prototype, "footer", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* ContentChildren */])(__WEBPACK_IMPORTED_MODULE_3__common_shared__["e" /* Column */]),
-    __metadata("design:type", typeof (_m = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */]) === "function" && _m || Object)
-], TreeTable.prototype, "cols", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('tbl'),
-    __metadata("design:type", typeof (_o = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _o || Object)
-], TreeTable.prototype, "tableViewChild", void 0);
-TreeTable = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-treeTable',
-        template: "\n        <div [ngClass]=\"'ui-treetable ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-treetable-header ui-widget-header\" *ngIf=\"header\">\n                <ng-content select=\"p-header\"></ng-content>\n            </div>\n            <div class=\"ui-treetable-tablewrapper\">\n                <table #tbl class=\"ui-widget-content\" [class]=\"tableStyleClass\" [ngStyle]=\"tableStyle\">\n                    <thead>\n                        <tr class=\"ui-state-default\">\n                            <th #headerCell *ngFor=\"let col of columns; let lastCol=last \"  [ngStyle]=\"col.style\" [class]=\"col.styleClass\" \n                                [ngClass]=\"'ui-state-default ui-unselectable-text'\">\n                                <span class=\"ui-column-title\" *ngIf=\"!col.headerTemplate\">{{col.header}}</span>\n                                <span class=\"ui-column-title\" *ngIf=\"col.headerTemplate\">\n                                    <p-columnHeaderTemplateLoader [column]=\"col\"></p-columnHeaderTemplateLoader>\n                                </span>\n                            </th>\n                        </tr>\n                    </thead>\n                    <tfoot *ngIf=\"hasFooter()\">\n                        <tr>\n                            <td *ngFor=\"let col of columns\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" [ngClass]=\"{'ui-state-default':true}\">\n                                <span class=\"ui-column-footer\" *ngIf=\"!col.footerTemplate\">{{col.footer}}</span>\n                                <span class=\"ui-column-footer\" *ngIf=\"col.footerTemplate\">\n                                    <p-columnFooterTemplateLoader [column]=\"col\"></p-columnFooterTemplateLoader>\n                                </span>\n                            </td>\n                        </tr>\n                    </tfoot>\n                    <tbody pTreeRow *ngFor=\"let node of value\" class=\"ui-treetable-data ui-widget-content\" [node]=\"node\" [level]=\"0\" [labelExpand]=\"labelExpand\" [labelCollapse]=\"labelCollapse\"></tbody>\n                </table>\n            </div>\n            \n            <div class=\"ui-treetable-footer ui-widget-header\" *ngIf=\"footer\">\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n        </div>\n    ",
-        providers: [__WEBPACK_IMPORTED_MODULE_4__dom_domhandler__["a" /* DomHandler */]]
-    }),
-    __metadata("design:paramtypes", [typeof (_p = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _p || Object, typeof (_q = typeof __WEBPACK_IMPORTED_MODULE_4__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__dom_domhandler__["a" /* DomHandler */]) === "function" && _q || Object, typeof (_r = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */]) === "function" && _r || Object, typeof (_s = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */]) === "function" && _s || Object])
-], TreeTable);
-
-var TreeTableModule = (function () {
-    function TreeTableModule() {
-    }
-    return TreeTableModule;
-}());
-TreeTableModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_3__common_shared__["b" /* SharedModule */]],
-        exports: [TreeTable, __WEBPACK_IMPORTED_MODULE_3__common_shared__["b" /* SharedModule */]],
-        declarations: [TreeTable, UITreeRow]
-    })
-], TreeTableModule);
-
-var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s;
-//# sourceMappingURL=treetable.js.map
-
-/***/ }),
-
-/***/ "./src/app/showcase/components/treetable/treetabledemo-routing.module.ts":
+/***/ "./src/app/showcase/components/gmap/gmapdemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__treetabledemo__ = __webpack_require__("./src/app/showcase/components/treetable/treetabledemo.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TreeTableDemoRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__gmapdemo__ = __webpack_require__("./src/app/showcase/components/gmap/gmapdemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GMapDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2291,36 +2637,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var TreeTableDemoRoutingModule = (function () {
-    function TreeTableDemoRoutingModule() {
+var GMapDemoRoutingModule = (function () {
+    function GMapDemoRoutingModule() {
     }
-    return TreeTableDemoRoutingModule;
+    return GMapDemoRoutingModule;
 }());
-TreeTableDemoRoutingModule = __decorate([
+GMapDemoRoutingModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__treetabledemo__["a" /* TreeTableDemo */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__gmapdemo__["a" /* GMapDemo */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], TreeTableDemoRoutingModule);
+], GMapDemoRoutingModule);
 
-//# sourceMappingURL=treetabledemo-routing.module.js.map
+//# sourceMappingURL=gmapdemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/treetable/treetabledemo.html":
+/***/ "./src/app/showcase/components/gmap/gmapdemo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\n    <div>\n        <span class=\"feature-title\">TreeTable</span>\n        <span>TreeTable is used to display hierarchical data in tabular format..</span>\n    </div>\n</div>\n\n<div class=\"content-section implementation\">\n    <p-growl [value]=\"msgs\"></p-growl>\n    \n    <p-treeTable [value]=\"files1\">\n        <p-header>Basic</p-header>\n        <p-column field=\"name\" header=\"Name\"></p-column>\n        <p-column field=\"size\" header=\"Size\"></p-column>\n        <p-column field=\"type\" header=\"Type\"></p-column>\n    </p-treeTable>\n        \n    <p-treeTable [value]=\"files2\" selectionMode=\"single\" [(selection)]=\"selectedFile\"\n        (onNodeSelect)=\"nodeSelect($event)\" (onNodeUnselect)=\"nodeUnselect($event)\" [style]=\"{'margin-top':'50px'}\">\n        <p-header>Single Selection</p-header>\n        <p-column field=\"name\" header=\"Name\"></p-column>\n        <p-column field=\"size\" header=\"Size\"></p-column>\n        <p-column field=\"type\" header=\"Type\"></p-column>\n    </p-treeTable>\n    <p>Selected Node: {{selectedFile ? selectedFile.data.name : 'none'}}</p>\n        \n    <p-treeTable [value]=\"files3\" selectionMode=\"multiple\" [(selection)]=\"selectedFiles\"\n        (onNodeSelect)=\"nodeSelect($event)\" (onNodeUnselect)=\"nodeUnselect($event)\" [style]=\"{'margin-top':'50px'}\">\n        <p-header>Multiple Selection with MetaKey</p-header>\n        <p-column field=\"name\" header=\"Name\"></p-column>\n        <p-column field=\"size\" header=\"Size\"></p-column>\n        <p-column field=\"type\" header=\"Type\"></p-column>\n    </p-treeTable>\n    <p>Selected Nodes: <span *ngFor=\"let file of selectedFiles\">{{file.data.name}} </span></p>\n    \n    <p-treeTable [value]=\"files4\" selectionMode=\"checkbox\" [(selection)]=\"selectedFiles2\" [style]=\"{'margin-top':'50px'}\">\n        <p-header>Checkbox Selection</p-header>\n        <p-column field=\"name\" header=\"Name\"></p-column>\n        <p-column field=\"size\" header=\"Size\"></p-column>\n        <p-column field=\"type\" header=\"Type\"></p-column>\n    </p-treeTable>\n    <p>Selected Nodes: <span *ngFor=\"let file of selectedFiles2\">{{file.data.name}} </span></p>\n    \n    <p-treeTable [value]=\"files5\" [style]=\"{'margin-top':'50px'}\">\n        <p-header>Editable Cells with Templating</p-header>\n        <p-column field=\"name\" header=\"Name\">\n            <ng-template let-node=\"rowData\" pTemplate=\"body\">\n                <input type=\"text\" [(ngModel)]=\"node.data.name\" style=\"width:100%;border-width:0px 0px 1px 0px\">\n            </ng-template>\n        </p-column>\n        <p-column field=\"size\" header=\"Size\">\n            <ng-template let-node=\"rowData\" pTemplate=\"body\">\n                <input type=\"text\" [(ngModel)]=\"node.data.size\" style=\"width:100%;border-width:0px 0px 1px 0px\">\n            </ng-template>\n        </p-column>\n        <p-column field=\"type\" header=\"Type\">\n            <ng-template let-node=\"rowData\" pTemplate=\"body\">\n                <input type=\"text\" [(ngModel)]=\"node.data.type\" style=\"width:100%;border-width:0px 0px 1px 0px\">\n            </ng-template>\n        </p-column>\n    </p-treeTable>\n    \n    <p-treeTable [value]=\"files6\" selectionMode=\"single\" [(selection)]=\"selectedFile2\" [style]=\"{'margin-top':'50px'}\" [contextMenu]=\"cm\">\n        <p-header>Context Menu</p-header>\n        <p-column field=\"name\" header=\"Name\"></p-column>\n        <p-column field=\"size\" header=\"Size\"></p-column>\n        <p-column field=\"type\" header=\"Type\"></p-column>\n    </p-treeTable>\n            \n    <p-contextMenu #cm [model]=\"items\"></p-contextMenu>\n    \n    <p-treeTable [value]=\"lazyFiles\" [style]=\"{'margin-top':'50px'}\"\n        (onNodeExpand)=\"nodeExpand($event)\">\n        <p-header>Lazy Loading</p-header>\n        <p-column field=\"name\" header=\"Name\"></p-column>\n        <p-column field=\"size\" header=\"Size\"></p-column>\n        <p-column field=\"type\" header=\"Type\"></p-column>\n    </p-treeTable>\n</div>\n\n<div class=\"content-section documentation\">\n    <p-tabView effect=\"fade\">\n        <p-tabPanel header=\"Documentation\">\n            <h3>Import</h3>\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nimport &#123;TreeTableModule,TreeNode,SharedModule&#125; from 'primeng/primeng';\n</code>\n</pre>\n\n            <h3>Getting Started</h3>\n            <p>TreeTable component requires an array of TreeNode objects as its value. Let's begin with the TreeNode api.</p>\n            \n            <div class=\"doc-tablewrapper\">\n                <table class=\"doc-table\">\n                    <thead>\n                        <tr>\n                            <th>Name</th>\n                            <th>Type</th>\n                            <th>Default</th>\n                            <th>Description</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        <tr>\n                            <td>label</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Label of the node.</td>\n                        </tr>\n                        <tr>\n                            <td>data</td>\n                            <td>any</td>\n                            <td>null</td>\n                            <td>Data represented by the node.</td>\n                        </tr>\n                        <tr>\n                            <td>icon</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Icon of the node to display next to content. Not used by TreeTable.</td>\n                        </tr>\n                        <tr>\n                            <td>expandedIcon</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Icon to use in expanded state. Not used by TreeTable.</td>\n                        </tr>\n                        <tr>\n                            <td>collapsedIcon</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Icon to use in collapsed state. Not used by TreeTable.</td>\n                        </tr>\n                        <tr>\n                            <td>children</td>\n                            <td>TreeNode[]</td>\n                            <td>null</td>\n                            <td>An array of treenodes as children.</td>\n                        </tr>\n                        <tr>\n                            <td>leaf</td>\n                            <td>boolean</td>\n                            <td>null</td>\n                            <td>Specifies if the node has children. Used in lazy loading.</td>\n                        </tr>\n                        <tr>\n                            <td>style</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Inline style of the node.</td>\n                        </tr>\n                        <tr>\n                            <td>styleClass</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Style class of the node.</td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n            \n            <p>Most of the time, nodes will be loaded from a remote datasoure, here is an example NodeService that fetches the data from a json file.</p> \n<pre>\n<code class=\"language-javascript\" pCode ngNonBindable>\n@Injectable()\nexport class NodeService &#123;\n    \n    constructor(private http: Http) &#123;&#125;\n\n    getFilesystem() &#123;\n        return this.http.get('showcase/resources/data/filesystem.json')\n                    .toPromise()\n                    .then(res => &lt;TreeNode[]&gt; res.json().data);\n    &#125;\n&#125;\n</code>\n</pre>\n        \n        <p>The filesystem.json file consists of sample data. In a real application, this should be a dynamic response generated from the remote call.</p>\n<pre>\n<code class=\"language-javascript\" pCode ngNonBindable>\n&#123;\n    \"data\":\n    [  \n        &#123;  \n            \"data\":&#123;  \n                \"name\":\"Documents\",\n                \"size\":\"75kb\",\n                \"type\":\"Folder\"\n            &#125;,\n            \"children\":[\n                &#123;  \n                    \"data\":&#123;  \n                        \"name\":\"Work\",\n                        \"size\":\"55kb\",\n                        \"type\":\"Folder\"\n                    &#125;,\n                    \"children\":[  \n                        &#123;  \n                            \"data\":&#123;  \n                                \"name\":\"Expenses.doc\",\n                                \"size\":\"30kb\",\n                                \"type\":\"Document\"\n                            &#125;\n                        &#125;,\n                        &#123;  \n                            \"data\":&#123;  \n                                \"name\":\"Resume.doc\",\n                                \"size\":\"25kb\",\n                                \"type\":\"Resume\"\n                            &#125;\n                        &#125;\n                    ]\n                &#125;,\n                &#123;  \n                    \"data\":&#123;  \n                        \"name\":\"Home\",\n                        \"size\":\"20kb\",\n                        \"type\":\"Folder\"\n                    &#125;,\n                    \"children\":[  \n                        &#123;  \n                            \"data\":&#123;  \n                                \"name\":\"Invoices\",\n                                \"size\":\"20kb\",\n                                \"type\":\"Text\"\n                            &#125;\n                        &#125;\n                    ]\n                &#125;\n            ]\n        &#125;,\n        &#123;  \n            \"data\":&#123;  \n                \"name\":\"Pictures\",\n                \"size\":\"150kb\",\n                \"type\":\"Folder\"\n            &#125;,\n            \"children\":[  \n                &#123;  \n                    \"data\":&#123;  \n                        \"name\":\"barcelona.jpg\",\n                        \"size\":\"90kb\",\n                        \"type\":\"Picture\"\n                    &#125;\n                &#125;,\n                &#123;  \n                    \"data\":&#123;  \n                        \"name\":\"primeui.png\",\n                        \"size\":\"30kb\",\n                        \"type\":\"Picture\"\n                    &#125;\n                &#125;,\n                &#123;  \n                    \"data\":&#123;  \n                        \"name\":\"optimus.jpg\",\n                        \"size\":\"30kb\",\n                        \"type\":\"Picture\"\n                    &#125;\n                &#125;\n            ]\n        &#125;\n    ]\n&#125;\n</code>\n</pre>  \n\n        <p>The component that uses this service makes a call to getFiles() and assigns them back to files property that is bound to the tree.</p>\n\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nexport class TreeTableDemoComponent implements OnInit &#123;\n    \n    files: TreeNode[];\n\n    constructor(private nodeService: NodeService) &#123;&#125;\n    \n    ngOnInit() &#123;\n        this.nodeService.getFileSystem().then(files => this.files = files);\n    &#125;\n\n&#125;\n</code>\n</pre>         \n                  \n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-treeTable [value]=\"files\"&gt;\n    &lt;p-column field=\"name\" header=\"Name\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"size\" header=\"Size\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"type\" header=\"Type\"&gt;&lt;/p-column&gt;\n&lt;/p-treeTable&gt;\n</code>\n</pre>\n\n            <h3>Column Component</h3>\n            <p>TreeTable utilizes the following options defined by a column component.</p>\n            <h3>Properties</h3>\n            <div class=\"doc-tablewrapper\">\n                <table class=\"doc-table\">\n                    <thead>\n                        <tr>\n                            <th>Name</th>\n                            <th>Type</th>\n                            <th>Default</th>\n                            <th>Description</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        <tr>\n                            <td>field</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Property of a row data.</td>\n                        </tr>\n                        <tr>\n                            <td>header</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Header text of a column.</td>\n                        </tr>\n                        <tr>\n                            <td>footer</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Footer text of a column.</td>\n                        </tr>\n                        <tr>\n                            <td>style</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Inline style of the column.</td>\n                        </tr>\n                        <tr>\n                            <td>styleClass</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Style class of the column.</td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-column field=\"vin\" header=\"Vin\"&gt;&lt;/p-column&gt;\n</code>\n</pre>\n\n                <h3>Dynamic Colums</h3>\n                <p>Columns can be instantiated using an array as well by iterating with ngFor.</p>\n            <pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nexport class TreeTableDemoComponent implements OnInit &#123;\n\n    files: TreeNode[];\n\n    constructor(private nodeService: NodeService) &#123;&#125;\n    \n    ngOnInit() &#123;\n        this.nodeService.getFileSystem().then(files => this.files = files);\n\n        this.cols = [\n                &#123;field: 'name', header: 'Name'&#125;,\n                &#123;field: 'size', header: 'Size'&#125;,\n                &#123;field: 'type', header: 'Type'&#125;\n            ];\n        &#125;\n    &#125;\n&#125;\n</code>\n</pre>\n\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-treeTable [value]=\"cars\"&gt;\n    &lt;p-column *ngFor=\"let col of cols\" [field]=\"col.field\" [header]=\"col.header\"&gt;&lt;/p-column&gt;\n&lt;/p-treeTable&gt;\n</code>\n</pre>\n\n            <h3>Facets</h3>\n            <p>Header and Footer are the two sections aka facets that are capable of displaying custom content.</p>\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nimport &#123;Header&#125; from 'primeng/primeng';\nimport &#123;Footer&#125; from 'primeng/primeng';\n</code>\n</pre>\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-treeTable [value]=\"files\"&gt;\n    &lt;p-header&gt;List of Files&lt;/p-header&gt;\n    &lt;p-footer&gt;Choose from the list.&lt;/p-footer&gt;\n    &lt;p-column field=\"name\" header=\"Name\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"size\" header=\"Size\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"type\" header=\"Type\"&gt;&lt;/p-column&gt;\n&lt;/p-treeTable&gt;\n</code>\n</pre>\n\n            <h3>Selection</h3>\n            <p>TreeTable supports three selection methods, single, multiple and checkbox. Selection is enabled by setting selectionMode property and providing a single TreeNode or\n            an array of TreeNodes to reference the selections depending on the selection mode.</p>\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nexport class TreeTableDemoComponent implements OnInit &#123;\n    \n    files: TreeNode[];\n    \n    selectedFile: TreeNode;\n\n    constructor(private nodeService: NodeService) &#123;&#125;\n    \n    ngOnInit() &#123;\n        this.nodeService.getFiles().then(files => this.files = files);\n    &#125;\n\n&#125;\n</code>\n</pre>\n\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-treeTable [value]=\"files\" selectionMode=\"single\" [(selection)]=\"selectedFile\"&gt;&lt;/p-treeTable&gt;\n</code>\n</pre>\n\n<p>In multiple mode or checkbox mode, selection property should be an array. In multiple mode, items can either be selected\nusing metaKey or toggled individually depending on the value of metaKeySelection property value which is true by default. On touch enabled\ndevices metaKeySelection is turned off automatically.</p>\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\n    export class TreeTableDemoComponent implements OnInit &#123;\n        \n        files: TreeNode[];\n        \n        selectedFiles: TreeNode[];\n\n        constructor(private nodeService: NodeService) &#123;&#125;\n        \n        ngOnInit() &#123;\n            this.nodeService.getFiles().then(files => this.files = files);\n        &#125;\n\n    &#125;\n</code>\n</pre>\n\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-treeTable [value]=\"files\" selectionMode=\"single\" [(selection)]=\"selectedFiles\"&gt;&lt;/p-treeTable&gt;\n</code>\n</pre>\n\n            <p>TreeTable provides onNodeSelect and onNodeUnselect options as callbacks for selection feature.</p>\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-treeTable [value]=\"files\" selectionMode=\"single\" [(selection)]=\"selectedFiles\" (onNodeSelect)=\"nodeSelect($event)\"&gt;&lt;/p-treeTable&gt;\n</code>\n</pre>\n\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nexport class TreeTableDemoComponent implements OnInit &#123;\n    \n    files: TreeNode[];\n    \n    selectedFiles: TreeNode[];\n\n    constructor(private nodeService: NodeService) &#123;&#125;\n    \n    ngOnInit() &#123;\n        this.nodeService.getFiles().then(files => this.files = files);\n    &#125;\n    \n    nodeSelect(event) &#123;\n        //event.node = selected node\n    &#125;\n\n&#125;\n</code>\n</pre>\n\n            <p>Selection of a particular node can be disabled by setting the selectable property of the node to false.</p>\n            \n            <h3>ContextMenu</h3>\n            <p>TreeTable has exclusive integration with contextmenu component. In order to attach a menu to a treetable, define a local template\n            variable for the menu and bind it to the contextMenu property of the treetable. This enables showing the menu whenever a row is right clicked.</p>\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-treeTable [value]=\"files\" selectionMode=\"single\" [(selection)]=\"selectedFile\" [contextMenu]=\"cm\"&gt;\n    &lt;p-header&gt;Context Menu&lt;/p-header&gt;\n    &lt;p-column field=\"name\" header=\"Name\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"size\" header=\"Size\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"type\" header=\"Type\"&gt;&lt;/p-column&gt;\n&lt;/p-treeTable&gt;\n\n&lt;p-contextMenu #cm [model]=\"items\"&gt;&lt;/p-contextMenu&gt;\n</code>\n</pre>\n\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nexport class TreeTableDemoComponent implements OnInit &#123;\n    \n    files: TreeNode[];\n    \n    selectedFile: TreeNode;\n\n    constructor(private nodeService: NodeService) &#123;&#125;\n    \n    ngOnInit() &#123;\n        this.nodeService.getFiles().then(files => this.files = files);\n        \n        this.items = [\n            &#123;label: 'View', icon: 'fa-search', command: (event) => this.viewNode(this.selectedFile2)&#125;,\n            &#123;label: 'Delete', icon: 'fa-close', command: (event) => this.deleteNode(this.selectedFile2)&#125;\n        ];\n    &#125;\n    \n    viewNode(node: TreeNode) &#123;\n        this.msgs = [];\n        this.msgs.push(&#123;severity: 'info', summary: 'Node Selected', detail: node.data.name&#125;);\n    &#125;\n\n    deleteNode(node: TreeNode) &#123;\n        node.parent.children = node.parent.children.filter( n => n.data !== node.data);\n        this.msgs = [];\n        this.msgs.push(&#123;severity: 'info', summary: 'Node Deleted', detail: node.data.name&#125;);\n    &#125;\n\n&#125;\n</code>\n</pre>\n                \n            <h3>Templating</h3>\n            <p>By default label of a treenode is displayed inside a tree node, in case you need to place custom content define a ng-template inside a column that gets \n                the column as an implicit variable and rowData as the node instance. Similarly, custom content can be placed at the header and footer of a column with templating.\n                Example below places an input field to create editable treenodes.</p>\n\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;h3&gt;ng-template&lt;/h3&gt;\n&lt;p-treeTable [value]=\"files\"&gt;\n    &lt;p-column&gt;\n        &lt;ng-template let-col let-node=\"rowData\" pTemplate=\"header\"&gt;\n            &lt;button type=\"button\" pButton label=\"Refresh\"&gt;&lt;/button&gt;\n        &lt;/ng-template&gt;\n        &lt;ng-template let-col let-node=\"rowData\" pTemplate=\"body\"&gt;\n            &lt;input [(ngModel)]=\"node.data.name\" type=\"text\" style=\"width:100%\"&gt;\n        &lt;/ng-template&gt;\n    &lt;/p-column&gt;\n&lt;/p-treeTable&gt;\n</code>\n</pre>\n\n            <h3>Lazy Loading</h3>\n            <p>Lazy loading is handy to deal with large datasets. Instead of loading the whole tree, nodes can be loaded at onNodeExpand event.\n            Important part of implementing lazy loading is defining leaf property of a node as false, this will instruct tree to display an arrow icon\n            to indicate there are children of this node although they are not loaded yet. When the lazy node is expanded, onNodeExpand is called\n            and a remote call can be made to add the children to the expanded node.</p>\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-treeTable [value]=\"files\" (onNodeExpand)=\"loadNode($event)\"&gt;&lt;/p-treeTable&gt;\n</code>\n</pre>\n\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nexport class TreeTableDemoComponent implements OnInit &#123;\n    \n    files: TreeNode[];\n    \n    selectedFiles: TreeNode[];\n\n    constructor(private nodeService: NodeService) &#123;&#125;\n    \n    ngOnInit() &#123;\n        //initial nodes\n        this.nodeService.getFiles().then(files => this.files = files);\n    &#125;\n    \n    loadNode(event) &#123;\n        if(event.node) &#123;\n            //in a real application, make a call to a remote url to load children of the current node and add the new nodes as children\n            this.nodeService.getLazyFilesystem().then(nodes => event.node.children = nodes);\n        &#125;\n    &#125;\n\n&#125;\n</code>\n</pre>\n\n            <p>Assume at ngOnInit treetable is initialized with a data like below that has nodes having no actual children but leaf property is set false.</p>\n<pre>\n<code class=\"language-javascript\" pCode ngNonBindable>\n&#123;\n    \"data\":\n    [  \n        &#123;  \n            \"data\":&#123;  \n                \"name\":\"Lazy Folder 0\",\n                \"size\":\"75kb\",\n                \"type\":\"Folder\"\n            &#125;,\n            \"leaf\": false\n        &#125;,\n        &#123;  \n            \"data\":&#123;  \n                \"name\":\"Lazy Folder 1\",\n                \"size\":\"150kb\",\n                \"type\":\"Folder\"\n            &#125;,\n            \"leaf\": false\n        &#125;\n    ]\n&#125;\n</code>\n</pre>  \n\n            <h3>Properties</h3>\n            <div class=\"doc-tablewrapper\">\n                <table class=\"doc-table\">\n                    <thead>\n                        <tr>\n                            <th>Name</th>\n                            <th>Type</th>\n                            <th>Default</th>\n                            <th>Description</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                         <tr>\n                            <td>value</td>\n                            <td>array</td>\n                            <td>null</td>\n                            <td>An array of treenodes.</td>\n                        </tr>\n                         <tr>\n                            <td>labelExpand</td>\n                            <td>string</td>\n                            <td>Expand</td>\n                            <td>Tooltip and screenreader text for expand icon.</td>\n                        </tr>\n                         <tr>\n                            <td>labelCollapse</td>\n                            <td>string</td>\n                            <td>Collapse</td>\n                            <td>Tooltip and screenreader text for collapse icon.</td>\n                        </tr>\n                        <tr>\n                           <td>expandedIcon</td>\n                           <td>string</td>\n                           <td>fa-caret-down</td>\n                           <td>Icon to display on an expanded node.</td>\n                       </tr>\n                        <tr>\n                           <td>collapsedIcon</td>\n                           <td>string</td>\n                           <td>fa-caret-right</td>\n                           <td>Icon to display on an expanded node.</td>\n                       </tr>\n                        <tr>\n                            <td>selectionMode</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Defines the selection mode, valid values \"single\" and \"multiple\".</td>\n                        </tr>\n                        <tr>\n                            <td>selection</td>\n                            <td>any</td>\n                            <td>null</td>\n                            <td>A single treenode instance or an array to refer to the selections.</td>\n                        </tr>\n                        <tr>\n                            <td>style</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Inline style of the component.</td>\n                        </tr>\n                        <tr>\n                            <td>styleClass</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Style class of the component.</td>\n                        </tr>\n                        <tr>\n                            <td>metaKeySelection</td>\n                            <td>boolean</td>\n                            <td>true</td>\n                            <td>Defines how multiple items can be selected, when true metaKey needs to be pressed to select or unselect an item and when set to false selection of each item\n                            can be toggled individually. On touch enabled devices, metaKeySelection is turned off automatically.</td>\n                        </tr>\n                        <tr>\n                            <td>toggleColumnIndex</td>\n                            <td>number</td>\n                            <td>0</td>\n                            <td>Index of the column that contains the toggler element.</td>\n                        </tr>\n                        <tr>\n                            <td>tableStyle</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Inline style of the table element.</td>\n                        </tr>\n                        <tr>\n                            <td>tableStyleClass</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Style class of the table element.</td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n\n            <h3>Events</h3>\n            <div class=\"doc-tablewrapper\">\n                <table class=\"doc-table\">\n                    <thead>\n                        <tr>\n                            <th>Name</th>\n                            <th>Parameters</th>\n                            <th>Description</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        <tr>\n                            <td>onNodeSelect</td>\n                            <td>event.originalEvent: browser event <br>\n                                event.node: Selected node instance.</td>\n                            <td>Callback to invoke when a node is selected.</td>\n                        </tr>\n                        <tr>\n                            <td>onNodeUnselect</td>\n                            <td>event.originalEvent: browser event <br>\n                                event.node: Unselected node instance.</td>\n                            <td>Callback to invoke when a node is unselected.</td>\n                        </tr>\n                        <tr>\n                            <td>onNodeExpand</td>\n                            <td>event.originalEvent: browser event <br>\n                                event.node: Expanded node instance.</td>\n                            <td>Callback to invoke when a node is expanded.</td>\n                        </tr>\n                        <tr>\n                            <td>onNodeCollapse</td>\n                            <td>event.originalEvent: browser event <br>\n                                event.node: Collapsed node instance.</td>\n                            <td>Callback to invoke when a node is collapsed.</td>\n                        </tr>\n                        <tr>\n                            <td>onContextMenuSelect</td>\n                            <td>event.originalEvent: browser event <br>\n                                event.node: Selected node instance.</td>\n                            <td>Callback to invoke when a node is selected with right click.</td>\n                        </tr>\n                        <tr>\n                            <td>onRowDblclick</td>\n                            <td>event.originalEvent: Browser event <br>\n                                event.node: Selected node instance.</td>\n                            <td>Callback to invoke when a row is double clicked.</td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n\n            <h3>Styling</h3>\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\n            <div class=\"doc-tablewrapper\">\n                <table class=\"doc-table\">\n                    <thead>\n                        <tr>\n                            <th>Name</th>\n                            <th>Element</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        <tr>\n                            <td>ui-treetable</td>\n                            <td>Main container element</td>\n                        </tr>\n                        <tr>\n                            <td>ui-treetable-header</td>\n                            <td>Header element</td>\n                        </tr>\n                        <tr>\n                            <td>ui-treetable-tablewrapper</td>\n                            <td>Container of table</td>\n                        </tr>\n                        <tr>\n                            <td>ui-treetable-footer</td>\n                            <td>Footer element</td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n\n            <h3>Dependencies</h3>\n            <p>None.</p>\n        </p-tabPanel>\n\n        <p-tabPanel header=\"Source\">\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/treetable\" class=\"btn-viewsource\" target=\"_blank\">\n                <i class=\"fa fa-github\"></i>\n                <span>View on GitHub</span>\n            </a>\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-growl [value]=\"msgs\"&gt;&lt;/p-growl&gt;\n\n&lt;p-treeTable [value]=\"files1\"&gt;\n    &lt;p-header&gt;Basic&lt;/p-header&gt;\n    &lt;p-column field=\"name\" header=\"Name\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"size\" header=\"Size\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"type\" header=\"Type\"&gt;&lt;/p-column&gt;\n&lt;/p-treeTable&gt;\n    \n&lt;p-treeTable [value]=\"files2\" selectionMode=\"single\" [(selection)]=\"selectedFile\"\n    (onNodeSelect)=\"nodeSelect($event)\" (onNodeUnselect)=\"nodeUnselect($event)\" [style]=\"&#123;'margin-top':'50px'&#125;\"&gt;\n    &lt;p-header&gt;Singe Selection&lt;/p-header&gt;\n    &lt;p-column field=\"name\" header=\"Name\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"size\" header=\"Size\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"type\" header=\"Type\"&gt;&lt;/p-column&gt;\n&lt;/p-treeTable&gt;\n&lt;p&gt;Selected Node: &#123;&#123;selectedFile ? selectedFile.data.name : 'none'&#125;&#125;&lt;/p&gt;\n    \n&lt;p-treeTable [value]=\"files3\" selectionMode=\"multiple\" [(selection)]=\"selectedFiles\" \n    (onNodeSelect)=\"nodeSelect($event)\" (onNodeUnselect)=\"nodeUnselect($event)\" [style]=\"&#123;'margin-top':'50px'&#125;\"&gt;\n    &lt;p-header&gt;Multiple Selection&lt;/p-header&gt;\n    &lt;p-column field=\"name\" header=\"Name\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"size\" header=\"Size\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"type\" header=\"Type\"&gt;&lt;/p-column&gt;\n&lt;/p-treeTable&gt;\n&lt;p&gt;Selected Nodes: &lt;span *ngFor=\"let file of selectedFiles\"&gt;&#123;&#123;file.data.name&#125;&#125; &lt;/span&gt;&lt;/p&gt;\n\n&lt;p-treeTable [value]=\"files4\" selectionMode=\"checkbox\" [(selection)]=\"selectedFiles2\" [style]=\"&#123;'margin-top':'50px'&#125;\"&gt;\n    &lt;p-header&gt;Checkbox Selection&lt;/p-header&gt;\n    &lt;p-column field=\"name\" header=\"Name\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"size\" header=\"Size\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"type\" header=\"Type\"&gt;&lt;/p-column&gt;\n&lt;/p-treeTable&gt;\n&lt;p&gt;Selected Nodes: &lt;span *ngFor=\"let file of selectedFiles2\"&gt;&#123;&#123;file.data.name&#125;&#125; &lt;/span&gt;&lt;/p&gt;\n\n&lt;p-treeTable [value]=\"files5\" [style]=\"&#123;'margin-top':'50px'&#125;\"&gt;\n    &lt;p-header&gt;Editable Cells with Templating&lt;/p-header&gt;\n    &lt;p-column field=\"name\" header=\"Name\"&gt;\n        &lt;ng-template let-node=\"rowData\" pTemplate=\"body\"&gt;\n            &lt;input type=\"text\" [(ngModel)]=\"node.data.name\" style=\"width:100%;border-width:0px 0px 1px 0px\"&gt;\n        &lt;/ng-template&gt;\n    &lt;/p-column&gt;\n    &lt;p-column field=\"size\" header=\"Size\"&gt;\n        &lt;ng-template let-node=\"rowData\" pTemplate=\"body\"&gt;\n            &lt;input type=\"text\" [(ngModel)]=\"node.data.size\" style=\"width:100%;border-width:0px 0px 1px 0px\"&gt;\n        &lt;/ng-template&gt;\n    &lt;/p-column&gt;\n    &lt;p-column field=\"type\" header=\"Type\"&gt;\n        &lt;ng-template let-node=\"rowData\" pTemplate=\"body\"&gt;\n            &lt;input type=\"text\" [(ngModel)]=\"node.data.type\" style=\"width:100%;border-width:0px 0px 1px 0px\"&gt;\n        &lt;/ng-template&gt;\n    &lt;/p-column&gt;\n&lt;/p-treeTable&gt;\n\n&lt;p-treeTable [value]=\"files6\" selectionMode=\"single\" [(selection)]=\"selectedFile2\" [style]=\"&#123;'margin-top':'50px'&#125;\" [contextMenu]=\"cm\"&gt;\n    &lt;p-header&gt;Context Menu&lt;/p-header&gt;\n    &lt;p-column field=\"name\" header=\"Name\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"size\" header=\"Size\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"type\" header=\"Type\"&gt;&lt;/p-column&gt;\n&lt;/p-treeTable&gt;\n\n&lt;p-treeTable [value]=\"lazyFiles\" [style]=\"&#123;'margin-top':'50px'&#125;\"\n    (onNodeExpand)=\"nodeExpand($event)\"&gt;\n    &lt;p-header&gt;Lazy Loading&lt;/p-header&gt;\n    &lt;p-column field=\"name\" header=\"Name\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"size\" header=\"Size\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"type\" header=\"Type\"&gt;&lt;/p-column&gt;\n&lt;/p-treeTable&gt;\n</code>\n</pre>\n\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nexport class TreeTableDemo implements OnInit &#123;\n    \n    msgs: Message[];\n    \n    files1: TreeNode[];\n    \n    files2: TreeNode[];\n    \n    files3: TreeNode[];\n    \n    files4: TreeNode[];\n    \n    files5: TreeNode[];\n    \n    files6: TreeNode[];\n            \n    lazyFiles: TreeNode[];\n        \n    selectedFile: TreeNode;\n    \n    selectedFile2: TreeNode;\n    \n    selectedFiles: TreeNode[];\n    \n    selectedFiles2: TreeNode[];\n    \n    items: MenuItem[];\n        \n    constructor(private nodeService: NodeService) &#123; &#125;\n\n    ngOnInit() &#123;\n        this.nodeService.getFilesystem().then(files => this.files1 = files);\n        this.nodeService.getFilesystem().then(files => this.files2 = files);\n        this.nodeService.getFilesystem().then(files => this.files3 = files);\n        this.nodeService.getFilesystem().then(files => this.files4 = files);\n        this.nodeService.getFilesystem().then(files => this.files5 = files);\n        this.nodeService.getFilesystem().then(files => this.files6 = files);\n        this.nodeService.getLazyFilesystem().then(files => this.lazyFiles = files);\n        \n        this.items = [\n            &#123;label: 'View', icon: 'fa-search', command: (event) => this.viewNode(this.selectedFile2)&#125;,\n            &#123;label: 'Delete', icon: 'fa-close', command: (event) => this.deleteNode(this.selectedFile2)&#125;\n        ];\n    &#125;\n    \n    nodeSelect(event) &#123;\n        this.msgs = [];\n        this.msgs.push(&#123;severity: 'info', summary: 'Node Selected', detail: event.node.data.name&#125;);\n    &#125;\n    \n    nodeUnselect(event) &#123;\n        this.msgs = [];\n        this.msgs.push(&#123;severity: 'info', summary: 'Node Unselected', detail: event.node.data.name&#125;);\n    &#125;\n    \n    nodeExpand(event) &#123;\n        if(event.node) &#123;\n            //in a real application, make a call to a remote url to load children of the current node and add the new nodes as children\n            this.nodeService.getLazyFilesystem().then(nodes => event.node.children = nodes);\n        &#125;\n    &#125;\n    \n    viewNode(node: TreeNode) &#123;\n        this.msgs = [];\n        this.msgs.push(&#123;severity: 'info', summary: 'Node Selected', detail: node.data.name&#125;);\n    &#125;\n\n    deleteNode(node: TreeNode) &#123;\n        node.parent.children = node.parent.children.filter( n => n.data !== node.data);\n        this.msgs = [];\n        this.msgs.push(&#123;severity: 'info', summary: 'Node Deleted', detail: node.data.name&#125;);\n    &#125;\n&#125;\n</code>\n</pre>\n        </p-tabPanel>\n    </p-tabView>\n</div>"
+module.exports = "<div class=\"content-section introduction\">\n    <div>\n        <span class=\"feature-title\">GMap</span>\n        <span>GMap component provides integration with Google Maps API. This sample demontrates\n        various uses cases like binding, overlays and events. Click the map to add a new item.</span>\n    </div>\n</div>\n\n<div class=\"content-section implementation\">\n    <p-growl [value]=\"msgs\"></p-growl>\n    \n    <p-gmap #gmap [style]=\"&#123;'width':'100%','height':'320px'&#125;\" [options]=\"options\" [overlays]=\"overlays\" \n       (onMapClick)=\"handleMapClick($event)\" (onOverlayClick)=\"handleOverlayClick($event)\" (onOverlayDragEnd)=\"handleDragEnd($event)\"></p-gmap>\n    <button type=\"button\" pButton label=\"Clear\" icon=\"fa-close\" (click)=\"clear()\" style=\"margin-top:10px\"></button>\n    <button type=\"button\" pButton label=\"Zoom In\" icon=\"fa-search-plus\" (click)=\"zoomIn(gmap.getMap())\" style=\"margin-top:10px\"></button>\n    <button type=\"button\" pButton label=\"Zoom Out\" icon=\"fa-search-minus\" (click)=\"zoomOut(gmap.getMap())\" style=\"margin-top:10px\"></button>\n\n    <p-dialog showEffect=\"fade\" [(visible)]=\"dialogVisible\" header=\"New Location\" [width]=\"300\">\n        <div class=\"ui-g ui-fluid\" *ngIf=\"selectedPosition\">\n            <div class=\"ui-g-2\"><label for=\"title\">Label</label></div>\n            <div class=\"ui-g-10\"><input type=\"text\" pInputText id=\"title\" [(ngModel)]=\"markerTitle\"></div>\n            \n            <div class=\"ui-g-2\"><label for=\"lat\">Lat</label></div>\n            <div class=\"ui-g-10\"><input id=\"lat\" type=\"text\" readonly pInputText [ngModel]=\"selectedPosition.lat()\"></div>\n            \n            <div class=\"ui-g-2\"><label for=\"lng\">Lng</label></div>\n            <div class=\"ui-g-10\"><input id=\"lng\" type=\"text\" readonly pInputText [ngModel]=\"selectedPosition.lng()\"></div>\n            \n            <div class=\"ui-g-2\"><label for=\"drg\">Drag</label></div>\n            <div class=\"ui-g-10\"><p-checkbox [(ngModel)]=\"draggable\" binary=\"true\" [style]=\"{'margin-top':'.25em'}\"></p-checkbox></div>\n        </div>\n        <p-footer>\n            <div class=\"ui-dialog-buttonpane ui-helper-clearfix\">\n                <button type=\"button\" pButton label=\"Add Marker\" icon=\"fa-plus\" (click)=\"addMarker()\"></button>\n            </div>\n        </p-footer>\n    </p-dialog>\n</div>\n\n<div class=\"content-section documentation\">\n    <p-tabView effect=\"fade\">\n        <p-tabPanel header=\"Documentation\">\n            <h3>Import</h3>\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nimport &#123;GMapModule&#125; from 'primeng/primeng';\n</code>\n</pre>\n\n            <h3>Getting Started</h3>\n            <p>A map is initialized with options and dimensions. Refer to the google maps api for the list of available options.</p>\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-gmap [options]=\"options\" [style]=\"&#123;'width':'100%','height':'320px'&#125;\" &gt;&lt;/p-gmap&gt;\n</code>\n</pre>\n\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nexport class MyModel &#123;\n\n    options: any;\n    \n    overlays: any[];\n    \n    ngOnInit() &#123;\n        this.options = &#123;\n            center: &#123;lat: 36.890257, lng: 30.707417&#125;,\n            zoom: 12\n        &#125;;\n    &#125;\n\n&#125;\n</code>\n</pre>\n\n            <h3>Overlays</h3>\n            <p>GMap can display any type of overlay such as markers, polygons and circles. Overlay instances are bound using the overlays property array. Overlays are aware\n            of one-way binding so whenever the array changes, gmap updates itself.</p>\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-gmap [options]=\"options\" [overlays]=\"overlays\" [style]=\"&#123;'width':'100%','height':'320px'&#125;\" &gt;&lt;/p-gmap&gt;\n</code>\n</pre>\n\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nexport class MyModel &#123;\n\n    options: any;\n    \n    overlays: any[];\n    \n    ngOnInit() &#123;\n        this.options = &#123;\n            center: &#123;lat: 36.890257, lng: 30.707417&#125;,\n            zoom: 12\n        &#125;;\n        \n        this.overlays = [\n            new google.maps.Marker(&#123;position: &#123;lat: 36.879466, lng: 30.667648&#125;, title:\"Konyaalti\"&#125;),\n            new google.maps.Marker(&#123;position: &#123;lat: 36.883707, lng: 30.689216&#125;, title:\"Ataturk Park\"&#125;),\n            new google.maps.Marker(&#123;position: &#123;lat: 36.885233, lng: 30.702323&#125;, title:\"Oldtown\"&#125;),\n            new google.maps.Polygon(&#123;paths: [\n                &#123;lat: 36.9177, lng: 30.7854&#125;,&#123;lat: 36.8851, lng: 30.7802&#125;,&#123;lat: 36.8829, lng: 30.8111&#125;,&#123;lat: 36.9177, lng: 30.8159&#125;\n            ], strokeOpacity: 0.5, strokeWeight: 1,fillColor: '#1976D2', fillOpacity: 0.35\n            &#125;),\n            new google.maps.Circle(&#123;center: &#123;lat: 36.90707, lng: 30.56533&#125;, fillColor: '#1976D2', fillOpacity: 0.35, strokeWeight: 1, radius: 1500&#125;),\n            new google.maps.Polyline(&#123;path: [&#123;lat: 36.86149, lng: 30.63743&#125;,&#123;lat: 36.86341, lng: 30.72463&#125;], geodesic: true, strokeColor: '#FF0000', strokeOpacity: 0.5, strokeWeight: 2&#125;)\n        ];\n    &#125;\n&#125;\n</code>\n</pre>\n\n            <h3>Events</h3>\n            <p>GMap provides common callbacks to hook into events including map click, overlay click and overlay dragging.</p>\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-gmap [options]=\"options\" [overlays]=\"overlays\" [style]=\"&#123;'width':'100%','height':'320px'&#125;\"\n            (onMapClick)=\"handleMapClick($event)\" (onOverlayClick)=\"handleOverlayClick($event)\"&gt;&lt;/p-gmap&gt;\n</code>\n</pre>\n\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nexport class MyModel &#123;\n\n    options: any;\n    \n    overlays: any[];\n    \n    ngOnInit() &#123;\n        this.options = &#123;\n            center: &#123;lat: 36.890257, lng: 30.707417&#125;,\n            zoom: 12\n        &#125;;\n        \n        this.overlays = [\n            new google.maps.Marker(&#123;position: &#123;lat: 36.879466, lng: 30.667648&#125;, title:\"Konyaalti\"&#125;),\n            new google.maps.Marker(&#123;position: &#123;lat: 36.883707, lng: 30.689216&#125;, title:\"Ataturk Park\"&#125;),\n            new google.maps.Marker(&#123;position: &#123;lat: 36.885233, lng: 30.702323&#125;, title:\"Oldtown\"&#125;),\n            new google.maps.Polygon(&#123;paths: [\n                &#123;lat: 36.9177, lng: 30.7854&#125;,&#123;lat: 36.8851, lng: 30.7802&#125;,&#123;lat: 36.8829, lng: 30.8111&#125;,&#123;lat: 36.9177, lng: 30.8159&#125;\n            ], strokeOpacity: 0.5, strokeWeight: 1,fillColor: '#1976D2', fillOpacity: 0.35\n            &#125;),\n            new google.maps.Circle(&#123;center: &#123;lat: 36.90707, lng: 30.56533&#125;, fillColor: '#1976D2', fillOpacity: 0.35, strokeWeight: 1, radius: 1500&#125;),\n            new google.maps.Polyline(&#123;path: [&#123;lat: 36.86149, lng: 30.63743&#125;,&#123;lat: 36.86341, lng: 30.72463&#125;], geodesic: true, strokeColor: '#FF0000', strokeOpacity: 0.5, strokeWeight: 2&#125;)\n        ];\n    &#125;\n    \n    handleMapClick(event) &#123;\n        //event: MouseEvent of Google Maps api\n    &#125;\n    \n    handleOverlayClick(event) &#123;\n        //event.originalEvent: MouseEvent of Google Maps api\n        //event.overlay: Clicked overlay     \n        //event.map: Map instance   \n    &#125;\n&#125;\n</code>\n</pre>\n\n            <h3>Google Maps API</h3>\n            <p>In case you need to access the map instance directly, use the getMap() method.</p>\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-gmap #gmap [options]=\"options\"&gt;&lt;/p-gmap&gt;\n\n&lt;button type=\"button\" pButton label=\"Zoom In\" icon=\"fa-search-plus\" (click)=\"zoomIn(gmap.getMap())\"&gt;&lt;/button&gt;\n</code>\n</pre>\n\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nexport class MyModel &#123;\n\n    options: any;\n    \n    overlays: any[];\n    \n    ngOnInit() &#123;\n        this.options = &#123;\n            center: &#123;lat: 36.890257, lng: 30.707417&#125;,\n            zoom: 12\n        &#125;;\n    &#125;\n    \n    zoomIn(map) &#123;\n        map.setZoom(map.getZoom()+1);\n    &#125;\n&#125;\n</code>\n</pre>\n            <p>Another option is to to get the map object directly after init via (onMapReady) event.\n               In the example below, google.maps.Map is used for adjusting map bounds to markers.</p>\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-gmap #gmap [options]=\"options\" [overlays]=\"overlays\" [style]=\"mapStyle\"\n    (onMapReady)=\"setMap($event)\"&gt;&lt;/p-gmap&gt;\n</code>\n</pre>\n            <p>Then from your component you would write</p>\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nexport class MyModel &#123;\n\n    options: any;\n    \n    overlays: any[];\n    \n    map: google.maps.Map;\n    \n    setMap(event) &#123;\n        this.map = event.map;\n    &#125;\n    \n    ngOnInit() &#123;\n        let bounds = new google.maps.LatLngBounds();\n        this.overlays = [\n            new google.maps.Marker(&#123;position: &#123;lat: 36.879466, lng: 30.667648&#125;, title:\"Konyaalti\"&#125;),\n            new google.maps.Marker(&#123;position: &#123;lat: 36.883707, lng: 30.689216&#125;, title:\"Ataturk Park\"&#125;),\n            new google.maps.Marker(&#123;position: &#123;lat: 36.885233, lng: 30.702323&#125;, title:\"Oldtown\"&#125;),\n        ]\n        // ... extend bounds\n        this.overlays.forEach(marker => &#123;\n            bounds.extend(marker.getPosition());\n        &#125;);\n        \n        setTimeout(()=> &#123; // map will need some time to load\n            this.map.fitBounds(bounds); // Map object used directly\n        &#125;, 1000);\n    &#125;\n&#125;\n</code>\n</pre>\n\n            <h3>Properties</h3>\n            <div class=\"doc-tablewrapper\">\n                <table class=\"doc-table\">\n                    <thead>\n                    <tr>\n                        <th>Name</th>\n                        <th>Type</th>\n                        <th>Default</th>\n                        <th>Description</th>\n                    </tr>\n                    </thead>\n                    <tbody>\n                        <tr>\n                            <td>options</td>\n                            <td>any</td>\n                            <td>null</td>\n                            <td>Google Maps API configuration object.</td>\n                        </tr>\n                        <tr>\n                            <td>overlays</td>\n                            <td>array</td>\n                            <td>null</td>\n                            <td>An array of overlays to display.</td>\n                        </tr>\n                        <tr>\n                            <td>style</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Inline style of the component.</td>\n                        </tr>\n                        <tr>\n                            <td>styleClass</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Style class of the component.</td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n            \n            <h3>Events</h3>\n            <div class=\"doc-tablewrapper\">\n                <table class=\"doc-table\">\n                    <thead>\n                        <tr>\n                            <th>Name</th>\n                            <th>Parameters</th>\n                            <th>Description</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        <tr>\n                            <td>onMapClick</td>\n                            <td>event: Google Maps MouseEvent</td>\n                            <td>Callback to invoke when map is clicked except markers.</td>\n                        </tr>\n                        <tr>\n                            <td>onMapDragEnd</td>\n                            <td>originalEvent: Google Maps dragend<br></td>\n                            <td>Callback to invoke when map drag (i.e. pan) has ended.</td>\n                        </tr>\n                        <tr>\n                            <td>onMapReady</td>\n                            <td>event.map: Google Maps Instance</td>\n                            <td>Callback to invoke when the map is ready to be used.</td>\n                        </tr>\n                        <tr>\n                            <td>onOverlayClick</td>\n                            <td>originalEvent: Google Maps MouseEvent <br>\n                                overlay: Clicked overlay <br>\n                                map: Map instance <br></td>\n                            <td>Callback to invoke when an overlay is clicked.</td>\n                        </tr>\n                        <tr>\n                            <td>onOverlayDrag</td>\n                            <td>originalEvent: Google Maps MouseEvent <br>\n                                overlay: Clicked overlay <br>\n                                map: Map instance <br></td>\n                            <td>Callback to invoke when an overlay is being dragged.</td>\n                        </tr>\n                        <tr>\n                            <td>onOverlayDragEnd</td>\n                            <td>originalEvent: Google Maps MouseEvent <br>\n                                overlay: Clicked overlay <br>\n                                map: Map instance <br></td>\n                            <td>Callback to invoke when an overlay drag ends.</td>\n                        </tr>\n                        <tr>\n                            <td>onOverlayDragStart</td>\n                            <td>originalEvent: Google Maps MouseEvent <br>\n                                overlay: Clicked overlay <br>\n                                map: Map instance <br></td>\n                            <td>Callback to invoke when an overlay drag starts.</td>\n                        </tr>\n                        <tr>\n                            <td>onZoomChanged</td>\n                            <td>originalEvent: Google Maps zoom_changed</td>\n                            <td>Callback to invoke when zoom level has changed.</td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n\n            <h3>Dependencies</h3>\n            <p>Google Maps API.</p>\n        </p-tabPanel>\n\n        <p-tabPanel header=\"Source\">\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/gmap\" class=\"btn-viewsource\" target=\"_blank\">\n                <i class=\"fa fa-github\"></i>\n                <span>View on GitHub</span>\n            </a>\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-growl [value]=\"msgs\"&gt;&lt;/p-growl&gt;\n\n&lt;p-gmap #gmap [style]=\"&#123;'width':'100%','height':'320px'&#125;\" [options]=\"options\" [overlays]=\"overlays\" \n    (onMapClick)=\"handleMapClick($event)\" (onOverlayClick)=\"handleOverlayClick($event)\" (onOverlayDragEnd)=\"handleDragEnd($event)\"&gt;&lt;/p-gmap&gt;\n&lt;button type=\"button\" pButton label=\"Clear\" icon=\"fa-close\" (click)=\"clear()\" style=\"margin-top:10px\"&gt;&lt;/button&gt;\n&lt;button type=\"button\" pButton label=\"Zoom In\" icon=\"fa-search-plus\" (click)=\"zoomIn(gmap.getMap())\" style=\"margin-top:10px\"&gt;&lt;/button&gt;\n&lt;button type=\"button\" pButton label=\"Zoom Out\" icon=\"fa-search-minus\" (click)=\"zoomOut(gmap.getMap())\" style=\"margin-top:10px\"&gt;&lt;/button&gt;\n\n&lt;p-dialog showEffect=\"fade\" [(visible)]=\"dialogVisible\" header=\"New Location\"&gt;\n    &lt;div class=\"ui-g ui-fluid\" *ngIf=\"selectedPosition\"&gt;\n        &lt;div class=\"ui-g-2\"&gt;&lt;label for=\"title\"&gt;Label&lt;/label&gt;&lt;/div&gt;\n        &lt;div class=\"ui-g-10\"&gt;&lt;input type=\"text\" pInputText id=\"title\" [(ngModel)]=\"markerTitle\"&gt;&lt;/div&gt;\n        \n        &lt;div class=\"ui-g-2\"&gt;&lt;label for=\"lat\"&gt;Lat&lt;/label&gt;&lt;/div&gt;\n        &lt;div class=\"ui-g-10\"&gt;&lt;input id=\"lat\" type=\"text\" readonly pInputText [ngModel]=\"selectedPosition.lat()\"&gt;&lt;/div&gt;\n        \n        &lt;div class=\"ui-g-2\"&gt;&lt;label for=\"lng\"&gt;Lng&lt;/label&gt;&lt;/div&gt;\n        &lt;div class=\"ui-g-10\"&gt;&lt;input id=\"lng\" type=\"text\" readonly pInputText [ngModel]=\"selectedPosition.lng()\"&gt;&lt;/div&gt;\n        \n        &lt;div class=\"ui-g-2\"&gt;&lt;label for=\"drg\"&gt;Drag&lt;/label&gt;&lt;/div&gt;\n        &lt;div class=\"ui-g-10\"&gt;&lt;p-checkbox [(ngModel)]=\"draggable\" binary=\"true\" [style]=\"&#123;'margin-top':'.25em'&#125;\"&gt;&lt;/p-checkbox&gt;&lt;/div&gt;\n    &lt;/div&gt;\n    &lt;p-footer&gt;\n        &lt;div class=\"ui-dialog-buttonpane ui-helper-clearfix\"&gt;\n            &lt;button type=\"button\" pButton label=\"Add Marker\" icon=\"fa-plus\" (click)=\"addMarker()\"&gt;&lt;/button&gt;\n        &lt;/div&gt;\n    &lt;/p-footer&gt;\n&lt;/p-dialog&gt;\n</code>\n</pre>\n\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nexport class GMapDemo implements OnInit &#123;\n\n    options: any;\n    \n    overlays: any[];\n    \n    dialogVisible: boolean;\n    \n    markerTitle: string;\n    \n    selectedPosition: any;\n    \n    infoWindow: any;\n    \n    draggable: boolean;\n    \n    msgs: Message[] = [];\n\n    ngOnInit() &#123;\n        this.options = &#123;\n            center: &#123;lat: 36.890257, lng: 30.707417&#125;,\n            zoom: 12\n        &#125;;\n        \n        this.initOverlays();\n        \n        this.infoWindow = new google.maps.InfoWindow();\n    &#125;\n    \n    handleMapClick(event) &#123;\n        this.dialogVisible = true;\n        this.selectedPosition = event.latLng;\n    &#125;\n    \n    handleOverlayClick(event) &#123;\n        this.msgs = [];\n        let isMarker = event.overlay.getTitle != undefined;\n        \n        if(isMarker) &#123;\n            let title = event.overlay.getTitle();\n            this.infoWindow.setContent('<div>' + title + '</div>');\n            this.infoWindow.open(event.map, event.overlay);\n            event.map.setCenter(event.overlay.getPosition());\n            \n            this.msgs.push(&#123;severity:'info', summary:'Marker Selected', detail: title&#125;);\n        &#125;\n        else &#123;\n            this.msgs.push(&#123;severity:'info', summary:'Shape Selected', detail: ''&#125;);\n        &#125;        \n    &#125;\n    \n    addMarker() &#123;\n        this.overlays.push(new google.maps.Marker(&#123;position:&#123;lat: this.selectedPosition.lat(), lng: this.selectedPosition.lng()&#125;, title:this.markerTitle, draggable: this.draggable&#125;));\n        this.markerTitle = null;\n        this.dialogVisible = false;\n    &#125;\n    \n    handleDragEnd(event) &#123;\n        this.msgs = [];\n        this.msgs.push(&#123;severity:'info', summary:'Marker Dragged', detail: event.overlay.getTitle()&#125;);\n    &#125;\n    \n    initOverlays() &#123;\n        if(!this.overlays||!this.overlays.length) &#123;\n            this.overlays = [\n                new google.maps.Marker(&#123;position: &#123;lat: 36.879466, lng: 30.667648&#125;, title:\"Konyaalti\"&#125;),\n                new google.maps.Marker(&#123;position: &#123;lat: 36.883707, lng: 30.689216&#125;, title:\"Ataturk Park\"&#125;),\n                new google.maps.Marker(&#123;position: &#123;lat: 36.885233, lng: 30.702323&#125;, title:\"Oldtown\"&#125;),\n                new google.maps.Polygon(&#123;paths: [\n                    &#123;lat: 36.9177, lng: 30.7854&#125;,&#123;lat: 36.8851, lng: 30.7802&#125;,&#123;lat: 36.8829, lng: 30.8111&#125;,&#123;lat: 36.9177, lng: 30.8159&#125;\n                ], strokeOpacity: 0.5, strokeWeight: 1,fillColor: '#1976D2', fillOpacity: 0.35\n                &#125;),\n                new google.maps.Circle(&#123;center: &#123;lat: 36.90707, lng: 30.56533&#125;, fillColor: '#1976D2', fillOpacity: 0.35, strokeWeight: 1, radius: 1500&#125;),\n                new google.maps.Polyline(&#123;path: [&#123;lat: 36.86149, lng: 30.63743&#125;,&#123;lat: 36.86341, lng: 30.72463&#125;], geodesic: true, strokeColor: '#FF0000', strokeOpacity: 0.5, strokeWeight: 2&#125;)\n            ];\n        &#125;\n    &#125;\n    \n    zoomIn(map) &#123;\n        map.setZoom(map.getZoom()+1);\n    &#125;\n    \n    zoomOut(map) &#123;\n        map.setZoom(map.getZoom()-1);\n    &#125;\n    \n    clear() &#123;\n        this.overlays = [];\n    &#125;\n&#125;\n</code>\n</pre>\n        </p-tabPanel>\n    </p-tabView>\n</div>\n"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/treetable/treetabledemo.module.ts":
+/***/ "./src/app/showcase/components/gmap/gmapdemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2328,14 +2674,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__treetabledemo__ = __webpack_require__("./src/app/showcase/components/treetable/treetabledemo.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__treetabledemo_routing_module__ = __webpack_require__("./src/app/showcase/components/treetable/treetabledemo-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_treetable_treetable__ = __webpack_require__("./src/app/components/treetable/treetable.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__gmapdemo__ = __webpack_require__("./src/app/showcase/components/gmap/gmapdemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__gmapdemo_routing_module__ = __webpack_require__("./src/app/showcase/components/gmap/gmapdemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_gmap_gmap__ = __webpack_require__("./src/app/components/gmap/gmap.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_growl_growl__ = __webpack_require__("./src/app/components/growl/growl.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_contextmenu_contextmenu__ = __webpack_require__("./src/app/components/contextmenu/contextmenu.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TreeTableDemoModule", function() { return TreeTableDemoModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_checkbox_checkbox__ = __webpack_require__("./src/app/components/checkbox/checkbox.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_dialog_dialog__ = __webpack_require__("./src/app/components/dialog/dialog.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_inputtext_inputtext__ = __webpack_require__("./src/app/components/inputtext/inputtext.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_button_button__ = __webpack_require__("./src/app/components/button/button.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GMapDemoModule", function() { return GMapDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2352,103 +2701,125 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var TreeTableDemoModule = (function () {
-    function TreeTableDemoModule() {
+
+
+
+var GMapDemoModule = (function () {
+    function GMapDemoModule() {
     }
-    return TreeTableDemoModule;
+    return GMapDemoModule;
 }());
-TreeTableDemoModule = __decorate([
+GMapDemoModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_4__treetabledemo_routing_module__["a" /* TreeTableDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_5__components_treetable_treetable__["a" /* TreeTableModule */],
+            __WEBPACK_IMPORTED_MODULE_4__gmapdemo_routing_module__["a" /* GMapDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_5__components_gmap_gmap__["a" /* GMapModule */],
             __WEBPACK_IMPORTED_MODULE_6__components_growl_growl__["a" /* GrowlModule */],
-            __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__["a" /* TabViewModule */],
-            __WEBPACK_IMPORTED_MODULE_8__components_contextmenu_contextmenu__["a" /* ContextMenuModule */],
-            __WEBPACK_IMPORTED_MODULE_9__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
+            __WEBPACK_IMPORTED_MODULE_9__components_inputtext_inputtext__["a" /* InputTextModule */],
+            __WEBPACK_IMPORTED_MODULE_7__components_checkbox_checkbox__["a" /* CheckboxModule */],
+            __WEBPACK_IMPORTED_MODULE_8__components_dialog_dialog__["a" /* DialogModule */],
+            __WEBPACK_IMPORTED_MODULE_10__components_button_button__["a" /* ButtonModule */],
+            __WEBPACK_IMPORTED_MODULE_11__components_tabview_tabview__["a" /* TabViewModule */],
+            __WEBPACK_IMPORTED_MODULE_12__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_3__treetabledemo__["a" /* TreeTableDemo */]
+            __WEBPACK_IMPORTED_MODULE_3__gmapdemo__["a" /* GMapDemo */]
         ]
     })
-], TreeTableDemoModule);
+], GMapDemoModule);
 
-//# sourceMappingURL=treetabledemo.module.js.map
+//# sourceMappingURL=gmapdemo.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/treetable/treetabledemo.ts":
+/***/ "./src/app/showcase/components/gmap/gmapdemo.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__service_nodeservice__ = __webpack_require__("./src/app/showcase/service/nodeservice.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TreeTableDemo; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GMapDemo; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 
-
-var TreeTableDemo = (function () {
-    function TreeTableDemo(nodeService) {
-        this.nodeService = nodeService;
+var GMapDemo = (function () {
+    function GMapDemo() {
+        this.msgs = [];
     }
-    TreeTableDemo.prototype.ngOnInit = function () {
-        var _this = this;
-        this.nodeService.getFilesystem().then(function (files) { return _this.files1 = files; });
-        this.nodeService.getFilesystem().then(function (files) { return _this.files2 = files; });
-        this.nodeService.getFilesystem().then(function (files) { return _this.files3 = files; });
-        this.nodeService.getFilesystem().then(function (files) { return _this.files4 = files; });
-        this.nodeService.getFilesystem().then(function (files) { return _this.files5 = files; });
-        this.nodeService.getFilesystem().then(function (files) { return _this.files6 = files; });
-        this.nodeService.getLazyFilesystem().then(function (files) { return _this.lazyFiles = files; });
-        this.items = [
-            { label: 'View', icon: 'fa-search', command: function (event) { return _this.viewNode(_this.selectedFile2); } },
-            { label: 'Delete', icon: 'fa-close', command: function (event) { return _this.deleteNode(_this.selectedFile2); } }
-        ];
+    GMapDemo.prototype.ngOnInit = function () {
+        this.options = {
+            center: { lat: 36.890257, lng: 30.707417 },
+            zoom: 12
+        };
+        this.initOverlays();
+        this.infoWindow = new google.maps.InfoWindow();
     };
-    TreeTableDemo.prototype.nodeSelect = function (event) {
+    GMapDemo.prototype.handleMapClick = function (event) {
+        this.dialogVisible = true;
+        this.selectedPosition = event.latLng;
+    };
+    GMapDemo.prototype.handleOverlayClick = function (event) {
         this.msgs = [];
-        this.msgs.push({ severity: 'info', summary: 'Node Selected', detail: event.node.data.name });
-    };
-    TreeTableDemo.prototype.nodeUnselect = function (event) {
-        this.msgs = [];
-        this.msgs.push({ severity: 'info', summary: 'Node Unselected', detail: event.node.data.name });
-    };
-    TreeTableDemo.prototype.nodeExpand = function (event) {
-        if (event.node) {
-            //in a real application, make a call to a remote url to load children of the current node and add the new nodes as children
-            this.nodeService.getLazyFilesystem().then(function (nodes) { return event.node.children = nodes; });
+        var isMarker = event.overlay.getTitle != undefined;
+        if (isMarker) {
+            var title = event.overlay.getTitle();
+            this.infoWindow.setContent('<div>' + title + '</div>');
+            this.infoWindow.open(event.map, event.overlay);
+            event.map.setCenter(event.overlay.getPosition());
+            this.msgs.push({ severity: 'info', summary: 'Marker Selected', detail: title });
+        }
+        else {
+            this.msgs.push({ severity: 'info', summary: 'Shape Selected', detail: '' });
         }
     };
-    TreeTableDemo.prototype.viewNode = function (node) {
-        this.msgs = [];
-        this.msgs.push({ severity: 'info', summary: 'Node Selected', detail: node.data.name });
+    GMapDemo.prototype.addMarker = function () {
+        this.overlays.push(new google.maps.Marker({ position: { lat: this.selectedPosition.lat(), lng: this.selectedPosition.lng() }, title: this.markerTitle, draggable: this.draggable }));
+        this.markerTitle = null;
+        this.dialogVisible = false;
     };
-    TreeTableDemo.prototype.deleteNode = function (node) {
-        node.parent.children = node.parent.children.filter(function (n) { return n.data !== node.data; });
+    GMapDemo.prototype.handleDragEnd = function (event) {
         this.msgs = [];
-        this.msgs.push({ severity: 'info', summary: 'Node Deleted', detail: node.data.name });
+        this.msgs.push({ severity: 'info', summary: 'Marker Dragged', detail: event.overlay.getTitle() });
     };
-    return TreeTableDemo;
+    GMapDemo.prototype.initOverlays = function () {
+        if (!this.overlays || !this.overlays.length) {
+            this.overlays = [
+                new google.maps.Marker({ position: { lat: 36.879466, lng: 30.667648 }, title: "Konyaalti" }),
+                new google.maps.Marker({ position: { lat: 36.883707, lng: 30.689216 }, title: "Ataturk Park" }),
+                new google.maps.Marker({ position: { lat: 36.885233, lng: 30.702323 }, title: "Oldtown" }),
+                new google.maps.Polygon({ paths: [
+                        { lat: 36.9177, lng: 30.7854 }, { lat: 36.8851, lng: 30.7802 }, { lat: 36.8829, lng: 30.8111 }, { lat: 36.9177, lng: 30.8159 }
+                    ], strokeOpacity: 0.5, strokeWeight: 1, fillColor: '#1976D2', fillOpacity: 0.35
+                }),
+                new google.maps.Circle({ center: { lat: 36.90707, lng: 30.56533 }, fillColor: '#1976D2', fillOpacity: 0.35, strokeWeight: 1, radius: 1500 }),
+                new google.maps.Polyline({ path: [{ lat: 36.86149, lng: 30.63743 }, { lat: 36.86341, lng: 30.72463 }], geodesic: true, strokeColor: '#FF0000', strokeOpacity: 0.5, strokeWeight: 2 })
+            ];
+        }
+    };
+    GMapDemo.prototype.zoomIn = function (map) {
+        map.setZoom(map.getZoom() + 1);
+    };
+    GMapDemo.prototype.zoomOut = function (map) {
+        map.setZoom(map.getZoom() - 1);
+    };
+    GMapDemo.prototype.clear = function () {
+        this.overlays = [];
+    };
+    return GMapDemo;
 }());
-TreeTableDemo = __decorate([
+GMapDemo = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/treetable/treetabledemo.html")
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__service_nodeservice__["a" /* NodeService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__service_nodeservice__["a" /* NodeService */]) === "function" && _a || Object])
-], TreeTableDemo);
+        template: __webpack_require__("./src/app/showcase/components/gmap/gmapdemo.html"),
+        styles: ["\n        .ui-g-2 {\n            padding-top: .75em;\n        }\n    "]
+    })
+], GMapDemo);
 
-var _a;
-//# sourceMappingURL=treetabledemo.js.map
+//# sourceMappingURL=gmapdemo.js.map
 
 /***/ })
 

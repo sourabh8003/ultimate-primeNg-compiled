@@ -1,145 +1,5 @@
 webpackJsonp([11],{
 
-/***/ "./src/app/components/button/button.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* unused harmony export Button */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ButtonModule; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-var Button = (function () {
-    function Button(el, domHandler) {
-        this.el = el;
-        this.domHandler = domHandler;
-        this.iconPos = 'left';
-        this.cornerStyleClass = 'ui-corner-all';
-    }
-    Button.prototype.ngAfterViewInit = function () {
-        this.domHandler.addMultipleClasses(this.el.nativeElement, this.getStyleClass());
-        if (this.icon) {
-            var iconElement = document.createElement("span");
-            var iconPosClass = (this.iconPos == 'right') ? 'ui-button-icon-right' : 'ui-button-icon-left';
-            iconElement.className = iconPosClass + ' ui-clickable fa fa-fw ' + this.icon;
-            this.el.nativeElement.appendChild(iconElement);
-        }
-        var labelElement = document.createElement("span");
-        labelElement.className = 'ui-button-text ui-clickable';
-        labelElement.appendChild(document.createTextNode(this.label || 'ui-btn'));
-        this.el.nativeElement.appendChild(labelElement);
-        this.initialized = true;
-    };
-    Button.prototype.getStyleClass = function () {
-        var styleClass = 'ui-button ui-widget ui-state-default ' + this.cornerStyleClass;
-        if (this.icon) {
-            if (this.label != null && this.label != undefined) {
-                if (this.iconPos == 'left')
-                    styleClass = styleClass + ' ui-button-text-icon-left';
-                else
-                    styleClass = styleClass + ' ui-button-text-icon-right';
-            }
-            else {
-                styleClass = styleClass + ' ui-button-icon-only';
-            }
-        }
-        else {
-            styleClass = styleClass + ' ui-button-text-only';
-        }
-        return styleClass;
-    };
-    Object.defineProperty(Button.prototype, "label", {
-        get: function () {
-            return this._label;
-        },
-        set: function (val) {
-            this._label = val;
-            if (this.initialized) {
-                this.domHandler.findSingle(this.el.nativeElement, '.ui-button-text').textContent = this._label;
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Button.prototype, "icon", {
-        get: function () {
-            return this._icon;
-        },
-        set: function (val) {
-            this._icon = val;
-            if (this.initialized) {
-                var iconPosClass = (this.iconPos == 'right') ? 'ui-button-icon-right' : 'ui-button-icon-left';
-                this.domHandler.findSingle(this.el.nativeElement, '.fa').className =
-                    iconPosClass + ' ui-clickable fa fa-fw ' + this.icon;
-            }
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Button.prototype.ngOnDestroy = function () {
-        while (this.el.nativeElement.hasChildNodes()) {
-            this.el.nativeElement.removeChild(this.el.nativeElement.lastChild);
-        }
-        this.initialized = false;
-    };
-    return Button;
-}());
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Button.prototype, "iconPos", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], Button.prototype, "cornerStyleClass", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String),
-    __metadata("design:paramtypes", [String])
-], Button.prototype, "label", null);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String),
-    __metadata("design:paramtypes", [String])
-], Button.prototype, "icon", null);
-Button = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["j" /* Directive */])({
-        selector: '[pButton]',
-        providers: [__WEBPACK_IMPORTED_MODULE_1__dom_domhandler__["a" /* DomHandler */]]
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__dom_domhandler__["a" /* DomHandler */]) === "function" && _b || Object])
-], Button);
-
-var ButtonModule = (function () {
-    function ButtonModule() {
-    }
-    return ButtonModule;
-}());
-ButtonModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_2__angular_common__["c" /* CommonModule */]],
-        exports: [Button],
-        declarations: [Button]
-    })
-], ButtonModule);
-
-var _a, _b;
-//# sourceMappingURL=button.js.map
-
-/***/ }),
-
 /***/ "./src/app/components/codehighlighter/codehighlighter.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -190,6 +50,13 @@ CodeHighlighterModule = __decorate([
 
 var _a;
 //# sourceMappingURL=codehighlighter.js.map
+
+/***/ }),
+
+/***/ "./src/app/components/common/menuitem.ts":
+/***/ (function(module, exports) {
+
+//# sourceMappingURL=menuitem.js.map
 
 /***/ }),
 
@@ -742,6 +609,279 @@ var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r;
 
 /***/ }),
 
+/***/ "./src/app/components/common/treenode.ts":
+/***/ (function(module, exports) {
+
+//# sourceMappingURL=treenode.js.map
+
+/***/ }),
+
+/***/ "./src/app/components/contextmenu/contextmenu.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_menuitem__ = __webpack_require__("./src/app/components/common/menuitem.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_menuitem___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__common_menuitem__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
+/* unused harmony export ContextMenuSub */
+/* unused harmony export ContextMenu */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ContextMenuModule; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
+
+
+
+
+var ContextMenuSub = (function () {
+    function ContextMenuSub(domHandler, contextMenu) {
+        this.domHandler = domHandler;
+        this.contextMenu = contextMenu;
+    }
+    ContextMenuSub.prototype.onItemMouseEnter = function (event, item, menuitem) {
+        if (menuitem.disabled) {
+            return;
+        }
+        this.activeItem = item;
+        var nextElement = item.children[0].nextElementSibling;
+        if (nextElement) {
+            var sublist = nextElement.children[0];
+            sublist.style.zIndex = ++__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */].zindex;
+            this.position(sublist, item);
+        }
+    };
+    ContextMenuSub.prototype.onItemMouseLeave = function (event, link) {
+        this.activeItem = null;
+    };
+    ContextMenuSub.prototype.itemClick = function (event, item) {
+        if (item.disabled) {
+            event.preventDefault();
+            return;
+        }
+        if (!item.url) {
+            event.preventDefault();
+        }
+        if (item.command) {
+            item.command({
+                originalEvent: event,
+                item: item
+            });
+        }
+    };
+    ContextMenuSub.prototype.listClick = function (event) {
+        this.activeItem = null;
+    };
+    ContextMenuSub.prototype.position = function (sublist, item) {
+        this.containerLeft = this.domHandler.getOffset(item.parentElement);
+        var viewport = this.domHandler.getViewport();
+        var sublistWidth = sublist.offsetParent ? sublist.offsetWidth : this.domHandler.getHiddenElementOuterWidth(sublist);
+        var itemOuterWidth = this.domHandler.getOuterWidth(item.children[0]);
+        sublist.style.top = '0px';
+        if ((parseInt(this.containerLeft.left) + itemOuterWidth + sublistWidth) > (viewport.width - this.calculateScrollbarWidth())) {
+            sublist.style.left = -sublistWidth + 'px';
+        }
+        else {
+            sublist.style.left = itemOuterWidth + 'px';
+        }
+    };
+    ContextMenuSub.prototype.calculateScrollbarWidth = function () {
+        var scrollDiv = document.createElement("div");
+        scrollDiv.className = "ui-scrollbar-measure";
+        document.body.appendChild(scrollDiv);
+        var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+        document.body.removeChild(scrollDiv);
+        return scrollbarWidth;
+    };
+    return ContextMenuSub;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__common_menuitem__["MenuItem"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__common_menuitem__["MenuItem"]) === "function" && _a || Object)
+], ContextMenuSub.prototype, "item", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], ContextMenuSub.prototype, "root", void 0);
+ContextMenuSub = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+        selector: 'p-contextMenuSub',
+        template: "\n        <ul [ngClass]=\"{'ui-helper-reset':root, 'ui-widget-content ui-corner-all ui-helper-clearfix ui-menu-child ui-shadow':!root}\" class=\"ui-menu-list\"\n            (click)=\"listClick($event)\">\n            <ng-template ngFor let-child [ngForOf]=\"(root ? item : item.items)\">\n                <li *ngIf=\"child.separator\" class=\"ui-menu-separator ui-widget-content\">\n                <li *ngIf=\"!child.separator\" #item [ngClass]=\"{'ui-menuitem ui-widget ui-corner-all':true,'ui-menu-parent':child.items,'ui-menuitem-active':item==activeItem}\"\n                    (mouseenter)=\"onItemMouseEnter($event,item,child)\" (mouseleave)=\"onItemMouseLeave($event,item)\" [style.display]=\"child.visible === false ? 'none' : 'block'\">\n                    <a *ngIf=\"!child.routerLink\" [href]=\"child.url||'#'\" [attr.target]=\"child.target\" [attr.title]=\"child.title\" (click)=\"itemClick($event, child)\"\n                        [ngClass]=\"{'ui-menuitem-link ui-corner-all':true,'ui-state-disabled':child.disabled}\" [ngStyle]=\"child.style\" [class]=\"child.styleClass\">\n                        <span class=\"ui-submenu-icon fa fa-fw fa-caret-right\" *ngIf=\"child.items\"></span>\n                        <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"child.icon\" [ngClass]=\"child.icon\"></span>\n                        <span class=\"ui-menuitem-text\">{{child.label}}</span>\n                    </a>\n                    <a *ngIf=\"child.routerLink\" [routerLink]=\"child.routerLink\" [routerLinkActive]=\"'ui-state-active'\" \n                        [routerLinkActiveOptions]=\"child.routerLinkActiveOptions||{exact:false}\" [attr.target]=\"child.target\" [attr.title]=\"child.title\"\n                        (click)=\"itemClick($event, child)\" [ngClass]=\"{'ui-menuitem-link ui-corner-all':true,'ui-state-disabled':child.disabled}\" \n                        [ngStyle]=\"child.style\" [class]=\"child.styleClass\">\n                        <span class=\"ui-submenu-icon fa fa-fw fa-caret-right\" *ngIf=\"child.items\"></span>\n                        <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"child.icon\" [ngClass]=\"child.icon\"></span>\n                        <span class=\"ui-menuitem-text\">{{child.label}}</span>\n                    </a>\n                    <p-contextMenuSub class=\"ui-submenu\" [item]=\"child\" *ngIf=\"child.items\"></p-contextMenuSub>\n                </li>\n            </ng-template>\n        </ul>\n    ",
+        providers: [__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]]
+    }),
+    __param(1, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Inject */])(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return ContextMenu; }))),
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _b || Object, ContextMenu])
+], ContextMenuSub);
+
+var ContextMenu = (function () {
+    function ContextMenu(el, domHandler, renderer) {
+        this.el = el;
+        this.domHandler = domHandler;
+        this.renderer = renderer;
+    }
+    ContextMenu.prototype.ngAfterViewInit = function () {
+        var _this = this;
+        this.container = this.containerViewChild.nativeElement;
+        if (this.global) {
+            this.rightClickListener = this.renderer.listen('document', 'contextmenu', function (event) {
+                _this.show(event);
+                event.preventDefault();
+            });
+        }
+        else if (this.target) {
+            this.rightClickListener = this.renderer.listen(this.target, 'contextmenu', function (event) {
+                _this.show(event);
+                event.preventDefault();
+                event.stopPropagation();
+            });
+        }
+        if (this.appendTo) {
+            if (this.appendTo === 'body')
+                document.body.appendChild(this.container);
+            else
+                this.domHandler.appendChild(this.container, this.appendTo);
+        }
+    };
+    ContextMenu.prototype.show = function (event) {
+        this.position(event);
+        this.visible = true;
+        this.domHandler.fadeIn(this.container, 250);
+        this.bindDocumentClickListener();
+        if (event) {
+            event.preventDefault();
+        }
+    };
+    ContextMenu.prototype.hide = function () {
+        this.visible = false;
+        this.unbindDocumentClickListener();
+    };
+    ContextMenu.prototype.toggle = function (event) {
+        if (this.visible)
+            this.hide();
+        else
+            this.show(event);
+    };
+    ContextMenu.prototype.position = function (event) {
+        if (event) {
+            var left = event.pageX + 1;
+            var top = event.pageY + 1;
+            var width = this.container.offsetParent ? this.container.offsetWidth : this.domHandler.getHiddenElementOuterWidth(this.container);
+            var height = this.container.offsetParent ? this.container.offsetHeight : this.domHandler.getHiddenElementOuterHeight(this.container);
+            var viewport = this.domHandler.getViewport();
+            //flip
+            if (left + width - document.body.scrollLeft > viewport.width) {
+                left -= width;
+            }
+            //flip
+            if (top + height - document.body.scrollTop > viewport.height) {
+                top -= height;
+            }
+            //fit
+            if (left < document.body.scrollLeft) {
+                left = document.body.scrollLeft;
+            }
+            //fit
+            if (top < document.body.scrollTop) {
+                top = document.body.scrollTop;
+            }
+            this.container.style.left = left + 'px';
+            this.container.style.top = top + 'px';
+        }
+    };
+    ContextMenu.prototype.bindDocumentClickListener = function () {
+        var _this = this;
+        if (!this.documentClickListener) {
+            this.documentClickListener = this.renderer.listen('document', 'click', function (event) {
+                if (_this.visible && event.button !== 2) {
+                    _this.hide();
+                }
+            });
+        }
+    };
+    ContextMenu.prototype.unbindDocumentClickListener = function () {
+        if (this.documentClickListener) {
+            this.documentClickListener();
+            this.documentClickListener = null;
+        }
+    };
+    ContextMenu.prototype.ngOnDestroy = function () {
+        this.unbindDocumentClickListener();
+        if (this.rightClickListener) {
+            this.rightClickListener();
+        }
+        if (this.appendTo) {
+            this.el.nativeElement.appendChild(this.container);
+        }
+    };
+    return ContextMenu;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Array)
+], ContextMenu.prototype, "model", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], ContextMenu.prototype, "global", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], ContextMenu.prototype, "target", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], ContextMenu.prototype, "style", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], ContextMenu.prototype, "styleClass", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], ContextMenu.prototype, "appendTo", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('container'),
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _c || Object)
+], ContextMenu.prototype, "containerViewChild", void 0);
+ContextMenu = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+        selector: 'p-contextMenu',
+        template: "\n        <div #container [ngClass]=\"'ui-contextmenu ui-menu ui-widget ui-widget-content ui-corner-all ui-helper-clearfix ui-menu-dynamic ui-shadow'\" \n            [class]=\"styleClass\" [ngStyle]=\"style\" [style.display]=\"visible ? 'block' : 'none'\">\n            <p-contextMenuSub [item]=\"model\" root=\"root\"></p-contextMenuSub>\n        </div>\n    ",
+        providers: [__WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]]
+    }),
+    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */]) === "function" && _f || Object])
+], ContextMenu);
+
+var ContextMenuModule = (function () {
+    function ContextMenuModule() {
+    }
+    return ContextMenuModule;
+}());
+ContextMenuModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_4__angular_router__["a" /* RouterModule */]],
+        exports: [ContextMenu, __WEBPACK_IMPORTED_MODULE_4__angular_router__["a" /* RouterModule */]],
+        declarations: [ContextMenu, ContextMenuSub]
+    })
+], ContextMenuModule);
+
+var _a, _b, _c, _d, _e, _f;
+//# sourceMappingURL=contextmenu.js.map
+
+/***/ }),
+
 /***/ "./src/app/components/dom/domhandler.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1100,454 +1240,6 @@ DomHandler = __decorate([
 
 /***/ }),
 
-/***/ "./src/app/components/fileupload/fileupload.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__ = __webpack_require__("./node_modules/@angular/platform-browser/@angular/platform-browser.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__button_button__ = __webpack_require__("./src/app/components/button/button.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__messages_messages__ = __webpack_require__("./src/app/components/messages/messages.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__progressbar_progressbar__ = __webpack_require__("./src/app/components/progressbar/progressbar.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__common_shared__ = __webpack_require__("./src/app/components/common/shared.ts");
-/* unused harmony export FileUpload */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FileUploadModule; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-
-var FileUpload = (function () {
-    function FileUpload(domHandler, sanitizer, zone) {
-        this.domHandler = domHandler;
-        this.sanitizer = sanitizer;
-        this.zone = zone;
-        this.method = 'POST';
-        this.invalidFileSizeMessageSummary = '{0}: Invalid file size, ';
-        this.invalidFileSizeMessageDetail = 'maximum upload size is {0}.';
-        this.invalidFileTypeMessageSummary = '{0}: Invalid file type, ';
-        this.invalidFileTypeMessageDetail = 'allowed file types: {0}.';
-        this.previewWidth = 50;
-        this.chooseLabel = 'Choose';
-        this.uploadLabel = 'Upload';
-        this.cancelLabel = 'Cancel';
-        this.showUploadButton = true;
-        this.showCancelButton = true;
-        this.mode = 'advanced';
-        this.onBeforeUpload = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onBeforeSend = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onUpload = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onError = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onClear = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onRemove = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onSelect = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.onProgress = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.uploadHandler = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        this.progress = 0;
-    }
-    FileUpload.prototype.ngOnInit = function () {
-        this.files = [];
-    };
-    FileUpload.prototype.ngAfterContentInit = function () {
-        var _this = this;
-        this.templates.forEach(function (item) {
-            switch (item.getType()) {
-                case 'file':
-                    _this.fileTemplate = item.template;
-                    break;
-                case 'content':
-                    _this.contentTemplate = item.template;
-                    break;
-                case 'toolbar':
-                    _this.toolbarTemplate = item.template;
-                    break;
-                default:
-                    _this.fileTemplate = item.template;
-                    break;
-            }
-        });
-    };
-    FileUpload.prototype.ngAfterViewInit = function () {
-        var _this = this;
-        if (this.mode === 'advanced') {
-            this.zone.runOutsideAngular(function () {
-                _this.content.nativeElement.addEventListener('dragover', _this.onDragOver.bind(_this));
-            });
-        }
-    };
-    FileUpload.prototype.onFileSelect = function (event) {
-        this.msgs = [];
-        if (!this.multiple) {
-            this.files = [];
-        }
-        var files = event.dataTransfer ? event.dataTransfer.files : event.target.files;
-        for (var i = 0; i < files.length; i++) {
-            var file = files[i];
-            if (this.validate(file)) {
-                if (this.isImage(file)) {
-                    file.objectURL = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(files[i])));
-                }
-                this.files.push(files[i]);
-            }
-        }
-        this.onSelect.emit({ originalEvent: event, files: files });
-        if (this.hasFiles() && this.auto) {
-            this.upload();
-        }
-        this.clearInputElement();
-    };
-    FileUpload.prototype.validate = function (file) {
-        if (this.accept && !this.isFileTypeValid(file)) {
-            this.msgs.push({
-                severity: 'error',
-                summary: this.invalidFileTypeMessageSummary.replace('{0}', file.name),
-                detail: this.invalidFileTypeMessageDetail.replace('{0}', this.accept)
-            });
-            return false;
-        }
-        if (this.maxFileSize && file.size > this.maxFileSize) {
-            this.msgs.push({
-                severity: 'error',
-                summary: this.invalidFileSizeMessageSummary.replace('{0}', file.name),
-                detail: this.invalidFileSizeMessageDetail.replace('{0}', this.formatSize(this.maxFileSize))
-            });
-            return false;
-        }
-        return true;
-    };
-    FileUpload.prototype.isFileTypeValid = function (file) {
-        var acceptableTypes = this.accept.split(',');
-        for (var _i = 0, acceptableTypes_1 = acceptableTypes; _i < acceptableTypes_1.length; _i++) {
-            var type = acceptableTypes_1[_i];
-            var acceptable = this.isWildcard(type) ? this.getTypeClass(file.type) === this.getTypeClass(type)
-                : file.type == type || this.getFileExtension(file) === type;
-            if (acceptable) {
-                return true;
-            }
-        }
-        return false;
-    };
-    FileUpload.prototype.getTypeClass = function (fileType) {
-        return fileType.substring(0, fileType.indexOf('/'));
-    };
-    FileUpload.prototype.isWildcard = function (fileType) {
-        return fileType.indexOf('*') !== -1;
-    };
-    FileUpload.prototype.getFileExtension = function (file) {
-        return '.' + file.name.split('.').pop();
-    };
-    FileUpload.prototype.isImage = function (file) {
-        return /^image\//.test(file.type);
-    };
-    FileUpload.prototype.onImageLoad = function (img) {
-        window.URL.revokeObjectURL(img.src);
-    };
-    FileUpload.prototype.upload = function () {
-        var _this = this;
-        if (this.customUpload) {
-            this.uploadHandler.emit({
-                files: this.files
-            });
-        }
-        else {
-            this.msgs = [];
-            var xhr_1 = new XMLHttpRequest(), formData = new FormData();
-            this.onBeforeUpload.emit({
-                'xhr': xhr_1,
-                'formData': formData
-            });
-            for (var i = 0; i < this.files.length; i++) {
-                formData.append(this.name, this.files[i], this.files[i].name);
-            }
-            xhr_1.upload.addEventListener('progress', function (e) {
-                if (e.lengthComputable) {
-                    _this.progress = Math.round((e.loaded * 100) / e.total);
-                }
-                _this.onProgress.emit({ originalEvent: e, progress: _this.progress });
-            }, false);
-            xhr_1.onreadystatechange = function () {
-                if (xhr_1.readyState == 4) {
-                    _this.progress = 0;
-                    if (xhr_1.status >= 200 && xhr_1.status < 300)
-                        _this.onUpload.emit({ xhr: xhr_1, files: _this.files });
-                    else
-                        _this.onError.emit({ xhr: xhr_1, files: _this.files });
-                    _this.clear();
-                }
-            };
-            xhr_1.open(this.method, this.url, true);
-            this.onBeforeSend.emit({
-                'xhr': xhr_1,
-                'formData': formData
-            });
-            xhr_1.withCredentials = this.withCredentials;
-            xhr_1.send(formData);
-        }
-    };
-    FileUpload.prototype.clear = function () {
-        this.files = [];
-        this.onClear.emit();
-        this.clearInputElement();
-    };
-    FileUpload.prototype.remove = function (event, index) {
-        this.clearInputElement();
-        this.onRemove.emit({ originalEvent: event, file: this.files[index] });
-        this.files.splice(index, 1);
-    };
-    FileUpload.prototype.clearInputElement = function () {
-        var inputViewChild = this.advancedFileInput || this.basicFileInput;
-        if (inputViewChild && inputViewChild.nativeElement) {
-            inputViewChild.nativeElement.value = '';
-        }
-    };
-    FileUpload.prototype.hasFiles = function () {
-        return this.files && this.files.length > 0;
-    };
-    FileUpload.prototype.onDragEnter = function (e) {
-        if (!this.disabled) {
-            e.stopPropagation();
-            e.preventDefault();
-        }
-    };
-    FileUpload.prototype.onDragOver = function (e) {
-        if (!this.disabled) {
-            this.domHandler.addClass(this.content.nativeElement, 'ui-fileupload-highlight');
-            this.dragHighlight = true;
-            e.stopPropagation();
-            e.preventDefault();
-        }
-    };
-    FileUpload.prototype.onDragLeave = function (event) {
-        if (!this.disabled) {
-            this.domHandler.removeClass(this.content.nativeElement, 'ui-fileupload-highlight');
-        }
-    };
-    FileUpload.prototype.onDrop = function (event) {
-        if (!this.disabled) {
-            this.domHandler.removeClass(this.content.nativeElement, 'ui-fileupload-highlight');
-            event.stopPropagation();
-            event.preventDefault();
-            var files = event.dataTransfer ? event.dataTransfer.files : event.target.files;
-            var allowDrop = this.multiple || (files && files.length === 1);
-            if (allowDrop) {
-                this.onFileSelect(event);
-            }
-        }
-    };
-    FileUpload.prototype.onFocus = function () {
-        this.focus = true;
-    };
-    FileUpload.prototype.onBlur = function () {
-        this.focus = false;
-    };
-    FileUpload.prototype.formatSize = function (bytes) {
-        if (bytes == 0) {
-            return '0 B';
-        }
-        var k = 1000, dm = 3, sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'], i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-    };
-    FileUpload.prototype.onSimpleUploaderClick = function (event) {
-        if (this.hasFiles()) {
-            this.upload();
-        }
-    };
-    FileUpload.prototype.ngOnDestroy = function () {
-        if (this.content && this.content.nativeElement) {
-            this.content.nativeElement.removeEventListener('dragover', this.onDragOver);
-        }
-    };
-    return FileUpload;
-}());
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], FileUpload.prototype, "name", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], FileUpload.prototype, "url", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], FileUpload.prototype, "method", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], FileUpload.prototype, "multiple", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], FileUpload.prototype, "accept", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], FileUpload.prototype, "disabled", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], FileUpload.prototype, "auto", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], FileUpload.prototype, "withCredentials", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Number)
-], FileUpload.prototype, "maxFileSize", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], FileUpload.prototype, "invalidFileSizeMessageSummary", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], FileUpload.prototype, "invalidFileSizeMessageDetail", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], FileUpload.prototype, "invalidFileTypeMessageSummary", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], FileUpload.prototype, "invalidFileTypeMessageDetail", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], FileUpload.prototype, "style", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], FileUpload.prototype, "styleClass", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Number)
-], FileUpload.prototype, "previewWidth", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], FileUpload.prototype, "chooseLabel", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], FileUpload.prototype, "uploadLabel", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], FileUpload.prototype, "cancelLabel", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], FileUpload.prototype, "showUploadButton", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], FileUpload.prototype, "showCancelButton", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], FileUpload.prototype, "mode", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], FileUpload.prototype, "customUpload", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
-], FileUpload.prototype, "onBeforeUpload", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _b || Object)
-], FileUpload.prototype, "onBeforeSend", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _c || Object)
-], FileUpload.prototype, "onUpload", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _d || Object)
-], FileUpload.prototype, "onError", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _e || Object)
-], FileUpload.prototype, "onClear", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _f || Object)
-], FileUpload.prototype, "onRemove", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _g || Object)
-], FileUpload.prototype, "onSelect", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _h || Object)
-], FileUpload.prototype, "onProgress", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _j || Object)
-], FileUpload.prototype, "uploadHandler", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* ContentChildren */])(__WEBPACK_IMPORTED_MODULE_7__common_shared__["a" /* PrimeTemplate */]),
-    __metadata("design:type", typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */]) === "function" && _k || Object)
-], FileUpload.prototype, "templates", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('advancedfileinput'),
-    __metadata("design:type", typeof (_l = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _l || Object)
-], FileUpload.prototype, "advancedFileInput", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('basicfileinput'),
-    __metadata("design:type", typeof (_m = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _m || Object)
-], FileUpload.prototype, "basicFileInput", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('content'),
-    __metadata("design:type", typeof (_o = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _o || Object)
-], FileUpload.prototype, "content", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Array)
-], FileUpload.prototype, "files", void 0);
-FileUpload = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-fileUpload',
-        template: "\n        <div [ngClass]=\"'ui-fileupload ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\" *ngIf=\"mode === 'advanced'\">\n            <div class=\"ui-fileupload-buttonbar ui-widget-header ui-corner-top\">\n                <span class=\"ui-fileupload-choose\" [label]=\"chooseLabel\" icon=\"fa-plus\" pButton  [ngClass]=\"{'ui-fileupload-choose-selected': hasFiles(),'ui-state-focus': focus}\" [attr.disabled]=\"disabled\" > \n                    <input #advancedfileinput type=\"file\" (change)=\"onFileSelect($event)\" [multiple]=\"multiple\" [accept]=\"accept\" [disabled]=\"disabled\" (focus)=\"onFocus()\" (blur)=\"onBlur()\" >\n                </span>\n\n                <button *ngIf=\"!auto&&showUploadButton\" type=\"button\" [label]=\"uploadLabel\" icon=\"fa-upload\" pButton (click)=\"upload()\" [disabled]=\"!hasFiles()\"></button>\n                <button *ngIf=\"!auto&&showCancelButton\" type=\"button\" [label]=\"cancelLabel\" icon=\"fa-close\" pButton (click)=\"clear()\" [disabled]=\"!hasFiles()\"></button>\n            \n                <p-templateLoader [template]=\"toolbarTemplate\"></p-templateLoader>\n            </div>\n            <div #content [ngClass]=\"{'ui-fileupload-content ui-widget-content ui-corner-bottom':true}\" \n                (dragenter)=\"onDragEnter($event)\" (dragleave)=\"onDragLeave($event)\" (drop)=\"onDrop($event)\">\n                <p-progressBar [value]=\"progress\" [showValue]=\"false\" *ngIf=\"hasFiles()\"></p-progressBar>\n                \n                <p-messages [value]=\"msgs\"></p-messages>\n                \n                <div class=\"ui-fileupload-files\" *ngIf=\"hasFiles()\">\n                    <div *ngIf=\"!fileTemplate\">\n                        <div class=\"ui-fileupload-row\" *ngFor=\"let file of files; let i = index;\">\n                            <div><img [src]=\"file.objectURL\" *ngIf=\"isImage(file)\" [width]=\"previewWidth\" /></div>\n                            <div>{{file.name}}</div>\n                            <div>{{formatSize(file.size)}}</div>\n                            <div><button type=\"button\" icon=\"fa-close\" pButton (click)=\"remove($event,i)\"></button></div>\n                        </div>\n                    </div>\n                    <div *ngIf=\"fileTemplate\">\n                        <ng-template ngFor [ngForOf]=\"files\" [ngForTemplate]=\"fileTemplate\"></ng-template>\n                    </div>\n                </div>\n                <p-templateLoader [template]=\"contentTemplate\"></p-templateLoader>\n            </div>\n        </div>\n        <span class=\"ui-button ui-fileupload-choose ui-widget ui-state-default ui-corner-all ui-button-text-icon-left\" *ngIf=\"mode === 'basic'\" \n        (mouseup)=\"onSimpleUploaderClick($event)\"\n        [ngClass]=\"{'ui-fileupload-choose-selected': hasFiles(),'ui-state-focus': focus}\">\n            <span class=\"ui-button-icon-left fa\" [ngClass]=\"{'fa-plus': !hasFiles()||auto, 'fa-upload': hasFiles()&&!auto}\"></span>\n            <span class=\"ui-button-text ui-clickable\">{{auto ? chooseLabel : hasFiles() ? files[0].name : chooseLabel}}</span>\n            <input #basicfileinput type=\"file\" [accept]=\"accept\" [multiple]=\"multiple\" [disabled]=\"disabled\"\n                (change)=\"onFileSelect($event)\" *ngIf=\"!hasFiles()\" (focus)=\"onFocus()\" (blur)=\"onBlur()\">\n        </span>\n    ",
-        providers: [__WEBPACK_IMPORTED_MODULE_6__dom_domhandler__["a" /* DomHandler */]]
-    }),
-    __metadata("design:paramtypes", [typeof (_p = typeof __WEBPACK_IMPORTED_MODULE_6__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__dom_domhandler__["a" /* DomHandler */]) === "function" && _p || Object, typeof (_q = typeof __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__["c" /* DomSanitizer */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__["c" /* DomSanitizer */]) === "function" && _q || Object, typeof (_r = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* NgZone */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* NgZone */]) === "function" && _r || Object])
-], FileUpload);
-
-var FileUploadModule = (function () {
-    function FileUploadModule() {
-    }
-    return FileUploadModule;
-}());
-FileUploadModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_7__common_shared__["b" /* SharedModule */], __WEBPACK_IMPORTED_MODULE_3__button_button__["a" /* ButtonModule */], __WEBPACK_IMPORTED_MODULE_5__progressbar_progressbar__["a" /* ProgressBarModule */], __WEBPACK_IMPORTED_MODULE_4__messages_messages__["a" /* MessagesModule */]],
-        exports: [FileUpload, __WEBPACK_IMPORTED_MODULE_7__common_shared__["b" /* SharedModule */], __WEBPACK_IMPORTED_MODULE_3__button_button__["a" /* ButtonModule */], __WEBPACK_IMPORTED_MODULE_5__progressbar_progressbar__["a" /* ProgressBarModule */], __WEBPACK_IMPORTED_MODULE_4__messages_messages__["a" /* MessagesModule */]],
-        declarations: [FileUpload]
-    })
-], FileUploadModule);
-
-var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r;
-//# sourceMappingURL=fileupload.js.map
-
-/***/ }),
-
 /***/ "./src/app/components/growl/growl.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1758,195 +1450,6 @@ GrowlModule = __decorate([
 
 var _a, _b, _c, _d, _e, _f, _g, _h;
 //# sourceMappingURL=growl.js.map
-
-/***/ }),
-
-/***/ "./src/app/components/messages/messages.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_messageservice__ = __webpack_require__("./src/app/components/common/messageservice.ts");
-/* unused harmony export Messages */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MessagesModule; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-
-
-
-var Messages = (function () {
-    function Messages(messageService) {
-        var _this = this;
-        this.messageService = messageService;
-        this.closable = true;
-        this.valueChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
-        if (messageService) {
-            this.subscription = messageService.messageObserver.subscribe(function (messages) {
-                if (messages instanceof Array)
-                    _this.value = messages;
-                else
-                    _this.value = [messages];
-            });
-        }
-    }
-    Messages.prototype.hasMessages = function () {
-        return this.value && this.value.length > 0;
-    };
-    Messages.prototype.getSeverityClass = function () {
-        return this.value[0].severity;
-    };
-    Messages.prototype.clear = function (event) {
-        this.value = [];
-        this.valueChange.emit(this.value);
-        event.preventDefault();
-    };
-    Object.defineProperty(Messages.prototype, "icon", {
-        get: function () {
-            var icon = null;
-            if (this.hasMessages()) {
-                var msg = this.value[0];
-                switch (msg.severity) {
-                    case 'success':
-                        icon = 'fa-check';
-                        break;
-                    case 'info':
-                        icon = 'fa-info-circle';
-                        break;
-                    case 'error':
-                        icon = 'fa-close';
-                        break;
-                    case 'warn':
-                        icon = 'fa-warning';
-                        break;
-                    case 'success':
-                        icon = 'fa-check';
-                        break;
-                    default:
-                        icon = 'fa-info-circle';
-                        break;
-                }
-            }
-            return icon;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Messages.prototype.ngOnDestroy = function () {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
-        }
-    };
-    return Messages;
-}());
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Array)
-], Messages.prototype, "value", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], Messages.prototype, "closable", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _a || Object)
-], Messages.prototype, "valueChange", void 0);
-Messages = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-messages',
-        template: "\n        <div *ngIf=\"hasMessages()\" class=\"ui-messages ui-widget ui-corner-all\" style=\"display:block\"\n                    [ngClass]=\"{'ui-messages-info':(value[0].severity === 'info'),\n                    'ui-messages-warn':(value[0].severity === 'warn'),\n                    'ui-messages-error':(value[0].severity === 'error'),\n                    'ui-messages-success':(value[0].severity === 'success')}\">\n            <a href=\"#\" class=\"ui-messages-close\" (click)=\"clear($event)\" *ngIf=\"closable\">\n                <i class=\"fa fa-close\"></i>\n            </a>\n            <span class=\"ui-messages-icon fa fa-fw fa-2x\" [ngClass]=\"icon\"></span>\n            <ul>\n                <li *ngFor=\"let msg of value\">\n                    <span class=\"ui-messages-summary\" [innerHTML]=\"msg.summary\"></span>\n                    <span class=\"ui-messages-detail\" [innerHTML]=\"msg.detail\"></span>\n                </li>\n            </ul>\n        </div>\n    "
-    }),
-    __param(0, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Optional */])()),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__common_messageservice__["a" /* MessageService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__common_messageservice__["a" /* MessageService */]) === "function" && _b || Object])
-], Messages);
-
-var MessagesModule = (function () {
-    function MessagesModule() {
-    }
-    return MessagesModule;
-}());
-MessagesModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
-        exports: [Messages],
-        declarations: [Messages]
-    })
-], MessagesModule);
-
-var _a, _b;
-//# sourceMappingURL=messages.js.map
-
-/***/ }),
-
-/***/ "./src/app/components/progressbar/progressbar.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* unused harmony export ProgressBar */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProgressBarModule; });
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-var ProgressBar = (function () {
-    function ProgressBar() {
-        this.showValue = true;
-        this.unit = '%';
-    }
-    return ProgressBar;
-}());
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Object)
-], ProgressBar.prototype, "value", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", Boolean)
-], ProgressBar.prototype, "showValue", void 0);
-__decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
-    __metadata("design:type", String)
-], ProgressBar.prototype, "unit", void 0);
-ProgressBar = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        selector: 'p-progressBar',
-        template: "\n        <div class=\"ui-progressbar ui-widget ui-widget-content ui-corner-all\" role=\"progressbar\" aria-valuemin=\"0\" [attr.aria-valuenow]=\"value\" aria-valuemax=\"100\">\n            <div class=\"ui-progressbar-value ui-progressbar-value-animate ui-widget-header ui-corner-all\" [style.width]=\"value + '%'\" style=\"display:block\"></div>\n            <div class=\"ui-progressbar-label\" [style.display]=\"value ? 'block' : 'none'\" *ngIf=\"showValue\">{{value}}{{unit}}</div>\n        </div>\n    "
-    })
-], ProgressBar);
-
-var ProgressBarModule = (function () {
-    function ProgressBarModule() {
-    }
-    return ProgressBarModule;
-}());
-ProgressBarModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
-        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */]],
-        exports: [ProgressBar],
-        declarations: [ProgressBar]
-    })
-], ProgressBarModule);
-
-//# sourceMappingURL=progressbar.js.map
 
 /***/ }),
 
@@ -2301,14 +1804,484 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/fileupload/fileuploaddemo-routing.module.ts":
+/***/ "./src/app/components/treetable/treetable.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_treenode__ = __webpack_require__("./src/app/components/common/treenode.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_treenode___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__common_treenode__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_shared__ = __webpack_require__("./src/app/components/common/shared.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__dom_domhandler__ = __webpack_require__("./src/app/components/dom/domhandler.ts");
+/* unused harmony export UITreeRow */
+/* unused harmony export TreeTable */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TreeTableModule; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
+
+
+
+
+
+var UITreeRow = (function () {
+    function UITreeRow(treeTable) {
+        this.treeTable = treeTable;
+        this.level = 0;
+        this.labelExpand = "Expand";
+        this.labelCollapse = "Collapse";
+    }
+    UITreeRow.prototype.ngOnInit = function () {
+        this.node.parent = this.parentNode;
+    };
+    UITreeRow.prototype.toggle = function (event) {
+        if (this.node.expanded)
+            this.treeTable.onNodeCollapse.emit({ originalEvent: event, node: this.node });
+        else
+            this.treeTable.onNodeExpand.emit({ originalEvent: event, node: this.node });
+        this.node.expanded = !this.node.expanded;
+        event.preventDefault();
+    };
+    UITreeRow.prototype.isLeaf = function () {
+        return this.node.leaf == false ? false : !(this.node.children && this.node.children.length);
+    };
+    UITreeRow.prototype.isSelected = function () {
+        return this.treeTable.isSelected(this.node);
+    };
+    UITreeRow.prototype.onRowClick = function (event) {
+        this.treeTable.onRowClick(event, this.node);
+    };
+    UITreeRow.prototype.onRowRightClick = function (event) {
+        this.treeTable.onRowRightClick(event, this.node);
+    };
+    UITreeRow.prototype.rowDblClick = function (event) {
+        this.treeTable.onRowDblclick.emit({ originalEvent: event, node: this.node });
+    };
+    UITreeRow.prototype.onRowTouchEnd = function () {
+        this.treeTable.onRowTouchEnd();
+    };
+    UITreeRow.prototype.resolveFieldData = function (data, field) {
+        if (data && field) {
+            if (field.indexOf('.') == -1) {
+                return data[field];
+            }
+            else {
+                var fields = field.split('.');
+                var value = data;
+                for (var i = 0, len = fields.length; i < len; ++i) {
+                    value = value[fields[i]];
+                }
+                return value;
+            }
+        }
+        else {
+            return null;
+        }
+    };
+    return UITreeRow;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__common_treenode__["TreeNode"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__common_treenode__["TreeNode"]) === "function" && _a || Object)
+], UITreeRow.prototype, "node", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__common_treenode__["TreeNode"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__common_treenode__["TreeNode"]) === "function" && _b || Object)
+], UITreeRow.prototype, "parentNode", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], UITreeRow.prototype, "level", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], UITreeRow.prototype, "labelExpand", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], UITreeRow.prototype, "labelCollapse", void 0);
+UITreeRow = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+        selector: '[pTreeRow]',
+        template: "\n        <div class=\"ui-treetable-row\" [ngClass]=\"{'ui-state-highlight':isSelected(),'ui-treetable-row-selectable':treeTable.selectionMode && node.selectable !== false}\">\n            <td *ngFor=\"let col of treeTable.columns; let i=index\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" (click)=\"onRowClick($event)\" (dblclick)=\"rowDblClick($event)\" (touchend)=\"onRowTouchEnd()\" (contextmenu)=\"onRowRightClick($event)\">\n                <a href=\"#\" *ngIf=\"i == treeTable.toggleColumnIndex\" class=\"ui-treetable-toggler fa fa-fw ui-clickable\" [ngClass]=\"node.expanded ? treeTable.expandedIcon : treeTable.collapsedIcon\"\n                    [ngStyle]=\"{'margin-left':level*16 + 'px','visibility': isLeaf() ? 'hidden' : 'visible'}\"\n                    (click)=\"toggle($event)\"\n                    [title]=\"node.expanded ? labelCollapse : labelExpand\">\n                </a>\n                <div class=\"ui-chkbox ui-treetable-checkbox\" *ngIf=\"treeTable.selectionMode == 'checkbox' && i==0\"><div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\">\n                    <span class=\"ui-chkbox-icon ui-clickable fa\" \n                        [ngClass]=\"{'fa-check':isSelected(),'fa-minus':node.partialSelected}\"></span></div></div\n                ><span *ngIf=\"!col.template\">{{resolveFieldData(node.data,col.field)}}</span>\n                <p-columnBodyTemplateLoader [column]=\"col\" [rowData]=\"node\" *ngIf=\"col.template\"></p-columnBodyTemplateLoader>\n            </td>\n        </div>\n        <div *ngIf=\"node.children && node.expanded\" class=\"ui-treetable-row\" style=\"display:table-row\">\n            <td [attr.colspan]=\"treeTable.columns.length\" class=\"ui-treetable-child-table-container\">\n                <table [class]=\"treeTable.tableStyleClass\" [ngStyle]=\"treeTable.tableStyle\">\n                    <tbody pTreeRow *ngFor=\"let childNode of node.children\" [node]=\"childNode\" [level]=\"level+1\" [labelExpand]=\"labelExpand\" [labelCollapse]=\"labelCollapse\" [parentNode]=\"node\"></tbody>\n                </table>\n            </td>\n        </div>\n    "
+    }),
+    __param(0, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Inject */])(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return TreeTable; }))),
+    __metadata("design:paramtypes", [TreeTable])
+], UITreeRow);
+
+var TreeTable = (function () {
+    function TreeTable(el, domHandler, changeDetector, renderer) {
+        this.el = el;
+        this.domHandler = domHandler;
+        this.changeDetector = changeDetector;
+        this.renderer = renderer;
+        this.labelExpand = "Expand";
+        this.labelCollapse = "Collapse";
+        this.metaKeySelection = true;
+        this.toggleColumnIndex = 0;
+        this.collapsedIcon = "fa-caret-right";
+        this.expandedIcon = "fa-caret-down";
+        this.onRowDblclick = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.selectionChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onNodeSelect = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onNodeUnselect = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onNodeExpand = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onNodeCollapse = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+        this.onContextMenuSelect = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]();
+    }
+    TreeTable.prototype.ngAfterContentInit = function () {
+        var _this = this;
+        this.initColumns();
+        this.columnsSubscription = this.cols.changes.subscribe(function (_) {
+            _this.initColumns();
+            _this.changeDetector.markForCheck();
+        });
+    };
+    TreeTable.prototype.initColumns = function () {
+        this.columns = this.cols.toArray();
+    };
+    TreeTable.prototype.onRowClick = function (event, node) {
+        var eventTarget = event.target;
+        if (eventTarget.className && eventTarget.className.indexOf('ui-treetable-toggler') === 0) {
+            return;
+        }
+        else if (this.selectionMode) {
+            if (node.selectable === false) {
+                return;
+            }
+            var metaSelection = this.rowTouched ? false : this.metaKeySelection;
+            var index_1 = this.findIndexInSelection(node);
+            var selected = (index_1 >= 0);
+            if (this.isCheckboxSelectionMode()) {
+                if (selected) {
+                    this.propagateSelectionDown(node, false);
+                    if (node.parent) {
+                        this.propagateSelectionUp(node.parent, false);
+                    }
+                    this.selectionChange.emit(this.selection);
+                    this.onNodeUnselect.emit({ originalEvent: event, node: node });
+                }
+                else {
+                    this.propagateSelectionDown(node, true);
+                    if (node.parent) {
+                        this.propagateSelectionUp(node.parent, true);
+                    }
+                    this.selectionChange.emit(this.selection);
+                    this.onNodeSelect.emit({ originalEvent: event, node: node });
+                }
+            }
+            else {
+                if (metaSelection) {
+                    var metaKey = (event.metaKey || event.ctrlKey);
+                    if (selected && metaKey) {
+                        if (this.isSingleSelectionMode()) {
+                            this.selectionChange.emit(null);
+                        }
+                        else {
+                            this.selection = this.selection.filter(function (val, i) { return i != index_1; });
+                            this.selectionChange.emit(this.selection);
+                        }
+                        this.onNodeUnselect.emit({ originalEvent: event, node: node });
+                    }
+                    else {
+                        if (this.isSingleSelectionMode()) {
+                            this.selectionChange.emit(node);
+                        }
+                        else if (this.isMultipleSelectionMode()) {
+                            this.selection = (!metaKey) ? [] : this.selection || [];
+                            this.selection = this.selection.concat([node]);
+                            this.selectionChange.emit(this.selection);
+                        }
+                        this.onNodeSelect.emit({ originalEvent: event, node: node });
+                    }
+                }
+                else {
+                    if (this.isSingleSelectionMode()) {
+                        if (selected) {
+                            this.selection = null;
+                            this.onNodeUnselect.emit({ originalEvent: event, node: node });
+                        }
+                        else {
+                            this.selection = node;
+                            this.onNodeSelect.emit({ originalEvent: event, node: node });
+                        }
+                    }
+                    else {
+                        if (selected) {
+                            this.selection = this.selection.filter(function (val, i) { return i != index_1; });
+                            this.onNodeUnselect.emit({ originalEvent: event, node: node });
+                        }
+                        else {
+                            this.selection = (this.selection || []).concat([node]);
+                            this.onNodeSelect.emit({ originalEvent: event, node: node });
+                        }
+                    }
+                    this.selectionChange.emit(this.selection);
+                }
+            }
+        }
+        this.rowTouched = false;
+    };
+    TreeTable.prototype.onRowTouchEnd = function () {
+        this.rowTouched = true;
+    };
+    TreeTable.prototype.onRowRightClick = function (event, node) {
+        if (this.contextMenu) {
+            var index = this.findIndexInSelection(node);
+            var selected = (index >= 0);
+            if (!selected) {
+                if (this.isSingleSelectionMode()) {
+                    this.selection = node;
+                }
+                else if (this.isMultipleSelectionMode()) {
+                    this.selection = [node];
+                    this.selectionChange.emit(this.selection);
+                }
+                this.selectionChange.emit(this.selection);
+            }
+            this.contextMenu.show(event);
+            this.onContextMenuSelect.emit({ originalEvent: event, node: node });
+        }
+    };
+    TreeTable.prototype.findIndexInSelection = function (node) {
+        var index = -1;
+        if (this.selectionMode && this.selection) {
+            if (this.isSingleSelectionMode()) {
+                index = (this.selection == node) ? 0 : -1;
+            }
+            else {
+                for (var i = 0; i < this.selection.length; i++) {
+                    if (this.selection[i] == node) {
+                        index = i;
+                        break;
+                    }
+                }
+            }
+        }
+        return index;
+    };
+    TreeTable.prototype.propagateSelectionUp = function (node, select) {
+        if (node.children && node.children.length) {
+            var selectedCount = 0;
+            var childPartialSelected = false;
+            for (var _i = 0, _a = node.children; _i < _a.length; _i++) {
+                var child = _a[_i];
+                if (this.isSelected(child)) {
+                    selectedCount++;
+                }
+                else if (child.partialSelected) {
+                    childPartialSelected = true;
+                }
+            }
+            if (select && selectedCount == node.children.length) {
+                this.selection = (this.selection || []).concat([node]);
+                node.partialSelected = false;
+            }
+            else {
+                if (!select) {
+                    var index_2 = this.findIndexInSelection(node);
+                    if (index_2 >= 0) {
+                        this.selection = this.selection.filter(function (val, i) { return i != index_2; });
+                    }
+                }
+                if (childPartialSelected || selectedCount > 0 && selectedCount != node.children.length)
+                    node.partialSelected = true;
+                else
+                    node.partialSelected = false;
+            }
+        }
+        var parent = node.parent;
+        if (parent) {
+            this.propagateSelectionUp(parent, select);
+        }
+    };
+    TreeTable.prototype.propagateSelectionDown = function (node, select) {
+        var index = this.findIndexInSelection(node);
+        if (select && index == -1) {
+            this.selection = (this.selection || []).concat([node]);
+        }
+        else if (!select && index > -1) {
+            this.selection = this.selection.filter(function (val, i) { return i != index; });
+        }
+        node.partialSelected = false;
+        if (node.children && node.children.length) {
+            for (var _i = 0, _a = node.children; _i < _a.length; _i++) {
+                var child = _a[_i];
+                this.propagateSelectionDown(child, select);
+            }
+        }
+    };
+    TreeTable.prototype.isSelected = function (node) {
+        return this.findIndexInSelection(node) != -1;
+    };
+    TreeTable.prototype.isSingleSelectionMode = function () {
+        return this.selectionMode && this.selectionMode == 'single';
+    };
+    TreeTable.prototype.isMultipleSelectionMode = function () {
+        return this.selectionMode && this.selectionMode == 'multiple';
+    };
+    TreeTable.prototype.isCheckboxSelectionMode = function () {
+        return this.selectionMode && this.selectionMode == 'checkbox';
+    };
+    TreeTable.prototype.hasFooter = function () {
+        if (this.columns) {
+            var columnsArr = this.cols.toArray();
+            for (var i = 0; i < columnsArr.length; i++) {
+                if (columnsArr[i].footer) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+    return TreeTable;
+}());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Array)
+], TreeTable.prototype, "value", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], TreeTable.prototype, "selectionMode", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], TreeTable.prototype, "selection", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], TreeTable.prototype, "style", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], TreeTable.prototype, "styleClass", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], TreeTable.prototype, "labelExpand", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], TreeTable.prototype, "labelCollapse", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], TreeTable.prototype, "metaKeySelection", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], TreeTable.prototype, "contextMenu", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], TreeTable.prototype, "toggleColumnIndex", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Object)
+], TreeTable.prototype, "tableStyle", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], TreeTable.prototype, "tableStyleClass", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], TreeTable.prototype, "collapsedIcon", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", String)
+], TreeTable.prototype, "expandedIcon", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _c || Object)
+], TreeTable.prototype, "onRowDblclick", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _d || Object)
+], TreeTable.prototype, "selectionChange", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _e || Object)
+], TreeTable.prototype, "onNodeSelect", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _f || Object)
+], TreeTable.prototype, "onNodeUnselect", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _g || Object)
+], TreeTable.prototype, "onNodeExpand", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _h || Object)
+], TreeTable.prototype, "onNodeCollapse", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
+    __metadata("design:type", typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _j || Object)
+], TreeTable.prototype, "onContextMenuSelect", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* ContentChild */])(__WEBPACK_IMPORTED_MODULE_3__common_shared__["d" /* Header */]),
+    __metadata("design:type", typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_3__common_shared__["d" /* Header */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__common_shared__["d" /* Header */]) === "function" && _k || Object)
+], TreeTable.prototype, "header", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* ContentChild */])(__WEBPACK_IMPORTED_MODULE_3__common_shared__["c" /* Footer */]),
+    __metadata("design:type", typeof (_l = typeof __WEBPACK_IMPORTED_MODULE_3__common_shared__["c" /* Footer */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__common_shared__["c" /* Footer */]) === "function" && _l || Object)
+], TreeTable.prototype, "footer", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["w" /* ContentChildren */])(__WEBPACK_IMPORTED_MODULE_3__common_shared__["e" /* Column */]),
+    __metadata("design:type", typeof (_m = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* QueryList */]) === "function" && _m || Object)
+], TreeTable.prototype, "cols", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* ViewChild */])('tbl'),
+    __metadata("design:type", typeof (_o = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _o || Object)
+], TreeTable.prototype, "tableViewChild", void 0);
+TreeTable = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+        selector: 'p-treeTable',
+        template: "\n        <div [ngClass]=\"'ui-treetable ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-treetable-header ui-widget-header\" *ngIf=\"header\">\n                <ng-content select=\"p-header\"></ng-content>\n            </div>\n            <div class=\"ui-treetable-tablewrapper\">\n                <table #tbl class=\"ui-widget-content\" [class]=\"tableStyleClass\" [ngStyle]=\"tableStyle\">\n                    <thead>\n                        <tr class=\"ui-state-default\">\n                            <th #headerCell *ngFor=\"let col of columns; let lastCol=last \"  [ngStyle]=\"col.style\" [class]=\"col.styleClass\" \n                                [ngClass]=\"'ui-state-default ui-unselectable-text'\">\n                                <span class=\"ui-column-title\" *ngIf=\"!col.headerTemplate\">{{col.header}}</span>\n                                <span class=\"ui-column-title\" *ngIf=\"col.headerTemplate\">\n                                    <p-columnHeaderTemplateLoader [column]=\"col\"></p-columnHeaderTemplateLoader>\n                                </span>\n                            </th>\n                        </tr>\n                    </thead>\n                    <tfoot *ngIf=\"hasFooter()\">\n                        <tr>\n                            <td *ngFor=\"let col of columns\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" [ngClass]=\"{'ui-state-default':true}\">\n                                <span class=\"ui-column-footer\" *ngIf=\"!col.footerTemplate\">{{col.footer}}</span>\n                                <span class=\"ui-column-footer\" *ngIf=\"col.footerTemplate\">\n                                    <p-columnFooterTemplateLoader [column]=\"col\"></p-columnFooterTemplateLoader>\n                                </span>\n                            </td>\n                        </tr>\n                    </tfoot>\n                    <tbody pTreeRow *ngFor=\"let node of value\" class=\"ui-treetable-data ui-widget-content\" [node]=\"node\" [level]=\"0\" [labelExpand]=\"labelExpand\" [labelCollapse]=\"labelCollapse\"></tbody>\n                </table>\n            </div>\n            \n            <div class=\"ui-treetable-footer ui-widget-header\" *ngIf=\"footer\">\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n        </div>\n    ",
+        providers: [__WEBPACK_IMPORTED_MODULE_4__dom_domhandler__["a" /* DomHandler */]]
+    }),
+    __metadata("design:paramtypes", [typeof (_p = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _p || Object, typeof (_q = typeof __WEBPACK_IMPORTED_MODULE_4__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__dom_domhandler__["a" /* DomHandler */]) === "function" && _q || Object, typeof (_r = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */]) === "function" && _r || Object, typeof (_s = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */]) === "function" && _s || Object])
+], TreeTable);
+
+var TreeTableModule = (function () {
+    function TreeTableModule() {
+    }
+    return TreeTableModule;
+}());
+TreeTableModule = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
+        imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_3__common_shared__["b" /* SharedModule */]],
+        exports: [TreeTable, __WEBPACK_IMPORTED_MODULE_3__common_shared__["b" /* SharedModule */]],
+        declarations: [TreeTable, UITreeRow]
+    })
+], TreeTableModule);
+
+var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s;
+//# sourceMappingURL=treetable.js.map
+
+/***/ }),
+
+/***/ "./src/app/showcase/components/treetable/treetabledemo-routing.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fileuploaddemo__ = __webpack_require__("./src/app/showcase/components/fileupload/fileuploaddemo.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FileUploadDemoRoutingModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__treetabledemo__ = __webpack_require__("./src/app/showcase/components/treetable/treetabledemo.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TreeTableDemoRoutingModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2318,50 +2291,51 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var FileUploadDemoRoutingModule = (function () {
-    function FileUploadDemoRoutingModule() {
+var TreeTableDemoRoutingModule = (function () {
+    function TreeTableDemoRoutingModule() {
     }
-    return FileUploadDemoRoutingModule;
+    return TreeTableDemoRoutingModule;
 }());
-FileUploadDemoRoutingModule = __decorate([
+TreeTableDemoRoutingModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */].forChild([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__fileuploaddemo__["a" /* FileUploadDemo */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_2__treetabledemo__["a" /* TreeTableDemo */] }
             ])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* RouterModule */]
         ]
     })
-], FileUploadDemoRoutingModule);
+], TreeTableDemoRoutingModule);
 
-//# sourceMappingURL=fileuploaddemo-routing.module.js.map
+//# sourceMappingURL=treetabledemo-routing.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/fileupload/fileuploaddemo.html":
+/***/ "./src/app/showcase/components/treetable/treetabledemo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-section introduction\">\n    <div>\n        <span class=\"feature-title\">FileUpload</span>\n        <span>FileUpload is an advanced uploader with dragdrop support, multi file uploads, auto uploading, progress tracking and\n            validations.</span>\n    </div>\n</div>\n\n<div class=\"content-section implementation\">\n    <p-growl [value]=\"msgs\"></p-growl>\n        \n    <h3 class=\"first\">Advanced</h3>\n    <p-fileUpload name=\"demo[]\" url=\"./upload.php\" (onUpload)=\"onUpload($event)\" \n            multiple=\"multiple\" accept=\"image/*\" maxFileSize=\"1000000\"> \n            <ng-template pTemplate=\"content\">\n                <ul *ngIf=\"uploadedFiles.length\">\n                    <li *ngFor=\"let file of uploadedFiles\">{{file.name}} - {{file.size}} bytes</li>\n                </ul>\n            </ng-template>    \n    </p-fileUpload>\n    \n    <h3>Basic</h3>\n    <p-fileUpload mode=\"basic\" name=\"demo[]\" url=\"./upload.php\" accept=\"image/*\" maxFileSize=\"1000000\" (onUpload)=\"onBasicUpload($event)\"></p-fileUpload>\n    \n    <h3>Basic with Auto</h3>\n    <p-fileUpload #fubauto mode=\"basic\" name=\"demo[]\" url=\"./upload.php\" accept=\"image/*\" maxFileSize=\"1000000\" (onUpload)=\"onBasicUploadAuto($event)\" auto=\"true\" chooseLabel=\"Browse\"></p-fileUpload>\n</div>\n\n<div class=\"content-section documentation\">\n    <p-tabView effect=\"fade\">\n        <p-tabPanel header=\"Documentation\">\n            <h3>Import</h3>\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nimport &#123;FileUploadModule&#125; from 'primeng/primeng';\n</code>\n</pre>\n\n            <h3>Getting Started</h3>\n            <p>FileUpload requires a url property as the upload target and a name to identify the files at backend.</p>\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-fileUpload name=\"myfile[]\" url=\"./upload.php\"&gt;&lt;/p-fileUpload&gt;\n</code>\n</pre>\n\n            <h3>Multiple Uploads</h3>\n            <p>Only one file can be selected at a time, to allow selecting multiples enable multiple option.</p>\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-fileUpload name=\"myfile[]\" url=\"./upload.php\" multiple=\"multiple\"&gt;&lt;/p-fileUpload&gt;\n</code>\n</pre>\n\n            <h3>DragDrop</h3>\n            <p>File selection can also be done by dragging and dropping one or more to the content section of the component.</p>\n            \n            <h3>Auto Uploads</h3>\n            <p>When auto property is enabled, upload begins as soon as file selection is completed or a file is dropped on the drop area.</p>\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-fileUpload name=\"myfile[]\" url=\"./upload.php\" multiple=\"multiple\"\n        accept=\"image/*\" auto=\"auto\"&gt;&lt;/p-fileUpload&gt;\n</code>\n</pre>\n\n            <h3>File Types</h3>\n            <p>Selectable file types can be restricted with accept property, example below only allows images to be uploaded.\n            Read more about other possible values <a href=\"http://www.w3schools.com/tags/att_input_accept.asp\">here</a>.</p>\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-fileUpload name=\"myfile[]\" url=\"./upload.php\" multiple=\"multiple\"\n        accept=\"image/*\"&gt;&lt;/p-fileUpload&gt;\n</code>\n</pre>\n\n            <h3>File Size</h3>\n            <p>Maximium file size can be restricted using maxFileSize property defined in bytes.</p>\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-fileUpload name=\"myfile[]\" url=\"./upload.php\" multiple=\"multiple\"\n        accept=\"image/*\" maxFileSize=\"1000000\"&gt;&lt;/p-fileUpload&gt;\n</code>\n</pre>\n\n            <p>In order to customize the default messages use invalidFileSizeMessageSummary and invalidFileSizeMessageDetail options. \n            In summary &#123;0&#125; placeholder refers to the filename and in detail, file size.</p>\n            <ul>\n                <li>invalidFileSizeMessageSummary: '&#123;0&#125;: Invalid file size, '</li>\n                <li>invalidFileSizeMessageDetail: string = 'maximum upload size is &#123;0&#125;.'</li>\n            </ul>\n            \n            <h3>Templating</h3>\n            <p>File list UI is customizable using a ng-template called \"file\" that gets the <a href=\"https://www.w3.org/TR/FileAPI/\">File</a> instance as the implicit variable.\n                Second ng-template named \"content\" can be used to place custom content inside the content section which would be useful to implement a user interface to manage the uploaded files such as removing them.  \n                Third and final ng-template option is \"toolbar\" to display custom content at toolbar.</p>\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-fileUpload name=\"myfile[]\" url=\"./upload.php\" multiple=\"multiple\"\n        accept=\"image/*\" maxFileSize=\"1000000\"&gt;\n        &lt;ng-template pTemplate=\"toolbar\"&gt;\n            &lt;div&gt;Upload 3 Files&lt;/div&gt;\n        &lt;/ng-template&gt;  \n        &lt;ng-template let-file pTemplate=\"file\"&gt;\n            &lt;div&gt;Custom UI to display a file&lt;/div&gt;\n        &lt;/ng-template&gt; \n        &lt;ng-template pTemplate=\"content\"&gt;\n            &lt;div&gt;Custom UI to manage uploaded files&lt;/div&gt;\n        &lt;/ng-template&gt;  \n&lt;/p-fileUpload&gt;\n</code>\n</pre>\n\n            <h3>Request Customization</h3>\n            <p>XHR request to upload the files can be customized using the onBeforeUpload callback that passes\n                the xhr instance and FormData object as event parameters.</p>\n                \n            <h3>Basic UI</h3>\n            <p>FileUpload basic mode provides a simpler UI as an alternative to advanced mode.</p>\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-fileUpload mode=\"basic\" name=\"demo[]\" url=\"./upload.php\" accept=\"image/*\" maxFileSize=\"1000000\" (onUpload)=\"onBasicUpload($event)\" auto=\"true\"&gt;&lt;/p-fileUpload&gt;\n</code>\n</pre>\n            <h3>Custom Upload</h3>\n            <p>Uploading implementation can be overriden by enabling customMode property and defining a custom upload handler event.</p>\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-fileUpload name=\"myfile[]\" customUpload=\"true\" (uploadHandler)=\"myUploader($event)\"&gt;&lt;/p-fileUpload&gt;\n</code>\n</pre>\n\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nmyUploader(event) &#123;\n    //event.files == files to upload\n&#125;\n</code>\n</pre>\n            \n            <h3>Properties</h3>\n            <div class=\"doc-tablewrapper\">\n                <table class=\"doc-table\">\n                    <thead>\n                        <tr>\n                            <th>Name</th>\n                            <th>Type</th>\n                            <th>Default</th>\n                            <th>Description</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        <tr>\n                            <td>name</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Name of the request parameter to identify the files at backend.</td>\n                        </tr>\n                        <tr>\n                            <td>url</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Remote url to upload the files.</td>\n                        </tr>\n                        <tr>\n                            <td>method</td>\n                            <td>string</td>\n                            <td>POST</td>\n                            <td>HTTP method to send the files to the url.</td>\n                        </tr>\n                        <tr>\n                            <td>multiple</td>\n                            <td>boolean</td>\n                            <td>false</td>\n                            <td>Used to select multiple files at once from file dialog.</td>\n                        </tr>\n                        <tr>\n                            <td>accept</td>\n                            <td>string</td>\n                            <td>false</td>\n                            <td>Pattern to restrict the allowed file types such as \"image/*\".</td>\n                        </tr>\n                        <tr>\n                            <td>disabled</td>\n                            <td>boolean</td>\n                            <td>false</td>\n                            <td>Disables the upload functionality.</td>\n                        </tr>\n                        <tr>\n                            <td>auto</td>\n                            <td>boolean</td>\n                            <td>false</td>\n                            <td>When enabled, upload begins automatically after selection is completed.</td>\n                        </tr>\n                        <tr>\n                            <td>maxFileSize</td>\n                            <td>number</td>\n                            <td>null</td>\n                            <td>Maximum file size allowed in bytes.</td>\n                        </tr>\n                        <tr>\n                            <td>invalidFileSizeMessageSummary</td>\n                            <td>string</td>\n                            <td>\"&#123;0&#125;: Invalid file size, \"</td>\n                            <td>Summary message of the invalid fize size.</td>\n                        </tr>\n                        <tr>\n                            <td>invalidFileSizeMessageDetail</td>\n                            <td>string</td>\n                            <td>\"maximum upload size is &#123;0&#125;.\"</td>\n                            <td>Detail message of the invalid fize size.</td>\n                        </tr>\n                        <tr>\n                            <td>invalidFileTypeMessageSummary</td>\n                            <td>string</td>\n                            <td>\"&#123;0&#125;: Invalid file type, \"</td>\n                            <td>Summary message of the invalid fize type.</td>\n                        </tr>\n                        <tr>\n                            <td>invalidFileTypeMessageDetail</td>\n                            <td>string</td>\n                            <td>\"allowed file types: &#123;0&#125;.\"</td>\n                            <td>Detail message of the invalid fize type.</td>\n                        </tr>\n                        <tr>\n                            <td>style</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Inline style of the component.</td>\n                        </tr>\n                        <tr>\n                            <td>styleClass</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Style class of the component.</td>\n                        </tr>\n                        <tr>\n                            <td>previewWidth</td>\n                            <td>number</td>\n                            <td>50</td>\n                            <td>Width of the image thumbnail in pixels.</td>\n                        </tr>\n                        <tr>\n                            <td>chooseLabel</td>\n                            <td>string</td>\n                            <td>Choose</td>\n                            <td>Label of the choose button.</td>\n                        </tr>\n                        <tr>\n                            <td>uploadLabel</td>\n                            <td>string</td>\n                            <td>Upload</td>\n                            <td>Label of the upload button.</td>\n                        </tr>\n                        <tr>\n                            <td>cancelLabel</td>\n                            <td>string</td>\n                            <td>Cancel</td>\n                            <td>Label of the cancel button.</td>\n                        </tr>\n                        <tr>\n                            <td>withCredentials</td>\n                            <td>boolean</td>\n                            <td>false</td>\n                            <td>Cross-site Access-Control requests should be made using credentials such as cookies, authorization headers or TLS client certificates.</td>\n                        </tr>\n                        <tr>\n                            <td>mode</td>\n                            <td>string</td>\n                            <td>advanced</td>\n                            <td>Defines the UI of the component, possible values are \"advanced\" and \"basic\".</td>\n                        </tr>\n                        <tr>\n                            <td>customUpload</td>\n                            <td>boolean</td>\n                            <td>false</td>\n                            <td>Whether to use the default upload or a manual implementation defined in uploadHandler callback.</td>\n                        </tr>\n                      <tr>\n                            <td>showUploadButton</td>\n                            <td>boolean</td>\n                            <td>true</td>\n                            <td>Defines the visibility of upload button for Client-side FileUpload.</td>\n                        </tr>\n                        <tr>\n                            <td>showCancelButton</td>\n                            <td>boolean</td>\n                            <td>true</td>\n                            <td>Defines the visibility of cancel button for Client-side FileUpload.</td>\n                        </tr>\n                        <tr>\n                            <td>files</td>\n                            <td>array</td>\n                            <td>null</td>\n                            <td>List of files to be provide to the FileUpload externally.</td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n\n            <h3>Events</h3>\n            <div class=\"doc-tablewrapper\">\n                <table class=\"doc-table\">\n                    <thead>\n                        <tr>\n                            <th>Name</th>\n                            <th>Parameters</th>\n                            <th>Description</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        <tr>\n                            <td>onBeforeUpload</td>\n                            <td>event.xhr: XmlHttpRequest instance. <br/>\n                                event.formData: FormData object.</td>\n                            <td>Callback to invoke before file upload begins to customize the request\n                                such as post parameters before the files.</td>\n                        </tr>\n\t\t\t\t\t\t<tr>\n                            <td>onBeforeSend</td>\n                            <td>event.xhr: XmlHttpRequest instance. <br/>\n                                event.formData: FormData object.</td>\n                            <td>Callback to invoke before file send begins to customize the request\n                                such as adding headers.</td>\n                        </tr>\n                        <tr>\n                            <td>onUpload</td>\n                            <td>event.xhr: XmlHttpRequest instance.<br />\n                                event.files: Uploaded files.</td>\n                            <td>Callback to invoke when file upload is complete.</td>\n                        </tr>\n                        <tr>\n                            <td>onError</td>\n                            <td>event.xhr: XmlHttpRequest instance.<br />\n                                event.files: Files that are not uploaded.</td>\n                            <td>Callback to invoke if file upload fails.</td>\n                        </tr>\n                        <tr>\n                            <td>onClear</td>\n                            <td>-.</td>\n                            <td>Callback to invoke when files in queue are removed without uploading using clear all button.</td>\n                        </tr>\n                        <tr>\n                            <td>onRemove</td>\n                            <td>event.originalEvent: Original browser event. <br />\n                                event.file: Selected file.</td>\n                            <td>Callback to invoke when a file is removed without uploading using clear button of a file.</td>\n                        </tr>\n                        <tr>\n                            <td>onSelect</td>\n                            <td>event.originalEvent: Original browser event. <br />\n                                event.files: List of selected files.</td>\n                            <td>Callback to invoke when files are selected.</td>\n                        </tr>\n                        <tr>\n                            <td>onProgress</td>\n                            <td>event.originalEvent: Original browser event. <br />\n                                event.progress: Calculated progress value.</td>\n                            <td>Callback to invoke when files are selected.</td>\n                        </tr>\n                        <tr>\n                            <td>uploadHandler</td>\n                            <td>event.files: List of selected files.</td>\n                            <td>Callback to invoke in custom upload mode to upload the files manually.</td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n            \n            <h3>Methods</h3>\n            <div class=\"doc-tablewrapper\">\n                <table class=\"doc-table\">\n                    <thead>\n                        <tr>\n                            <th>Name</th>\n                            <th>Parameters</th>\n                            <th>Description</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        <tr>\n                            <td>upload</td>\n                            <td>-</td>\n                            <td>Uploads the selected files.</td>\n                        </tr>\n                        <tr>\n                            <td>clear</td>\n                            <td>-</td>\n                            <td>Clears the files list.</td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n\n            <h3>Styling</h3>\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\n            <div class=\"doc-tablewrapper\">\n                <table class=\"doc-table\">\n                    <thead>\n                        <tr>\n                            <th>Name</th>\n                            <th>Element</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        <tr>\n                            <td>ui-fileupload</td>\n                            <td>Container element</td>\n                        </tr>\n                        <tr>\n                            <td>ui-fileupload-buttonbar</td>\n                            <td>Header containing the buttons</td>\n                        </tr>\n                        <tr>\n                            <td>ui-fileupload-content</td>\n                            <td>Content section</td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n\n            <h3>Dependencies</h3>\n            <p>None.</p>\n        </p-tabPanel>\n\n        <p-tabPanel header=\"Source\">\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/fileupload\" class=\"btn-viewsource\" target=\"_blank\">\n                <i class=\"fa fa-github\"></i>\n                <span>View on GitHub</span>\n            </a>\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-growl [value]=\"msgs\"&gt;&lt;/p-growl&gt;\n    \n&lt;h3 class=\"first\"&gt;Advanced&lt;/h3&gt;\n&lt;p-fileUpload name=\"demo[]\" url=\"./upload.php\" (onUpload)=\"onUpload($event)\" \n        multiple=\"multiple\" accept=\"image/*\" maxFileSize=\"1000000\"&gt;\n    &lt;ng-template pTemplate type=\"content\"&gt;\n        &lt;ul *ngIf=\"uploadedFiles.length\"&gt;\n            &lt;li *ngFor=\"let file of uploadedFiles\"&gt;&#123;&#123;file.name&#125;&#125; - &#123;&#123;file.size&#125;&#125; bytes&lt;/li&gt;\n        &lt;/ul&gt;\n    &lt;/ng-template&gt;        \n&lt;/p-fileUpload&gt;\n\n&lt;h3&gt;Basic&lt;/h3&gt;\n&lt;p-fileUpload mode=\"basic\" name=\"demo[]\" url=\"./upload.php\" accept=\"image/*\" maxFileSize=\"1000000\" (onUpload)=\"onBasicUpload($event)\"&gt;&lt;/p-fileUpload&gt;\n\n&lt;h3&gt;Basic with Auto&lt;/h3&gt;\n&lt;p-fileUpload #fubauto mode=\"basic\" name=\"demo[]\" url=\"./upload.php\" accept=\"image/*\" maxFileSize=\"1000000\" (onUpload)=\"onBasicUploadAuto($event)\" auto=\"true\" chooseLabel=\"Browse\"&gt;&lt;/p-fileUpload&gt;\n</code>\n</pre>\n\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nexport class FileUploadDemo &#123;\n\n    msgs: Message[];\n    \n    uploadedFiles: any[] = [];\n\n    onUpload(event) &#123;\n        for(let file of event.files) &#123;\n            this.uploadedFiles.push(file);\n        &#125;\n    \n        this.msgs = [];\n        this.msgs.push(&#123;severity: 'info', summary: 'File Uploaded', detail: ''&#125;);\n    &#125;\n&#125;\n</code>\n</pre>\n        </p-tabPanel>\n    </p-tabView>\n</div>\n"
+module.exports = "<div class=\"content-section introduction\">\n    <div>\n        <span class=\"feature-title\">TreeTable</span>\n        <span>TreeTable is used to display hierarchical data in tabular format..</span>\n    </div>\n</div>\n\n<div class=\"content-section implementation\">\n    <p-growl [value]=\"msgs\"></p-growl>\n    \n    <p-treeTable [value]=\"files1\">\n        <p-header>Basic</p-header>\n        <p-column field=\"name\" header=\"Name\"></p-column>\n        <p-column field=\"size\" header=\"Size\"></p-column>\n        <p-column field=\"type\" header=\"Type\"></p-column>\n    </p-treeTable>\n        \n    <p-treeTable [value]=\"files2\" selectionMode=\"single\" [(selection)]=\"selectedFile\"\n        (onNodeSelect)=\"nodeSelect($event)\" (onNodeUnselect)=\"nodeUnselect($event)\" [style]=\"{'margin-top':'50px'}\">\n        <p-header>Single Selection</p-header>\n        <p-column field=\"name\" header=\"Name\"></p-column>\n        <p-column field=\"size\" header=\"Size\"></p-column>\n        <p-column field=\"type\" header=\"Type\"></p-column>\n    </p-treeTable>\n    <p>Selected Node: {{selectedFile ? selectedFile.data.name : 'none'}}</p>\n        \n    <p-treeTable [value]=\"files3\" selectionMode=\"multiple\" [(selection)]=\"selectedFiles\"\n        (onNodeSelect)=\"nodeSelect($event)\" (onNodeUnselect)=\"nodeUnselect($event)\" [style]=\"{'margin-top':'50px'}\">\n        <p-header>Multiple Selection with MetaKey</p-header>\n        <p-column field=\"name\" header=\"Name\"></p-column>\n        <p-column field=\"size\" header=\"Size\"></p-column>\n        <p-column field=\"type\" header=\"Type\"></p-column>\n    </p-treeTable>\n    <p>Selected Nodes: <span *ngFor=\"let file of selectedFiles\">{{file.data.name}} </span></p>\n    \n    <p-treeTable [value]=\"files4\" selectionMode=\"checkbox\" [(selection)]=\"selectedFiles2\" [style]=\"{'margin-top':'50px'}\">\n        <p-header>Checkbox Selection</p-header>\n        <p-column field=\"name\" header=\"Name\"></p-column>\n        <p-column field=\"size\" header=\"Size\"></p-column>\n        <p-column field=\"type\" header=\"Type\"></p-column>\n    </p-treeTable>\n    <p>Selected Nodes: <span *ngFor=\"let file of selectedFiles2\">{{file.data.name}} </span></p>\n    \n    <p-treeTable [value]=\"files5\" [style]=\"{'margin-top':'50px'}\">\n        <p-header>Editable Cells with Templating</p-header>\n        <p-column field=\"name\" header=\"Name\">\n            <ng-template let-node=\"rowData\" pTemplate=\"body\">\n                <input type=\"text\" [(ngModel)]=\"node.data.name\" style=\"width:100%;border-width:0px 0px 1px 0px\">\n            </ng-template>\n        </p-column>\n        <p-column field=\"size\" header=\"Size\">\n            <ng-template let-node=\"rowData\" pTemplate=\"body\">\n                <input type=\"text\" [(ngModel)]=\"node.data.size\" style=\"width:100%;border-width:0px 0px 1px 0px\">\n            </ng-template>\n        </p-column>\n        <p-column field=\"type\" header=\"Type\">\n            <ng-template let-node=\"rowData\" pTemplate=\"body\">\n                <input type=\"text\" [(ngModel)]=\"node.data.type\" style=\"width:100%;border-width:0px 0px 1px 0px\">\n            </ng-template>\n        </p-column>\n    </p-treeTable>\n    \n    <p-treeTable [value]=\"files6\" selectionMode=\"single\" [(selection)]=\"selectedFile2\" [style]=\"{'margin-top':'50px'}\" [contextMenu]=\"cm\">\n        <p-header>Context Menu</p-header>\n        <p-column field=\"name\" header=\"Name\"></p-column>\n        <p-column field=\"size\" header=\"Size\"></p-column>\n        <p-column field=\"type\" header=\"Type\"></p-column>\n    </p-treeTable>\n            \n    <p-contextMenu #cm [model]=\"items\"></p-contextMenu>\n    \n    <p-treeTable [value]=\"lazyFiles\" [style]=\"{'margin-top':'50px'}\"\n        (onNodeExpand)=\"nodeExpand($event)\">\n        <p-header>Lazy Loading</p-header>\n        <p-column field=\"name\" header=\"Name\"></p-column>\n        <p-column field=\"size\" header=\"Size\"></p-column>\n        <p-column field=\"type\" header=\"Type\"></p-column>\n    </p-treeTable>\n</div>\n\n<div class=\"content-section documentation\">\n    <p-tabView effect=\"fade\">\n        <p-tabPanel header=\"Documentation\">\n            <h3>Import</h3>\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nimport &#123;TreeTableModule,TreeNode,SharedModule&#125; from 'primeng/primeng';\n</code>\n</pre>\n\n            <h3>Getting Started</h3>\n            <p>TreeTable component requires an array of TreeNode objects as its value. Let's begin with the TreeNode api.</p>\n            \n            <div class=\"doc-tablewrapper\">\n                <table class=\"doc-table\">\n                    <thead>\n                        <tr>\n                            <th>Name</th>\n                            <th>Type</th>\n                            <th>Default</th>\n                            <th>Description</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        <tr>\n                            <td>label</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Label of the node.</td>\n                        </tr>\n                        <tr>\n                            <td>data</td>\n                            <td>any</td>\n                            <td>null</td>\n                            <td>Data represented by the node.</td>\n                        </tr>\n                        <tr>\n                            <td>icon</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Icon of the node to display next to content. Not used by TreeTable.</td>\n                        </tr>\n                        <tr>\n                            <td>expandedIcon</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Icon to use in expanded state. Not used by TreeTable.</td>\n                        </tr>\n                        <tr>\n                            <td>collapsedIcon</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Icon to use in collapsed state. Not used by TreeTable.</td>\n                        </tr>\n                        <tr>\n                            <td>children</td>\n                            <td>TreeNode[]</td>\n                            <td>null</td>\n                            <td>An array of treenodes as children.</td>\n                        </tr>\n                        <tr>\n                            <td>leaf</td>\n                            <td>boolean</td>\n                            <td>null</td>\n                            <td>Specifies if the node has children. Used in lazy loading.</td>\n                        </tr>\n                        <tr>\n                            <td>style</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Inline style of the node.</td>\n                        </tr>\n                        <tr>\n                            <td>styleClass</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Style class of the node.</td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n            \n            <p>Most of the time, nodes will be loaded from a remote datasoure, here is an example NodeService that fetches the data from a json file.</p> \n<pre>\n<code class=\"language-javascript\" pCode ngNonBindable>\n@Injectable()\nexport class NodeService &#123;\n    \n    constructor(private http: Http) &#123;&#125;\n\n    getFilesystem() &#123;\n        return this.http.get('showcase/resources/data/filesystem.json')\n                    .toPromise()\n                    .then(res => &lt;TreeNode[]&gt; res.json().data);\n    &#125;\n&#125;\n</code>\n</pre>\n        \n        <p>The filesystem.json file consists of sample data. In a real application, this should be a dynamic response generated from the remote call.</p>\n<pre>\n<code class=\"language-javascript\" pCode ngNonBindable>\n&#123;\n    \"data\":\n    [  \n        &#123;  \n            \"data\":&#123;  \n                \"name\":\"Documents\",\n                \"size\":\"75kb\",\n                \"type\":\"Folder\"\n            &#125;,\n            \"children\":[\n                &#123;  \n                    \"data\":&#123;  \n                        \"name\":\"Work\",\n                        \"size\":\"55kb\",\n                        \"type\":\"Folder\"\n                    &#125;,\n                    \"children\":[  \n                        &#123;  \n                            \"data\":&#123;  \n                                \"name\":\"Expenses.doc\",\n                                \"size\":\"30kb\",\n                                \"type\":\"Document\"\n                            &#125;\n                        &#125;,\n                        &#123;  \n                            \"data\":&#123;  \n                                \"name\":\"Resume.doc\",\n                                \"size\":\"25kb\",\n                                \"type\":\"Resume\"\n                            &#125;\n                        &#125;\n                    ]\n                &#125;,\n                &#123;  \n                    \"data\":&#123;  \n                        \"name\":\"Home\",\n                        \"size\":\"20kb\",\n                        \"type\":\"Folder\"\n                    &#125;,\n                    \"children\":[  \n                        &#123;  \n                            \"data\":&#123;  \n                                \"name\":\"Invoices\",\n                                \"size\":\"20kb\",\n                                \"type\":\"Text\"\n                            &#125;\n                        &#125;\n                    ]\n                &#125;\n            ]\n        &#125;,\n        &#123;  \n            \"data\":&#123;  \n                \"name\":\"Pictures\",\n                \"size\":\"150kb\",\n                \"type\":\"Folder\"\n            &#125;,\n            \"children\":[  \n                &#123;  \n                    \"data\":&#123;  \n                        \"name\":\"barcelona.jpg\",\n                        \"size\":\"90kb\",\n                        \"type\":\"Picture\"\n                    &#125;\n                &#125;,\n                &#123;  \n                    \"data\":&#123;  \n                        \"name\":\"primeui.png\",\n                        \"size\":\"30kb\",\n                        \"type\":\"Picture\"\n                    &#125;\n                &#125;,\n                &#123;  \n                    \"data\":&#123;  \n                        \"name\":\"optimus.jpg\",\n                        \"size\":\"30kb\",\n                        \"type\":\"Picture\"\n                    &#125;\n                &#125;\n            ]\n        &#125;\n    ]\n&#125;\n</code>\n</pre>  \n\n        <p>The component that uses this service makes a call to getFiles() and assigns them back to files property that is bound to the tree.</p>\n\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nexport class TreeTableDemoComponent implements OnInit &#123;\n    \n    files: TreeNode[];\n\n    constructor(private nodeService: NodeService) &#123;&#125;\n    \n    ngOnInit() &#123;\n        this.nodeService.getFileSystem().then(files => this.files = files);\n    &#125;\n\n&#125;\n</code>\n</pre>         \n                  \n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-treeTable [value]=\"files\"&gt;\n    &lt;p-column field=\"name\" header=\"Name\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"size\" header=\"Size\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"type\" header=\"Type\"&gt;&lt;/p-column&gt;\n&lt;/p-treeTable&gt;\n</code>\n</pre>\n\n            <h3>Column Component</h3>\n            <p>TreeTable utilizes the following options defined by a column component.</p>\n            <h3>Properties</h3>\n            <div class=\"doc-tablewrapper\">\n                <table class=\"doc-table\">\n                    <thead>\n                        <tr>\n                            <th>Name</th>\n                            <th>Type</th>\n                            <th>Default</th>\n                            <th>Description</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        <tr>\n                            <td>field</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Property of a row data.</td>\n                        </tr>\n                        <tr>\n                            <td>header</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Header text of a column.</td>\n                        </tr>\n                        <tr>\n                            <td>footer</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Footer text of a column.</td>\n                        </tr>\n                        <tr>\n                            <td>style</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Inline style of the column.</td>\n                        </tr>\n                        <tr>\n                            <td>styleClass</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Style class of the column.</td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-column field=\"vin\" header=\"Vin\"&gt;&lt;/p-column&gt;\n</code>\n</pre>\n\n                <h3>Dynamic Colums</h3>\n                <p>Columns can be instantiated using an array as well by iterating with ngFor.</p>\n            <pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nexport class TreeTableDemoComponent implements OnInit &#123;\n\n    files: TreeNode[];\n\n    constructor(private nodeService: NodeService) &#123;&#125;\n    \n    ngOnInit() &#123;\n        this.nodeService.getFileSystem().then(files => this.files = files);\n\n        this.cols = [\n                &#123;field: 'name', header: 'Name'&#125;,\n                &#123;field: 'size', header: 'Size'&#125;,\n                &#123;field: 'type', header: 'Type'&#125;\n            ];\n        &#125;\n    &#125;\n&#125;\n</code>\n</pre>\n\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-treeTable [value]=\"cars\"&gt;\n    &lt;p-column *ngFor=\"let col of cols\" [field]=\"col.field\" [header]=\"col.header\"&gt;&lt;/p-column&gt;\n&lt;/p-treeTable&gt;\n</code>\n</pre>\n\n            <h3>Facets</h3>\n            <p>Header and Footer are the two sections aka facets that are capable of displaying custom content.</p>\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nimport &#123;Header&#125; from 'primeng/primeng';\nimport &#123;Footer&#125; from 'primeng/primeng';\n</code>\n</pre>\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-treeTable [value]=\"files\"&gt;\n    &lt;p-header&gt;List of Files&lt;/p-header&gt;\n    &lt;p-footer&gt;Choose from the list.&lt;/p-footer&gt;\n    &lt;p-column field=\"name\" header=\"Name\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"size\" header=\"Size\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"type\" header=\"Type\"&gt;&lt;/p-column&gt;\n&lt;/p-treeTable&gt;\n</code>\n</pre>\n\n            <h3>Selection</h3>\n            <p>TreeTable supports three selection methods, single, multiple and checkbox. Selection is enabled by setting selectionMode property and providing a single TreeNode or\n            an array of TreeNodes to reference the selections depending on the selection mode.</p>\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nexport class TreeTableDemoComponent implements OnInit &#123;\n    \n    files: TreeNode[];\n    \n    selectedFile: TreeNode;\n\n    constructor(private nodeService: NodeService) &#123;&#125;\n    \n    ngOnInit() &#123;\n        this.nodeService.getFiles().then(files => this.files = files);\n    &#125;\n\n&#125;\n</code>\n</pre>\n\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-treeTable [value]=\"files\" selectionMode=\"single\" [(selection)]=\"selectedFile\"&gt;&lt;/p-treeTable&gt;\n</code>\n</pre>\n\n<p>In multiple mode or checkbox mode, selection property should be an array. In multiple mode, items can either be selected\nusing metaKey or toggled individually depending on the value of metaKeySelection property value which is true by default. On touch enabled\ndevices metaKeySelection is turned off automatically.</p>\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\n    export class TreeTableDemoComponent implements OnInit &#123;\n        \n        files: TreeNode[];\n        \n        selectedFiles: TreeNode[];\n\n        constructor(private nodeService: NodeService) &#123;&#125;\n        \n        ngOnInit() &#123;\n            this.nodeService.getFiles().then(files => this.files = files);\n        &#125;\n\n    &#125;\n</code>\n</pre>\n\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-treeTable [value]=\"files\" selectionMode=\"single\" [(selection)]=\"selectedFiles\"&gt;&lt;/p-treeTable&gt;\n</code>\n</pre>\n\n            <p>TreeTable provides onNodeSelect and onNodeUnselect options as callbacks for selection feature.</p>\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-treeTable [value]=\"files\" selectionMode=\"single\" [(selection)]=\"selectedFiles\" (onNodeSelect)=\"nodeSelect($event)\"&gt;&lt;/p-treeTable&gt;\n</code>\n</pre>\n\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nexport class TreeTableDemoComponent implements OnInit &#123;\n    \n    files: TreeNode[];\n    \n    selectedFiles: TreeNode[];\n\n    constructor(private nodeService: NodeService) &#123;&#125;\n    \n    ngOnInit() &#123;\n        this.nodeService.getFiles().then(files => this.files = files);\n    &#125;\n    \n    nodeSelect(event) &#123;\n        //event.node = selected node\n    &#125;\n\n&#125;\n</code>\n</pre>\n\n            <p>Selection of a particular node can be disabled by setting the selectable property of the node to false.</p>\n            \n            <h3>ContextMenu</h3>\n            <p>TreeTable has exclusive integration with contextmenu component. In order to attach a menu to a treetable, define a local template\n            variable for the menu and bind it to the contextMenu property of the treetable. This enables showing the menu whenever a row is right clicked.</p>\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-treeTable [value]=\"files\" selectionMode=\"single\" [(selection)]=\"selectedFile\" [contextMenu]=\"cm\"&gt;\n    &lt;p-header&gt;Context Menu&lt;/p-header&gt;\n    &lt;p-column field=\"name\" header=\"Name\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"size\" header=\"Size\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"type\" header=\"Type\"&gt;&lt;/p-column&gt;\n&lt;/p-treeTable&gt;\n\n&lt;p-contextMenu #cm [model]=\"items\"&gt;&lt;/p-contextMenu&gt;\n</code>\n</pre>\n\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nexport class TreeTableDemoComponent implements OnInit &#123;\n    \n    files: TreeNode[];\n    \n    selectedFile: TreeNode;\n\n    constructor(private nodeService: NodeService) &#123;&#125;\n    \n    ngOnInit() &#123;\n        this.nodeService.getFiles().then(files => this.files = files);\n        \n        this.items = [\n            &#123;label: 'View', icon: 'fa-search', command: (event) => this.viewNode(this.selectedFile2)&#125;,\n            &#123;label: 'Delete', icon: 'fa-close', command: (event) => this.deleteNode(this.selectedFile2)&#125;\n        ];\n    &#125;\n    \n    viewNode(node: TreeNode) &#123;\n        this.msgs = [];\n        this.msgs.push(&#123;severity: 'info', summary: 'Node Selected', detail: node.data.name&#125;);\n    &#125;\n\n    deleteNode(node: TreeNode) &#123;\n        node.parent.children = node.parent.children.filter( n => n.data !== node.data);\n        this.msgs = [];\n        this.msgs.push(&#123;severity: 'info', summary: 'Node Deleted', detail: node.data.name&#125;);\n    &#125;\n\n&#125;\n</code>\n</pre>\n                \n            <h3>Templating</h3>\n            <p>By default label of a treenode is displayed inside a tree node, in case you need to place custom content define a ng-template inside a column that gets \n                the column as an implicit variable and rowData as the node instance. Similarly, custom content can be placed at the header and footer of a column with templating.\n                Example below places an input field to create editable treenodes.</p>\n\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;h3&gt;ng-template&lt;/h3&gt;\n&lt;p-treeTable [value]=\"files\"&gt;\n    &lt;p-column&gt;\n        &lt;ng-template let-col let-node=\"rowData\" pTemplate=\"header\"&gt;\n            &lt;button type=\"button\" pButton label=\"Refresh\"&gt;&lt;/button&gt;\n        &lt;/ng-template&gt;\n        &lt;ng-template let-col let-node=\"rowData\" pTemplate=\"body\"&gt;\n            &lt;input [(ngModel)]=\"node.data.name\" type=\"text\" style=\"width:100%\"&gt;\n        &lt;/ng-template&gt;\n    &lt;/p-column&gt;\n&lt;/p-treeTable&gt;\n</code>\n</pre>\n\n            <h3>Lazy Loading</h3>\n            <p>Lazy loading is handy to deal with large datasets. Instead of loading the whole tree, nodes can be loaded at onNodeExpand event.\n            Important part of implementing lazy loading is defining leaf property of a node as false, this will instruct tree to display an arrow icon\n            to indicate there are children of this node although they are not loaded yet. When the lazy node is expanded, onNodeExpand is called\n            and a remote call can be made to add the children to the expanded node.</p>\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-treeTable [value]=\"files\" (onNodeExpand)=\"loadNode($event)\"&gt;&lt;/p-treeTable&gt;\n</code>\n</pre>\n\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nexport class TreeTableDemoComponent implements OnInit &#123;\n    \n    files: TreeNode[];\n    \n    selectedFiles: TreeNode[];\n\n    constructor(private nodeService: NodeService) &#123;&#125;\n    \n    ngOnInit() &#123;\n        //initial nodes\n        this.nodeService.getFiles().then(files => this.files = files);\n    &#125;\n    \n    loadNode(event) &#123;\n        if(event.node) &#123;\n            //in a real application, make a call to a remote url to load children of the current node and add the new nodes as children\n            this.nodeService.getLazyFilesystem().then(nodes => event.node.children = nodes);\n        &#125;\n    &#125;\n\n&#125;\n</code>\n</pre>\n\n            <p>Assume at ngOnInit treetable is initialized with a data like below that has nodes having no actual children but leaf property is set false.</p>\n<pre>\n<code class=\"language-javascript\" pCode ngNonBindable>\n&#123;\n    \"data\":\n    [  \n        &#123;  \n            \"data\":&#123;  \n                \"name\":\"Lazy Folder 0\",\n                \"size\":\"75kb\",\n                \"type\":\"Folder\"\n            &#125;,\n            \"leaf\": false\n        &#125;,\n        &#123;  \n            \"data\":&#123;  \n                \"name\":\"Lazy Folder 1\",\n                \"size\":\"150kb\",\n                \"type\":\"Folder\"\n            &#125;,\n            \"leaf\": false\n        &#125;\n    ]\n&#125;\n</code>\n</pre>  \n\n            <h3>Properties</h3>\n            <div class=\"doc-tablewrapper\">\n                <table class=\"doc-table\">\n                    <thead>\n                        <tr>\n                            <th>Name</th>\n                            <th>Type</th>\n                            <th>Default</th>\n                            <th>Description</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                         <tr>\n                            <td>value</td>\n                            <td>array</td>\n                            <td>null</td>\n                            <td>An array of treenodes.</td>\n                        </tr>\n                         <tr>\n                            <td>labelExpand</td>\n                            <td>string</td>\n                            <td>Expand</td>\n                            <td>Tooltip and screenreader text for expand icon.</td>\n                        </tr>\n                         <tr>\n                            <td>labelCollapse</td>\n                            <td>string</td>\n                            <td>Collapse</td>\n                            <td>Tooltip and screenreader text for collapse icon.</td>\n                        </tr>\n                        <tr>\n                           <td>expandedIcon</td>\n                           <td>string</td>\n                           <td>fa-caret-down</td>\n                           <td>Icon to display on an expanded node.</td>\n                       </tr>\n                        <tr>\n                           <td>collapsedIcon</td>\n                           <td>string</td>\n                           <td>fa-caret-right</td>\n                           <td>Icon to display on an expanded node.</td>\n                       </tr>\n                        <tr>\n                            <td>selectionMode</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Defines the selection mode, valid values \"single\" and \"multiple\".</td>\n                        </tr>\n                        <tr>\n                            <td>selection</td>\n                            <td>any</td>\n                            <td>null</td>\n                            <td>A single treenode instance or an array to refer to the selections.</td>\n                        </tr>\n                        <tr>\n                            <td>style</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Inline style of the component.</td>\n                        </tr>\n                        <tr>\n                            <td>styleClass</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Style class of the component.</td>\n                        </tr>\n                        <tr>\n                            <td>metaKeySelection</td>\n                            <td>boolean</td>\n                            <td>true</td>\n                            <td>Defines how multiple items can be selected, when true metaKey needs to be pressed to select or unselect an item and when set to false selection of each item\n                            can be toggled individually. On touch enabled devices, metaKeySelection is turned off automatically.</td>\n                        </tr>\n                        <tr>\n                            <td>toggleColumnIndex</td>\n                            <td>number</td>\n                            <td>0</td>\n                            <td>Index of the column that contains the toggler element.</td>\n                        </tr>\n                        <tr>\n                            <td>tableStyle</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Inline style of the table element.</td>\n                        </tr>\n                        <tr>\n                            <td>tableStyleClass</td>\n                            <td>string</td>\n                            <td>null</td>\n                            <td>Style class of the table element.</td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n\n            <h3>Events</h3>\n            <div class=\"doc-tablewrapper\">\n                <table class=\"doc-table\">\n                    <thead>\n                        <tr>\n                            <th>Name</th>\n                            <th>Parameters</th>\n                            <th>Description</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        <tr>\n                            <td>onNodeSelect</td>\n                            <td>event.originalEvent: browser event <br>\n                                event.node: Selected node instance.</td>\n                            <td>Callback to invoke when a node is selected.</td>\n                        </tr>\n                        <tr>\n                            <td>onNodeUnselect</td>\n                            <td>event.originalEvent: browser event <br>\n                                event.node: Unselected node instance.</td>\n                            <td>Callback to invoke when a node is unselected.</td>\n                        </tr>\n                        <tr>\n                            <td>onNodeExpand</td>\n                            <td>event.originalEvent: browser event <br>\n                                event.node: Expanded node instance.</td>\n                            <td>Callback to invoke when a node is expanded.</td>\n                        </tr>\n                        <tr>\n                            <td>onNodeCollapse</td>\n                            <td>event.originalEvent: browser event <br>\n                                event.node: Collapsed node instance.</td>\n                            <td>Callback to invoke when a node is collapsed.</td>\n                        </tr>\n                        <tr>\n                            <td>onContextMenuSelect</td>\n                            <td>event.originalEvent: browser event <br>\n                                event.node: Selected node instance.</td>\n                            <td>Callback to invoke when a node is selected with right click.</td>\n                        </tr>\n                        <tr>\n                            <td>onRowDblclick</td>\n                            <td>event.originalEvent: Browser event <br>\n                                event.node: Selected node instance.</td>\n                            <td>Callback to invoke when a row is double clicked.</td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n\n            <h3>Styling</h3>\n            <p>Following is the list of structural style classes, for theming classes visit <a href=\"#\" [routerLink]=\"['/theming']\">theming page</a>.</p>\n            <div class=\"doc-tablewrapper\">\n                <table class=\"doc-table\">\n                    <thead>\n                        <tr>\n                            <th>Name</th>\n                            <th>Element</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        <tr>\n                            <td>ui-treetable</td>\n                            <td>Main container element</td>\n                        </tr>\n                        <tr>\n                            <td>ui-treetable-header</td>\n                            <td>Header element</td>\n                        </tr>\n                        <tr>\n                            <td>ui-treetable-tablewrapper</td>\n                            <td>Container of table</td>\n                        </tr>\n                        <tr>\n                            <td>ui-treetable-footer</td>\n                            <td>Footer element</td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n\n            <h3>Dependencies</h3>\n            <p>None.</p>\n        </p-tabPanel>\n\n        <p-tabPanel header=\"Source\">\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/treetable\" class=\"btn-viewsource\" target=\"_blank\">\n                <i class=\"fa fa-github\"></i>\n                <span>View on GitHub</span>\n            </a>\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-growl [value]=\"msgs\"&gt;&lt;/p-growl&gt;\n\n&lt;p-treeTable [value]=\"files1\"&gt;\n    &lt;p-header&gt;Basic&lt;/p-header&gt;\n    &lt;p-column field=\"name\" header=\"Name\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"size\" header=\"Size\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"type\" header=\"Type\"&gt;&lt;/p-column&gt;\n&lt;/p-treeTable&gt;\n    \n&lt;p-treeTable [value]=\"files2\" selectionMode=\"single\" [(selection)]=\"selectedFile\"\n    (onNodeSelect)=\"nodeSelect($event)\" (onNodeUnselect)=\"nodeUnselect($event)\" [style]=\"&#123;'margin-top':'50px'&#125;\"&gt;\n    &lt;p-header&gt;Singe Selection&lt;/p-header&gt;\n    &lt;p-column field=\"name\" header=\"Name\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"size\" header=\"Size\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"type\" header=\"Type\"&gt;&lt;/p-column&gt;\n&lt;/p-treeTable&gt;\n&lt;p&gt;Selected Node: &#123;&#123;selectedFile ? selectedFile.data.name : 'none'&#125;&#125;&lt;/p&gt;\n    \n&lt;p-treeTable [value]=\"files3\" selectionMode=\"multiple\" [(selection)]=\"selectedFiles\" \n    (onNodeSelect)=\"nodeSelect($event)\" (onNodeUnselect)=\"nodeUnselect($event)\" [style]=\"&#123;'margin-top':'50px'&#125;\"&gt;\n    &lt;p-header&gt;Multiple Selection&lt;/p-header&gt;\n    &lt;p-column field=\"name\" header=\"Name\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"size\" header=\"Size\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"type\" header=\"Type\"&gt;&lt;/p-column&gt;\n&lt;/p-treeTable&gt;\n&lt;p&gt;Selected Nodes: &lt;span *ngFor=\"let file of selectedFiles\"&gt;&#123;&#123;file.data.name&#125;&#125; &lt;/span&gt;&lt;/p&gt;\n\n&lt;p-treeTable [value]=\"files4\" selectionMode=\"checkbox\" [(selection)]=\"selectedFiles2\" [style]=\"&#123;'margin-top':'50px'&#125;\"&gt;\n    &lt;p-header&gt;Checkbox Selection&lt;/p-header&gt;\n    &lt;p-column field=\"name\" header=\"Name\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"size\" header=\"Size\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"type\" header=\"Type\"&gt;&lt;/p-column&gt;\n&lt;/p-treeTable&gt;\n&lt;p&gt;Selected Nodes: &lt;span *ngFor=\"let file of selectedFiles2\"&gt;&#123;&#123;file.data.name&#125;&#125; &lt;/span&gt;&lt;/p&gt;\n\n&lt;p-treeTable [value]=\"files5\" [style]=\"&#123;'margin-top':'50px'&#125;\"&gt;\n    &lt;p-header&gt;Editable Cells with Templating&lt;/p-header&gt;\n    &lt;p-column field=\"name\" header=\"Name\"&gt;\n        &lt;ng-template let-node=\"rowData\" pTemplate=\"body\"&gt;\n            &lt;input type=\"text\" [(ngModel)]=\"node.data.name\" style=\"width:100%;border-width:0px 0px 1px 0px\"&gt;\n        &lt;/ng-template&gt;\n    &lt;/p-column&gt;\n    &lt;p-column field=\"size\" header=\"Size\"&gt;\n        &lt;ng-template let-node=\"rowData\" pTemplate=\"body\"&gt;\n            &lt;input type=\"text\" [(ngModel)]=\"node.data.size\" style=\"width:100%;border-width:0px 0px 1px 0px\"&gt;\n        &lt;/ng-template&gt;\n    &lt;/p-column&gt;\n    &lt;p-column field=\"type\" header=\"Type\"&gt;\n        &lt;ng-template let-node=\"rowData\" pTemplate=\"body\"&gt;\n            &lt;input type=\"text\" [(ngModel)]=\"node.data.type\" style=\"width:100%;border-width:0px 0px 1px 0px\"&gt;\n        &lt;/ng-template&gt;\n    &lt;/p-column&gt;\n&lt;/p-treeTable&gt;\n\n&lt;p-treeTable [value]=\"files6\" selectionMode=\"single\" [(selection)]=\"selectedFile2\" [style]=\"&#123;'margin-top':'50px'&#125;\" [contextMenu]=\"cm\"&gt;\n    &lt;p-header&gt;Context Menu&lt;/p-header&gt;\n    &lt;p-column field=\"name\" header=\"Name\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"size\" header=\"Size\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"type\" header=\"Type\"&gt;&lt;/p-column&gt;\n&lt;/p-treeTable&gt;\n\n&lt;p-treeTable [value]=\"lazyFiles\" [style]=\"&#123;'margin-top':'50px'&#125;\"\n    (onNodeExpand)=\"nodeExpand($event)\"&gt;\n    &lt;p-header&gt;Lazy Loading&lt;/p-header&gt;\n    &lt;p-column field=\"name\" header=\"Name\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"size\" header=\"Size\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"type\" header=\"Type\"&gt;&lt;/p-column&gt;\n&lt;/p-treeTable&gt;\n</code>\n</pre>\n\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nexport class TreeTableDemo implements OnInit &#123;\n    \n    msgs: Message[];\n    \n    files1: TreeNode[];\n    \n    files2: TreeNode[];\n    \n    files3: TreeNode[];\n    \n    files4: TreeNode[];\n    \n    files5: TreeNode[];\n    \n    files6: TreeNode[];\n            \n    lazyFiles: TreeNode[];\n        \n    selectedFile: TreeNode;\n    \n    selectedFile2: TreeNode;\n    \n    selectedFiles: TreeNode[];\n    \n    selectedFiles2: TreeNode[];\n    \n    items: MenuItem[];\n        \n    constructor(private nodeService: NodeService) &#123; &#125;\n\n    ngOnInit() &#123;\n        this.nodeService.getFilesystem().then(files => this.files1 = files);\n        this.nodeService.getFilesystem().then(files => this.files2 = files);\n        this.nodeService.getFilesystem().then(files => this.files3 = files);\n        this.nodeService.getFilesystem().then(files => this.files4 = files);\n        this.nodeService.getFilesystem().then(files => this.files5 = files);\n        this.nodeService.getFilesystem().then(files => this.files6 = files);\n        this.nodeService.getLazyFilesystem().then(files => this.lazyFiles = files);\n        \n        this.items = [\n            &#123;label: 'View', icon: 'fa-search', command: (event) => this.viewNode(this.selectedFile2)&#125;,\n            &#123;label: 'Delete', icon: 'fa-close', command: (event) => this.deleteNode(this.selectedFile2)&#125;\n        ];\n    &#125;\n    \n    nodeSelect(event) &#123;\n        this.msgs = [];\n        this.msgs.push(&#123;severity: 'info', summary: 'Node Selected', detail: event.node.data.name&#125;);\n    &#125;\n    \n    nodeUnselect(event) &#123;\n        this.msgs = [];\n        this.msgs.push(&#123;severity: 'info', summary: 'Node Unselected', detail: event.node.data.name&#125;);\n    &#125;\n    \n    nodeExpand(event) &#123;\n        if(event.node) &#123;\n            //in a real application, make a call to a remote url to load children of the current node and add the new nodes as children\n            this.nodeService.getLazyFilesystem().then(nodes => event.node.children = nodes);\n        &#125;\n    &#125;\n    \n    viewNode(node: TreeNode) &#123;\n        this.msgs = [];\n        this.msgs.push(&#123;severity: 'info', summary: 'Node Selected', detail: node.data.name&#125;);\n    &#125;\n\n    deleteNode(node: TreeNode) &#123;\n        node.parent.children = node.parent.children.filter( n => n.data !== node.data);\n        this.msgs = [];\n        this.msgs.push(&#123;severity: 'info', summary: 'Node Deleted', detail: node.data.name&#125;);\n    &#125;\n&#125;\n</code>\n</pre>\n        </p-tabPanel>\n    </p-tabView>\n</div>"
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/fileupload/fileuploaddemo.module.ts":
+/***/ "./src/app/showcase/components/treetable/treetabledemo.module.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/@angular/common.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fileuploaddemo__ = __webpack_require__("./src/app/showcase/components/fileupload/fileuploaddemo.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__fileuploaddemo_routing_module__ = __webpack_require__("./src/app/showcase/components/fileupload/fileuploaddemo-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_fileupload_fileupload__ = __webpack_require__("./src/app/components/fileupload/fileupload.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_growl_growl__ = __webpack_require__("./src/app/components/growl/growl.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_button_button__ = __webpack_require__("./src/app/components/button/button.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__treetabledemo__ = __webpack_require__("./src/app/showcase/components/treetable/treetabledemo.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__treetabledemo_routing_module__ = __webpack_require__("./src/app/showcase/components/treetable/treetabledemo-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_treetable_treetable__ = __webpack_require__("./src/app/components/treetable/treetable.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_growl_growl__ = __webpack_require__("./src/app/components/growl/growl.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__ = __webpack_require__("./src/app/components/tabview/tabview.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FileUploadDemoModule", function() { return FileUploadDemoModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_contextmenu_contextmenu__ = __webpack_require__("./src/app/components/contextmenu/contextmenu.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_codehighlighter_codehighlighter__ = __webpack_require__("./src/app/components/codehighlighter/codehighlighter.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TreeTableDemoModule", function() { return TreeTableDemoModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2377,74 +2351,104 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-var FileUploadDemoModule = (function () {
-    function FileUploadDemoModule() {
+
+var TreeTableDemoModule = (function () {
+    function TreeTableDemoModule() {
     }
-    return FileUploadDemoModule;
+    return TreeTableDemoModule;
 }());
-FileUploadDemoModule = __decorate([
+TreeTableDemoModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [
             __WEBPACK_IMPORTED_MODULE_1__angular_common__["c" /* CommonModule */],
-            __WEBPACK_IMPORTED_MODULE_3__fileuploaddemo_routing_module__["a" /* FileUploadDemoRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_4__components_fileupload_fileupload__["a" /* FileUploadModule */],
-            __WEBPACK_IMPORTED_MODULE_5__components_growl_growl__["a" /* GrowlModule */],
-            __WEBPACK_IMPORTED_MODULE_6__components_button_button__["a" /* ButtonModule */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
+            __WEBPACK_IMPORTED_MODULE_4__treetabledemo_routing_module__["a" /* TreeTableDemoRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_5__components_treetable_treetable__["a" /* TreeTableModule */],
+            __WEBPACK_IMPORTED_MODULE_6__components_growl_growl__["a" /* GrowlModule */],
             __WEBPACK_IMPORTED_MODULE_7__components_tabview_tabview__["a" /* TabViewModule */],
-            __WEBPACK_IMPORTED_MODULE_8__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
+            __WEBPACK_IMPORTED_MODULE_8__components_contextmenu_contextmenu__["a" /* ContextMenuModule */],
+            __WEBPACK_IMPORTED_MODULE_9__components_codehighlighter_codehighlighter__["a" /* CodeHighlighterModule */]
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_2__fileuploaddemo__["a" /* FileUploadDemo */]
+            __WEBPACK_IMPORTED_MODULE_3__treetabledemo__["a" /* TreeTableDemo */]
         ]
     })
-], FileUploadDemoModule);
+], TreeTableDemoModule);
 
-//# sourceMappingURL=fileuploaddemo.module.js.map
+//# sourceMappingURL=treetabledemo.module.js.map
 
 /***/ }),
 
-/***/ "./src/app/showcase/components/fileupload/fileuploaddemo.ts":
+/***/ "./src/app/showcase/components/treetable/treetabledemo.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/@angular/core.es5.js");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FileUploadDemo; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__service_nodeservice__ = __webpack_require__("./src/app/showcase/service/nodeservice.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TreeTableDemo; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 
-var FileUploadDemo = (function () {
-    function FileUploadDemo() {
-        this.uploadedFiles = [];
+
+var TreeTableDemo = (function () {
+    function TreeTableDemo(nodeService) {
+        this.nodeService = nodeService;
     }
-    FileUploadDemo.prototype.onUpload = function (event) {
-        for (var _i = 0, _a = event.files; _i < _a.length; _i++) {
-            var file = _a[_i];
-            this.uploadedFiles.push(file);
+    TreeTableDemo.prototype.ngOnInit = function () {
+        var _this = this;
+        this.nodeService.getFilesystem().then(function (files) { return _this.files1 = files; });
+        this.nodeService.getFilesystem().then(function (files) { return _this.files2 = files; });
+        this.nodeService.getFilesystem().then(function (files) { return _this.files3 = files; });
+        this.nodeService.getFilesystem().then(function (files) { return _this.files4 = files; });
+        this.nodeService.getFilesystem().then(function (files) { return _this.files5 = files; });
+        this.nodeService.getFilesystem().then(function (files) { return _this.files6 = files; });
+        this.nodeService.getLazyFilesystem().then(function (files) { return _this.lazyFiles = files; });
+        this.items = [
+            { label: 'View', icon: 'fa-search', command: function (event) { return _this.viewNode(_this.selectedFile2); } },
+            { label: 'Delete', icon: 'fa-close', command: function (event) { return _this.deleteNode(_this.selectedFile2); } }
+        ];
+    };
+    TreeTableDemo.prototype.nodeSelect = function (event) {
+        this.msgs = [];
+        this.msgs.push({ severity: 'info', summary: 'Node Selected', detail: event.node.data.name });
+    };
+    TreeTableDemo.prototype.nodeUnselect = function (event) {
+        this.msgs = [];
+        this.msgs.push({ severity: 'info', summary: 'Node Unselected', detail: event.node.data.name });
+    };
+    TreeTableDemo.prototype.nodeExpand = function (event) {
+        if (event.node) {
+            //in a real application, make a call to a remote url to load children of the current node and add the new nodes as children
+            this.nodeService.getLazyFilesystem().then(function (nodes) { return event.node.children = nodes; });
         }
-        this.msgs = [];
-        this.msgs.push({ severity: 'info', summary: 'Success', detail: 'File Uploaded' });
     };
-    FileUploadDemo.prototype.onBasicUpload = function (event) {
+    TreeTableDemo.prototype.viewNode = function (node) {
         this.msgs = [];
-        this.msgs.push({ severity: 'info', summary: 'Success', detail: 'File Uploaded with Basic Mode' });
+        this.msgs.push({ severity: 'info', summary: 'Node Selected', detail: node.data.name });
     };
-    FileUploadDemo.prototype.onBasicUploadAuto = function (event) {
+    TreeTableDemo.prototype.deleteNode = function (node) {
+        node.parent.children = node.parent.children.filter(function (n) { return n.data !== node.data; });
         this.msgs = [];
-        this.msgs.push({ severity: 'info', summary: 'Success', detail: 'File Uploaded with Auto Mode' });
+        this.msgs.push({ severity: 'info', summary: 'Node Deleted', detail: node.data.name });
     };
-    return FileUploadDemo;
+    return TreeTableDemo;
 }());
-FileUploadDemo = __decorate([
+TreeTableDemo = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
-        template: __webpack_require__("./src/app/showcase/components/fileupload/fileuploaddemo.html")
-    })
-], FileUploadDemo);
+        template: __webpack_require__("./src/app/showcase/components/treetable/treetabledemo.html")
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__service_nodeservice__["a" /* NodeService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__service_nodeservice__["a" /* NodeService */]) === "function" && _a || Object])
+], TreeTableDemo);
 
-//# sourceMappingURL=fileuploaddemo.js.map
+var _a;
+//# sourceMappingURL=treetabledemo.js.map
 
 /***/ })
 
