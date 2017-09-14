@@ -229,17 +229,6 @@
 .ui-rtl .ui-accordion .ui-accordion-header > .fa-caret-right:before {
     content: '\f0d9';
 }
-.ui-blockui {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.ui-blockui-document {
-    position: fixed;
-}
 .ui-autocomplete {
     width: auto;
     zoom: 1;
@@ -398,25 +387,16 @@
 .ui-fluid .ui-autocomplete .ui-autocomplete-dropdown.ui-button {
     width: 2em;
 }
-/** Breadcrumb **/
-.ui-breadcrumb {
-    margin: 0;
-    padding: 0;
-    padding: .3em;
+.ui-blockui {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
-.ui-breadcrumb ul {
-    margin: 0;
-    padding: 0;
-}
-
-.ui-breadcrumb ul li {
-    display: inline-block;
-    vertical-align: middle;
-}
-
-.ui-breadcrumb ul li .ui-menuitem-link {
-    text-decoration: none;
+.ui-blockui-document {
+    position: fixed;
 }
 /* Button */
 .ui-button { 
@@ -641,6 +621,26 @@ button.ui-button::-moz-focus-inner {
 .ui-splitbutton.ui-button-danger .ui-button:enabled:active {
     background-color: #c9302c;
     border-color: #d9534f;
+}
+/** Breadcrumb **/
+.ui-breadcrumb {
+    margin: 0;
+    padding: 0;
+    padding: .3em;
+}
+
+.ui-breadcrumb ul {
+    margin: 0;
+    padding: 0;
+}
+
+.ui-breadcrumb ul li {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.ui-breadcrumb ul li .ui-menuitem-link {
+    text-decoration: none;
 }
 .ui-calendar {
     position: relative;
@@ -963,6 +963,32 @@ button.ui-button::-moz-focus-inner {
 .ui-carousel .ui-carousel-mobiledropdown {
     display: none;
 }
+.ui-chkbox {
+    display: inline-block;
+    cursor: pointer;
+    vertical-align: middle;
+    margin-right: .25em;
+}
+
+.ui-chkbox .ui-chkbox-box {
+    width: 1.125em;
+    height: 1.125em;
+    line-height: 1.125em;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    text-align: center;
+}
+
+.ui-chkbox .ui-chkbox-icon {
+    display: block;
+}
+
+.ui-chkbox-label {
+    vertical-align: middle;  
+}
+
+
 .ui-chips > ul.ui-inputtext {
     clear: left;
     cursor: text;
@@ -1022,32 +1048,6 @@ button.ui-button::-moz-focus-inner {
     -webkit-border-radius: 0;
     border-radius: 0;
 }
-.ui-chkbox {
-    display: inline-block;
-    cursor: pointer;
-    vertical-align: middle;
-    margin-right: .25em;
-}
-
-.ui-chkbox .ui-chkbox-box {
-    width: 1.125em;
-    height: 1.125em;
-    line-height: 1.125em;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
-    text-align: center;
-}
-
-.ui-chkbox .ui-chkbox-icon {
-    display: block;
-}
-
-.ui-chkbox-label {
-    vertical-align: middle;  
-}
-
-
 .ui-colorpicker {
     display: inline-block;
 } 
@@ -2009,71 +2009,6 @@ button.ui-button::-moz-focus-inner {
 .ui-galleria-panel-content {
     padding: 1em 1.4em;
 }
-.ui-growl {
-	position:fixed;
-	top: 20px;
-	right: 20px;
-	width: 20em;
-}
-
-.ui-growl-item-container {
-	position:relative;
-	margin:0 0 10px 0;
-	opacity:0.95;
-	filter:alpha(opacity=95);
-}
-
-.ui-growl-item {
-    position: relative;
-	display: block;
-	padding: .5em 1em;
-}
-
-.ui-growl-item p {
-	padding: 0;
-	margin: 0;
-}
-
-.ui-growl-icon-close {
-	position: absolute;
-	top: 4px;
-	right: 4px;
-	cursor: pointer;
-}
-
-.ui-growl-title {
-	font-weight: bold;
-	padding: 0 0 .5em 0;
-	display: block;
-}
-
-.ui-growl-image {
-    position: absolute;
-    display: inline-block;
-    left: .5em;
-    top: .25em;
-    padding: 0;
-}
-
-.ui-growl-message {
-	padding: 0 0 .25em 0;
-    margin-left: 2.5em;
-}
-
-.ui-growl-message p {
-	font-weight: normal;
-}
-.ui-inplace .ui-inplace-display {
-    display: inline;
-    cursor: pointer;
-    border: 0 none;
-    padding: .25em;
-    font-weight: normal;
-}
-
-.ui-inplace .ui-inplace-content {
-    display: inline;
-}
 /* Deprecated Grid CSS */
 .ui-grid {
     clear: both;
@@ -2849,6 +2784,71 @@ button.ui-button::-moz-focus-inner {
     padding: 0;
 }
 
+.ui-growl {
+	position:fixed;
+	top: 20px;
+	right: 20px;
+	width: 20em;
+}
+
+.ui-growl-item-container {
+	position:relative;
+	margin:0 0 10px 0;
+	opacity:0.95;
+	filter:alpha(opacity=95);
+}
+
+.ui-growl-item {
+    position: relative;
+	display: block;
+	padding: .5em 1em;
+}
+
+.ui-growl-item p {
+	padding: 0;
+	margin: 0;
+}
+
+.ui-growl-icon-close {
+	position: absolute;
+	top: 4px;
+	right: 4px;
+	cursor: pointer;
+}
+
+.ui-growl-title {
+	font-weight: bold;
+	padding: 0 0 .5em 0;
+	display: block;
+}
+
+.ui-growl-image {
+    position: absolute;
+    display: inline-block;
+    left: .5em;
+    top: .25em;
+    padding: 0;
+}
+
+.ui-growl-message {
+	padding: 0 0 .25em 0;
+    margin-left: 2.5em;
+}
+
+.ui-growl-message p {
+	font-weight: normal;
+}
+.ui-inplace .ui-inplace-display {
+    display: inline;
+    cursor: pointer;
+    border: 0 none;
+    padding: .25em;
+    font-weight: normal;
+}
+
+.ui-inplace .ui-inplace-content {
+    display: inline;
+}
 .ui-inputswitch {
 	display: inline-block;
 	padding: 0;
@@ -3696,52 +3696,6 @@ button.ui-button::-moz-focus-inner {
     box-sizing: border-box;
 }
 
-.ui-organizationchart .ui-organizationchart-table {
-    border-spacing: 0;
-    border-collapse: separate;
-}
-
-.ui-organizationchart .ui-organizationchart-table > tr > td {
-    text-align: center;
-    vertical-align: top;
-    padding: 0;
-    padding: 0 .75em;
-}
-
-.ui-organizationchart .ui-organizationchart-node-content {
-    padding: .5em .75em;
-    display: inline-block;
-    position: relative;
-}
-
-.ui-organizationchart .ui-organizationchart-node-content .ui-node-toggler {
-    position: absolute;
-    bottom: -9px;
-    margin-left: -8px;
-    z-index: 2;
-}
-
-.ui-organizationchart .ui-organizationchart-line-down {
-    margin: 0 auto;
-    height: 20px;
-    width: 1px;
-    float: none;
-}
-
-.ui-organizationchart .ui-organizationchart-line-right {
-    float: none;
-    border-radius: 0px;
-}
-
-.ui-organizationchart .ui-organizationchart-line-left {
-    float: none;
-    border-radius: 0;
-}
-
-.ui-organizationchart .ui-organizationchart-node-content.ui-organizationchart-selectable-node {
-    cursor: pointer;
-}
-
 .ui-orderlist {
     display: table;
 }
@@ -3860,6 +3814,52 @@ button.ui-button::-moz-focus-inner {
         width: 100%;
     }
 }
+.ui-organizationchart .ui-organizationchart-table {
+    border-spacing: 0;
+    border-collapse: separate;
+}
+
+.ui-organizationchart .ui-organizationchart-table > tr > td {
+    text-align: center;
+    vertical-align: top;
+    padding: 0;
+    padding: 0 .75em;
+}
+
+.ui-organizationchart .ui-organizationchart-node-content {
+    padding: .5em .75em;
+    display: inline-block;
+    position: relative;
+}
+
+.ui-organizationchart .ui-organizationchart-node-content .ui-node-toggler {
+    position: absolute;
+    bottom: -9px;
+    margin-left: -8px;
+    z-index: 2;
+}
+
+.ui-organizationchart .ui-organizationchart-line-down {
+    margin: 0 auto;
+    height: 20px;
+    width: 1px;
+    float: none;
+}
+
+.ui-organizationchart .ui-organizationchart-line-right {
+    float: none;
+    border-radius: 0px;
+}
+
+.ui-organizationchart .ui-organizationchart-line-left {
+    float: none;
+    border-radius: 0;
+}
+
+.ui-organizationchart .ui-organizationchart-node-content.ui-organizationchart-selectable-node {
+    cursor: pointer;
+}
+
 .ui-overlaypanel {
     padding: 0;
     margin: 0;
@@ -4741,140 +4741,6 @@ button.ui-button::-moz-focus-inner {
     border-width: 0 .25em .25em;
     border-bottom-color: rgb(76, 76, 76);
 }
-.ui-treetable {
-    position: relative;
-}
-
-.ui-treetable table {
-	border-collapse:collapse;
-    width: 100%;
-    table-layout: fixed;
-}
-
-.ui-treetable .ui-treetable-header,
-.ui-treetable .ui-treetable-footer {
-    text-align:center;
-	padding: .5em .75em;
-}
-
-.ui-treetable .ui-treetable-header {
-    border-bottom: 0 none;
-}
-
-.ui-treetable .ui-treetable-footer {
-    border-top: 0 none;
-}
-
-.ui-treetable th, .ui-treetable tfoot td {
-    text-align: center;
-}
-
-.ui-treetable thead th,
-.ui-treetable tbody td,
-.ui-treetable tfoot td {
-    padding: .25em .5em;
-    overflow: hidden;
-    white-space: nowrap;
-    border-width: 1px;
-    border-style: solid;
-}
-
-.ui-treetable tbody td {
-    border-color: inherit;
-}
-
-.ui-treetable tbody td:first-child span {
-    vertical-align: middle;
-}
-
-.ui-treetable .ui-treetable-toggler {
-    vertical-align: middle;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.ui-treetable .ui-treetable-checkbox {
-    margin-right: .5em;
-}
-
-.ui-treetable .ui-treetable-checkbox .ui-chkbox-icon {
-    margin-left: 1px;
-}
-
-.ui-treetable .ui-treetable-row.ui-treetable-row-selectable {
-    cursor: pointer;
-}
-
-.ui-treetable .ui-treetable-row.ui-state-highlight {
-    border: 0 none;
-}
-      
-.ui-treetable tr.ui-state-hover {
-    border-color: inherit;
-    font-weight: inherit;
-}
-
-.ui-treetable .ui-treetable-indent {
-    width: 1em;
-    height: 1em;
-    float: left;
-}
-
-/* Resizable */
-.ui-treetable .ui-column-resizer {
-    display: block;
-    position: absolute !important;
-    top: 0;
-    right: 0;
-    margin: 0;
-    width: .5em;
-    height: 100%;
-    padding: 0px;
-    cursor:col-resize;
-    border: 1px solid transparent;
-}
-
-.ui-treetable .ui-column-resizer-helper {
-    width: 1px;
-    position: absolute;
-    z-index: 10;
-    display: none;
-}
-
-.ui-treetable-resizable {
-    padding-bottom: 1px;     /*fix for webkit overlow*/
-    overflow:auto;
-}
-
-.ui-treetable-resizable thead th,
-.ui-treetable-resizable tbody td,
-.ui-treetable-resizable tfoot td {
-    white-space: nowrap;
-}
-
-.ui-treetable-resizable th.ui-resizable-column {
-    background-clip: padding-box;
-    position: relative;
-}
-
-/* PrimeNG */
-.ui-treetable td.ui-treetable-child-table-container {
-    padding: 0;
-    border: 0 none;
-}
-
-.ui-treetable .ui-treetable-row {
-    display: table-row;
-    border-bottom: 0 transparent
-}
-
-.ui-treetable tbody .ui-treetable-row td {
-    border: 0 none;
-}
-
-.ui-treetable tbody .ui-treetable-row td input {
-    outline: 0 none;
-}
 .ui-tree {
     width: 18em;
 }
@@ -5056,4 +4922,139 @@ button.ui-button::-moz-focus-inner {
     z-index: 2;
     margin-top: -1em;
     margin-left: -1em;
+}
+
+.ui-treetable {
+    position: relative;
+}
+
+.ui-treetable table {
+	border-collapse:collapse;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.ui-treetable .ui-treetable-header,
+.ui-treetable .ui-treetable-footer {
+    text-align:center;
+	padding: .5em .75em;
+}
+
+.ui-treetable .ui-treetable-header {
+    border-bottom: 0 none;
+}
+
+.ui-treetable .ui-treetable-footer {
+    border-top: 0 none;
+}
+
+.ui-treetable th, .ui-treetable tfoot td {
+    text-align: center;
+}
+
+.ui-treetable thead th,
+.ui-treetable tbody td,
+.ui-treetable tfoot td {
+    padding: .25em .5em;
+    overflow: hidden;
+    white-space: nowrap;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.ui-treetable tbody td {
+    border-color: inherit;
+}
+
+.ui-treetable tbody td:first-child span {
+    vertical-align: middle;
+}
+
+.ui-treetable .ui-treetable-toggler {
+    vertical-align: middle;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.ui-treetable .ui-treetable-checkbox {
+    margin-right: .5em;
+}
+
+.ui-treetable .ui-treetable-checkbox .ui-chkbox-icon {
+    margin-left: 1px;
+}
+
+.ui-treetable .ui-treetable-row.ui-treetable-row-selectable {
+    cursor: pointer;
+}
+
+.ui-treetable .ui-treetable-row.ui-state-highlight {
+    border: 0 none;
+}
+      
+.ui-treetable tr.ui-state-hover {
+    border-color: inherit;
+    font-weight: inherit;
+}
+
+.ui-treetable .ui-treetable-indent {
+    width: 1em;
+    height: 1em;
+    float: left;
+}
+
+/* Resizable */
+.ui-treetable .ui-column-resizer {
+    display: block;
+    position: absolute !important;
+    top: 0;
+    right: 0;
+    margin: 0;
+    width: .5em;
+    height: 100%;
+    padding: 0px;
+    cursor:col-resize;
+    border: 1px solid transparent;
+}
+
+.ui-treetable .ui-column-resizer-helper {
+    width: 1px;
+    position: absolute;
+    z-index: 10;
+    display: none;
+}
+
+.ui-treetable-resizable {
+    padding-bottom: 1px;     /*fix for webkit overlow*/
+    overflow:auto;
+}
+
+.ui-treetable-resizable thead th,
+.ui-treetable-resizable tbody td,
+.ui-treetable-resizable tfoot td {
+    white-space: nowrap;
+}
+
+.ui-treetable-resizable th.ui-resizable-column {
+    background-clip: padding-box;
+    position: relative;
+}
+
+/* PrimeNG */
+.ui-treetable td.ui-treetable-child-table-container {
+    padding: 0;
+    border: 0 none;
+}
+
+.ui-treetable .ui-treetable-row {
+    display: table-row;
+    border-bottom: 0 transparent
+}
+
+.ui-treetable tbody .ui-treetable-row td {
+    border: 0 none;
+}
+
+.ui-treetable tbody .ui-treetable-row td input {
+    outline: 0 none;
 }

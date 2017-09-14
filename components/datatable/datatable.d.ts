@@ -43,7 +43,7 @@ export declare class ColumnFooters {
 export declare class TableBody {
     dt: DataTable;
     constructor(dt: DataTable);
-    pTooltipMsg: string;
+    toolTipMsg: string;
     toolTipPos: string;
     toolTipEve: string;
     toolTipPosStyle: string;
