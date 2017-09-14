@@ -398,6 +398,26 @@
 .ui-blockui-document {
     position: fixed;
 }
+/** Breadcrumb **/
+.ui-breadcrumb {
+    margin: 0;
+    padding: 0;
+    padding: .3em;
+}
+
+.ui-breadcrumb ul {
+    margin: 0;
+    padding: 0;
+}
+
+.ui-breadcrumb ul li {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.ui-breadcrumb ul li .ui-menuitem-link {
+    text-decoration: none;
+}
 /* Button */
 .ui-button { 
     display: inline-block; 
@@ -621,26 +641,6 @@ button.ui-button::-moz-focus-inner {
 .ui-splitbutton.ui-button-danger .ui-button:enabled:active {
     background-color: #c9302c;
     border-color: #d9534f;
-}
-/** Breadcrumb **/
-.ui-breadcrumb {
-    margin: 0;
-    padding: 0;
-    padding: .3em;
-}
-
-.ui-breadcrumb ul {
-    margin: 0;
-    padding: 0;
-}
-
-.ui-breadcrumb ul li {
-    display: inline-block;
-    vertical-align: middle;
-}
-
-.ui-breadcrumb ul li .ui-menuitem-link {
-    text-decoration: none;
 }
 .ui-calendar {
     position: relative;
