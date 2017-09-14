@@ -1,4 +1,16 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
@@ -61,23 +73,34 @@ var UITreeRow = (function () {
     };
     return UITreeRow;
 }());
-UITreeRow.decorators = [
-    { type: core_1.Component, args: [{
-                selector: '[pTreeRow]',
-                template: "\n        <div class=\"ui-treetable-row\" [ngClass]=\"{'ui-state-highlight':isSelected(),'ui-treetable-row-selectable':treeTable.selectionMode && node.selectable !== false}\">\n            <td *ngFor=\"let col of treeTable.columns; let i=index\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" (click)=\"onRowClick($event)\" (dblclick)=\"rowDblClick($event)\" (touchend)=\"onRowTouchEnd()\" (contextmenu)=\"onRowRightClick($event)\">\n                <a href=\"#\" *ngIf=\"i == treeTable.toggleColumnIndex\" class=\"ui-treetable-toggler fa fa-fw ui-clickable\" [ngClass]=\"node.expanded ? treeTable.expandedIcon : treeTable.collapsedIcon\"\n                    [ngStyle]=\"{'margin-left':level*16 + 'px','visibility': isLeaf() ? 'hidden' : 'visible'}\"\n                    (click)=\"toggle($event)\"\n                    [title]=\"node.expanded ? labelCollapse : labelExpand\">\n                </a>\n                <div class=\"ui-chkbox ui-treetable-checkbox\" *ngIf=\"treeTable.selectionMode == 'checkbox' && i==0\"><div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\">\n                    <span class=\"ui-chkbox-icon ui-clickable fa\" \n                        [ngClass]=\"{'fa-check':isSelected(),'fa-minus':node.partialSelected}\"></span></div></div\n                ><span *ngIf=\"!col.template\">{{resolveFieldData(node.data,col.field)}}</span>\n                <p-columnBodyTemplateLoader [column]=\"col\" [rowData]=\"node\" *ngIf=\"col.template\"></p-columnBodyTemplateLoader>\n            </td>\n        </div>\n        <div *ngIf=\"node.children && node.expanded\" class=\"ui-treetable-row\" style=\"display:table-row\">\n            <td [attr.colspan]=\"treeTable.columns.length\" class=\"ui-treetable-child-table-container\">\n                <table [class]=\"treeTable.tableStyleClass\" [ngStyle]=\"treeTable.tableStyle\">\n                    <tbody pTreeRow *ngFor=\"let childNode of node.children\" [node]=\"childNode\" [level]=\"level+1\" [labelExpand]=\"labelExpand\" [labelCollapse]=\"labelCollapse\" [parentNode]=\"node\"></tbody>\n                </table>\n            </td>\n        </div>\n    "
-            },] },
-];
-/** @nocollapse */
-UITreeRow.ctorParameters = function () { return [
-    { type: TreeTable, decorators: [{ type: core_1.Inject, args: [core_1.forwardRef(function () { return TreeTable; }),] },] },
-]; };
-UITreeRow.propDecorators = {
-    'node': [{ type: core_1.Input },],
-    'parentNode': [{ type: core_1.Input },],
-    'level': [{ type: core_1.Input },],
-    'labelExpand': [{ type: core_1.Input },],
-    'labelCollapse': [{ type: core_1.Input },],
-};
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Object)
+], UITreeRow.prototype, "node", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Object)
+], UITreeRow.prototype, "parentNode", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Number)
+], UITreeRow.prototype, "level", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", String)
+], UITreeRow.prototype, "labelExpand", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", String)
+], UITreeRow.prototype, "labelCollapse", void 0);
+UITreeRow = __decorate([
+    core_1.Component({
+        selector: '[pTreeRow]',
+        template: "\n        <div class=\"ui-treetable-row\" [ngClass]=\"{'ui-state-highlight':isSelected(),'ui-treetable-row-selectable':treeTable.selectionMode && node.selectable !== false}\">\n            <td *ngFor=\"let col of treeTable.columns; let i=index\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" (click)=\"onRowClick($event)\" (dblclick)=\"rowDblClick($event)\" (touchend)=\"onRowTouchEnd()\" (contextmenu)=\"onRowRightClick($event)\">\n                <a href=\"#\" *ngIf=\"i == treeTable.toggleColumnIndex\" class=\"ui-treetable-toggler fa fa-fw ui-clickable\" [ngClass]=\"node.expanded ? treeTable.expandedIcon : treeTable.collapsedIcon\"\n                    [ngStyle]=\"{'margin-left':level*16 + 'px','visibility': isLeaf() ? 'hidden' : 'visible'}\"\n                    (click)=\"toggle($event)\"\n                    [title]=\"node.expanded ? labelCollapse : labelExpand\">\n                </a>\n                <div class=\"ui-chkbox ui-treetable-checkbox\" *ngIf=\"treeTable.selectionMode == 'checkbox' && i==0\"><div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\">\n                    <span class=\"ui-chkbox-icon ui-clickable fa\" \n                        [ngClass]=\"{'fa-check':isSelected(),'fa-minus':node.partialSelected}\"></span></div></div\n                ><span *ngIf=\"!col.template\">{{resolveFieldData(node.data,col.field)}}</span>\n                <p-columnBodyTemplateLoader [column]=\"col\" [rowData]=\"node\" *ngIf=\"col.template\"></p-columnBodyTemplateLoader>\n            </td>\n        </div>\n        <div *ngIf=\"node.children && node.expanded\" class=\"ui-treetable-row\" style=\"display:table-row\">\n            <td [attr.colspan]=\"treeTable.columns.length\" class=\"ui-treetable-child-table-container\">\n                <table [class]=\"treeTable.tableStyleClass\" [ngStyle]=\"treeTable.tableStyle\">\n                    <tbody pTreeRow *ngFor=\"let childNode of node.children\" [node]=\"childNode\" [level]=\"level+1\" [labelExpand]=\"labelExpand\" [labelCollapse]=\"labelCollapse\" [parentNode]=\"node\"></tbody>\n                </table>\n            </td>\n        </div>\n    "
+    }),
+    __param(0, core_1.Inject(core_1.forwardRef(function () { return TreeTable; }))),
+    __metadata("design:paramtypes", [TreeTable])
+], UITreeRow);
 exports.UITreeRow = UITreeRow;
 var TreeTable = (function () {
     function TreeTable(el, domHandler, changeDetector, renderer) {
@@ -306,61 +329,126 @@ var TreeTable = (function () {
     };
     return TreeTable;
 }());
-TreeTable.decorators = [
-    { type: core_1.Component, args: [{
-                selector: 'p-treeTable',
-                template: "\n        <div [ngClass]=\"'ui-treetable ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-treetable-header ui-widget-header\" *ngIf=\"header\">\n                <ng-content select=\"p-header\"></ng-content>\n            </div>\n            <div class=\"ui-treetable-tablewrapper\">\n                <table #tbl class=\"ui-widget-content\" [class]=\"tableStyleClass\" [ngStyle]=\"tableStyle\">\n                    <thead>\n                        <tr class=\"ui-state-default\">\n                            <th #headerCell *ngFor=\"let col of columns; let lastCol=last \"  [ngStyle]=\"col.style\" [class]=\"col.styleClass\" \n                                [ngClass]=\"'ui-state-default ui-unselectable-text'\">\n                                <span class=\"ui-column-title\" *ngIf=\"!col.headerTemplate\">{{col.header}}</span>\n                                <span class=\"ui-column-title\" *ngIf=\"col.headerTemplate\">\n                                    <p-columnHeaderTemplateLoader [column]=\"col\"></p-columnHeaderTemplateLoader>\n                                </span>\n                            </th>\n                        </tr>\n                    </thead>\n                    <tfoot *ngIf=\"hasFooter()\">\n                        <tr>\n                            <td *ngFor=\"let col of columns\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" [ngClass]=\"{'ui-state-default':true}\">\n                                <span class=\"ui-column-footer\" *ngIf=\"!col.footerTemplate\">{{col.footer}}</span>\n                                <span class=\"ui-column-footer\" *ngIf=\"col.footerTemplate\">\n                                    <p-columnFooterTemplateLoader [column]=\"col\"></p-columnFooterTemplateLoader>\n                                </span>\n                            </td>\n                        </tr>\n                    </tfoot>\n                    <tbody pTreeRow *ngFor=\"let node of value\" class=\"ui-treetable-data ui-widget-content\" [node]=\"node\" [level]=\"0\" [labelExpand]=\"labelExpand\" [labelCollapse]=\"labelCollapse\"></tbody>\n                </table>\n            </div>\n            \n            <div class=\"ui-treetable-footer ui-widget-header\" *ngIf=\"footer\">\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n        </div>\n    ",
-                providers: [domhandler_1.DomHandler]
-            },] },
-];
-/** @nocollapse */
-TreeTable.ctorParameters = function () { return [
-    { type: core_1.ElementRef, },
-    { type: domhandler_1.DomHandler, },
-    { type: core_1.ChangeDetectorRef, },
-    { type: core_1.Renderer2, },
-]; };
-TreeTable.propDecorators = {
-    'value': [{ type: core_1.Input },],
-    'selectionMode': [{ type: core_1.Input },],
-    'selection': [{ type: core_1.Input },],
-    'style': [{ type: core_1.Input },],
-    'styleClass': [{ type: core_1.Input },],
-    'labelExpand': [{ type: core_1.Input },],
-    'labelCollapse': [{ type: core_1.Input },],
-    'metaKeySelection': [{ type: core_1.Input },],
-    'contextMenu': [{ type: core_1.Input },],
-    'toggleColumnIndex': [{ type: core_1.Input },],
-    'tableStyle': [{ type: core_1.Input },],
-    'tableStyleClass': [{ type: core_1.Input },],
-    'collapsedIcon': [{ type: core_1.Input },],
-    'expandedIcon': [{ type: core_1.Input },],
-    'onRowDblclick': [{ type: core_1.Output },],
-    'selectionChange': [{ type: core_1.Output },],
-    'onNodeSelect': [{ type: core_1.Output },],
-    'onNodeUnselect': [{ type: core_1.Output },],
-    'onNodeExpand': [{ type: core_1.Output },],
-    'onNodeCollapse': [{ type: core_1.Output },],
-    'onContextMenuSelect': [{ type: core_1.Output },],
-    'header': [{ type: core_1.ContentChild, args: [shared_1.Header,] },],
-    'footer': [{ type: core_1.ContentChild, args: [shared_1.Footer,] },],
-    'cols': [{ type: core_1.ContentChildren, args: [shared_1.Column,] },],
-    'tableViewChild': [{ type: core_1.ViewChild, args: ['tbl',] },],
-};
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Array)
+], TreeTable.prototype, "value", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", String)
+], TreeTable.prototype, "selectionMode", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Object)
+], TreeTable.prototype, "selection", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Object)
+], TreeTable.prototype, "style", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", String)
+], TreeTable.prototype, "styleClass", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", String)
+], TreeTable.prototype, "labelExpand", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", String)
+], TreeTable.prototype, "labelCollapse", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Boolean)
+], TreeTable.prototype, "metaKeySelection", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Object)
+], TreeTable.prototype, "contextMenu", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Number)
+], TreeTable.prototype, "toggleColumnIndex", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Object)
+], TreeTable.prototype, "tableStyle", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", String)
+], TreeTable.prototype, "tableStyleClass", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", String)
+], TreeTable.prototype, "collapsedIcon", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", String)
+], TreeTable.prototype, "expandedIcon", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], TreeTable.prototype, "onRowDblclick", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], TreeTable.prototype, "selectionChange", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], TreeTable.prototype, "onNodeSelect", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], TreeTable.prototype, "onNodeUnselect", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], TreeTable.prototype, "onNodeExpand", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], TreeTable.prototype, "onNodeCollapse", void 0);
+__decorate([
+    core_1.Output(),
+    __metadata("design:type", core_1.EventEmitter)
+], TreeTable.prototype, "onContextMenuSelect", void 0);
+__decorate([
+    core_1.ContentChild(shared_1.Header),
+    __metadata("design:type", shared_1.Header)
+], TreeTable.prototype, "header", void 0);
+__decorate([
+    core_1.ContentChild(shared_1.Footer),
+    __metadata("design:type", shared_1.Footer)
+], TreeTable.prototype, "footer", void 0);
+__decorate([
+    core_1.ContentChildren(shared_1.Column),
+    __metadata("design:type", core_1.QueryList)
+], TreeTable.prototype, "cols", void 0);
+__decorate([
+    core_1.ViewChild('tbl'),
+    __metadata("design:type", core_1.ElementRef)
+], TreeTable.prototype, "tableViewChild", void 0);
+TreeTable = __decorate([
+    core_1.Component({
+        selector: 'p-treeTable',
+        template: "\n        <div [ngClass]=\"'ui-treetable ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-treetable-header ui-widget-header\" *ngIf=\"header\">\n                <ng-content select=\"p-header\"></ng-content>\n            </div>\n            <div class=\"ui-treetable-tablewrapper\">\n                <table #tbl class=\"ui-widget-content\" [class]=\"tableStyleClass\" [ngStyle]=\"tableStyle\">\n                    <thead>\n                        <tr class=\"ui-state-default\">\n                            <th #headerCell *ngFor=\"let col of columns; let lastCol=last \"  [ngStyle]=\"col.style\" [class]=\"col.styleClass\" \n                                [ngClass]=\"'ui-state-default ui-unselectable-text'\">\n                                <span class=\"ui-column-title\" *ngIf=\"!col.headerTemplate\">{{col.header}}</span>\n                                <span class=\"ui-column-title\" *ngIf=\"col.headerTemplate\">\n                                    <p-columnHeaderTemplateLoader [column]=\"col\"></p-columnHeaderTemplateLoader>\n                                </span>\n                            </th>\n                        </tr>\n                    </thead>\n                    <tfoot *ngIf=\"hasFooter()\">\n                        <tr>\n                            <td *ngFor=\"let col of columns\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" [ngClass]=\"{'ui-state-default':true}\">\n                                <span class=\"ui-column-footer\" *ngIf=\"!col.footerTemplate\">{{col.footer}}</span>\n                                <span class=\"ui-column-footer\" *ngIf=\"col.footerTemplate\">\n                                    <p-columnFooterTemplateLoader [column]=\"col\"></p-columnFooterTemplateLoader>\n                                </span>\n                            </td>\n                        </tr>\n                    </tfoot>\n                    <tbody pTreeRow *ngFor=\"let node of value\" class=\"ui-treetable-data ui-widget-content\" [node]=\"node\" [level]=\"0\" [labelExpand]=\"labelExpand\" [labelCollapse]=\"labelCollapse\"></tbody>\n                </table>\n            </div>\n            \n            <div class=\"ui-treetable-footer ui-widget-header\" *ngIf=\"footer\">\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n        </div>\n    ",
+        providers: [domhandler_1.DomHandler]
+    }),
+    __metadata("design:paramtypes", [core_1.ElementRef, domhandler_1.DomHandler, core_1.ChangeDetectorRef, core_1.Renderer2])
+], TreeTable);
 exports.TreeTable = TreeTable;
 var TreeTableModule = (function () {
     function TreeTableModule() {
     }
     return TreeTableModule;
 }());
-TreeTableModule.decorators = [
-    { type: core_1.NgModule, args: [{
-                imports: [common_1.CommonModule, shared_2.SharedModule],
-                exports: [TreeTable, shared_2.SharedModule],
-                declarations: [TreeTable, UITreeRow]
-            },] },
-];
-/** @nocollapse */
-TreeTableModule.ctorParameters = function () { return []; };
+TreeTableModule = __decorate([
+    core_1.NgModule({
+        imports: [common_1.CommonModule, shared_2.SharedModule],
+        exports: [TreeTable, shared_2.SharedModule],
+        declarations: [TreeTable, UITreeRow]
+    })
+], TreeTableModule);
 exports.TreeTableModule = TreeTableModule;
 //# sourceMappingURL=treetable.js.map

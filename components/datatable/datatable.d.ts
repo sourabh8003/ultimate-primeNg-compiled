@@ -43,14 +43,14 @@ export declare class ColumnFooters {
 export declare class TableBody {
     dt: DataTable;
     constructor(dt: DataTable);
-    toolTipMsg: string;
+    pTooltipMsg: string;
     toolTipPos: string;
     toolTipEve: string;
     toolTipPosStyle: string;
-    toolTipDis: string;
+    toolTipDis: boolean;
     toolTipAppendTo: string;
     toolTipStyleClasess: string;
-    toolTipEsc: string;
+    toolTipEsc: boolean;
     columns: Column[];
     data: any[];
     visibleColumns(): Column[];
