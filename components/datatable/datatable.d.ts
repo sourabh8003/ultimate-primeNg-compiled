@@ -34,6 +34,14 @@ export declare class ColumnHeaders {
     dt: DataTable;
     constructor(dt: DataTable);
     columns: Column[];
+    toolTipMsg: string;
+    toolTipPos: string;
+    toolTipEve: string;
+    toolTipPosStyle: string;
+    toolTipDis: boolean;
+    toolTipAppendTo: string;
+    toolTipStyleClasess: string;
+    toolTipEsc: boolean;
 }
 export declare class ColumnFooters {
     dt: DataTable;
@@ -43,14 +51,6 @@ export declare class ColumnFooters {
 export declare class TableBody {
     dt: DataTable;
     constructor(dt: DataTable);
-    toolTipMsg: string;
-    toolTipPos: string;
-    toolTipEve: string;
-    toolTipPosStyle: string;
-    toolTipDis: boolean;
-    toolTipAppendTo: string;
-    toolTipStyleClasess: string;
-    toolTipEsc: boolean;
     columns: Column[];
     data: any[];
     visibleColumns(): Column[];
