@@ -11,12 +11,11 @@ var i1 = require("./chips");
 var i2 = require("@angular/common");
 var i3 = require("../inputtext/inputtext");
 var i4 = require("../common/shared");
-var i5 = require("../tooltip/tooltip");
+var i5 = require("@angular/forms");
 var i6 = require("../dom/domhandler");
-var i7 = require("@angular/forms");
 exports.ChipsModuleNgFactory = i0.ɵcmf(i1.ChipsModule, [], function (_l) {
     return i0.ɵmod([i0.ɵmpd(512, i0.ComponentFactoryResolver, i0.ɵCodegenComponentFactoryResolver, [[8, []], [3, i0.ComponentFactoryResolver], i0.NgModuleRef]), i0.ɵmpd(4608, i2.NgLocalization, i2.NgLocaleLocalization, [i0.LOCALE_ID]), i0.ɵmpd(512, i2.CommonModule, i2.CommonModule, []), i0.ɵmpd(512, i3.InputTextModule, i3.InputTextModule, []), i0.ɵmpd(512, i4.SharedModule, i4.SharedModule, []),
-        i0.ɵmpd(512, i5.TooltipModule, i5.TooltipModule, []), i0.ɵmpd(512, i1.ChipsModule, i1.ChipsModule, [])]);
+        i0.ɵmpd(512, i1.ChipsModule, i1.ChipsModule, [])]);
 });
 var styles_Chips = [];
 exports.RenderType_Chips = i0.ɵcrt({ encapsulation: 2, styles: styles_Chips,
@@ -74,8 +73,8 @@ function View_Chips_1(_l) {
     }, null);
 }
 function View_Chips_0(_l) {
-    return i0.ɵvid(0, [(_l()(), i0.ɵted(null, ['\n        '])), (_l()(), i0.ɵeld(0, null, null, 19, 'div', [], null, null, null, null, null)), i0.ɵdid(278528, null, 0, i2.NgClass, [i0.IterableDiffers, i0.KeyValueDiffers, i0.ElementRef, i0.Renderer], { klass: [0,
-                'klass'], ngClass: [1, 'ngClass'] }, null), i0.ɵdid(278528, null, 0, i2.NgStyle, [i0.KeyValueDiffers, i0.ElementRef, i0.Renderer], { ngStyle: [0, 'ngStyle'] }, null), (_l()(), i0.ɵted(null, ['\n            '])), (_l()(), i0.ɵeld(0, null, null, 14, 'ul', [], null, [[null,
+    return i0.ɵvid(0, [(_l()(), i0.ɵted(null, ['\n        '])), (_l()(), i0.ɵeld(0, null, null, 17, 'div', [], null, null, null, null, null)), i0.ɵdid(278528, null, 0, i2.NgClass, [i0.IterableDiffers, i0.KeyValueDiffers, i0.ElementRef, i0.Renderer], { klass: [0,
+                'klass'], ngClass: [1, 'ngClass'] }, null), i0.ɵdid(278528, null, 0, i2.NgStyle, [i0.KeyValueDiffers, i0.ElementRef, i0.Renderer], { ngStyle: [0, 'ngStyle'] }, null), (_l()(), i0.ɵted(null, ['\n            '])), (_l()(), i0.ɵeld(0, null, null, 12, 'ul', [], null, [[null,
                 'click']], function (_v, en, $event) {
             var ad = true;
             if (('click' === en)) {
@@ -89,47 +88,27 @@ function View_Chips_0(_l) {
             'ui-state-disabled': 2 }), (_l()(), i0.ɵted(null, ['\n                '])),
         (_l()(), i0.ɵand(16777216, null, null, 1, null, View_Chips_1)),
         i0.ɵdid(802816, null, 0, i2.NgForOf, [i0.ViewContainerRef, i0.TemplateRef,
-            i0.IterableDiffers], { ngForOf: [0, 'ngForOf'] }, null), (_l()(), i0.ɵted(null, ['\n                '])), (_l()(), i0.ɵeld(0, null, null, 6, 'li', [['class', 'ui-chips-input-token']], null, null, null, null, null)), (_l()(), i0.ɵted(null, ['\n                    '])),
-        (_l()(), i0.ɵeld(0, [['inputtext', 1]], null, 3, 'input', [['type', 'text']], [[1, 'id', 0], [1, 'placeholder', 0], [1, 'tabindex', 0], [8, 'disabled', 0], [8, 'disabled',
+            i0.IterableDiffers], { ngForOf: [0, 'ngForOf'] }, null), (_l()(), i0.ɵted(null, ['\n                '])), (_l()(), i0.ɵeld(0, null, null, 4, 'li', [['class', 'ui-chips-input-token']], null, null, null, null, null)), (_l()(), i0.ɵted(null, ['\n                    '])),
+        (_l()(), i0.ɵeld(0, [['inputtext', 1]], null, 1, 'input', [['type', 'text']], [[1, 'id', 0], [1, 'placeholder', 0], [1, 'tabindex', 0], [8, 'disabled', 0], [8, 'disabled',
                 0], [8, 'className', 0]], [[null, 'keydown'], [null, 'focus'],
-            [null, 'blur'], [null, 'mouseenter'], [null, 'mouseleave']], function (_v, en, $event) {
+            [null, 'blur']], function (_v, en, $event) {
             var ad = true;
             var _co = _v.component;
-            if (('mouseenter' === en)) {
-                var pd_0 = (i0.ɵnov(_v, 17).onMouseEnter($event) !== false);
+            if (('keydown' === en)) {
+                var pd_0 = (_co.onKeydown($event, i0.ɵnov(_v, 14)) !== false);
                 ad = (pd_0 && ad);
             }
-            if (('mouseleave' === en)) {
-                var pd_1 = (i0.ɵnov(_v, 17).onMouseLeave($event) !== false);
+            if (('focus' === en)) {
+                var pd_1 = (_co.onFocus() !== false);
                 ad = (pd_1 && ad);
             }
-            if (('focus' === en)) {
-                var pd_2 = (i0.ɵnov(_v, 17).onFocus($event) !== false);
+            if (('blur' === en)) {
+                var pd_2 = (_co.onBlur() !== false);
                 ad = (pd_2 && ad);
-            }
-            if (('blur' === en)) {
-                var pd_3 = (i0.ɵnov(_v, 17).onBlur($event) !== false);
-                ad = (pd_3 && ad);
-            }
-            if (('keydown' === en)) {
-                var pd_4 = (_co.onKeydown($event, i0.ɵnov(_v, 14)) !== false);
-                ad = (pd_4 && ad);
-            }
-            if (('focus' === en)) {
-                var pd_5 = (_co.onFocus() !== false);
-                ad = (pd_5 && ad);
-            }
-            if (('blur' === en)) {
-                var pd_6 = (_co.onBlur() !== false);
-                ad = (pd_6 && ad);
             }
             return ad;
         }, null, null)), i0.ɵdid(278528, null, 0, i2.NgStyle, [i0.KeyValueDiffers, i0.ElementRef, i0.Renderer], { ngStyle: [0, 'ngStyle'] }, null),
-        i0.ɵprd(512, null, i6.DomHandler, i6.DomHandler, []), i0.ɵdid(147456, null, 0, i5.Tooltip, [i0.ElementRef, i6.DomHandler, i0.Renderer2], { tooltipPosition: [0,
-                'tooltipPosition'], tooltipEvent: [1, 'tooltipEvent'], positionStyle: [2,
-                'positionStyle'], tooltipStyleClass: [3, 'tooltipStyleClass'], disabled: [4,
-                'disabled'], escape: [5, 'escape'], text: [6, 'text'] }, null), (_l()(),
-            i0.ɵted(null, ['\n                '])), (_l()(), i0.ɵted(null, ['\n            '])), (_l()(), i0.ɵted(null, ['\n        '])), (_l()(),
+        (_l()(), i0.ɵted(null, ['\n                '])), (_l()(), i0.ɵted(null, ['\n            '])), (_l()(), i0.ɵted(null, ['\n        '])), (_l()(),
             i0.ɵted(null, ['\n    ']))], function (_ck, _v) {
         var _co = _v.component;
         var currVal_0 = _co.styleClass;
@@ -143,14 +122,6 @@ function View_Chips_0(_l) {
         _ck(_v, 10, 0, currVal_4);
         var currVal_11 = _co.inputStyle;
         _ck(_v, 15, 0, currVal_11);
-        var currVal_12 = _co.toolTipPosition;
-        var currVal_13 = _co.toolTipEvent;
-        var currVal_14 = _co.positionStyles;
-        var currVal_15 = _co.toolTipStyleClasses;
-        var currVal_16 = _co.toolTipDisabled;
-        var currVal_17 = _co.toolTipEscape;
-        var currVal_18 = _co.toolTipMessage;
-        _ck(_v, 17, 0, currVal_12, currVal_13, currVal_14, currVal_15, currVal_16, currVal_17, currVal_18);
     }, function (_ck, _v) {
         var _co = _v.component;
         var currVal_5 = _co.inputId;
@@ -164,18 +135,15 @@ function View_Chips_0(_l) {
 }
 exports.View_Chips_0 = View_Chips_0;
 function View_Chips_Host_0(_l) {
-    return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, null, null, 4, 'p-chips', [], null, null, null, View_Chips_0, exports.RenderType_Chips)), i0.ɵprd(5120, null, i7.NG_VALUE_ACCESSOR, function (p0_0) {
+    return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, null, null, 4, 'p-chips', [], null, null, null, View_Chips_0, exports.RenderType_Chips)), i0.ɵprd(5120, null, i5.NG_VALUE_ACCESSOR, function (p0_0) {
             return [p0_0];
         }, [i1.Chips]), i0.ɵprd(512, null, i6.DomHandler, i6.DomHandler, []),
         i0.ɵdid(1097728, null, 1, i1.Chips, [i0.ElementRef, i6.DomHandler], null, null), i0.ɵqud(603979776, 1, { templates: 1 })], null, null);
 }
 exports.View_Chips_Host_0 = View_Chips_Host_0;
-exports.ChipsNgFactory = i0.ɵccf('p-chips', i1.Chips, View_Chips_Host_0, { toolTipMessage: 'toolTipMessage', toolTipPosition: 'toolTipPosition',
-    toolTipEvent: 'toolTipEvent', positionStyles: 'positionStyles', toolTipDisabled: 'toolTipDisabled',
-    toolTipAppendTo: 'toolTipAppendTo', toolTipStyleClasses: 'toolTipStyleClasses',
-    toolTipEscape: 'toolTipEscape', style: 'style', styleClass: 'styleClass', disabled: 'disabled',
-    field: 'field', placeholder: 'placeholder', max: 'max', tabindex: 'tabindex', inputId: 'inputId',
+exports.ChipsNgFactory = i0.ɵccf('p-chips', i1.Chips, View_Chips_Host_0, { style: 'style', styleClass: 'styleClass', disabled: 'disabled', field: 'field',
+    placeholder: 'placeholder', max: 'max', tabindex: 'tabindex', inputId: 'inputId',
     allowDuplicate: 'allowDuplicate', inputStyle: 'inputStyle', inputStyleClass: 'inputStyleClass',
     addOnTab: 'addOnTab' }, { onAdd: 'onAdd', onRemove: 'onRemove' }, []);
-//# sourceMappingURL=data:application/json;base64,eyJmaWxlIjoiL1VzZXJzL3NvdXJhYmhzaW5naC9Eb2N1bWVudHMvTXlQcm9qZWN0cy9PcGVuIFNvdXJjZS91bHRpbWF0ZS1wcmltZU5nL3NyYy9hcHAvY29tcG9uZW50cy9jaGlwcy9jaGlwcy5uZ2ZhY3RvcnkudHMiLCJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJuZzovLy9Vc2Vycy9zb3VyYWJoc2luZ2gvRG9jdW1lbnRzL015UHJvamVjdHMvT3BlbiBTb3VyY2UvdWx0aW1hdGUtcHJpbWVOZy9zcmMvYXBwL2NvbXBvbmVudHMvY2hpcHMvY2hpcHMudHMiLCJuZzovLy9Vc2Vycy9zb3VyYWJoc2luZ2gvRG9jdW1lbnRzL015UHJvamVjdHMvT3BlbiBTb3VyY2UvdWx0aW1hdGUtcHJpbWVOZy9zcmMvYXBwL2NvbXBvbmVudHMvY2hpcHMvY2hpcHMudHMuQ2hpcHMuaHRtbCIsIm5nOi8vL1VzZXJzL3NvdXJhYmhzaW5naC9Eb2N1bWVudHMvTXlQcm9qZWN0cy9PcGVuIFNvdXJjZS91bHRpbWF0ZS1wcmltZU5nL3NyYy9hcHAvY29tcG9uZW50cy9jaGlwcy9jaGlwcy50cy5DaGlwc19Ib3N0Lmh0bWwiXSwic291cmNlc0NvbnRlbnQiOlsiICIsIlxuICAgICAgICA8ZGl2IFtuZ0NsYXNzXT1cIid1aS1jaGlwcyB1aS13aWRnZXQnXCIgW25nU3R5bGVdPVwic3R5bGVcIiBbY2xhc3NdPVwic3R5bGVDbGFzc1wiPlxuICAgICAgICAgICAgPHVsIFtuZ0NsYXNzXT1cInsndWktaW5wdXR0ZXh0IHVpLXN0YXRlLWRlZmF1bHQgdWktY29ybmVyLWFsbCc6dHJ1ZSwndWktc3RhdGUtZm9jdXMnOmZvY3VzLCd1aS1zdGF0ZS1kaXNhYmxlZCc6ZGlzYWJsZWR9XCIgKGNsaWNrKT1cImlucHV0dGV4dC5mb2N1cygpXCI+XG4gICAgICAgICAgICAgICAgPGxpICN0b2tlbiAqbmdGb3I9XCJsZXQgaXRlbSBvZiB2YWx1ZTsgbGV0IGkgPSBpbmRleDtcIiBjbGFzcz1cInVpLWNoaXBzLXRva2VuIHVpLXN0YXRlLWhpZ2hsaWdodCB1aS1jb3JuZXItYWxsXCI+XG4gICAgICAgICAgICAgICAgICAgIDxzcGFuICpuZ0lmPVwiIWRpc2FibGVkXCIgY2xhc3M9XCJ1aS1jaGlwcy10b2tlbi1pY29uIGZhIGZhLWZ3IGZhLWNsb3NlXCIgKGNsaWNrKT1cInJlbW92ZUl0ZW0oJGV2ZW50LGkpXCI+PC9zcGFuPlxuICAgICAgICAgICAgICAgICAgICA8c3BhbiAqbmdJZj1cIiFpdGVtVGVtcGxhdGVcIiBjbGFzcz1cInVpLWNoaXBzLXRva2VuLWxhYmVsXCI+e3tmaWVsZCA/IHJlc29sdmVGaWVsZERhdGEoaXRlbSxmaWVsZCkgOiBpdGVtfX08L3NwYW4+XG4gICAgICAgICAgICAgICAgICAgIDxuZy10ZW1wbGF0ZSAqbmdJZj1cIml0ZW1UZW1wbGF0ZVwiIFtwVGVtcGxhdGVXcmFwcGVyXT1cIml0ZW1UZW1wbGF0ZVwiIFtpdGVtXT1cIml0ZW1cIj48L25nLXRlbXBsYXRlPlxuICAgICAgICAgICAgICAgIDwvbGk+XG4gICAgICAgICAgICAgICAgPGxpIGNsYXNzPVwidWktY2hpcHMtaW5wdXQtdG9rZW5cIj5cbiAgICAgICAgICAgICAgICAgICAgPGlucHV0ICNpbnB1dHRleHQgdHlwZT1cInRleHRcIiBbYXR0ci5pZF09XCJpbnB1dElkXCIgW2F0dHIucGxhY2Vob2xkZXJdPVwicGxhY2Vob2xkZXJcIiBbYXR0ci50YWJpbmRleF09XCJ0YWJpbmRleFwiIChrZXlkb3duKT1cIm9uS2V5ZG93bigkZXZlbnQsaW5wdXR0ZXh0KVwiIFxuICAgICAgICAgICAgICAgICAgICAgICAgKGZvY3VzKT1cIm9uRm9jdXMoKVwiIChibHVyKT1cIm9uQmx1cigpXCIgW2Rpc2FibGVkXT1cIm1heGVkT3V0fHxkaXNhYmxlZFwiIFtkaXNhYmxlZF09XCJkaXNhYmxlZFwiIFtuZ1N0eWxlXT1cImlucHV0U3R5bGVcIiBbY2xhc3NdPVwiaW5wdXRTdHlsZUNsYXNzXCJcbiAgICAgICAgICAgICAgICAgICAgICAgICAgIFtwVG9vbHRpcF09XCJ0b29sVGlwTWVzc2FnZVwiIFt0b29sdGlwUG9zaXRpb25dPVwidG9vbFRpcFBvc2l0aW9uXCIgW3Rvb2x0aXBFdmVudF09XCJ0b29sVGlwRXZlbnRcIiBbcG9zaXRpb25TdHlsZV09XCJwb3NpdGlvblN0eWxlc1wiIFt0b29sdGlwRGlzYWJsZWRdPVwidG9vbFRpcERpc2FibGVkXCIgW3Rvb2x0aXBTdHlsZUNsYXNzXT1cInRvb2xUaXBTdHlsZUNsYXNzZXNcIiBbZXNjYXBlXT1cInRvb2xUaXBFc2NhcGVcIj5cbiAgICAgICAgICAgICAgICA8L2xpPlxuICAgICAgICAgICAgPC91bD5cbiAgICAgICAgPC9kaXY+XG4gICAgIiwiPHAtY2hpcHM+PC9wLWNoaXBzPiJdLCJtYXBwaW5ncyI6IkFBQUE7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztvQkNJb0I7TUFBQTtNQUFBO1FBQUE7UUFBQTtRQUFzRTtVQUFBO1VBQUE7UUFBQTtRQUF0RTtNQUFBOzs7b0JBQ0E7TUFBQTtNQUFBLGdCQUF5RDs7O0lBQUE7UUFBQTtJQUFBOzs7Ozs7OztvQkFDekQ7TUFBQSxzQkFBQTtNQUFBOzs7SUFBb0U7SUFBbEM7SUFBbEMsV0FBb0UsVUFBbEMsU0FBbEM7Ozs7b0JBSEo7TUFBQTtNQUFBLDRDQUE4RztNQUMxRzthQUFBO1VBQUEsd0JBQTRHO01BQzVHO2FBQUE7VUFBQSx3QkFBK0c7TUFDL0c7YUFBQTtVQUFBLHdCQUFnRzs7O1FBRjFGO1FBQU4sV0FBTSxTQUFOO1FBQ007UUFBTixXQUFNLFNBQU47UUFDYTtRQUFiLFdBQWEsU0FBYjs7OztvQkFOcEIsK0NBQ1E7TUFBQTtNQUFBLG1EQUFBO01BQUE7VUFBQSxzREFBQTtNQUFBO01BQUEsZUFBNkUsbURBQ3pFO01BQUE7VUFBQTtRQUFBO1FBQXlIO1VBQUE7VUFBQTtRQUFBO1FBQXpIO01BQUEsdUNBQUE7a0RBQUE7YUFBSTtVQUFBLHdCQUFpSjtNQUNqSjthQUFBOzRCQUFBLHlDQUlLO1VBQUEseUJBQ0w7VUFBQTtVQUFBLDhCQUFpQztNQUM3QjtVQUFBO2NBQUE7Y0FBQTtVQUFBO1lBQUE7WUFBQTtZQUFBO2NBQUE7Y0FBQTtZQUFBO1lBQUE7Y0FBQTtjQUFBO1lBQUE7WUFBQTtjQUFBO2NBQUE7WUFBQTtZQUFBO2NBQUE7Y0FBQTtZQUFBO1lBQThHO2NBQUE7Y0FBQTtZQUFBO1lBQzFHO2NBQUE7Y0FBQTtZQUFBO1lBQW9CO2NBQUE7Y0FBQTtZQUFBO1lBRHhCO1VBQUEsdUNBQUE7VUFBQTthQUFBLHFFQUFBO1VBQUE7Y0FBQTtjQUFBO2NBQUEsZ0VBRTZPO2lCQUFBLHdDQUM1TztVQUFBLHFCQUNKLCtDQUNIO2lCQUFBOztJQWJrRDtJQUFuRDtJQUFMLFdBQXdELFVBQW5ELFNBQUw7SUFBc0M7SUFBdEMsV0FBc0MsU0FBdEM7SUFDUTtJQUFKLFdBQUksU0FBSjtJQUNlO0lBQVgsWUFBVyxTQUFYO0lBT29HO0lBRGhHLFlBQ2dHLFVBRGhHO0lBRW1DO0lBQW9DO0lBQThCO0lBQXFFO0lBQXBDO0lBQThFO0lBQTdNO0lBRlAsWUFFbUMsV0FBb0MsV0FBOEIsV0FBcUUsV0FBcEMsV0FBOEU7UUFBN00sVUFGUDs7O0lBQThCO0lBQW9CO0lBQWlDO0lBQ3pDO0lBQWdDO0lBQTZDO0lBRHZILFlBQThCLFVBQW9CLFVBQWlDLFVBQ3pDLFVBQWdDLFVBQTZDLFVBRHZIOzs7O29CQ1RwQjtNQUFBO01BQUE7UUFBQTtNQUFBO2FBQUE7VUFBQTs7Ozs7Ozs7OyJ9
+//# sourceMappingURL=data:application/json;base64,eyJmaWxlIjoiL1VzZXJzL3NvdXJhYmhzaW5naC9Eb2N1bWVudHMvTXlQcm9qZWN0cy9PcGVuIFNvdXJjZS91bHRpbWF0ZS1wcmltZU5nL3NyYy9hcHAvY29tcG9uZW50cy9jaGlwcy9jaGlwcy5uZ2ZhY3RvcnkudHMiLCJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJuZzovLy9Vc2Vycy9zb3VyYWJoc2luZ2gvRG9jdW1lbnRzL015UHJvamVjdHMvT3BlbiBTb3VyY2UvdWx0aW1hdGUtcHJpbWVOZy9zcmMvYXBwL2NvbXBvbmVudHMvY2hpcHMvY2hpcHMudHMiLCJuZzovLy9Vc2Vycy9zb3VyYWJoc2luZ2gvRG9jdW1lbnRzL015UHJvamVjdHMvT3BlbiBTb3VyY2UvdWx0aW1hdGUtcHJpbWVOZy9zcmMvYXBwL2NvbXBvbmVudHMvY2hpcHMvY2hpcHMudHMuQ2hpcHMuaHRtbCIsIm5nOi8vL1VzZXJzL3NvdXJhYmhzaW5naC9Eb2N1bWVudHMvTXlQcm9qZWN0cy9PcGVuIFNvdXJjZS91bHRpbWF0ZS1wcmltZU5nL3NyYy9hcHAvY29tcG9uZW50cy9jaGlwcy9jaGlwcy50cy5DaGlwc19Ib3N0Lmh0bWwiXSwic291cmNlc0NvbnRlbnQiOlsiICIsIlxuICAgICAgICA8ZGl2IFtuZ0NsYXNzXT1cIid1aS1jaGlwcyB1aS13aWRnZXQnXCIgW25nU3R5bGVdPVwic3R5bGVcIiBbY2xhc3NdPVwic3R5bGVDbGFzc1wiPlxuICAgICAgICAgICAgPHVsIFtuZ0NsYXNzXT1cInsndWktaW5wdXR0ZXh0IHVpLXN0YXRlLWRlZmF1bHQgdWktY29ybmVyLWFsbCc6dHJ1ZSwndWktc3RhdGUtZm9jdXMnOmZvY3VzLCd1aS1zdGF0ZS1kaXNhYmxlZCc6ZGlzYWJsZWR9XCIgKGNsaWNrKT1cImlucHV0dGV4dC5mb2N1cygpXCI+XG4gICAgICAgICAgICAgICAgPGxpICN0b2tlbiAqbmdGb3I9XCJsZXQgaXRlbSBvZiB2YWx1ZTsgbGV0IGkgPSBpbmRleDtcIiBjbGFzcz1cInVpLWNoaXBzLXRva2VuIHVpLXN0YXRlLWhpZ2hsaWdodCB1aS1jb3JuZXItYWxsXCI+XG4gICAgICAgICAgICAgICAgICAgIDxzcGFuICpuZ0lmPVwiIWRpc2FibGVkXCIgY2xhc3M9XCJ1aS1jaGlwcy10b2tlbi1pY29uIGZhIGZhLWZ3IGZhLWNsb3NlXCIgKGNsaWNrKT1cInJlbW92ZUl0ZW0oJGV2ZW50LGkpXCI+PC9zcGFuPlxuICAgICAgICAgICAgICAgICAgICA8c3BhbiAqbmdJZj1cIiFpdGVtVGVtcGxhdGVcIiBjbGFzcz1cInVpLWNoaXBzLXRva2VuLWxhYmVsXCI+e3tmaWVsZCA/IHJlc29sdmVGaWVsZERhdGEoaXRlbSxmaWVsZCkgOiBpdGVtfX08L3NwYW4+XG4gICAgICAgICAgICAgICAgICAgIDxuZy10ZW1wbGF0ZSAqbmdJZj1cIml0ZW1UZW1wbGF0ZVwiIFtwVGVtcGxhdGVXcmFwcGVyXT1cIml0ZW1UZW1wbGF0ZVwiIFtpdGVtXT1cIml0ZW1cIj48L25nLXRlbXBsYXRlPlxuICAgICAgICAgICAgICAgIDwvbGk+XG4gICAgICAgICAgICAgICAgPGxpIGNsYXNzPVwidWktY2hpcHMtaW5wdXQtdG9rZW5cIj5cbiAgICAgICAgICAgICAgICAgICAgPGlucHV0ICNpbnB1dHRleHQgdHlwZT1cInRleHRcIiBbYXR0ci5pZF09XCJpbnB1dElkXCIgW2F0dHIucGxhY2Vob2xkZXJdPVwicGxhY2Vob2xkZXJcIiBbYXR0ci50YWJpbmRleF09XCJ0YWJpbmRleFwiIChrZXlkb3duKT1cIm9uS2V5ZG93bigkZXZlbnQsaW5wdXR0ZXh0KVwiIFxuICAgICAgICAgICAgICAgICAgICAgICAgKGZvY3VzKT1cIm9uRm9jdXMoKVwiIChibHVyKT1cIm9uQmx1cigpXCIgW2Rpc2FibGVkXT1cIm1heGVkT3V0fHxkaXNhYmxlZFwiIFtkaXNhYmxlZF09XCJkaXNhYmxlZFwiIFtuZ1N0eWxlXT1cImlucHV0U3R5bGVcIiBbY2xhc3NdPVwiaW5wdXRTdHlsZUNsYXNzXCI+XG4gICAgICAgICAgICAgICAgPC9saT5cbiAgICAgICAgICAgIDwvdWw+XG4gICAgICAgIDwvZGl2PlxuICAgICIsIjxwLWNoaXBzPjwvcC1jaGlwcz4iXSwibWFwcGluZ3MiOiJBQUFBOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O29CQ0lvQjtNQUFBO01BQUE7UUFBQTtRQUFBO1FBQXNFO1VBQUE7VUFBQTtRQUFBO1FBQXRFO01BQUE7OztvQkFDQTtNQUFBO01BQUEsZ0JBQXlEOzs7SUFBQTtRQUFBO0lBQUE7Ozs7Ozs7O29CQUN6RDtNQUFBLHNCQUFBO01BQUE7OztJQUFvRTtJQUFsQztJQUFsQyxXQUFvRSxVQUFsQyxTQUFsQzs7OztvQkFISjtNQUFBO01BQUEsNENBQThHO01BQzFHO2FBQUE7VUFBQSx3QkFBNEc7TUFDNUc7YUFBQTtVQUFBLHdCQUErRztNQUMvRzthQUFBO1VBQUEsd0JBQWdHOzs7UUFGMUY7UUFBTixXQUFNLFNBQU47UUFDTTtRQUFOLFdBQU0sU0FBTjtRQUNhO1FBQWIsV0FBYSxTQUFiOzs7O29CQU5wQiwrQ0FDUTtNQUFBO01BQUEsbURBQUE7TUFBQTtVQUFBLHNEQUFBO01BQUE7TUFBQSxlQUE2RSxtREFDekU7TUFBQTtVQUFBO1FBQUE7UUFBeUg7VUFBQTtVQUFBO1FBQUE7UUFBekg7TUFBQSx1Q0FBQTtrREFBQTthQUFJO1VBQUEsd0JBQWlKO01BQ2pKO2FBQUE7NEJBQUEseUNBSUs7VUFBQSx5QkFDTDtVQUFBO1VBQUEsOEJBQWlDO01BQzdCO1VBQUE7Y0FBQTtjQUFBO1lBQUE7WUFBQTtZQUE4RztjQUFBO2NBQUE7WUFBQTtZQUMxRztjQUFBO2NBQUE7WUFBQTtZQUFvQjtjQUFBO2NBQUE7WUFBQTtZQUR4QjtVQUFBLHVDQUFBO1VBQUE7TUFDaUosdURBQ2hKO1VBQUEscUJBQ0osK0NBQ0g7aUJBQUE7O0lBWmtEO0lBQW5EO0lBQUwsV0FBd0QsVUFBbkQsU0FBTDtJQUFzQztJQUF0QyxXQUFzQyxTQUF0QztJQUNRO0lBQUosV0FBSSxTQUFKO0lBQ2U7SUFBWCxZQUFXLFNBQVg7SUFPb0c7SUFEaEcsWUFDZ0csVUFEaEc7OztJQUE4QjtJQUFvQjtJQUFpQztJQUN6QztJQUFnQztJQUE2QztJQUR2SCxZQUE4QixVQUFvQixVQUFpQyxVQUN6QyxVQUFnQyxVQUE2QyxVQUR2SDs7OztvQkNUcEI7TUFBQTtNQUFBO1FBQUE7TUFBQTthQUFBO1VBQUE7Ozs7OzsifQ==
 //# sourceMappingURL=chips.ngfactory.js.map
