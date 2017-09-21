@@ -2045,7 +2045,8 @@ var DataTable = (function () {
     };
     DataTable.prototype.switchCellToEditMode = function (cell, column, rowData) {
         var _this = this;
-        if (!this.selectionMode && this.editable && column.editable) {
+        // customized
+        if (this.selectionMode && this.editable && column.editable) {
             this.editorClick = true;
             this.bindDocumentEditListener();
             if (cell != this.editingCell) {
