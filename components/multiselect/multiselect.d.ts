@@ -29,6 +29,7 @@ export declare class MultiSelect implements OnInit, AfterViewInit, AfterContentI
     displaySelectedLabel: boolean;
     maxSelectedLabels: number;
     selectedItemsLabel: string;
+    showToggleAll: boolean;
     containerViewChild: ElementRef;
     panelViewChild: ElementRef;
     templates: QueryList<any>;

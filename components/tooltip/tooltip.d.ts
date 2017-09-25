@@ -14,11 +14,13 @@ export declare class Tooltip implements OnDestroy {
     escape: boolean;
     showDelay: number;
     hideDelay: number;
+    life: number;
     container: any;
     styleClass: string;
     tooltipText: any;
     showTimeout: any;
     hideTimeout: any;
+    lifeTimeout: any;
     documentResizeListener: Function;
     active: boolean;
     _text: string;
@@ -28,7 +30,7 @@ export declare class Tooltip implements OnDestroy {
     onFocus(e: Event): void;
     onBlur(e: Event): void;
     activate(): void;
-    deactivate(): void;
+    deactivate(useDelay: any): void;
     text: string;
     create(): void;
     show(): void;

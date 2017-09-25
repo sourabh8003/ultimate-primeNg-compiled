@@ -12,6 +12,7 @@ export declare class Listbox implements AfterContentInit, ControlValueAccessor {
     multiple: boolean;
     style: any;
     styleClass: string;
+    listStyle: any;
     disabled: boolean;
     checkbox: boolean;
     filter: boolean;
@@ -20,6 +21,7 @@ export declare class Listbox implements AfterContentInit, ControlValueAccessor {
     showToggleAll: boolean;
     onChange: EventEmitter<any>;
     onDblClick: EventEmitter<any>;
+    footerFacet: any;
     templates: QueryList<any>;
     itemTemplate: TemplateRef<any>;
     filterValue: string;

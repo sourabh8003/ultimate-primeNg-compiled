@@ -1,8 +1,7 @@
 import { ElementRef, AfterViewInit, AfterViewChecked, OnDestroy, OnInit, EventEmitter, Renderer2, ChangeDetectorRef, TemplateRef, QueryList } from '@angular/core';
 import { DomHandler } from '../dom/domhandler';
-import { AbstractControl, ControlValueAccessor } from '@angular/forms';
+import { ControlValueAccessor } from '@angular/forms';
 export declare const CALENDAR_VALUE_ACCESSOR: any;
-export declare const CALENDAR_VALIDATOR: any;
 export interface LocaleSettings {
     firstDayOfWeek?: number;
     dayNames: string[];
@@ -93,7 +92,6 @@ export declare class Calendar implements AfterViewInit, AfterViewChecked, OnInit
     _minDate: Date;
     _maxDate: Date;
     _showTime: boolean;
-    _isValid: boolean;
     preventDocumentListener: boolean;
     dateTemplate: TemplateRef<any>;
     _disabledDates: Array<Date>;
@@ -183,9 +181,6 @@ export declare class Calendar implements AfterViewInit, AfterViewChecked, OnInit
     bindDocumentClickListener(): void;
     unbindDocumentClickListener(): void;
     ngOnDestroy(): void;
-    validate(c: AbstractControl): {
-        invalidDate: boolean;
-    };
 }
 export declare class CalendarModule {
 }

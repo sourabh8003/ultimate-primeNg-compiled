@@ -5,4 +5,5 @@ export declare class MessageService {
     messageObserver: Observable<Message>;
     add(message: Message): void;
     addAll(messages: Message[]): void;
+    clear(): void;
 }

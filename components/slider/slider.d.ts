@@ -1,11 +1,12 @@
-import { ElementRef, AfterViewInit, OnDestroy, EventEmitter, Renderer2 } from '@angular/core';
+import { ElementRef, OnDestroy, EventEmitter, Renderer2, NgZone } from '@angular/core';
 import { DomHandler } from '../dom/domhandler';
 import { ControlValueAccessor } from '@angular/forms';
 export declare const SLIDER_VALUE_ACCESSOR: any;
-export declare class Slider implements AfterViewInit, OnDestroy, ControlValueAccessor {
+export declare class Slider implements OnDestroy, ControlValueAccessor {
     el: ElementRef;
     domHandler: DomHandler;
     renderer: Renderer2;
+    private ngZone;
     animate: boolean;
     disabled: boolean;
     min: number;
@@ -35,13 +36,14 @@ export declare class Slider implements AfterViewInit, OnDestroy, ControlValueAcc
     startHandleValue: any;
     startx: number;
     starty: number;
-    constructor(el: ElementRef, domHandler: DomHandler, renderer: Renderer2);
+    constructor(el: ElementRef, domHandler: DomHandler, renderer: Renderer2, ngZone: NgZone);
     onMouseDown(event: Event, index?: number): void;
     onTouchStart(event: any, index?: number): void;
     onTouchMove(event: any, index?: number): void;
     onBarClick(event: any): void;
-    ngAfterViewInit(): void;
     handleChange(event: Event): void;
+    bindDragListeners(): void;
+    unbindDragListeners(): void;
     setValueFromHandle(event: Event, handleValue: any): void;
     handleStepChange(newValue: number, oldValue: number): void;
     writeValue(value: any): void;

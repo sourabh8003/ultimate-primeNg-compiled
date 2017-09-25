@@ -10,14 +10,6 @@ export declare class AutoComplete implements AfterViewInit, AfterViewChecked, Do
     objectUtils: ObjectUtils;
     cd: ChangeDetectorRef;
     differs: IterableDiffers;
-    toolTipMessage: string;
-    toolTipPosition: string;
-    toolTipEvent: string;
-    positionStyles: string;
-    toolTipDisabled: boolean;
-    toolTipAppendTo: string;
-    toolTipStyleClasses: string;
-    toolTipEscape: boolean;
     minLength: number;
     delay: number;
     style: any;

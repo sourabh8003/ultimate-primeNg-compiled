@@ -282,9 +282,9 @@
 }
 
 .ui-autocomplete .ui-button-icon-only,
-.ui-autocomplete .ui-button-icon-only:hover,
-.ui-autocomplete .ui-button-icon-only:focus,
-.ui-autocomplete .ui-button-icon-only:active {
+.ui-autocomplete .ui-button-icon-only:enabled:hover,
+.ui-autocomplete .ui-button-icon-only:enabled:focus,
+.ui-autocomplete .ui-button-icon-only:enabled:active {
     border-left: 0 none;
 }
 
@@ -686,7 +686,7 @@ button.ui-button::-moz-focus-inner {
     position: absolute;
 }
 .ui-datepicker.ui-datepicker-inline {
-    display: block;
+    display: inline-block;
     position: static;
 }
 .ui-datepicker .ui-datepicker-header {
@@ -3080,9 +3080,12 @@ button.ui-button::-moz-focus-inner {
     opacity: 1;
 }
 .ui-listbox {
-    overflow:auto;
     padding: .25em;
     width: 10em;
+}
+
+.ui-listbox .ui-listbox-list-wrapper {
+    overflow:auto;
 }
 
 .ui-listbox .ui-listbox-list {
@@ -3145,10 +3148,8 @@ button.ui-button::-moz-focus-inner {
     width: 100%;
 }
 
-/* Fluid */
-.ui-fluid .ui-listbox .ui-listbox-filter-container,
-.ui-fluid .ui-listbox .ui-listbox-filter-container input {
-    width: calc(100% - 32px);
+.ui-listbox-footer {
+    padding: .125em .2em;
 }
 .ui-menu {
     width: 12.5em;
@@ -3552,7 +3553,6 @@ button.ui-button::-moz-focus-inner {
     margin: 0px .25em;
     padding: .125em .25em;
 }
-/** MultiSelect **/
 .ui-multiselect {
     display: inline-block;
     position: relative;
@@ -3600,7 +3600,12 @@ button.ui-button::-moz-focus-inner {
 .ui-multiselect-panel {
     padding: 0.2em;
     position: absolute;
-    min-width: 10em;
+    min-width: 12em;
+}
+
+.ui-multiselect .ui-multiselect-panel {
+    min-width: 100%;
+    display: none;
 }
 
 .ui-multiselect-panel .ui-multiselect-items-wrapper {
@@ -3653,6 +3658,10 @@ button.ui-button::-moz-focus-inner {
     display: inline-block;
     vertical-align: middle;
     width: 65%;
+}
+
+.ui-multiselect-header.ui-multiselect-header-no-toggleall .ui-multiselect-filter-container {
+    width: 85%;
 }
 
 .ui-multiselect-header .ui-multiselect-filter-container .fa {
@@ -3832,6 +3841,7 @@ button.ui-button::-moz-focus-inner {
     bottom: -9px;
     margin-left: -8px;
     z-index: 2;
+    left: 50%;
 }
 
 .ui-organizationchart .ui-organizationchart-line-down {

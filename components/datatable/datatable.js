@@ -1323,8 +1323,8 @@ var DataTable = (function () {
     };
     DataTable.prototype.switchCellToEditMode = function (cell, column, rowData) {
         var _this = this;
-        // customized
-        if (this.selectionMode && this.editable && column.editable) {
+        // customized (this.selectionMode: rem `!` repl `&&` with `||`)
+        if (this.selectionMode || this.editable && column.editable) {
             this.editorClick = true;
             this.bindDocumentEditListener();
             if (cell != this.editingCell) {

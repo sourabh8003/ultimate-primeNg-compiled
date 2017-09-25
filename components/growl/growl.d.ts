@@ -14,6 +14,7 @@ export declare class Growl implements AfterViewInit, DoCheck, OnDestroy {
     styleClass: string;
     immutable: boolean;
     onClick: EventEmitter<any>;
+    onHover: EventEmitter<any>;
     onClose: EventEmitter<any>;
     valueChange: EventEmitter<Message[]>;
     containerViewChild: ElementRef;
@@ -34,6 +35,7 @@ export declare class Growl implements AfterViewInit, DoCheck, OnDestroy {
     remove(index: number, msgel: any): void;
     removeAll(): void;
     onMessageClick(i: number): void;
+    onMessageHover(i: number): void;
     ngOnDestroy(): void;
 }
 export declare class GrowlModule {

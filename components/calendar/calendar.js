@@ -21,11 +21,6 @@ exports.CALENDAR_VALUE_ACCESSOR = {
     useExisting: core_1.forwardRef(function () { return Calendar; }),
     multi: true
 };
-exports.CALENDAR_VALIDATOR = {
-    provide: forms_1.NG_VALIDATORS,
-    useExisting: core_1.forwardRef(function () { return Calendar; }),
-    multi: true
-};
 var Calendar = (function () {
     function Calendar(el, domHandler, renderer, cd) {
         this.el = el;
@@ -67,7 +62,6 @@ var Calendar = (function () {
         this.onModelChange = function () { };
         this.onModelTouched = function () { };
         this.inputFieldValue = null;
-        this._isValid = true;
     }
     Object.defineProperty(Calendar.prototype, "minDate", {
         get: function () {
@@ -393,7 +387,6 @@ var Calendar = (function () {
             date.setMinutes(this.currentMinute);
             date.setSeconds(this.currentSecond);
         }
-        this._isValid = true;
         if (this.isSingleSelection()) {
             this.updateModel(date);
         }
@@ -689,12 +682,10 @@ var Calendar = (function () {
             var value = this.parseValueFromString(val);
             this.updateModel(value);
             this.updateUI();
-            this._isValid = true;
         }
         catch (err) {
             //invalid date
             this.updateModel(null);
-            this._isValid = false;
         }
         this.filled = val != null && val.length;
         this.onInput.emit(event);
@@ -1081,7 +1072,7 @@ var Calendar = (function () {
         var _this = this;
         if (!this.documentClickListener) {
             this.documentClickListener = this.renderer.listen('document', 'click', function (event) {
-                if (!_this.datepickerClick) {
+                if (!_this.datepickerClick && _this.overlayVisible) {
                     _this.overlayVisible = false;
                     _this.onClose.emit(event);
                 }
@@ -1101,12 +1092,6 @@ var Calendar = (function () {
         if (!this.inline && this.appendTo) {
             this.el.nativeElement.appendChild(this.overlayViewChild.nativeElement);
         }
-    };
-    Calendar.prototype.validate = function (c) {
-        if (!this._isValid) {
-            return { invalidDate: true };
-        }
-        return null;
     };
     return Calendar;
 }());
@@ -1348,7 +1333,7 @@ Calendar = __decorate([
             '[class.ui-inputwrapper-filled]': 'filled',
             '[class.ui-inputwrapper-focus]': 'focus'
         },
-        providers: [domhandler_1.DomHandler, exports.CALENDAR_VALUE_ACCESSOR, exports.CALENDAR_VALIDATOR]
+        providers: [domhandler_1.DomHandler, exports.CALENDAR_VALUE_ACCESSOR]
     }),
     __metadata("design:paramtypes", [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer2, core_1.ChangeDetectorRef])
 ], Calendar);

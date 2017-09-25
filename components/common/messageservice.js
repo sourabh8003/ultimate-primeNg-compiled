@@ -23,6 +23,9 @@ var MessageService = (function () {
             this.messageSource.next(messages);
         }
     };
+    MessageService.prototype.clear = function () {
+        this.messageSource.next(null);
+    };
     return MessageService;
 }());
 MessageService = __decorate([

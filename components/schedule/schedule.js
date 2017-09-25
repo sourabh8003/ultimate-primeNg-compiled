@@ -209,14 +209,18 @@ var Schedule = (function () {
     Schedule.prototype.initialize = function () {
         this.schedule = jQuery(this.el.nativeElement.children[0]);
         this.schedule.fullCalendar(this.config);
-        this.schedule.fullCalendar('addEventSource', this.events);
+        if (this.events) {
+            this.schedule.fullCalendar('addEventSource', this.events);
+        }
         this.initialized = true;
     };
     Schedule.prototype.ngDoCheck = function () {
         var changes = this.differ.diff(this.events);
         if (this.schedule && changes) {
             this.schedule.fullCalendar('removeEventSources');
-            this.schedule.fullCalendar('addEventSource', this.events);
+            if (this.events) {
+                this.schedule.fullCalendar('addEventSource', this.events);
+            }
         }
     };
     Schedule.prototype.ngOnDestroy = function () {

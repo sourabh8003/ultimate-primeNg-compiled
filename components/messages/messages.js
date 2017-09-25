@@ -23,10 +23,15 @@ var Messages = (function () {
         this.valueChange = new core_1.EventEmitter();
         if (messageService) {
             this.subscription = messageService.messageObserver.subscribe(function (messages) {
-                if (messages instanceof Array)
-                    _this.value = messages;
-                else
-                    _this.value = [messages];
+                if (messages) {
+                    if (messages instanceof Array)
+                        _this.value = messages;
+                    else
+                        _this.value = [messages];
+                }
+                else {
+                    _this.value = null;
+                }
             });
         }
     }
