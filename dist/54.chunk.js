@@ -152,7 +152,6 @@ var _a, _b;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_shared__ = __webpack_require__("./src/app/components/common/shared.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/@angular/forms.es5.js");
 /* unused harmony export CALENDAR_VALUE_ACCESSOR */
-/* unused harmony export CALENDAR_VALIDATOR */
 /* unused harmony export Calendar */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CalendarModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -173,11 +172,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 var CALENDAR_VALUE_ACCESSOR = {
     provide: __WEBPACK_IMPORTED_MODULE_6__angular_forms__["f" /* NG_VALUE_ACCESSOR */],
-    useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return Calendar; }),
-    multi: true
-};
-var CALENDAR_VALIDATOR = {
-    provide: __WEBPACK_IMPORTED_MODULE_6__angular_forms__["g" /* NG_VALIDATORS */],
     useExisting: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["i" /* forwardRef */])(function () { return Calendar; }),
     multi: true
 };
@@ -222,7 +216,6 @@ var Calendar = (function () {
         this.onModelChange = function () { };
         this.onModelTouched = function () { };
         this.inputFieldValue = null;
-        this._isValid = true;
     }
     Object.defineProperty(Calendar.prototype, "minDate", {
         get: function () {
@@ -548,7 +541,6 @@ var Calendar = (function () {
             date.setMinutes(this.currentMinute);
             date.setSeconds(this.currentSecond);
         }
-        this._isValid = true;
         if (this.isSingleSelection()) {
             this.updateModel(date);
         }
@@ -844,12 +836,10 @@ var Calendar = (function () {
             var value = this.parseValueFromString(val);
             this.updateModel(value);
             this.updateUI();
-            this._isValid = true;
         }
         catch (err) {
             //invalid date
             this.updateModel(null);
-            this._isValid = false;
         }
         this.filled = val != null && val.length;
         this.onInput.emit(event);
@@ -1236,7 +1226,7 @@ var Calendar = (function () {
         var _this = this;
         if (!this.documentClickListener) {
             this.documentClickListener = this.renderer.listen('document', 'click', function (event) {
-                if (!_this.datepickerClick) {
+                if (!_this.datepickerClick && _this.overlayVisible) {
                     _this.overlayVisible = false;
                     _this.onClose.emit(event);
                 }
@@ -1256,12 +1246,6 @@ var Calendar = (function () {
         if (!this.inline && this.appendTo) {
             this.el.nativeElement.appendChild(this.overlayViewChild.nativeElement);
         }
-    };
-    Calendar.prototype.validate = function (c) {
-        if (!this._isValid) {
-            return { invalidDate: true };
-        }
-        return null;
     };
     return Calendar;
 }());
@@ -1503,7 +1487,7 @@ Calendar = __decorate([
             '[class.ui-inputwrapper-filled]': 'filled',
             '[class.ui-inputwrapper-focus]': 'focus'
         },
-        providers: [__WEBPACK_IMPORTED_MODULE_4__dom_domhandler__["a" /* DomHandler */], CALENDAR_VALUE_ACCESSOR, CALENDAR_VALIDATOR]
+        providers: [__WEBPACK_IMPORTED_MODULE_4__dom_domhandler__["a" /* DomHandler */], CALENDAR_VALUE_ACCESSOR]
     }),
     __metadata("design:paramtypes", [typeof (_l = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _l || Object, typeof (_m = typeof __WEBPACK_IMPORTED_MODULE_4__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__dom_domhandler__["a" /* DomHandler */]) === "function" && _m || Object, typeof (_o = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */]) === "function" && _o || Object, typeof (_p = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["D" /* ChangeDetectorRef */]) === "function" && _p || Object])
 ], Calendar);

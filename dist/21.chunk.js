@@ -1807,7 +1807,7 @@ var Tooltip = (function () {
     };
     Tooltip.prototype.onMouseLeave = function (e) {
         if (this.tooltipEvent === 'hover') {
-            this.deactivate();
+            this.deactivate(true);
         }
     };
     Tooltip.prototype.onFocus = function (e) {
@@ -1817,7 +1817,7 @@ var Tooltip = (function () {
     };
     Tooltip.prototype.onBlur = function (e) {
         if (this.tooltipEvent === 'focus') {
-            this.deactivate();
+            this.deactivate(true);
         }
     };
     Tooltip.prototype.activate = function () {
@@ -1830,14 +1830,20 @@ var Tooltip = (function () {
             this.showTimeout = setTimeout(function () { _this.show(); }, this.showDelay);
         else
             this.show();
+        if (this.life) {
+            this.lifeTimeout = setTimeout(function () { _this.deactivate(false); }, this.life);
+        }
     };
-    Tooltip.prototype.deactivate = function () {
+    Tooltip.prototype.deactivate = function (useDelay) {
         var _this = this;
         this.active = false;
         if (this.showTimeout) {
             clearTimeout(this.showTimeout);
         }
-        if (this.hideDelay)
+        if (this.lifeTimeout) {
+            clearTimeout(this.lifeTimeout);
+        }
+        if (this.hideDelay && useDelay)
             this.hideTimeout = setTimeout(function () { _this.hide(); }, this.hideDelay);
         else
             this.hide();
@@ -2076,6 +2082,10 @@ __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Number)
 ], Tooltip.prototype, "hideDelay", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Number)
+], Tooltip.prototype, "life", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* HostListener */])('mouseenter', ['$event']),
     __metadata("design:type", Function),

@@ -1286,15 +1286,20 @@ var PickList = (function () {
     };
     PickList.prototype.moveAllRight = function () {
         if (this.source) {
+            var movedItems = [];
             for (var i = 0; i < this.source.length; i++) {
-                this.target.push(this.source[i]);
+                if (this.isItemVisible(this.source[i], -1)) {
+                    var removedItem = this.source.splice(i, 1)[0];
+                    this.target.push(removedItem);
+                    movedItems.push(removedItem);
+                    i--;
+                }
             }
-            var sourceItems = this.source.splice(0, this.source.length);
             this.onMoveToTarget.emit({
-                items: sourceItems
+                items: movedItems
             });
             this.onMoveAllToTarget.emit({
-                items: sourceItems
+                items: movedItems
             });
             this.selectedItemsSource = [];
         }
@@ -1315,15 +1320,20 @@ var PickList = (function () {
     };
     PickList.prototype.moveAllLeft = function () {
         if (this.target) {
+            var movedItems = [];
             for (var i = 0; i < this.target.length; i++) {
-                this.source.push(this.target[i]);
+                if (this.isItemVisible(this.target[i], 1)) {
+                    var removedItem = this.target.splice(i, 1)[0];
+                    this.source.push(removedItem);
+                    movedItems.push(removedItem);
+                    i--;
+                }
             }
-            var targetItems = this.target.splice(0, this.target.length);
             this.onMoveToSource.emit({
-                items: targetItems
+                items: movedItems
             });
             this.onMoveAllToSource.emit({
-                items: targetItems
+                items: movedItems
             });
             this.selectedItemsTarget = [];
         }

@@ -157,6 +157,9 @@ var AutoComplete = (function () {
         if (!this.inputKeyDown) {
             return;
         }
+        if (this.timeout) {
+            clearTimeout(this.timeout);
+        }
         var value = event.target.value;
         if (!this.multiple) {
             this.onModelChange(value);
@@ -166,10 +169,6 @@ var AutoComplete = (function () {
             this.onClear.emit(event);
         }
         if (value.length >= this.minLength) {
-            //Cancel the search request if user types within the timeout
-            if (this.timeout) {
-                clearTimeout(this.timeout);
-            }
             this.timeout = setTimeout(function () {
                 _this.search(event, value);
             }, this.delay);
@@ -314,7 +313,7 @@ var AutoComplete = (function () {
             if (event.which === 40 && this.suggestions) {
                 this.search(event, event.target.value);
             }
-            else if (event.which === 13) {
+            else if (event.which === 13 && this.forceSelection === undefined) {
                 if (event.target.value.trim().length) {
                     this.selectItem({ 'name': event.target.value, code: event.target.value });
                     event.preventDefault();
@@ -323,7 +322,7 @@ var AutoComplete = (function () {
                     event.target.value = '';
                 }
             }
-            else if (event.which === 9) {
+            else if (event.which === 9 && this.forceSelection === undefined) {
                 if (event.target.value.trim().length) {
                     this.selectItem({ 'name': event.target.value, code: event.target.value });
                 }

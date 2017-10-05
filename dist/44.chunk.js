@@ -1022,10 +1022,11 @@ var SLIDER_VALUE_ACCESSOR = {
     multi: true
 };
 var Slider = (function () {
-    function Slider(el, domHandler, renderer) {
+    function Slider(el, domHandler, renderer, ngZone) {
         this.el = el;
         this.domHandler = domHandler;
         this.renderer = renderer;
+        this.ngZone = ngZone;
         this.min = 0;
         this.max = 100;
         this.orientation = 'horizontal';
@@ -1043,6 +1044,7 @@ var Slider = (function () {
         this.updateDomData();
         this.sliderHandleClick = true;
         this.handleIndex = index;
+        this.bindDragListeners();
         event.preventDefault();
     };
     Slider.prototype.onTouchStart = function (event, index) {
@@ -1081,31 +1083,44 @@ var Slider = (function () {
         }
         this.sliderHandleClick = false;
     };
-    Slider.prototype.ngAfterViewInit = function () {
-        var _this = this;
-        if (this.disabled) {
-            return;
-        }
-        this.dragListener = this.renderer.listen('document', 'mousemove', function (event) {
-            if (_this.dragging) {
-                _this.handleChange(event);
-            }
-        });
-        this.mouseupListener = this.renderer.listen('document', 'mouseup', function (event) {
-            if (_this.dragging) {
-                _this.dragging = false;
-                if (_this.range) {
-                    _this.onSlideEnd.emit({ originalEvent: event, values: _this.values });
-                }
-                else {
-                    _this.onSlideEnd.emit({ originalEvent: event, value: _this.value });
-                }
-            }
-        });
-    };
     Slider.prototype.handleChange = function (event) {
         var handleValue = this.calculateHandleValue(event);
         this.setValueFromHandle(event, handleValue);
+    };
+    Slider.prototype.bindDragListeners = function () {
+        var _this = this;
+        this.ngZone.runOutsideAngular(function () {
+            if (!_this.dragListener) {
+                _this.dragListener = _this.renderer.listen('document', 'mousemove', function (event) {
+                    if (_this.dragging) {
+                        _this.ngZone.run(function () {
+                            _this.handleChange(event);
+                        });
+                    }
+                });
+            }
+            if (!_this.mouseupListener) {
+                _this.mouseupListener = _this.renderer.listen('document', 'mouseup', function (event) {
+                    if (_this.dragging) {
+                        _this.dragging = false;
+                        if (_this.range) {
+                            _this.onSlideEnd.emit({ originalEvent: event, values: _this.values });
+                        }
+                        else {
+                            _this.onSlideEnd.emit({ originalEvent: event, value: _this.value });
+                        }
+                    }
+                });
+            }
+        });
+    };
+    Slider.prototype.unbindDragListeners = function () {
+        if (this.dragListener) {
+            this.dragListener();
+        }
+        if (this.mouseupListener) {
+            this.mouseupListener();
+        }
     };
     Slider.prototype.setValueFromHandle = function (event, handleValue) {
         var newValue = this.getValueFromHandle(handleValue);
@@ -1260,12 +1275,7 @@ var Slider = (function () {
         return (this.max - this.min) * (handleValue / 100) + this.min;
     };
     Slider.prototype.ngOnDestroy = function () {
-        if (this.dragListener) {
-            this.dragListener();
-        }
-        if (this.mouseupListener) {
-            this.mouseupListener();
-        }
+        this.unbindDragListeners();
     };
     return Slider;
 }());
@@ -1319,7 +1329,7 @@ Slider = __decorate([
         template: "\n        <div [ngStyle]=\"style\" [class]=\"styleClass\" [ngClass]=\"{'ui-slider ui-widget ui-widget-content ui-corner-all':true,'ui-state-disabled':disabled,\n            'ui-slider-horizontal':orientation == 'horizontal','ui-slider-vertical':orientation == 'vertical','ui-slider-animate':animate}\"\n            (click)=\"onBarClick($event)\">\n            <span *ngIf=\"range && orientation == 'horizontal'\" class=\"ui-slider-range ui-widget-header ui-corner-all\" [ngStyle]=\"{'left':handleValues[0] + '%',width: (handleValues[1] - handleValues[0] + '%')}\"></span>\n            <span *ngIf=\"range && orientation == 'vertical'\" class=\"ui-slider-range ui-widget-header ui-corner-all\" [ngStyle]=\"{'bottom':handleValues[0] + '%',height: (handleValues[1] - handleValues[0] + '%')}\"></span>\n            <span *ngIf=\"!range && orientation=='vertical'\" class=\"ui-slider-range ui-slider-range-min ui-widget-header ui-corner-all\" [ngStyle]=\"{'height': handleValue + '%'}\"></span>\n            <span *ngIf=\"!range\" class=\"ui-slider-handle ui-state-default ui-corner-all ui-clickable\" (mousedown)=\"onMouseDown($event)\" (touchstart)=\"onTouchStart($event)\" (touchmove)=\"onTouchMove($event)\" (touchend)=\"dragging=false\"\n                [style.transition]=\"dragging ? 'none': null\" [ngStyle]=\"{'left': orientation == 'horizontal' ? handleValue + '%' : null,'bottom': orientation == 'vertical' ? handleValue + '%' : null}\"></span>\n            <span *ngIf=\"range\" (mousedown)=\"onMouseDown($event,0)\" (touchstart)=\"onTouchStart($event,0)\" (touchmove)=\"onTouchMove($event,0)\" (touchend)=\"dragging=false\" [style.transition]=\"dragging ? 'none': null\" class=\"ui-slider-handle ui-state-default ui-corner-all ui-clickable\" \n                [ngStyle]=\"{'left': rangeStartLeft, 'bottom': rangeStartBottom}\" [ngClass]=\"{'ui-slider-handle-active':handleIndex==0}\"></span>\n            <span *ngIf=\"range\" (mousedown)=\"onMouseDown($event,1)\" (touchstart)=\"onTouchStart($event,1)\" (touchmove)=\"onTouchMove($event,1)\" (touchend)=\"dragging=false\" [style.transition]=\"dragging ? 'none': null\" class=\"ui-slider-handle ui-state-default ui-corner-all ui-clickable\" \n                [ngStyle]=\"{'left': rangeEndLeft, 'bottom': rangeEndBottom}\" [ngClass]=\"{'ui-slider-handle-active':handleIndex==1}\"></span>\n        </div>\n    ",
         providers: [SLIDER_VALUE_ACCESSOR, __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]]
     }),
-    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */]) === "function" && _e || Object])
+    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ElementRef */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__dom_domhandler__["a" /* DomHandler */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["k" /* Renderer2 */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* NgZone */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["E" /* NgZone */]) === "function" && _f || Object])
 ], Slider);
 
 var SliderModule = (function () {
@@ -1335,7 +1345,7 @@ SliderModule = __decorate([
     })
 ], SliderModule);
 
-var _a, _b, _c, _d, _e;
+var _a, _b, _c, _d, _e, _f;
 //# sourceMappingURL=slider.js.map
 
 /***/ }),
