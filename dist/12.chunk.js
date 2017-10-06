@@ -376,6 +376,10 @@ __decorate([
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Boolean)
+], Column.prototype, "isEditableAlways", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
 ], Column.prototype, "filter", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
@@ -2048,8 +2052,8 @@ var DataTable = (function () {
         // customized (this.selectionMode: rem `!` repl `&&` with `||`)
         if (this.selectionMode || this.editable && column.editable) {
             this.editorClick = true;
-            this.bindDocumentEditListener();
-            if (cell != this.editingCell) {
+            this.bindDocumentEditListener(column.isEditableAlways);
+            if (cell != this.editingCell && column.isEditableAlways === undefined) {
                 if (this.editingCell && this.domHandler.find(this.editingCell, '.ng-invalid.ng-dirty').length == 0) {
                     this.domHandler.removeClass(this.editingCell, 'ui-cell-editing');
                 }
@@ -2063,25 +2067,27 @@ var DataTable = (function () {
             }
         }
     };
-    DataTable.prototype.switchCellToViewMode = function (element) {
-        this.editingCell = null;
-        var cell = this.findCell(element);
-        this.domHandler.removeClass(cell, 'ui-cell-editing');
-        this.unbindDocumentEditListener();
+    DataTable.prototype.switchCellToViewMode = function (element, column) {
+        if (column.isEditableAlways === undefined) {
+            this.editingCell = null;
+            var cell = this.findCell(element);
+            this.domHandler.removeClass(cell, 'ui-cell-editing');
+            this.unbindDocumentEditListener();
+        }
     };
-    DataTable.prototype.closeCell = function () {
-        if (this.editingCell) {
+    DataTable.prototype.closeCell = function (isAlwaysEditable) {
+        if (this.editingCell && isAlwaysEditable === undefined) {
             this.domHandler.removeClass(this.editingCell, 'ui-cell-editing');
             this.editingCell = null;
             this.unbindDocumentEditListener();
         }
     };
-    DataTable.prototype.bindDocumentEditListener = function () {
+    DataTable.prototype.bindDocumentEditListener = function (isAlwaysEditable) {
         var _this = this;
         if (!this.documentEditListener) {
             this.documentEditListener = this.renderer.listen('document', 'click', function (event) {
                 if (!_this.editorClick) {
-                    _this.closeCell();
+                    _this.closeCell(isAlwaysEditable);
                 }
                 _this.editorClick = false;
             });
@@ -2098,18 +2104,21 @@ var DataTable = (function () {
             this.onEdit.emit({ originalEvent: event, column: column, data: rowData, index: rowIndex });
             //enter
             if (event.keyCode == 13) {
+                this.isEditableSet = true;
                 this.onEditComplete.emit({ column: column, data: rowData, index: rowIndex });
                 this.domHandler.invokeElementMethod(event.target, 'blur');
-                this.switchCellToViewMode(event.target);
+                this.switchCellToViewMode(event.target, column);
                 event.preventDefault();
             }
             else if (event.keyCode == 27) {
+                this.isEditableSet = true;
                 this.onEditCancel.emit({ column: column, data: rowData, index: rowIndex });
                 this.domHandler.invokeElementMethod(event.target, 'blur');
-                this.switchCellToViewMode(event.target);
+                this.switchCellToViewMode(event.target, column);
                 event.preventDefault();
             }
             else if (event.keyCode == 9) {
+                this.isEditableSet = true;
                 this.onEditComplete.emit({ column: column, data: rowData, index: rowIndex });
                 if (event.shiftKey)
                     this.moveToPreviousCell(event);
@@ -2695,6 +2704,10 @@ __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Boolean)
 ], DataTable.prototype, "editable", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], DataTable.prototype, "isEditableAlways", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
     __metadata("design:type", typeof (_t = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _t || Object)

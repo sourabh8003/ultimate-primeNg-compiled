@@ -162,6 +162,10 @@ __decorate([
 __decorate([
     core_1.Input(),
     __metadata("design:type", Boolean)
+], Column.prototype, "isEditableAlways", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Boolean)
 ], Column.prototype, "filter", void 0);
 __decorate([
     core_1.Input(),

@@ -121,6 +121,7 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
     selectionMode: string;
     selectionChange: EventEmitter<any>;
     editable: boolean;
+    isEditableAlways: boolean;
     onRowClick: EventEmitter<any>;
     onRowSelect: EventEmitter<any>;
     onRowUnselect: EventEmitter<any>;
@@ -203,6 +204,7 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
     cols: QueryList<Column>;
     headerColumnGroup: HeaderColumnGroup;
     footerColumnGroup: FooterColumnGroup;
+    isEditableSet: boolean;
     _value: any[];
     dataToRender: any[];
     page: number;
@@ -310,9 +312,9 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
         in(value: any, filter: any[]): boolean;
     };
     switchCellToEditMode(cell: any, column: Column, rowData: any): void;
-    switchCellToViewMode(element: any): void;
-    closeCell(): void;
-    bindDocumentEditListener(): void;
+    switchCellToViewMode(element: any, column: Column): void;
+    closeCell(isAlwaysEditable: boolean): void;
+    bindDocumentEditListener(isAlwaysEditable: boolean): void;
     unbindDocumentEditListener(): void;
     onCellEditorKeydown(event: any, column: Column, rowData: any, rowIndex: number): void;
     moveToPreviousCell(event: KeyboardEvent): void;

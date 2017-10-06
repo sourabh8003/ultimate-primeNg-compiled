@@ -236,6 +236,10 @@ __decorate([
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Boolean)
+], Column.prototype, "isEditableAlways", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
 ], Column.prototype, "filter", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),

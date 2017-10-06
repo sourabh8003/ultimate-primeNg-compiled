@@ -29,6 +29,7 @@ export declare class Column implements AfterContentInit {
     footer: string;
     sortable: any;
     editable: boolean;
+    isEditableAlways: boolean;
     filter: boolean;
     filterMatchMode: string;
     filterType: string;

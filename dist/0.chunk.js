@@ -1797,6 +1797,10 @@ __decorate([
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Boolean)
+], Column.prototype, "isEditableAlways", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
 ], Column.prototype, "filter", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
@@ -3735,8 +3739,8 @@ var DataTable = (function () {
         // customized (this.selectionMode: rem `!` repl `&&` with `||`)
         if (this.selectionMode || this.editable && column.editable) {
             this.editorClick = true;
-            this.bindDocumentEditListener();
-            if (cell != this.editingCell) {
+            this.bindDocumentEditListener(column.isEditableAlways);
+            if (cell != this.editingCell && column.isEditableAlways === undefined) {
                 if (this.editingCell && this.domHandler.find(this.editingCell, '.ng-invalid.ng-dirty').length == 0) {
                     this.domHandler.removeClass(this.editingCell, 'ui-cell-editing');
                 }
@@ -3750,25 +3754,27 @@ var DataTable = (function () {
             }
         }
     };
-    DataTable.prototype.switchCellToViewMode = function (element) {
-        this.editingCell = null;
-        var cell = this.findCell(element);
-        this.domHandler.removeClass(cell, 'ui-cell-editing');
-        this.unbindDocumentEditListener();
+    DataTable.prototype.switchCellToViewMode = function (element, column) {
+        if (column.isEditableAlways === undefined) {
+            this.editingCell = null;
+            var cell = this.findCell(element);
+            this.domHandler.removeClass(cell, 'ui-cell-editing');
+            this.unbindDocumentEditListener();
+        }
     };
-    DataTable.prototype.closeCell = function () {
-        if (this.editingCell) {
+    DataTable.prototype.closeCell = function (isAlwaysEditable) {
+        if (this.editingCell && isAlwaysEditable === undefined) {
             this.domHandler.removeClass(this.editingCell, 'ui-cell-editing');
             this.editingCell = null;
             this.unbindDocumentEditListener();
         }
     };
-    DataTable.prototype.bindDocumentEditListener = function () {
+    DataTable.prototype.bindDocumentEditListener = function (isAlwaysEditable) {
         var _this = this;
         if (!this.documentEditListener) {
             this.documentEditListener = this.renderer.listen('document', 'click', function (event) {
                 if (!_this.editorClick) {
-                    _this.closeCell();
+                    _this.closeCell(isAlwaysEditable);
                 }
                 _this.editorClick = false;
             });
@@ -3785,18 +3791,21 @@ var DataTable = (function () {
             this.onEdit.emit({ originalEvent: event, column: column, data: rowData, index: rowIndex });
             //enter
             if (event.keyCode == 13) {
+                this.isEditableSet = true;
                 this.onEditComplete.emit({ column: column, data: rowData, index: rowIndex });
                 this.domHandler.invokeElementMethod(event.target, 'blur');
-                this.switchCellToViewMode(event.target);
+                this.switchCellToViewMode(event.target, column);
                 event.preventDefault();
             }
             else if (event.keyCode == 27) {
+                this.isEditableSet = true;
                 this.onEditCancel.emit({ column: column, data: rowData, index: rowIndex });
                 this.domHandler.invokeElementMethod(event.target, 'blur');
-                this.switchCellToViewMode(event.target);
+                this.switchCellToViewMode(event.target, column);
                 event.preventDefault();
             }
             else if (event.keyCode == 9) {
+                this.isEditableSet = true;
                 this.onEditComplete.emit({ column: column, data: rowData, index: rowIndex });
                 if (event.shiftKey)
                     this.moveToPreviousCell(event);
@@ -4382,6 +4391,10 @@ __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
     __metadata("design:type", Boolean)
 ], DataTable.prototype, "editable", void 0);
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["p" /* Input */])(),
+    __metadata("design:type", Boolean)
+], DataTable.prototype, "isEditableAlways", void 0);
 __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* Output */])(),
     __metadata("design:type", typeof (_t = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["t" /* EventEmitter */]) === "function" && _t || Object)
@@ -8946,7 +8959,7 @@ var _a;
 /***/ "./src/app/showcase/components/datatable/datatableeditabledemo.html":
 /***/ (function(module, exports) {
 
-module.exports = "<datatable-demos></datatable-demos>\n\n<div class=\"content-section introduction\">\n    <div>\n        <span class=\"feature-title\">DataTable</span>\n        <span>Incell editing is enabled by setting editable property true both on datatable and columns, when a cell is clicked edit mode is activated, clicking outside of cell or hitting the enter key\n        switches back to view mode after updating the value.</span>\n    </div>\n</div>\n\n<div class=\"content-section implementation ui-fluid\">\n    <p-dataTable [value]=\"cars\" [editable]=\"true\" toolTipMessage=\"Editable column\" toolTipPosition=\"top\">\n        <p-column field=\"vin\" header=\"Vin\" [editable]=\"true\"></p-column>\n        <p-column field=\"year\" header=\"Year\" [editable]=\"true\"></p-column>\n        <p-column field=\"brand\" header=\"Brand\" [editable]=\"true\">\n            <ng-template let-col let-car=\"rowData\" pTemplate=\"editor\">\n                <p-dropdown [(ngModel)]=\"car[col.field]\" [options]=\"brands\" [autoWidth]=\"false\" [style]=\"{'width':'100%'}\" required=\"true\" appendTo=\"body\"></p-dropdown>\n            </ng-template>\n        </p-column>\n        <p-column field=\"color\" header=\"Color\" [editable]=\"true\"></p-column>\n        <p-column field=\"saleDate\" header=\"Sale Date\" [editable]=\"true\" [style]=\"{'overflow':'visible'}\">\n            <ng-template let-col let-car=\"rowData\" pTemplate=\"body\">\n                {{car[col.field]|date}}\n            </ng-template>\n            <ng-template let-col let-car=\"rowData\" pTemplate=\"editor\">\n                <p-calendar [(ngModel)]=\"car[col.field]\" appendTo=\"body\"></p-calendar>\n            </ng-template>\n        </p-column>\n    </p-dataTable>\n</div>\n\n<div class=\"content-section documentation\">\n    <p-tabView effect=\"fade\">\n        <p-tabPanel header=\"datatableeditabledemo.ts\">\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/datatable/datatableeditabledemo.ts\" class=\"btn-viewsource\" target=\"_blank\">\n                <i class=\"fa fa-github\"></i>\n                <span>View on GitHub</span>\n            </a>\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nexport class DataTableEditableDemo implements OnInit &#123;\n\n    cars: Car[];\n\n    constructor(private carService: CarService) &#123; &#125;\n\n    ngOnInit() &#123;\n        this.carService.getCarsSmall().then(cars => this.cars = cars);\n    &#125;\n&#125;\n</code>\n</pre>\n        </p-tabPanel>\n\n        <p-tabPanel header=\"datatableeditabledemo.html\">\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/datatable/datatableeditabledemo.html\" class=\"btn-viewsource\" target=\"_blank\">\n                <i class=\"fa fa-github\"></i>\n                <span>View on GitHub</span>\n            </a>\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-dataTable [value]=\"cars\" [editable]=\"true\"&gt;\n    &lt;p-column field=\"vin\" header=\"Vin\" [editable]=\"true\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"year\" header=\"Year\" [editable]=\"true\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"brand\" header=\"Brand\" [editable]=\"true\"&gt;\n        &lt;ng-template let-col let-car=\"rowData\" pTemplate=\"editor\"&gt;\n            &lt;p-dropdown [(ngModel)]=\"car[col.field]\" [options]=\"brands\" [autoWidth]=\"false\" [style]=\"&#123;'width':'100%'&#125;\" required=\"true\"  appendTo=\"body\"&gt;&lt;/p-dropdown&gt;\n        &lt;/ng-template&gt;\n    &lt;/p-column&gt;\n    &lt;p-column field=\"color\" header=\"Color\" [editable]=\"true\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"saleDate\" header=\"Sale Date\" [editable]=\"true\" [style]=\" &#123;'overflow':'visible' &#125;\"&gt;\n        &lt;ng-template let-col let-car=\"rowData\" pTemplate=\"body\"&gt;\n             &#123;&#123;car[col.field]|date &#125;&#125;\n        &lt;/ng-template&gt;\n        &lt;ng-template let-col let-car=\"rowData\" pTemplate=\"editor\"&gt;\n            &lt;p-calendar [(ngModel)]=\"car[col.field]\" appendTo=\"body\"&gt;&lt;/p-calendar&gt;\n        &lt;/ng-template&gt;\n    &lt;/p-column&gt;\n&lt;/p-dataTable&gt;\n</code>\n</pre>\n        </p-tabPanel>\n    </p-tabView>\n</div>\n"
+module.exports = "<datatable-demos></datatable-demos>\n\n<div class=\"content-section introduction\">\n    <div>\n        <span class=\"feature-title\">DataTable</span>\n        <span>Incell editing is enabled by setting editable property true both on datatable and columns, when a cell is clicked edit mode is activated, clicking outside of cell or hitting the enter key\n        switches back to view mode after updating the value.</span>\n    </div>\n</div>\n\n<div class=\"content-section implementation ui-fluid\">\n    <p-dataTable [value]=\"cars\" [editable]=\"true\" toolTipMessage=\"Editable column\" toolTipPosition=\"top\">\n        <p-column field=\"vin\" header=\"Vin\" [editable]=\"true\"></p-column>\n        <p-column field=\"year\" header=\"Year\" [editable]=\"true\"></p-column>\n        <p-column field=\"brand\" header=\"Brand\" [editable]=\"true\" [isEditableAlways]=\"true\">\n            <ng-template let-col let-car=\"rowData\" pTemplate=\"editor\">\n                <p-dropdown [(ngModel)]=\"car[col.field]\" [options]=\"brands\" [autoWidth]=\"false\" [style]=\"{'width':'100%'}\" required=\"true\" appendTo=\"body\"></p-dropdown>\n            </ng-template>\n        </p-column>\n        <p-column field=\"color\" header=\"Color\" [editable]=\"true\"></p-column>\n        <p-column field=\"saleDate\" header=\"Sale Date\" [editable]=\"true\" [style]=\"{'overflow':'visible'}\">\n            <ng-template let-col let-car=\"rowData\" pTemplate=\"body\">\n                {{car[col.field]|date}}\n            </ng-template>\n            <ng-template let-col let-car=\"rowData\" pTemplate=\"editor\">\n                <p-calendar [(ngModel)]=\"car[col.field]\" appendTo=\"body\"></p-calendar>\n            </ng-template>\n        </p-column>\n    </p-dataTable>\n</div>\n\n<div class=\"content-section documentation\">\n    <p-tabView effect=\"fade\">\n        <p-tabPanel header=\"datatableeditabledemo.ts\">\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/datatable/datatableeditabledemo.ts\" class=\"btn-viewsource\" target=\"_blank\">\n                <i class=\"fa fa-github\"></i>\n                <span>View on GitHub</span>\n            </a>\n<pre>\n<code class=\"language-typescript\" pCode ngNonBindable>\nexport class DataTableEditableDemo implements OnInit &#123;\n\n    cars: Car[];\n\n    constructor(private carService: CarService) &#123; &#125;\n\n    ngOnInit() &#123;\n        this.carService.getCarsSmall().then(cars => this.cars = cars);\n    &#125;\n&#125;\n</code>\n</pre>\n        </p-tabPanel>\n\n        <p-tabPanel header=\"datatableeditabledemo.html\">\n            <a href=\"https://github.com/primefaces/primeng/tree/master/src/app/showcase/components/datatable/datatableeditabledemo.html\" class=\"btn-viewsource\" target=\"_blank\">\n                <i class=\"fa fa-github\"></i>\n                <span>View on GitHub</span>\n            </a>\n<pre>\n<code class=\"language-markup\" pCode ngNonBindable>\n&lt;p-dataTable [value]=\"cars\" [editable]=\"true\"&gt;\n    &lt;p-column field=\"vin\" header=\"Vin\" [editable]=\"true\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"year\" header=\"Year\" [editable]=\"true\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"brand\" header=\"Brand\" [editable]=\"true\"&gt;\n        &lt;ng-template let-col let-car=\"rowData\" pTemplate=\"editor\"&gt;\n            &lt;p-dropdown [(ngModel)]=\"car[col.field]\" [options]=\"brands\" [autoWidth]=\"false\" [style]=\"&#123;'width':'100%'&#125;\" required=\"true\"  appendTo=\"body\"&gt;&lt;/p-dropdown&gt;\n        &lt;/ng-template&gt;\n    &lt;/p-column&gt;\n    &lt;p-column field=\"color\" header=\"Color\" [editable]=\"true\"&gt;&lt;/p-column&gt;\n    &lt;p-column field=\"saleDate\" header=\"Sale Date\" [editable]=\"true\" [style]=\" &#123;'overflow':'visible' &#125;\"&gt;\n        &lt;ng-template let-col let-car=\"rowData\" pTemplate=\"body\"&gt;\n             &#123;&#123;car[col.field]|date &#125;&#125;\n        &lt;/ng-template&gt;\n        &lt;ng-template let-col let-car=\"rowData\" pTemplate=\"editor\"&gt;\n            &lt;p-calendar [(ngModel)]=\"car[col.field]\" appendTo=\"body\"&gt;&lt;/p-calendar&gt;\n        &lt;/ng-template&gt;\n    &lt;/p-column&gt;\n&lt;/p-dataTable&gt;\n</code>\n</pre>\n        </p-tabPanel>\n    </p-tabView>\n</div>\n"
 
 /***/ }),
 
