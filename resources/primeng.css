@@ -4439,6 +4439,17 @@ button.ui-button::-moz-focus-inner {
 .ui-fluid .fc .ui-button {
     width: auto;
 }
+.ui-selectbutton{
+    display: inline-block;
+}
+            
+.ui-selectbutton.ui-state-error {
+    padding: 0;
+}
+
+.ui-selectbutton .ui-button.ui-state-focus{
+    outline: none;
+}
 .ui-sidebar {
     position: fixed;
     padding: .5em 1em;
@@ -4555,17 +4566,6 @@ button.ui-button::-moz-focus-inner {
     .ui-sidebar-right.ui-sidebar-md {
         width: 20em;
     }
-}
-.ui-selectbutton{
-    display: inline-block;
-}
-            
-.ui-selectbutton.ui-state-error {
-    padding: 0;
-}
-
-.ui-selectbutton .ui-button.ui-state-focus{
-    outline: none;
 }
 .ui-slider {
 	position: relative;
