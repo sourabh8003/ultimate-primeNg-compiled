@@ -98,6 +98,7 @@ exports.TemplateWrapper = TemplateWrapper;
 var Column = (function () {
     function Column() {
         this.filterType = 'text';
+        this.exportable = true;
         this.sortFunction = new core_1.EventEmitter();
     }
     Column.prototype.ngAfterContentInit = function () {
@@ -177,6 +178,10 @@ __decorate([
 ], Column.prototype, "filterType", void 0);
 __decorate([
     core_1.Input(),
+    __metadata("design:type", Boolean)
+], Column.prototype, "excludeGlobalFilter", void 0);
+__decorate([
+    core_1.Input(),
     __metadata("design:type", Number)
 ], Column.prototype, "rowspan", void 0);
 __decorate([
@@ -185,12 +190,44 @@ __decorate([
 ], Column.prototype, "colspan", void 0);
 __decorate([
     core_1.Input(),
+    __metadata("design:type", String)
+], Column.prototype, "scope", void 0);
+__decorate([
+    core_1.Input(),
     __metadata("design:type", Object)
 ], Column.prototype, "style", void 0);
 __decorate([
     core_1.Input(),
     __metadata("design:type", String)
 ], Column.prototype, "styleClass", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Boolean)
+], Column.prototype, "exportable", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Object)
+], Column.prototype, "headerStyle", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", String)
+], Column.prototype, "headerStyleClass", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Object)
+], Column.prototype, "bodyStyle", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", String)
+], Column.prototype, "bodyStyleClass", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Object)
+], Column.prototype, "footerStyle", void 0);
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", String)
+], Column.prototype, "footerStyleClass", void 0);
 __decorate([
     core_1.Input(),
     __metadata("design:type", Boolean)
@@ -230,7 +267,7 @@ __decorate([
 Column = __decorate([
     core_2.Component({
         selector: 'p-column',
-        template: ""
+        template: ''
     })
 ], Column);
 exports.Column = Column;
@@ -256,6 +293,10 @@ var HeaderColumnGroup = (function () {
     return HeaderColumnGroup;
 }());
 __decorate([
+    core_1.Input(),
+    __metadata("design:type", Boolean)
+], HeaderColumnGroup.prototype, "frozen", void 0);
+__decorate([
     core_1.ContentChildren(Row),
     __metadata("design:type", core_1.QueryList)
 ], HeaderColumnGroup.prototype, "rows", void 0);
@@ -271,6 +312,10 @@ var FooterColumnGroup = (function () {
     }
     return FooterColumnGroup;
 }());
+__decorate([
+    core_1.Input(),
+    __metadata("design:type", Boolean)
+], FooterColumnGroup.prototype, "frozen", void 0);
 __decorate([
     core_1.ContentChildren(Row),
     __metadata("design:type", core_1.QueryList)

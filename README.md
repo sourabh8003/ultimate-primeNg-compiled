@@ -1,10 +1,24 @@
-# PrimeNG
-UI Components for Angular 2 and 4
+# ultimate-primeNG
+UI Components for Angular 2 & 4
 
-This version of primeNg contains some modified component which allows you to use variety of 
-user input elements or for any custom components you can send me a request.
+This version of primeNgcontains some modified version of components and features.
 
+Eg: 
 
-See [PrimeNG homepage](http://www.primefaces.org/primeng) for live showcase and documentation.
+1. customized autocomple with chips component with abitlity
+  * to display tooltips
+  * to add new values
+  * to add values on tab click
+2. customized chips component with abitlity 
+  * to display tooltips
+  * to add chips on tab click
+  
+You can directly use ultimate-primeNg in your angular projects without performing `buil` operation
+
+** just add this (https://github.com/sourabh8003/ultimate-primeNg-compiled) link in your `package.json` file
+
+example: `primeng": "https://github.com/sourabh8003/ultimate-primeNg-compiled.git"` 
+
+See Origin Version [PrimeNG homepage](http://www.primefaces.org/primeng) for live showcase and documentation.
 
 ![alt text](https://www.primefaces.org/primeng/assets/showcase/images/primeng-sidebar.svg "PrimeNG")

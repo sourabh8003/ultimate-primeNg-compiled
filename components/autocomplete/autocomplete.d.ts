@@ -72,7 +72,6 @@ export declare class AutoComplete implements AfterViewInit, AfterViewChecked, Do
     focus: boolean;
     filled: boolean;
     inputClick: boolean;
-    dropdownClick: boolean;
     inputKeyDown: boolean;
     noResults: boolean;
     differ: any;
@@ -108,6 +107,7 @@ export declare class AutoComplete implements AfterViewInit, AfterViewChecked, Do
     updateFilledState(): void;
     updateInputField(): void;
     bindDocumentClickListener(): void;
+    isDropdownClick(event: any): boolean;
     unbindDocumentClickListener(): void;
     ngOnDestroy(): void;
 }

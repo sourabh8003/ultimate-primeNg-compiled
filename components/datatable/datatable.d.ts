@@ -34,14 +34,6 @@ export declare class ColumnHeaders {
     dt: DataTable;
     constructor(dt: DataTable);
     columns: Column[];
-    toolTipMsg: string;
-    toolTipPos: string;
-    toolTipEve: string;
-    toolTipPosStyle: string;
-    toolTipDis: boolean;
-    toolTipAppendTo: string;
-    toolTipStyleClasess: string;
-    toolTipEsc: boolean;
 }
 export declare class ColumnFooters {
     dt: DataTable;
@@ -63,6 +55,8 @@ export declare class ScrollableView implements AfterViewInit, AfterViewChecked, 
     zone: NgZone;
     constructor(dt: DataTable, domHandler: DomHandler, el: ElementRef, renderer: Renderer2, zone: NgZone);
     columns: Column[];
+    headerColumnGroup: HeaderColumnGroup;
+    footerColumnGroup: HeaderColumnGroup;
     scrollHeaderViewChild: ElementRef;
     scrollHeaderBoxViewChild: ElementRef;
     scrollBodyViewChild: ElementRef;
@@ -91,6 +85,7 @@ export declare class ScrollableView implements AfterViewInit, AfterViewChecked, 
     ngAfterViewChecked(): void;
     initScrolling(): void;
     onBodyScroll(event: any): void;
+    setScrollHeight(): void;
     onHeaderScroll(event: any): void;
     hasVerticalOverflow(): boolean;
     alignScrollBar(): void;
@@ -104,14 +99,6 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
     changeDetector: ChangeDetectorRef;
     objectUtils: ObjectUtils;
     zone: NgZone;
-    toolTipMessage: string;
-    toolTipPosition: string;
-    toolTipEvent: string;
-    positionStyles: string;
-    toolTipDisabled: boolean;
-    toolTipAppendTo: string;
-    toolTipStyleClasses: string;
-    toolTipEscape: boolean;
     paginator: boolean;
     rows: number;
     pageLinks: number;
@@ -121,6 +108,7 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
     selectionMode: string;
     selectionChange: EventEmitter<any>;
     editable: boolean;
+    showHeaderCheckbox: boolean;
     isEditableAlways: boolean;
     onRowClick: EventEmitter<any>;
     onRowSelect: EventEmitter<any>;
@@ -149,11 +137,8 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
     tableStyleClass: string;
     globalFilter: any;
     sortMode: string;
-    sortField: string;
-    sortOrder: number;
     defaultSortOrder: number;
     groupField: string;
-    multiSortMeta: SortMeta[];
     contextMenu: any;
     csvSeparator: string;
     exportFilename: string;
@@ -194,6 +179,8 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
     dataKey: string;
     loading: boolean;
     loadingIcon: string;
+    virtualScrollDelay: number;
+    rowGroupExpandMode: string;
     valueChange: EventEmitter<any[]>;
     firstChange: EventEmitter<number>;
     onRowExpand: EventEmitter<any>;
@@ -202,8 +189,8 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
     onRowGroupCollapse: EventEmitter<any>;
     templates: QueryList<PrimeTemplate>;
     cols: QueryList<Column>;
-    headerColumnGroup: HeaderColumnGroup;
-    footerColumnGroup: FooterColumnGroup;
+    headerColumnGroups: QueryList<HeaderColumnGroup>;
+    footerColumnGroups: QueryList<FooterColumnGroup>;
     isEditableSet: boolean;
     _value: any[];
     dataToRender: any[];
@@ -213,6 +200,10 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
     columns: Column[];
     frozenColumns: Column[];
     scrollableColumns: Column[];
+    frozenHeaderColumnGroup: HeaderColumnGroup;
+    scrollableHeaderColumnGroup: HeaderColumnGroup;
+    frozenFooterColumnGroup: HeaderColumnGroup;
+    scrollableFooterColumnGroup: HeaderColumnGroup;
     columnsChanged: boolean;
     sortColumn: Column;
     columnResizing: boolean;
@@ -236,6 +227,7 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
     rowGroupHeaderTemplate: TemplateRef<any>;
     rowGroupFooterTemplate: TemplateRef<any>;
     rowExpansionTemplate: TemplateRef<any>;
+    emptyMessageTemplate: TemplateRef<any>;
     scrollBarWidth: number;
     editorClick: boolean;
     _first: number;
@@ -243,6 +235,9 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
     preventSelectionKeysPropagation: boolean;
     preventSortPropagation: boolean;
     preventRowClickPropagation: boolean;
+    _multiSortMeta: SortMeta[];
+    _sortField: string;
+    _sortOrder: number;
     differ: any;
     _selection: any;
     _totalRecords: number;
@@ -252,11 +247,18 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
     anchorRowIndex: number;
     rangeRowIndex: number;
     initialized: boolean;
+    virtualScrollTimer: any;
+    virtualScrollableTableWrapper: HTMLDivElement;
+    virtualScrollCallback: Function;
+    editChanged: boolean;
     constructor(el: ElementRef, domHandler: DomHandler, differs: IterableDiffers, renderer: Renderer2, changeDetector: ChangeDetectorRef, objectUtils: ObjectUtils, zone: NgZone);
     ngOnInit(): void;
     ngAfterContentInit(): void;
     ngAfterViewChecked(): void;
     ngAfterViewInit(): void;
+    multiSortMeta: SortMeta[];
+    sortField: string;
+    sortOrder: number;
     value: any[];
     first: number;
     totalRecords: number;
@@ -264,6 +266,8 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
     ngDoCheck(): void;
     handleDataChange(): void;
     initColumns(): void;
+    initScrollableColumns(): void;
+    initColumnGroups(): void;
     resolveFieldData(data: any, field: string): any;
     updateRowGroupMetadata(): void;
     updatePaginator(): void;
@@ -317,6 +321,9 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
     bindDocumentEditListener(isAlwaysEditable: boolean): void;
     unbindDocumentEditListener(): void;
     onCellEditorKeydown(event: any, column: Column, rowData: any, rowIndex: number): void;
+    onCellEditorInput(event: any, column: Column, rowData: any, rowIndex: number): void;
+    onCellEditorChange(event: any, column: Column, rowData: any, rowIndex: number): void;
+    onCellEditorBlur(event: any, column: Column, rowData: any, rowIndex: number): void;
     moveToPreviousCell(event: KeyboardEvent): void;
     moveToNextCell(event: KeyboardEvent): void;
     findPreviousEditableColumn(cell: Element): any;
@@ -349,7 +356,7 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
     isRowGroupExpanded(row: any): boolean;
     toggleRowGroup(event: Event, row: any): void;
     reset(): void;
-    exportCSV(): void;
+    exportCSV(options?: any): void;
     getBlockableElement(): HTMLElement;
     getRowStyleClass(rowData: any, rowIndex: number): string;
     visibleColumns(): Column[];

@@ -4,6 +4,9 @@ export interface MenuItem {
     command?: (event?: any) => void;
     url?: string;
     routerLink?: any;
+    queryParams?: {
+        [k: string]: any;
+    };
     items?: MenuItem[];
     expanded?: boolean;
     disabled?: boolean;

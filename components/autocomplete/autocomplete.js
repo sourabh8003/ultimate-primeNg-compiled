@@ -218,6 +218,9 @@ var AutoComplete = (function () {
             var hasFocus = this.multiple ? document.activeElement == this.multiInputEL.nativeElement : document.activeElement == this.inputEL.nativeElement;
             if (!this.panelVisible && hasFocus) {
                 this.panelVisible = true;
+                if (this.appendTo) {
+                    this.panelEL.nativeElement.style.minWidth = this.domHandler.getWidth(this.el.nativeElement.children[0]) + 'px';
+                }
                 this.panelEL.nativeElement.style.zIndex = ++domhandler_1.DomHandler.zindex;
                 this.domHandler.fadeIn(this.panelEL.nativeElement, 200);
                 this.bindDocumentClickListener();
@@ -236,7 +239,6 @@ var AutoComplete = (function () {
     };
     AutoComplete.prototype.handleDropdownClick = function (event) {
         this.focusInput();
-        this.dropdownClick = true;
         var queryValue = this.multiple ? this.multiInputEL.nativeElement.value : this.inputEL.nativeElement.value;
         if (this.dropdownMode === 'blank')
             this.search(event, '');
@@ -359,15 +361,16 @@ var AutoComplete = (function () {
         this.focus = false;
         this.onModelTouched();
         this.onBlur.emit(event);
-        if (this.forceSelection) {
+        if (this.forceSelection && this.suggestions) {
             var valid = false;
-            var inputValue = event.target.value.toLowerCase().trim();
+            var inputValue = event.target.value.trim();
             if (this.suggestions) {
                 for (var _i = 0, _a = this.suggestions; _i < _a.length; _i++) {
                     var suggestion = _a[_i];
                     var itemValue = this.field ? this.objectUtils.resolveFieldData(suggestion, this.field) : suggestion;
-                    if (itemValue && inputValue === itemValue.toLowerCase()) {
+                    if (itemValue && inputValue === itemValue) {
                         valid = true;
+                        this.selectItem(suggestion);
                         break;
                     }
                 }
@@ -412,7 +415,8 @@ var AutoComplete = (function () {
         if (this.multiple)
             this.filled = (this.value && this.value.length) || (this.multiInputEL && this.multiInputEL.nativeElement && this.multiInputEL.nativeElement.value != '');
         else
-            this.filled = this.inputFieldValue && this.inputFieldValue != '';
+            this.filled = (this.inputFieldValue && this.inputFieldValue != '') || (this.inputEL && this.inputEL.nativeElement && this.inputEL.nativeElement.value != '');
+        ;
     };
     AutoComplete.prototype.updateInputField = function () {
         var formattedValue = this.value ? (this.field ? this.objectUtils.resolveFieldData(this.value, this.field) || '' : this.value) : '';
@@ -429,14 +433,17 @@ var AutoComplete = (function () {
                 if (event.which === 3) {
                     return;
                 }
-                if (!_this.inputClick && !_this.dropdownClick) {
+                if (!_this.inputClick && !_this.isDropdownClick(event)) {
                     _this.hide();
                 }
                 _this.inputClick = false;
-                _this.dropdownClick = false;
                 _this.cd.markForCheck();
             });
         }
+    };
+    AutoComplete.prototype.isDropdownClick = function (event) {
+        var target = event.target;
+        return this.domHandler.hasClass(target, 'ui-autocomplete-dropdown') || this.domHandler.hasClass(target.parentNode, 'ui-autocomplete-dropdown');
     };
     AutoComplete.prototype.unbindDocumentClickListener = function () {
         if (this.documentClickListener) {
