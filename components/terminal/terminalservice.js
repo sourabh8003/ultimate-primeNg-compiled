@@ -25,10 +25,10 @@ var TerminalService = (function () {
             this.responseSource.next(response);
         }
     };
+    TerminalService = __decorate([
+        core_1.Injectable()
+    ], TerminalService);
     return TerminalService;
 }());
-TerminalService = __decorate([
-    core_1.Injectable()
-], TerminalService);
 exports.TerminalService = TerminalService;
 //# sourceMappingURL=terminalservice.js.map

@@ -165,7 +165,7 @@ var DomHandler = (function () {
         var last = +new Date();
         var opacity = 0;
         var tick = function () {
-            opacity = +element.style.opacity + (new Date().getTime() - last) / duration;
+            opacity = +element.style.opacity.replace(",", ".") + (new Date().getTime() - last) / duration;
             element.style.opacity = opacity;
             last = +new Date();
             if (+opacity < 1) {
@@ -341,11 +341,11 @@ var DomHandler = (function () {
             }
         }
     };
+    DomHandler.zindex = 1000;
+    DomHandler = __decorate([
+        core_1.Injectable()
+    ], DomHandler);
     return DomHandler;
 }());
-DomHandler.zindex = 1000;
-DomHandler = __decorate([
-    core_1.Injectable()
-], DomHandler);
 exports.DomHandler = DomHandler;
 //# sourceMappingURL=domhandler.js.map

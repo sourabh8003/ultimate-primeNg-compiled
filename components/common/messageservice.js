@@ -26,10 +26,10 @@ var MessageService = (function () {
     MessageService.prototype.clear = function () {
         this.messageSource.next(null);
     };
+    MessageService = __decorate([
+        core_1.Injectable()
+    ], MessageService);
     return MessageService;
 }());
-MessageService = __decorate([
-    core_1.Injectable()
-], MessageService);
 exports.MessageService = MessageService;
 //# sourceMappingURL=messageservice.js.map

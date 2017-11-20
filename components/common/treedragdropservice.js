@@ -21,10 +21,10 @@ var TreeDragDropService = (function () {
     TreeDragDropService.prototype.stopDrag = function (event) {
         this.dragStopSource.next(event);
     };
+    TreeDragDropService = __decorate([
+        core_1.Injectable()
+    ], TreeDragDropService);
     return TreeDragDropService;
 }());
-TreeDragDropService = __decorate([
-    core_1.Injectable()
-], TreeDragDropService);
 exports.TreeDragDropService = TreeDragDropService;
 //# sourceMappingURL=treedragdropservice.js.map

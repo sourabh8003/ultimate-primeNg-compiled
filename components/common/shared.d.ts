@@ -52,6 +52,7 @@ export declare class Column implements AfterContentInit {
     filterPlaceholder: string;
     filterMaxlength: number;
     frozen: boolean;
+    resizable: boolean;
     sortFunction: EventEmitter<any>;
     templates: QueryList<any>;
     template: TemplateRef<any>;

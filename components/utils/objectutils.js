@@ -119,10 +119,41 @@ var ObjectUtils = (function () {
         }
         return selectItems;
     };
+    ObjectUtils.prototype.insertIntoOrderedArray = function (item, index, arr, sourceArr) {
+        if (arr.length > 0) {
+            var injected = false;
+            for (var i = 0; i < arr.length; i++) {
+                var currentItemIndex = this.findIndexInList(arr[i], sourceArr);
+                if (currentItemIndex > index) {
+                    arr.splice(i, 0, item);
+                    injected = true;
+                    break;
+                }
+            }
+            if (!injected) {
+                arr.push(item);
+            }
+        }
+        else {
+            arr.push(item);
+        }
+    };
+    ObjectUtils.prototype.findIndexInList = function (item, list) {
+        var index = -1;
+        if (list) {
+            for (var i = 0; i < list.length; i++) {
+                if (list[i] == item) {
+                    index = i;
+                    break;
+                }
+            }
+        }
+        return index;
+    };
+    ObjectUtils = __decorate([
+        core_1.Injectable()
+    ], ObjectUtils);
     return ObjectUtils;
 }());
-ObjectUtils = __decorate([
-    core_1.Injectable()
-], ObjectUtils);
 exports.ObjectUtils = ObjectUtils;
 //# sourceMappingURL=objectutils.js.map

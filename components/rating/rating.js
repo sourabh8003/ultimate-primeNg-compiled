@@ -68,75 +68,75 @@ var Rating = (function () {
     Rating.prototype.setDisabledState = function (val) {
         this.disabled = val;
     };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], Rating.prototype, "disabled", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], Rating.prototype, "readonly", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Number)
+    ], Rating.prototype, "stars", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], Rating.prototype, "cancel", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Rating.prototype, "iconOnClass", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], Rating.prototype, "iconOnStyle", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Rating.prototype, "iconOffClass", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], Rating.prototype, "iconOffStyle", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Rating.prototype, "iconCancelClass", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], Rating.prototype, "iconCancelStyle", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], Rating.prototype, "onRate", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], Rating.prototype, "onCancel", void 0);
+    Rating = __decorate([
+        core_1.Component({
+            selector: 'p-rating',
+            template: "\n        <div class=\"ui-rating\" [ngClass]=\"{'ui-state-disabled': disabled}\">\n            <a href=\"#\" *ngIf=\"cancel\" (click)=\"clear($event)\">\n                <span class=\"fa\" [ngClass]=\"iconCancelClass\" [ngStyle]=\"iconCancelStyle\"></span>\n            </a>\n            <a href=\"#\" *ngFor=\"let star of starsArray;let i=index\" (click)=\"rate($event,i)\">\n                <span class=\"fa\" \n                    [ngClass]=\"(!value || i >= value) ? iconOffClass : iconOnClass\"\n                    [ngStyle]=\"(!value || i >= value) ? iconOffStyle : iconOnStyle\"\n                ></span>\n            </a>\n        </div>\n    ",
+            providers: [exports.RATING_VALUE_ACCESSOR]
+        })
+    ], Rating);
     return Rating;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], Rating.prototype, "disabled", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], Rating.prototype, "readonly", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Number)
-], Rating.prototype, "stars", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], Rating.prototype, "cancel", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], Rating.prototype, "iconOnClass", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Object)
-], Rating.prototype, "iconOnStyle", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], Rating.prototype, "iconOffClass", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Object)
-], Rating.prototype, "iconOffStyle", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], Rating.prototype, "iconCancelClass", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Object)
-], Rating.prototype, "iconCancelStyle", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], Rating.prototype, "onRate", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], Rating.prototype, "onCancel", void 0);
-Rating = __decorate([
-    core_1.Component({
-        selector: 'p-rating',
-        template: "\n        <div class=\"ui-rating\" [ngClass]=\"{'ui-state-disabled': disabled}\">\n            <a href=\"#\" *ngIf=\"cancel\" (click)=\"clear($event)\">\n                <span class=\"fa\" [ngClass]=\"iconCancelClass\" [ngStyle]=\"iconCancelStyle\"></span>\n            </a>\n            <a href=\"#\" *ngFor=\"let star of starsArray;let i=index\" (click)=\"rate($event,i)\">\n                <span class=\"fa\" \n                    [ngClass]=\"(!value || i >= value) ? iconOffClass : iconOnClass\"\n                    [ngStyle]=\"(!value || i >= value) ? iconOffStyle : iconOnStyle\"\n                ></span>\n            </a>\n        </div>\n    ",
-        providers: [exports.RATING_VALUE_ACCESSOR]
-    })
-], Rating);
 exports.Rating = Rating;
 var RatingModule = (function () {
     function RatingModule() {
     }
+    RatingModule = __decorate([
+        core_1.NgModule({
+            imports: [common_1.CommonModule],
+            exports: [Rating],
+            declarations: [Rating]
+        })
+    ], RatingModule);
     return RatingModule;
 }());
-RatingModule = __decorate([
-    core_1.NgModule({
-        imports: [common_1.CommonModule],
-        exports: [Rating],
-        declarations: [Rating]
-    })
-], RatingModule);
 exports.RatingModule = RatingModule;
 //# sourceMappingURL=rating.js.map

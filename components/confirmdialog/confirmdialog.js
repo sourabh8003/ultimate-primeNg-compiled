@@ -194,118 +194,118 @@ var ConfirmDialog = (function () {
         this.hide();
         this.confirmation = null;
     };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], ConfirmDialog.prototype, "header", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], ConfirmDialog.prototype, "icon", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], ConfirmDialog.prototype, "message", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], ConfirmDialog.prototype, "acceptIcon", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], ConfirmDialog.prototype, "acceptLabel", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], ConfirmDialog.prototype, "acceptVisible", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], ConfirmDialog.prototype, "rejectIcon", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], ConfirmDialog.prototype, "rejectLabel", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], ConfirmDialog.prototype, "rejectVisible", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], ConfirmDialog.prototype, "width", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], ConfirmDialog.prototype, "height", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], ConfirmDialog.prototype, "closeOnEscape", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], ConfirmDialog.prototype, "rtl", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], ConfirmDialog.prototype, "closable", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], ConfirmDialog.prototype, "responsive", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], ConfirmDialog.prototype, "appendTo", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], ConfirmDialog.prototype, "key", void 0);
+    __decorate([
+        core_1.ContentChild(shared_1.Footer),
+        __metadata("design:type", Object)
+    ], ConfirmDialog.prototype, "footer", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean),
+        __metadata("design:paramtypes", [Boolean])
+    ], ConfirmDialog.prototype, "visible", null);
+    ConfirmDialog = __decorate([
+        core_1.Component({
+            selector: 'p-confirmDialog',
+            template: "\n        <div [ngClass]=\"{'ui-dialog ui-confirmdialog ui-widget ui-widget-content ui-corner-all ui-shadow':true,'ui-dialog-rtl':rtl}\" \n            [style.display]=\"visible ? 'block' : 'none'\" [style.width.px]=\"width\" [style.height.px]=\"height\" (mousedown)=\"moveOnTop()\" [@dialogState]=\"visible ? 'visible' : 'hidden'\">\n            <div class=\"ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top\">\n                <span class=\"ui-dialog-title\" *ngIf=\"header\">{{header}}</span>\n                <a *ngIf=\"closable\" [ngClass]=\"{'ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all':true}\" href=\"#\" role=\"button\" (click)=\"close($event)\">\n                    <span class=\"fa fa-fw fa-close\"></span>\n                </a>\n            </div>\n            <div class=\"ui-dialog-content ui-widget-content\">\n                <i [ngClass]=\"'fa'\" [class]=\"icon\" *ngIf=\"icon\"></i>\n                <span class=\"ui-confirmdialog-message\" [innerHTML]=\"message\"></span>\n            </div>\n            <div class=\"ui-dialog-footer ui-widget-content\" *ngIf=\"footer\">\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n            <div class=\"ui-dialog-footer ui-widget-content\" *ngIf=\"!footer\">\n                <button type=\"button\" pButton [icon]=\"acceptIcon\" [label]=\"acceptLabel\" (click)=\"accept()\" *ngIf=\"acceptVisible\"></button>\n                <button type=\"button\" pButton [icon]=\"rejectIcon\" [label]=\"rejectLabel\" (click)=\"reject()\" *ngIf=\"rejectVisible\"></button>\n            </div>\n        </div>\n    ",
+            animations: [
+                animations_1.trigger('dialogState', [
+                    animations_1.state('hidden', animations_1.style({
+                        opacity: 0
+                    })),
+                    animations_1.state('visible', animations_1.style({
+                        opacity: 1
+                    })),
+                    animations_1.transition('visible => hidden', animations_1.animate('400ms ease-in')),
+                    animations_1.transition('hidden => visible', animations_1.animate('400ms ease-out'))
+                ])
+            ],
+            providers: [domhandler_1.DomHandler]
+        }),
+        __metadata("design:paramtypes", [core_1.ElementRef, domhandler_1.DomHandler,
+            core_1.Renderer2, confirmationservice_1.ConfirmationService, core_1.NgZone])
+    ], ConfirmDialog);
     return ConfirmDialog;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], ConfirmDialog.prototype, "header", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], ConfirmDialog.prototype, "icon", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], ConfirmDialog.prototype, "message", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], ConfirmDialog.prototype, "acceptIcon", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], ConfirmDialog.prototype, "acceptLabel", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], ConfirmDialog.prototype, "acceptVisible", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], ConfirmDialog.prototype, "rejectIcon", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], ConfirmDialog.prototype, "rejectLabel", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], ConfirmDialog.prototype, "rejectVisible", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Object)
-], ConfirmDialog.prototype, "width", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Object)
-], ConfirmDialog.prototype, "height", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], ConfirmDialog.prototype, "closeOnEscape", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], ConfirmDialog.prototype, "rtl", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], ConfirmDialog.prototype, "closable", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], ConfirmDialog.prototype, "responsive", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Object)
-], ConfirmDialog.prototype, "appendTo", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], ConfirmDialog.prototype, "key", void 0);
-__decorate([
-    core_1.ContentChild(shared_1.Footer),
-    __metadata("design:type", Object)
-], ConfirmDialog.prototype, "footer", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean),
-    __metadata("design:paramtypes", [Boolean])
-], ConfirmDialog.prototype, "visible", null);
-ConfirmDialog = __decorate([
-    core_1.Component({
-        selector: 'p-confirmDialog',
-        template: "\n        <div [ngClass]=\"{'ui-dialog ui-confirmdialog ui-widget ui-widget-content ui-corner-all ui-shadow':true,'ui-dialog-rtl':rtl}\" \n            [style.display]=\"visible ? 'block' : 'none'\" [style.width.px]=\"width\" [style.height.px]=\"height\" (mousedown)=\"moveOnTop()\" [@dialogState]=\"visible ? 'visible' : 'hidden'\">\n            <div class=\"ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top\">\n                <span class=\"ui-dialog-title\" *ngIf=\"header\">{{header}}</span>\n                <a *ngIf=\"closable\" [ngClass]=\"{'ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all':true}\" href=\"#\" role=\"button\" (click)=\"close($event)\">\n                    <span class=\"fa fa-fw fa-close\"></span>\n                </a>\n            </div>\n            <div class=\"ui-dialog-content ui-widget-content\">\n                <i [ngClass]=\"'fa'\" [class]=\"icon\" *ngIf=\"icon\"></i>\n                <span class=\"ui-confirmdialog-message\" [innerHTML]=\"message\"></span>\n            </div>\n            <div class=\"ui-dialog-footer ui-widget-content\" *ngIf=\"footer\">\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n            <div class=\"ui-dialog-footer ui-widget-content\" *ngIf=\"!footer\">\n                <button type=\"button\" pButton [icon]=\"acceptIcon\" [label]=\"acceptLabel\" (click)=\"accept()\" *ngIf=\"acceptVisible\"></button>\n                <button type=\"button\" pButton [icon]=\"rejectIcon\" [label]=\"rejectLabel\" (click)=\"reject()\" *ngIf=\"rejectVisible\"></button>\n            </div>\n        </div>\n    ",
-        animations: [
-            animations_1.trigger('dialogState', [
-                animations_1.state('hidden', animations_1.style({
-                    opacity: 0
-                })),
-                animations_1.state('visible', animations_1.style({
-                    opacity: 1
-                })),
-                animations_1.transition('visible => hidden', animations_1.animate('400ms ease-in')),
-                animations_1.transition('hidden => visible', animations_1.animate('400ms ease-out'))
-            ])
-        ],
-        providers: [domhandler_1.DomHandler]
-    }),
-    __metadata("design:paramtypes", [core_1.ElementRef, domhandler_1.DomHandler,
-        core_1.Renderer2, confirmationservice_1.ConfirmationService, core_1.NgZone])
-], ConfirmDialog);
 exports.ConfirmDialog = ConfirmDialog;
 var ConfirmDialogModule = (function () {
     function ConfirmDialogModule() {
     }
+    ConfirmDialogModule = __decorate([
+        core_1.NgModule({
+            imports: [common_1.CommonModule, button_1.ButtonModule],
+            exports: [ConfirmDialog, button_1.ButtonModule, shared_1.SharedModule],
+            declarations: [ConfirmDialog]
+        })
+    ], ConfirmDialogModule);
     return ConfirmDialogModule;
 }());
-ConfirmDialogModule = __decorate([
-    core_1.NgModule({
-        imports: [common_1.CommonModule, button_1.ButtonModule],
-        exports: [ConfirmDialog, button_1.ButtonModule, shared_1.SharedModule],
-        declarations: [ConfirmDialog]
-    })
-], ConfirmDialogModule);
 exports.ConfirmDialogModule = ConfirmDialogModule;
 //# sourceMappingURL=confirmdialog.js.map

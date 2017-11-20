@@ -14,34 +14,34 @@ var common_1 = require("@angular/common");
 var Toolbar = (function () {
     function Toolbar() {
     }
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], Toolbar.prototype, "style", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Toolbar.prototype, "styleClass", void 0);
+    Toolbar = __decorate([
+        core_1.Component({
+            selector: 'p-toolbar',
+            template: "\n        <div [ngClass]=\"'ui-toolbar ui-widget ui-widget-header ui-corner-all ui-helper-clearfix'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ng-content></ng-content>\n        </div>\n    "
+        })
+    ], Toolbar);
     return Toolbar;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Object)
-], Toolbar.prototype, "style", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], Toolbar.prototype, "styleClass", void 0);
-Toolbar = __decorate([
-    core_1.Component({
-        selector: 'p-toolbar',
-        template: "\n        <div [ngClass]=\"'ui-toolbar ui-widget ui-widget-header ui-corner-all ui-helper-clearfix'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ng-content></ng-content>\n        </div>\n    "
-    })
-], Toolbar);
 exports.Toolbar = Toolbar;
 var ToolbarModule = (function () {
     function ToolbarModule() {
     }
+    ToolbarModule = __decorate([
+        core_1.NgModule({
+            imports: [common_1.CommonModule],
+            exports: [Toolbar],
+            declarations: [Toolbar]
+        })
+    ], ToolbarModule);
     return ToolbarModule;
 }());
-ToolbarModule = __decorate([
-    core_1.NgModule({
-        imports: [common_1.CommonModule],
-        exports: [Toolbar],
-        declarations: [Toolbar]
-    })
-], ToolbarModule);
 exports.ToolbarModule = ToolbarModule;
 //# sourceMappingURL=toolbar.js.map

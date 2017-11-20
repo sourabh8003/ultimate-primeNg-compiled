@@ -122,93 +122,93 @@ var Sidebar = (function () {
         }
         this.unbindMaskClickListener();
     };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Sidebar.prototype, "position", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], Sidebar.prototype, "fullScreen", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Sidebar.prototype, "appendTo", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], Sidebar.prototype, "blockScroll", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], Sidebar.prototype, "style", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Sidebar.prototype, "styleClass", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], Sidebar.prototype, "autoZIndex", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Number)
+    ], Sidebar.prototype, "baseZIndex", void 0);
+    __decorate([
+        core_1.ViewChild('container'),
+        __metadata("design:type", core_1.ElementRef)
+    ], Sidebar.prototype, "containerViewChild", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], Sidebar.prototype, "onShow", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], Sidebar.prototype, "onHide", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], Sidebar.prototype, "visibleChange", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean),
+        __metadata("design:paramtypes", [Boolean])
+    ], Sidebar.prototype, "visible", null);
+    Sidebar = __decorate([
+        core_1.Component({
+            selector: 'p-sidebar',
+            template: "\n        <div #container [ngClass]=\"{'ui-sidebar ui-widget ui-widget-content ui-shadow':true, 'ui-sidebar-active': visible, \n            'ui-sidebar-left': (position === 'left'), 'ui-sidebar-right': (position === 'right'),\n            'ui-sidebar-top': (position === 'top'), 'ui-sidebar-bottom': (position === 'bottom'), \n            'ui-sidebar-full': fullScreen}\"\n            [@panelState]=\"visible ? 'visible' : 'hidden'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <a [ngClass]=\"{'ui-sidebar-close ui-corner-all':true}\" href=\"#\" role=\"button\" (click)=\"close($event)\">\n                <span class=\"fa fa-fw fa-close\"></span>\n            </a>\n            <ng-content></ng-content>\n        </div>\n    ",
+            animations: [
+                animations_1.trigger('panelState', [
+                    animations_1.state('hidden', animations_1.style({
+                        opacity: 0
+                    })),
+                    animations_1.state('visible', animations_1.style({
+                        opacity: 1
+                    })),
+                    animations_1.transition('visible => hidden', animations_1.animate('300ms ease-in')),
+                    animations_1.transition('hidden => visible', animations_1.animate('300ms ease-out'))
+                ])
+            ],
+            providers: [domhandler_1.DomHandler]
+        }),
+        __metadata("design:paramtypes", [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer2])
+    ], Sidebar);
     return Sidebar;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], Sidebar.prototype, "position", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], Sidebar.prototype, "fullScreen", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], Sidebar.prototype, "appendTo", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], Sidebar.prototype, "blockScroll", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Object)
-], Sidebar.prototype, "style", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], Sidebar.prototype, "styleClass", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], Sidebar.prototype, "autoZIndex", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Number)
-], Sidebar.prototype, "baseZIndex", void 0);
-__decorate([
-    core_1.ViewChild('container'),
-    __metadata("design:type", core_1.ElementRef)
-], Sidebar.prototype, "containerViewChild", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], Sidebar.prototype, "onShow", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], Sidebar.prototype, "onHide", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], Sidebar.prototype, "visibleChange", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean),
-    __metadata("design:paramtypes", [Boolean])
-], Sidebar.prototype, "visible", null);
-Sidebar = __decorate([
-    core_1.Component({
-        selector: 'p-sidebar',
-        template: "\n        <div #container [ngClass]=\"{'ui-sidebar ui-widget ui-widget-content ui-shadow':true, 'ui-sidebar-active': visible, \n            'ui-sidebar-left': (position === 'left'), 'ui-sidebar-right': (position === 'right'),\n            'ui-sidebar-top': (position === 'top'), 'ui-sidebar-bottom': (position === 'bottom'), \n            'ui-sidebar-full': fullScreen}\"\n            [@panelState]=\"visible ? 'visible' : 'hidden'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <a [ngClass]=\"{'ui-sidebar-close ui-corner-all':true}\" href=\"#\" role=\"button\" (click)=\"close($event)\">\n                <span class=\"fa fa-fw fa-close\"></span>\n            </a>\n            <ng-content></ng-content>\n        </div>\n    ",
-        animations: [
-            animations_1.trigger('panelState', [
-                animations_1.state('hidden', animations_1.style({
-                    opacity: 0
-                })),
-                animations_1.state('visible', animations_1.style({
-                    opacity: 1
-                })),
-                animations_1.transition('visible => hidden', animations_1.animate('300ms ease-in')),
-                animations_1.transition('hidden => visible', animations_1.animate('300ms ease-out'))
-            ])
-        ],
-        providers: [domhandler_1.DomHandler]
-    }),
-    __metadata("design:paramtypes", [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer2])
-], Sidebar);
 exports.Sidebar = Sidebar;
 var SidebarModule = (function () {
     function SidebarModule() {
     }
+    SidebarModule = __decorate([
+        core_1.NgModule({
+            imports: [common_1.CommonModule],
+            exports: [Sidebar],
+            declarations: [Sidebar]
+        })
+    ], SidebarModule);
     return SidebarModule;
 }());
-SidebarModule = __decorate([
-    core_1.NgModule({
-        imports: [common_1.CommonModule],
-        exports: [Sidebar],
-        declarations: [Sidebar]
-    })
-], SidebarModule);
 exports.SidebarModule = SidebarModule;
 //# sourceMappingURL=sidebar.js.map

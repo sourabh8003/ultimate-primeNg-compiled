@@ -53,75 +53,75 @@ var InputTextarea = (function () {
         this.rows = (linesCount >= this.rowsDefault) ? (linesCount + 1) : this.rowsDefault;
         this.onResize.emit(event || {});
     };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], InputTextarea.prototype, "autoResize", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Number)
+    ], InputTextarea.prototype, "rows", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Number)
+    ], InputTextarea.prototype, "cols", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], InputTextarea.prototype, "onResize", void 0);
+    __decorate([
+        core_1.HostListener('input', ['$event']),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [Object]),
+        __metadata("design:returntype", void 0)
+    ], InputTextarea.prototype, "onInput", null);
+    __decorate([
+        core_1.HostListener('focus', ['$event']),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [Object]),
+        __metadata("design:returntype", void 0)
+    ], InputTextarea.prototype, "onFocus", null);
+    __decorate([
+        core_1.HostListener('blur', ['$event']),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [Object]),
+        __metadata("design:returntype", void 0)
+    ], InputTextarea.prototype, "onBlur", null);
+    __decorate([
+        core_1.HostListener('keyup', ['$event']),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [Object]),
+        __metadata("design:returntype", void 0)
+    ], InputTextarea.prototype, "onKeyup", null);
+    InputTextarea = __decorate([
+        core_1.Directive({
+            selector: '[pInputTextarea]',
+            host: {
+                '[class.ui-inputtext]': 'true',
+                '[class.ui-corner-all]': 'true',
+                '[class.ui-state-default]': 'true',
+                '[class.ui-widget]': 'true',
+                '[class.ui-state-filled]': 'filled',
+                '[attr.rows]': 'rows',
+                '[attr.cols]': 'cols'
+            }
+        }),
+        __metadata("design:paramtypes", [core_1.ElementRef])
+    ], InputTextarea);
     return InputTextarea;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], InputTextarea.prototype, "autoResize", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Number)
-], InputTextarea.prototype, "rows", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Number)
-], InputTextarea.prototype, "cols", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], InputTextarea.prototype, "onResize", void 0);
-__decorate([
-    core_1.HostListener('input', ['$event']),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], InputTextarea.prototype, "onInput", null);
-__decorate([
-    core_1.HostListener('focus', ['$event']),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], InputTextarea.prototype, "onFocus", null);
-__decorate([
-    core_1.HostListener('blur', ['$event']),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], InputTextarea.prototype, "onBlur", null);
-__decorate([
-    core_1.HostListener('keyup', ['$event']),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], InputTextarea.prototype, "onKeyup", null);
-InputTextarea = __decorate([
-    core_1.Directive({
-        selector: '[pInputTextarea]',
-        host: {
-            '[class.ui-inputtext]': 'true',
-            '[class.ui-corner-all]': 'true',
-            '[class.ui-state-default]': 'true',
-            '[class.ui-widget]': 'true',
-            '[class.ui-state-filled]': 'filled',
-            '[attr.rows]': 'rows',
-            '[attr.cols]': 'cols'
-        }
-    }),
-    __metadata("design:paramtypes", [core_1.ElementRef])
-], InputTextarea);
 exports.InputTextarea = InputTextarea;
 var InputTextareaModule = (function () {
     function InputTextareaModule() {
     }
+    InputTextareaModule = __decorate([
+        core_1.NgModule({
+            imports: [common_1.CommonModule],
+            exports: [InputTextarea],
+            declarations: [InputTextarea]
+        })
+    ], InputTextareaModule);
     return InputTextareaModule;
 }());
-InputTextareaModule = __decorate([
-    core_1.NgModule({
-        imports: [common_1.CommonModule],
-        exports: [InputTextarea],
-        declarations: [InputTextarea]
-    })
-], InputTextareaModule);
 exports.InputTextareaModule = InputTextareaModule;
 //# sourceMappingURL=inputtextarea.js.map

@@ -56,6 +56,7 @@ export declare class AutoComplete implements AfterViewInit, AfterViewChecked, Do
     multiInputEL: ElementRef;
     panelEL: ElementRef;
     multiContainerEL: ElementRef;
+    dropdownButton: ElementRef;
     templates: QueryList<any>;
     itemTemplate: TemplateRef<any>;
     selectedItemTemplate: TemplateRef<any>;
@@ -91,7 +92,7 @@ export declare class AutoComplete implements AfterViewInit, AfterViewChecked, Do
     onInput(event: KeyboardEvent): void;
     onInputClick(event: MouseEvent): void;
     search(event: any, query: string): void;
-    selectItem(option: any): void;
+    selectItem(option: any, focus?: boolean): void;
     show(): void;
     align(): void;
     hide(): void;

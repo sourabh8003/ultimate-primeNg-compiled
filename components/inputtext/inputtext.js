@@ -25,39 +25,39 @@ var InputText = (function () {
     InputText.prototype.updateFilledState = function () {
         this.filled = this.el.nativeElement.value && this.el.nativeElement.value.length;
     };
+    __decorate([
+        core_1.HostListener('input', ['$event']),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [Object]),
+        __metadata("design:returntype", void 0)
+    ], InputText.prototype, "onInput", null);
+    InputText = __decorate([
+        core_1.Directive({
+            selector: '[pInputText]',
+            host: {
+                '[class.ui-inputtext]': 'true',
+                '[class.ui-corner-all]': 'true',
+                '[class.ui-state-default]': 'true',
+                '[class.ui-widget]': 'true',
+                '[class.ui-state-filled]': 'filled'
+            }
+        }),
+        __metadata("design:paramtypes", [core_1.ElementRef])
+    ], InputText);
     return InputText;
 }());
-__decorate([
-    core_1.HostListener('input', ['$event']),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], InputText.prototype, "onInput", null);
-InputText = __decorate([
-    core_1.Directive({
-        selector: '[pInputText]',
-        host: {
-            '[class.ui-inputtext]': 'true',
-            '[class.ui-corner-all]': 'true',
-            '[class.ui-state-default]': 'true',
-            '[class.ui-widget]': 'true',
-            '[class.ui-state-filled]': 'filled'
-        }
-    }),
-    __metadata("design:paramtypes", [core_1.ElementRef])
-], InputText);
 exports.InputText = InputText;
 var InputTextModule = (function () {
     function InputTextModule() {
     }
+    InputTextModule = __decorate([
+        core_1.NgModule({
+            imports: [common_1.CommonModule],
+            exports: [InputText],
+            declarations: [InputText]
+        })
+    ], InputTextModule);
     return InputTextModule;
 }());
-InputTextModule = __decorate([
-    core_1.NgModule({
-        imports: [common_1.CommonModule],
-        exports: [InputText],
-        declarations: [InputText]
-    })
-], InputTextModule);
 exports.InputTextModule = InputTextModule;
 //# sourceMappingURL=inputtext.js.map

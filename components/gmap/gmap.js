@@ -130,75 +130,75 @@ var GMap = (function () {
     GMap.prototype.getMap = function () {
         return this.map;
     };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], GMap.prototype, "style", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], GMap.prototype, "styleClass", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], GMap.prototype, "options", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Array)
+    ], GMap.prototype, "overlays", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], GMap.prototype, "onMapClick", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], GMap.prototype, "onOverlayClick", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], GMap.prototype, "onOverlayDragStart", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], GMap.prototype, "onOverlayDrag", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], GMap.prototype, "onOverlayDragEnd", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], GMap.prototype, "onMapReady", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], GMap.prototype, "onMapDragEnd", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], GMap.prototype, "onZoomChanged", void 0);
+    GMap = __decorate([
+        core_1.Component({
+            selector: 'p-gmap',
+            template: "<div [ngStyle]=\"style\" [class]=\"styleClass\"></div>"
+        }),
+        __metadata("design:paramtypes", [core_1.ElementRef, core_1.IterableDiffers, core_1.ChangeDetectorRef, core_1.NgZone])
+    ], GMap);
     return GMap;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Object)
-], GMap.prototype, "style", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], GMap.prototype, "styleClass", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Object)
-], GMap.prototype, "options", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Array)
-], GMap.prototype, "overlays", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], GMap.prototype, "onMapClick", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], GMap.prototype, "onOverlayClick", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], GMap.prototype, "onOverlayDragStart", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], GMap.prototype, "onOverlayDrag", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], GMap.prototype, "onOverlayDragEnd", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], GMap.prototype, "onMapReady", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], GMap.prototype, "onMapDragEnd", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], GMap.prototype, "onZoomChanged", void 0);
-GMap = __decorate([
-    core_1.Component({
-        selector: 'p-gmap',
-        template: "<div [ngStyle]=\"style\" [class]=\"styleClass\"></div>"
-    }),
-    __metadata("design:paramtypes", [core_1.ElementRef, core_1.IterableDiffers, core_1.ChangeDetectorRef, core_1.NgZone])
-], GMap);
 exports.GMap = GMap;
 var GMapModule = (function () {
     function GMapModule() {
     }
+    GMapModule = __decorate([
+        core_1.NgModule({
+            imports: [common_1.CommonModule],
+            exports: [GMap],
+            declarations: [GMap]
+        })
+    ], GMapModule);
     return GMapModule;
 }());
-GMapModule = __decorate([
-    core_1.NgModule({
-        imports: [common_1.CommonModule],
-        exports: [GMap],
-        declarations: [GMap]
-    })
-], GMapModule);
 exports.GMapModule = GMapModule;
 //# sourceMappingURL=gmap.js.map

@@ -76,52 +76,52 @@ var UIChart = (function () {
             this.chart = null;
         }
     };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], UIChart.prototype, "type", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], UIChart.prototype, "options", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], UIChart.prototype, "width", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], UIChart.prototype, "height", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], UIChart.prototype, "onDataSelect", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object),
+        __metadata("design:paramtypes", [Object])
+    ], UIChart.prototype, "data", null);
+    UIChart = __decorate([
+        core_1.Component({
+            selector: 'p-chart',
+            template: "\n        <div>\n            <canvas [attr.width]=\"width\" [attr.height]=\"height\" (click)=\"onCanvasClick($event)\"></canvas>\n        </div>\n    "
+        }),
+        __metadata("design:paramtypes", [core_1.ElementRef])
+    ], UIChart);
     return UIChart;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], UIChart.prototype, "type", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Object)
-], UIChart.prototype, "options", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], UIChart.prototype, "width", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], UIChart.prototype, "height", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], UIChart.prototype, "onDataSelect", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Object),
-    __metadata("design:paramtypes", [Object])
-], UIChart.prototype, "data", null);
-UIChart = __decorate([
-    core_1.Component({
-        selector: 'p-chart',
-        template: "\n        <div>\n            <canvas [attr.width]=\"width\" [attr.height]=\"height\" (click)=\"onCanvasClick($event)\"></canvas>\n        </div>\n    "
-    }),
-    __metadata("design:paramtypes", [core_1.ElementRef])
-], UIChart);
 exports.UIChart = UIChart;
 var ChartModule = (function () {
     function ChartModule() {
     }
+    ChartModule = __decorate([
+        core_1.NgModule({
+            imports: [common_1.CommonModule],
+            exports: [UIChart],
+            declarations: [UIChart]
+        })
+    ], ChartModule);
     return ChartModule;
 }());
-ChartModule = __decorate([
-    core_1.NgModule({
-        imports: [common_1.CommonModule],
-        exports: [UIChart],
-        declarations: [UIChart]
-    })
-], ChartModule);
 exports.ChartModule = ChartModule;
 //# sourceMappingURL=chart.js.map

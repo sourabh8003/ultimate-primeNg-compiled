@@ -85,45 +85,45 @@ var Button = (function () {
         }
         this.initialized = false;
     };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Button.prototype, "iconPos", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Button.prototype, "cornerStyleClass", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String),
+        __metadata("design:paramtypes", [String])
+    ], Button.prototype, "label", null);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String),
+        __metadata("design:paramtypes", [String])
+    ], Button.prototype, "icon", null);
+    Button = __decorate([
+        core_1.Directive({
+            selector: '[pButton]',
+            providers: [domhandler_1.DomHandler]
+        }),
+        __metadata("design:paramtypes", [core_1.ElementRef, domhandler_1.DomHandler])
+    ], Button);
     return Button;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], Button.prototype, "iconPos", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], Button.prototype, "cornerStyleClass", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String),
-    __metadata("design:paramtypes", [String])
-], Button.prototype, "label", null);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String),
-    __metadata("design:paramtypes", [String])
-], Button.prototype, "icon", null);
-Button = __decorate([
-    core_1.Directive({
-        selector: '[pButton]',
-        providers: [domhandler_1.DomHandler]
-    }),
-    __metadata("design:paramtypes", [core_1.ElementRef, domhandler_1.DomHandler])
-], Button);
 exports.Button = Button;
 var ButtonModule = (function () {
     function ButtonModule() {
     }
+    ButtonModule = __decorate([
+        core_1.NgModule({
+            imports: [common_1.CommonModule],
+            exports: [Button],
+            declarations: [Button]
+        })
+    ], ButtonModule);
     return ButtonModule;
 }());
-ButtonModule = __decorate([
-    core_1.NgModule({
-        imports: [common_1.CommonModule],
-        exports: [Button],
-        declarations: [Button]
-    })
-], ButtonModule);
 exports.ButtonModule = ButtonModule;
 //# sourceMappingURL=button.js.map

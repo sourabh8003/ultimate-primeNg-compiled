@@ -6,8 +6,6 @@ export declare class Dialog implements AfterViewInit, AfterViewChecked, OnDestro
     domHandler: DomHandler;
     renderer: Renderer2;
     zone: NgZone;
-    id: string;
-    ariaLabelledBy: string;
     header: string;
     draggable: boolean;
     resizable: boolean;
@@ -57,6 +55,7 @@ export declare class Dialog implements AfterViewInit, AfterViewChecked, OnDestro
     preventVisibleChangePropagation: boolean;
     executePostDisplayActions: boolean;
     initialized: boolean;
+    id: string;
     constructor(el: ElementRef, domHandler: DomHandler, renderer: Renderer2, zone: NgZone);
     visible: boolean;
     ngAfterViewChecked(): void;

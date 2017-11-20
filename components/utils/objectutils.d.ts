@@ -6,4 +6,6 @@ export declare class ObjectUtils {
     filter(value: any[], fields: any[], filterValue: string): any[];
     reorderArray(value: any[], from: number, to: number): void;
     generateSelectItems(val: any[], field: string): SelectItem[];
+    insertIntoOrderedArray(item: any, index: number, arr: any[], sourceArr: any[]): void;
+    findIndexInList(item: any, list: any): number;
 }

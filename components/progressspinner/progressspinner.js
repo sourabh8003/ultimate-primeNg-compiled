@@ -17,46 +17,46 @@ var ProgressSpinner = (function () {
         this.fill = "none";
         this.animationDuration = "2s";
     }
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], ProgressSpinner.prototype, "style", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], ProgressSpinner.prototype, "styleClass", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], ProgressSpinner.prototype, "strokeWidth", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], ProgressSpinner.prototype, "fill", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], ProgressSpinner.prototype, "animationDuration", void 0);
+    ProgressSpinner = __decorate([
+        core_1.Component({
+            selector: 'p-progressSpinner',
+            template: "\n        <div class=\"ui-progress-spinner\" [ngStyle]=\"style\" [ngClass]=\"styleClass\">\n            <svg class=\"ui-progress-spinner-svg\" viewBox=\"25 25 50 50\" [style.animation-duration]=\"animationDuration\">\n                <circle class=\"ui-progress-spinner-circle\" cx=\"50\" cy=\"50\" r=\"20\" [attr.fill]=\"fill\" [attr.stroke-width]=\"strokeWidth\" stroke-miterlimit=\"10\"/>\n            </svg>\n        </div>\n    "
+        })
+    ], ProgressSpinner);
     return ProgressSpinner;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Object)
-], ProgressSpinner.prototype, "style", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], ProgressSpinner.prototype, "styleClass", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], ProgressSpinner.prototype, "strokeWidth", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], ProgressSpinner.prototype, "fill", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], ProgressSpinner.prototype, "animationDuration", void 0);
-ProgressSpinner = __decorate([
-    core_1.Component({
-        selector: 'p-progressSpinner',
-        template: "\n        <div class=\"ui-progress-spinner\" [ngStyle]=\"style\" [ngClass]=\"styleClass\">\n            <svg class=\"ui-progress-spinner-svg\" viewBox=\"25 25 50 50\" [style.animation-duration]=\"animationDuration\">\n                <circle class=\"ui-progress-spinner-circle\" cx=\"50\" cy=\"50\" r=\"20\" [attr.fill]=\"fill\" [attr.stroke-width]=\"strokeWidth\" stroke-miterlimit=\"10\"/>\n            </svg>\n        </div>\n    "
-    })
-], ProgressSpinner);
 exports.ProgressSpinner = ProgressSpinner;
 var ProgressSpinnerModule = (function () {
     function ProgressSpinnerModule() {
     }
+    ProgressSpinnerModule = __decorate([
+        core_1.NgModule({
+            imports: [common_1.CommonModule],
+            exports: [ProgressSpinner],
+            declarations: [ProgressSpinner]
+        })
+    ], ProgressSpinnerModule);
     return ProgressSpinnerModule;
 }());
-ProgressSpinnerModule = __decorate([
-    core_1.NgModule({
-        imports: [common_1.CommonModule],
-        exports: [ProgressSpinner],
-        declarations: [ProgressSpinner]
-    })
-], ProgressSpinnerModule);
 exports.ProgressSpinnerModule = ProgressSpinnerModule;
 //# sourceMappingURL=progressspinner.js.map

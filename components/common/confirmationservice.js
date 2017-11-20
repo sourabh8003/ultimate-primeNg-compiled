@@ -22,10 +22,10 @@ var ConfirmationService = (function () {
     ConfirmationService.prototype.onAccept = function () {
         this.acceptConfirmationSource.next();
     };
+    ConfirmationService = __decorate([
+        core_1.Injectable()
+    ], ConfirmationService);
     return ConfirmationService;
 }());
-ConfirmationService = __decorate([
-    core_1.Injectable()
-], ConfirmationService);
 exports.ConfirmationService = ConfirmationService;
 //# sourceMappingURL=confirmationservice.js.map

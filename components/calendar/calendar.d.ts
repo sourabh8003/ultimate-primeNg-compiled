@@ -55,6 +55,7 @@ export declare class Calendar implements AfterViewInit, AfterViewChecked, OnInit
     clearButtonStyleClass: string;
     autoZIndex: boolean;
     baseZIndex: number;
+    panelStyleClass: string;
     onFocus: EventEmitter<any>;
     onBlur: EventEmitter<any>;
     onClose: EventEmitter<any>;

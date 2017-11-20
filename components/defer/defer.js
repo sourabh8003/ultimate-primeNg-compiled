@@ -50,36 +50,36 @@ var DeferredLoader = (function () {
             this.documentScrollListener();
         }
     };
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], DeferredLoader.prototype, "onLoad", void 0);
+    __decorate([
+        core_1.ContentChild(core_1.TemplateRef),
+        __metadata("design:type", core_1.TemplateRef)
+    ], DeferredLoader.prototype, "template", void 0);
+    DeferredLoader = __decorate([
+        core_1.Directive({
+            selector: '[pDefer]',
+            host: {},
+            providers: [domhandler_1.DomHandler]
+        }),
+        __metadata("design:paramtypes", [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer2, core_1.ViewContainerRef])
+    ], DeferredLoader);
     return DeferredLoader;
 }());
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], DeferredLoader.prototype, "onLoad", void 0);
-__decorate([
-    core_1.ContentChild(core_1.TemplateRef),
-    __metadata("design:type", core_1.TemplateRef)
-], DeferredLoader.prototype, "template", void 0);
-DeferredLoader = __decorate([
-    core_1.Directive({
-        selector: '[pDefer]',
-        host: {},
-        providers: [domhandler_1.DomHandler]
-    }),
-    __metadata("design:paramtypes", [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer2, core_1.ViewContainerRef])
-], DeferredLoader);
 exports.DeferredLoader = DeferredLoader;
 var DeferModule = (function () {
     function DeferModule() {
     }
+    DeferModule = __decorate([
+        core_1.NgModule({
+            imports: [common_1.CommonModule],
+            exports: [DeferredLoader],
+            declarations: [DeferredLoader]
+        })
+    ], DeferModule);
     return DeferModule;
 }());
-DeferModule = __decorate([
-    core_1.NgModule({
-        imports: [common_1.CommonModule],
-        exports: [DeferredLoader],
-        declarations: [DeferredLoader]
-    })
-], DeferModule);
 exports.DeferModule = DeferModule;
 //# sourceMappingURL=defer.js.map

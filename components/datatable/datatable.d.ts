@@ -109,7 +109,6 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
     selectionChange: EventEmitter<any>;
     editable: boolean;
     showHeaderCheckbox: boolean;
-    isEditableAlways: boolean;
     onRowClick: EventEmitter<any>;
     onRowSelect: EventEmitter<any>;
     onRowUnselect: EventEmitter<any>;
@@ -191,7 +190,6 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
     cols: QueryList<Column>;
     headerColumnGroups: QueryList<HeaderColumnGroup>;
     footerColumnGroups: QueryList<FooterColumnGroup>;
-    isEditableSet: boolean;
     _value: any[];
     dataToRender: any[];
     page: number;
@@ -228,6 +226,8 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
     rowGroupFooterTemplate: TemplateRef<any>;
     rowExpansionTemplate: TemplateRef<any>;
     emptyMessageTemplate: TemplateRef<any>;
+    paginatorLeftTemplate: TemplateRef<any>;
+    paginatorRightTemplate: TemplateRef<any>;
     scrollBarWidth: number;
     editorClick: boolean;
     _first: number;

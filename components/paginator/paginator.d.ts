@@ -1,4 +1,4 @@
-import { EventEmitter } from '@angular/core';
+import { EventEmitter, TemplateRef } from '@angular/core';
 import { SelectItem } from '../common/selectitem';
 export declare class Paginator {
     pageLinkSize: number;
@@ -6,6 +6,8 @@ export declare class Paginator {
     style: any;
     styleClass: string;
     alwaysShow: boolean;
+    templateLeft: TemplateRef<any>;
+    templateRight: TemplateRef<any>;
     pageLinks: number[];
     _totalRecords: number;
     _first: number;

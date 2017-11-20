@@ -1,7 +1,7 @@
 export declare class ProgressBar {
     value: any;
     showValue: boolean;
-    style: object;
+    style: any;
     styleClass: string;
     unit: string;
     mode: string;

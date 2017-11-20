@@ -16,28 +16,30 @@ var CodeHighlighter = (function () {
         this.el = el;
     }
     CodeHighlighter.prototype.ngOnInit = function () {
-        Prism.highlightElement(this.el.nativeElement);
+        if (Prism) {
+            Prism.highlightElement(this.el.nativeElement);
+        }
     };
+    CodeHighlighter = __decorate([
+        core_1.Directive({
+            selector: '[pCode]'
+        }),
+        __metadata("design:paramtypes", [core_1.ElementRef])
+    ], CodeHighlighter);
     return CodeHighlighter;
 }());
-CodeHighlighter = __decorate([
-    core_1.Directive({
-        selector: '[pCode]'
-    }),
-    __metadata("design:paramtypes", [core_1.ElementRef])
-], CodeHighlighter);
 exports.CodeHighlighter = CodeHighlighter;
 var CodeHighlighterModule = (function () {
     function CodeHighlighterModule() {
     }
+    CodeHighlighterModule = __decorate([
+        core_1.NgModule({
+            imports: [common_1.CommonModule],
+            exports: [CodeHighlighter],
+            declarations: [CodeHighlighter]
+        })
+    ], CodeHighlighterModule);
     return CodeHighlighterModule;
 }());
-CodeHighlighterModule = __decorate([
-    core_1.NgModule({
-        imports: [common_1.CommonModule],
-        exports: [CodeHighlighter],
-        declarations: [CodeHighlighter]
-    })
-], CodeHighlighterModule);
 exports.CodeHighlighterModule = CodeHighlighterModule;
 //# sourceMappingURL=codehighlighter.js.map

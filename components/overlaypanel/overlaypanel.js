@@ -117,76 +117,76 @@ var OverlayPanel = (function () {
         }
         this.target = null;
     };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], OverlayPanel.prototype, "dismissable", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], OverlayPanel.prototype, "showCloseIcon", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], OverlayPanel.prototype, "style", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], OverlayPanel.prototype, "styleClass", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], OverlayPanel.prototype, "appendTo", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], OverlayPanel.prototype, "onBeforeShow", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], OverlayPanel.prototype, "onAfterShow", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], OverlayPanel.prototype, "onBeforeHide", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], OverlayPanel.prototype, "onAfterHide", void 0);
+    OverlayPanel = __decorate([
+        core_1.Component({
+            selector: 'p-overlayPanel',
+            template: "\n        <div [ngClass]=\"'ui-overlaypanel ui-widget ui-widget-content ui-corner-all ui-shadow'\" [ngStyle]=\"style\" [class]=\"styleClass\"\n            [style.display]=\"visible ? 'block' : 'none'\" (click)=\"onPanelClick($event)\" [@panelState]=\"visible ? 'visible' : 'hidden'\">\n            <div class=\"ui-overlaypanel-content\">\n                <ng-content></ng-content>\n            </div>\n            <a href=\"#\" *ngIf=\"showCloseIcon\" class=\"ui-overlaypanel-close ui-state-default\" (click)=\"onCloseClick($event)\">\n                <span class=\"fa fa-fw fa-close\"></span>\n            </a>\n        </div>\n    ",
+            animations: [
+                animations_1.trigger('panelState', [
+                    animations_1.state('hidden', animations_1.style({
+                        opacity: 0
+                    })),
+                    animations_1.state('visible', animations_1.style({
+                        opacity: 1
+                    })),
+                    animations_1.transition('visible => hidden', animations_1.animate('400ms ease-in')),
+                    animations_1.transition('hidden => visible', animations_1.animate('400ms ease-out'))
+                ])
+            ],
+            providers: [domhandler_1.DomHandler]
+        }),
+        __metadata("design:paramtypes", [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer2, core_1.ChangeDetectorRef])
+    ], OverlayPanel);
     return OverlayPanel;
 }());
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], OverlayPanel.prototype, "dismissable", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Boolean)
-], OverlayPanel.prototype, "showCloseIcon", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Object)
-], OverlayPanel.prototype, "style", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", String)
-], OverlayPanel.prototype, "styleClass", void 0);
-__decorate([
-    core_1.Input(),
-    __metadata("design:type", Object)
-], OverlayPanel.prototype, "appendTo", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], OverlayPanel.prototype, "onBeforeShow", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], OverlayPanel.prototype, "onAfterShow", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], OverlayPanel.prototype, "onBeforeHide", void 0);
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", core_1.EventEmitter)
-], OverlayPanel.prototype, "onAfterHide", void 0);
-OverlayPanel = __decorate([
-    core_1.Component({
-        selector: 'p-overlayPanel',
-        template: "\n        <div [ngClass]=\"'ui-overlaypanel ui-widget ui-widget-content ui-corner-all ui-shadow'\" [ngStyle]=\"style\" [class]=\"styleClass\"\n            [style.display]=\"visible ? 'block' : 'none'\" (click)=\"onPanelClick($event)\" [@panelState]=\"visible ? 'visible' : 'hidden'\">\n            <div class=\"ui-overlaypanel-content\">\n                <ng-content></ng-content>\n            </div>\n            <a href=\"#\" *ngIf=\"showCloseIcon\" class=\"ui-overlaypanel-close ui-state-default\" (click)=\"onCloseClick($event)\">\n                <span class=\"fa fa-fw fa-close\"></span>\n            </a>\n        </div>\n    ",
-        animations: [
-            animations_1.trigger('panelState', [
-                animations_1.state('hidden', animations_1.style({
-                    opacity: 0
-                })),
-                animations_1.state('visible', animations_1.style({
-                    opacity: 1
-                })),
-                animations_1.transition('visible => hidden', animations_1.animate('400ms ease-in')),
-                animations_1.transition('hidden => visible', animations_1.animate('400ms ease-out'))
-            ])
-        ],
-        providers: [domhandler_1.DomHandler]
-    }),
-    __metadata("design:paramtypes", [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer2, core_1.ChangeDetectorRef])
-], OverlayPanel);
 exports.OverlayPanel = OverlayPanel;
 var OverlayPanelModule = (function () {
     function OverlayPanelModule() {
     }
+    OverlayPanelModule = __decorate([
+        core_1.NgModule({
+            imports: [common_1.CommonModule],
+            exports: [OverlayPanel],
+            declarations: [OverlayPanel]
+        })
+    ], OverlayPanelModule);
     return OverlayPanelModule;
 }());
-OverlayPanelModule = __decorate([
-    core_1.NgModule({
-        imports: [common_1.CommonModule],
-        exports: [OverlayPanel],
-        declarations: [OverlayPanel]
-    })
-], OverlayPanelModule);
 exports.OverlayPanelModule = OverlayPanelModule;
 //# sourceMappingURL=overlaypanel.js.map
