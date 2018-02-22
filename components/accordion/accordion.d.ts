@@ -27,6 +27,8 @@ export declare class Accordion implements BlockableUI, AfterContentInit, OnDestr
     onOpen: EventEmitter<any>;
     style: any;
     styleClass: string;
+    expandIcon: string;
+    collapseIcon: string;
     lazy: boolean;
     tabList: QueryList<AccordionTab>;
     tabListSubscription: Subscription;
@@ -37,6 +39,7 @@ export declare class Accordion implements BlockableUI, AfterContentInit, OnDestr
     initTabs(): any;
     getBlockableElement(): HTMLElement;
     activeIndex: any;
+    updateSelectionState(): void;
     ngOnDestroy(): void;
 }
 export declare class AccordionModule {

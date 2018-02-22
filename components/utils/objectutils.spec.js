@@ -65,5 +65,35 @@ describe('ObjectUtils Suite', function () {
         objectUtils.insertIntoOrderedArray('Barcelona', 3, arr, sourceArr);
         expect(arr).toEqual(['New York', 'Istanbul', 'Paris', 'Barcelona', 'London']);
     });
+    it('Should check if simple objects are equal', function () {
+        var _a = data.slice(0, 2), data0 = _a[0], data1 = _a[1];
+        expect(objectUtils.equals(data0, data0)).toBe(true);
+        expect(objectUtils.equals(data0, Object.assign({}, data0))).toBe(true);
+        expect(objectUtils.equals(data0, data1)).toBe(false);
+    });
+    it('Should check if nested objects are equal', function () {
+        var arr = [1, 2, [3, 4]];
+        expect(objectUtils.equals(arr, Object.assign({}, arr))).toBe(true);
+        var arr2 = [1, 2, [3, 4, 5]];
+        expect(objectUtils.equals(arr, arr2)).toBe(false);
+        var obj = { a: 1, b: { c: 3, d: 4 } };
+        expect(objectUtils.equals(obj, Object.assign({}, obj))).toBe(true);
+        var obj2 = { a: 1, b: { c: 3, d: 5 } };
+        expect(objectUtils.equals(obj, obj2)).toBe(false);
+    });
+    it('Should not cause stack overflow comparing recursive objects', function () {
+        var obj1 = { p: null };
+        var obj2 = { p: null };
+        obj1['p'] = obj1;
+        obj2['p'] = obj2;
+        expect(objectUtils.equals(obj1, obj2)).toBe(false);
+    });
+    it('Should be able to compare frozen nested objects', function () {
+        var obj1 = { a: 1, b: { c: 3, d: 4 } };
+        var obj2 = { a: 1, b: { c: 3, d: 4 } };
+        Object.preventExtensions(obj1);
+        Object.preventExtensions(obj2);
+        expect(objectUtils.equals(obj1, obj2)).toBe(true);
+    });
 });
 //# sourceMappingURL=objectutils.spec.js.map

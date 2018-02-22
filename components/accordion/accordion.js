@@ -99,7 +99,7 @@ var AccordionTab = (function () {
     AccordionTab = __decorate([
         core_1.Component({
             selector: 'p-accordionTab',
-            template: "\n        <div class=\"ui-accordion-header ui-state-default ui-corner-all\" [ngClass]=\"{'ui-state-active': selected,'ui-state-disabled':disabled}\">\n            <a href=\"#\" [attr.id]=\"id\" [attr.aria-controls]=\"id + '-content'\" role=\"tab\" [attr.aria-expanded]=\"selected\" (click)=\"toggle($event)\" (keydown.space)=\"toggle($event)\">\n                <span class=\"ui-accordion-toggle-icon fa fa-fw\" [ngClass]=\"{'fa-caret-down': selected, 'fa-caret-right': !selected}\"></span>\n                <ng-container *ngIf=\"!hasHeaderFacet\">\n                    {{header}}\n                </ng-container>\n                <ng-content select=\"p-header\" *ngIf=\"hasHeaderFacet\"></ng-content>\n            </a>\n        </div>\n        <div [attr.id]=\"id + '-content'\" class=\"ui-accordion-content-wrapper\" [@tabContent]=\"selected ? 'visible' : 'hidden'\" (@tabContent.done)=\"onToggleDone($event)\"\n            [ngClass]=\"{'ui-accordion-content-wrapper-overflown': !selected||animating}\" \n            role=\"region\" [attr.aria-hidden]=\"!selected\" [attr.aria-labelledby]=\"id\">\n            <div class=\"ui-accordion-content ui-widget-content\" *ngIf=\"lazy ? selected : true\">\n                <ng-content></ng-content>\n            </div>\n        </div>\n    ",
+            template: "\n        <div class=\"ui-accordion-header ui-state-default ui-corner-all\" [ngClass]=\"{'ui-state-active': selected,'ui-state-disabled':disabled}\">\n            <a href=\"#\" [attr.id]=\"id\" [attr.aria-controls]=\"id + '-content'\" role=\"tab\" [attr.aria-expanded]=\"selected\" (click)=\"toggle($event)\" (keydown.space)=\"toggle($event)\">\n                <span class=\"ui-accordion-toggle-icon\" [ngClass]=\"selected ? accordion.collapseIcon : accordion.expandIcon\"></span>\n                <span class=\"ui-accordion-header-text\" *ngIf=\"!hasHeaderFacet\">\n                    {{header}}\n                </span>\n                <ng-content select=\"p-header\" *ngIf=\"hasHeaderFacet\"></ng-content>\n            </a>\n        </div>\n        <div [attr.id]=\"id + '-content'\" class=\"ui-accordion-content-wrapper\" [@tabContent]=\"selected ? 'visible' : 'hidden'\" (@tabContent.done)=\"onToggleDone($event)\"\n            [ngClass]=\"{'ui-accordion-content-wrapper-overflown': !selected||animating}\" \n            role=\"region\" [attr.aria-hidden]=\"!selected\" [attr.aria-labelledby]=\"id\">\n            <div class=\"ui-accordion-content ui-widget-content\" *ngIf=\"lazy ? selected : true\">\n                <ng-content></ng-content>\n            </div>\n        </div>\n    ",
             animations: [
                 animations_1.trigger('tabContent', [
                     animations_1.state('hidden', animations_1.style({
@@ -124,6 +124,8 @@ var Accordion = (function () {
         this.changeDetector = changeDetector;
         this.onClose = new core_1.EventEmitter();
         this.onOpen = new core_1.EventEmitter();
+        this.expandIcon = 'fa fa-fw fa-caret-right';
+        this.collapseIcon = 'fa fa-fw fa-caret-down';
         this.tabs = [];
     }
     Accordion.prototype.ngAfterContentInit = function () {
@@ -136,6 +138,7 @@ var Accordion = (function () {
     };
     Accordion.prototype.initTabs = function () {
         this.tabs = this.tabList.toArray();
+        this.updateSelectionState();
     };
     Accordion.prototype.getBlockableElement = function () {
         return this.el.nativeElement.children[0];
@@ -146,21 +149,24 @@ var Accordion = (function () {
         },
         set: function (val) {
             this._activeIndex = val;
-            if (this.tabs && this.tabs.length && this._activeIndex != null) {
-                for (var i = 0; i < this.tabs.length; i++) {
-                    var selected = this.multiple ? this._activeIndex.includes(i) : (i === this._activeIndex);
-                    var changed = selected !== this.tabs[i].selected;
-                    if (changed) {
-                        this.tabs[i].animating = true;
-                    }
-                    this.tabs[i].selected = selected;
-                    this.tabs[i].selectedChange.emit(selected);
-                }
-            }
+            this.updateSelectionState();
         },
         enumerable: true,
         configurable: true
     });
+    Accordion.prototype.updateSelectionState = function () {
+        if (this.tabs && this.tabs.length && this._activeIndex != null) {
+            for (var i = 0; i < this.tabs.length; i++) {
+                var selected = this.multiple ? this._activeIndex.includes(i) : (i === this._activeIndex);
+                var changed = selected !== this.tabs[i].selected;
+                if (changed) {
+                    this.tabs[i].animating = true;
+                }
+                this.tabs[i].selected = selected;
+                this.tabs[i].selectedChange.emit(selected);
+            }
+        }
+    };
     Accordion.prototype.ngOnDestroy = function () {
         if (this.tabListSubscription) {
             this.tabListSubscription.unsubscribe();
@@ -186,6 +192,14 @@ var Accordion = (function () {
         core_1.Input(),
         __metadata("design:type", String)
     ], Accordion.prototype, "styleClass", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Accordion.prototype, "expandIcon", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Accordion.prototype, "collapseIcon", void 0);
     __decorate([
         core_1.Input(),
         __metadata("design:type", Boolean)
@@ -215,7 +229,7 @@ var AccordionModule = (function () {
     AccordionModule = __decorate([
         core_1.NgModule({
             imports: [common_1.CommonModule],
-            exports: [Accordion, AccordionTab],
+            exports: [Accordion, AccordionTab, shared_1.SharedModule],
             declarations: [Accordion, AccordionTab]
         })
     ], AccordionModule);

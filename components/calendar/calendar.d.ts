@@ -56,6 +56,7 @@ export declare class Calendar implements AfterViewInit, AfterViewChecked, OnInit
     autoZIndex: boolean;
     baseZIndex: number;
     panelStyleClass: string;
+    keepInvalid: boolean;
     onFocus: EventEmitter<any>;
     onBlur: EventEmitter<any>;
     onClose: EventEmitter<any>;
@@ -145,6 +146,7 @@ export declare class Calendar implements AfterViewInit, AfterViewChecked, OnInit
     isDateDisabled(day: number, month: number, year: number): boolean;
     isDayDisabled(day: number, month: number, year: number): boolean;
     onInputFocus(event: Event): void;
+    onInputClick(event: Event): void;
     onInputBlur(event: Event): void;
     onButtonClick(event: any, inputfield: any): void;
     onInputKeydown(event: any): void;

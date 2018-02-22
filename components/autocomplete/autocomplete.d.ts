@@ -103,6 +103,7 @@ export declare class AutoComplete implements AfterViewInit, AfterViewChecked, Do
     onKeyup(event: any): void;
     onInputFocus(event: any): void;
     onInputBlur(event: any): void;
+    onInputChange(event: any): void;
     isSelected(val: any): boolean;
     findOptionIndex(option: any): number;
     updateFilledState(): void;
