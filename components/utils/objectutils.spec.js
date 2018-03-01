@@ -4,9 +4,11 @@ var objectutils_1 = require("./objectutils");
 var testing_1 = require("@angular/core/testing");
 describe('ObjectUtils Suite', function () {
     var objectUtils = null;
-    beforeEach(function () { return testing_1.TestBed.configureTestingModule({
-        providers: [objectutils_1.ObjectUtils]
-    }); });
+    beforeEach(function () {
+        return testing_1.TestBed.configureTestingModule({
+            providers: [objectutils_1.ObjectUtils]
+        });
+    });
     beforeEach(testing_1.inject([objectutils_1.ObjectUtils], function (s) {
         objectUtils = s;
     }));
