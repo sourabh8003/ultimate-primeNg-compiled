@@ -5,6 +5,8 @@ var common_1 = require("@angular/common");
 var UIChart = (function () {
     function UIChart(el) {
         this.el = el;
+        this.options = {};
+        this.responsive = true;
         this.onDataSelect = new core_1.EventEmitter();
     }
     Object.defineProperty(UIChart.prototype, "data", {
@@ -32,6 +34,8 @@ var UIChart = (function () {
         }
     };
     UIChart.prototype.initChart = function () {
+        var opts = this.options || {};
+        opts.responsive = this.responsive;
         this.chart = new Chart(this.el.nativeElement.children[0].children[0], {
             type: this.type,
             data: this.data,
@@ -70,7 +74,7 @@ var UIChart = (function () {
     UIChart.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-chart',
-                    template: "\n        <div style=\"position:relative\" [style.width]=\"width\" [style.height]=\"height\">\n            <canvas (click)=\"onCanvasClick($event)\"></canvas>\n        </div>\n    "
+                    template: "\n        <div style=\"position:relative\" [style.width]=\"responsive ? null : width\" [style.height]=\"responsive ? null : height\">\n            <canvas [attr.width]=\"responsive ? null : width\" [attr.height]=\"responsive ? null : height\" (click)=\"onCanvasClick($event)\"></canvas>\n        </div>\n    "
                 },] },
     ];
     /** @nocollapse */
@@ -82,6 +86,7 @@ var UIChart = (function () {
         "options": [{ type: core_1.Input },],
         "width": [{ type: core_1.Input },],
         "height": [{ type: core_1.Input },],
+        "responsive": [{ type: core_1.Input },],
         "onDataSelect": [{ type: core_1.Output },],
         "data": [{ type: core_1.Input },],
     };

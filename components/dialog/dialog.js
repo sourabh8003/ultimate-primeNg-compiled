@@ -24,6 +24,9 @@ var Dialog = (function () {
         this.blockScroll = false;
         this.autoZIndex = true;
         this.baseZIndex = 0;
+        this.minX = 0;
+        this.minY = 0;
+        this.autoAlign = true;
         this.onShow = new core_1.EventEmitter();
         this.onHide = new core_1.EventEmitter();
         this.visibleChange = new core_1.EventEmitter();
@@ -50,15 +53,28 @@ var Dialog = (function () {
         configurable: true
     });
     Dialog.prototype.ngAfterViewChecked = function () {
+        var _this = this;
         if (this.executePostDisplayActions) {
             this.onShow.emit({});
             this.positionOverlay();
             this.focus();
+            this.currentHeight = this.domHandler.getOuterHeight(this.containerViewChild.nativeElement);
             this.executePostDisplayActions = false;
+        }
+        else if (this.autoAlign && this.visible) {
+            this.zone.runOutsideAngular(function () {
+                setTimeout(function () {
+                    var height = _this.domHandler.getOuterHeight(_this.containerViewChild.nativeElement);
+                    if (height !== _this.currentHeight) {
+                        _this.currentHeight = height;
+                        _this.positionOverlay();
+                    }
+                }, 50);
+            });
         }
     };
     Dialog.prototype.focus = function () {
-        var focusable = this.domHandler.findSingle(this.containerViewChild.nativeElement, 'button, input, textarea, select');
+        var focusable = this.domHandler.findSingle(this.containerViewChild.nativeElement, 'button');
         if (focusable) {
             focusable.focus();
         }
@@ -92,6 +108,7 @@ var Dialog = (function () {
         this.onHide.emit({});
         this.unbindMaskClickListener();
         this.unbindGlobalListeners();
+        this.dragging = false;
         if (this.modal) {
             this.disableModality();
         }
@@ -202,10 +219,14 @@ var Dialog = (function () {
         if (this.dragging) {
             var deltaX = event.pageX - this.lastPageX;
             var deltaY = event.pageY - this.lastPageY;
-            var leftPos = parseInt(this.containerViewChild.nativeElement.style.left);
-            var topPos = parseInt(this.containerViewChild.nativeElement.style.top);
-            this.containerViewChild.nativeElement.style.left = leftPos + deltaX + 'px';
-            this.containerViewChild.nativeElement.style.top = topPos + deltaY + 'px';
+            var leftPos = parseInt(this.containerViewChild.nativeElement.style.left) + deltaX;
+            var topPos = parseInt(this.containerViewChild.nativeElement.style.top) + deltaY;
+            if (leftPos >= this.minX) {
+                this.containerViewChild.nativeElement.style.left = leftPos + 'px';
+            }
+            if (topPos >= this.minY) {
+                this.containerViewChild.nativeElement.style.top = topPos + 'px';
+            }
             this.lastPageX = event.pageX;
             this.lastPageY = event.pageY;
         }
@@ -254,6 +275,7 @@ var Dialog = (function () {
     Dialog.prototype.bindGlobalListeners = function () {
         if (this.draggable) {
             this.bindDocumentDragListener();
+            this.bindDocumentDragEndListener();
         }
         if (this.resizable) {
             this.bindDocumentResizeListeners();
@@ -267,6 +289,7 @@ var Dialog = (function () {
     };
     Dialog.prototype.unbindGlobalListeners = function () {
         this.unbindDocumentDragListener();
+        this.unbindDocumentDragEndListener();
         this.unbindDocumentResizeListeners();
         this.unbindDocumentResponsiveListener();
         this.unbindDocumentEscapeListener();
@@ -282,6 +305,19 @@ var Dialog = (function () {
         if (this.documentDragListener) {
             window.document.removeEventListener('mousemove', this.documentDragListener);
             this.documentDragListener = null;
+        }
+    };
+    Dialog.prototype.bindDocumentDragEndListener = function () {
+        var _this = this;
+        this.zone.runOutsideAngular(function () {
+            _this.documentDragEndListener = _this.endDrag.bind(_this);
+            window.document.addEventListener('mouseup', _this.documentDragEndListener);
+        });
+    };
+    Dialog.prototype.unbindDocumentDragEndListener = function () {
+        if (this.documentDragEndListener) {
+            window.document.removeEventListener('mouseup', this.documentDragEndListener);
+            this.documentDragEndListener = null;
         }
     };
     Dialog.prototype.bindDocumentResizeListeners = function () {
@@ -357,7 +393,7 @@ var Dialog = (function () {
     Dialog.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-dialog',
-                    template: "\n        <div #container [ngClass]=\"{'ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow':true, 'ui-dialog-rtl':rtl,'ui-dialog-draggable':draggable}\" [style.display]=\"visible ? 'block' : 'none'\"\n            [ngStyle]=\"style\" [class]=\"styleClass\" [style.width.px]=\"width\" [style.height.px]=\"height\" [style.minWidth.px]=\"minWidth\" (mousedown)=\"moveOnTop()\" [@dialogState]=\"visible ? 'visible' : 'hidden'\"\n            role=\"dialog\" [attr.aria-labelledby]=\"id + '-label'\">\n            <div #titlebar class=\"ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top\"\n                (mousedown)=\"initDrag($event)\" (mouseup)=\"endDrag($event)\" *ngIf=\"showHeader\">\n                <span [attr.id]=\"id + '-label'\" class=\"ui-dialog-title\" *ngIf=\"header\">{{header}}</span>\n                <span [attr.id]=\"id + '-label'\" class=\"ui-dialog-title\" *ngIf=\"headerFacet && headerFacet.first\">\n                    <ng-content select=\"p-header\"></ng-content>\n                </span>\n                <a *ngIf=\"closable\" [ngClass]=\"{'ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all':true}\" href=\"#\" role=\"button\" (click)=\"close($event)\" (mousedown)=\"onCloseMouseDown($event)\">\n                    <span class=\"fa fa-fw fa-close\"></span>\n                </a>\n            </div>\n            <div #content class=\"ui-dialog-content ui-widget-content\" [ngStyle]=\"contentStyle\">\n                <ng-content></ng-content>\n            </div>\n            <div class=\"ui-dialog-footer ui-widget-content\" *ngIf=\"footerFacet && footerFacet.first\">\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n            <div *ngIf=\"resizable\" class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"\n                (mousedown)=\"initResize($event)\"></div>\n        </div>\n    ",
+                    template: "\n        <div #container [ngClass]=\"{'ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow':true, 'ui-dialog-rtl':rtl,'ui-dialog-draggable':draggable}\" [style.display]=\"visible ? 'block' : 'none'\"\n            [ngStyle]=\"style\" [class]=\"styleClass\" [style.width.px]=\"width\" [style.height.px]=\"height\" [style.minWidth.px]=\"minWidth\" (mousedown)=\"moveOnTop()\" [@dialogState]=\"visible ? 'visible' : 'hidden'\"\n            role=\"dialog\" [attr.aria-labelledby]=\"id + '-label'\">\n            <div #titlebar class=\"ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top\"\n                (mousedown)=\"initDrag($event)\" *ngIf=\"showHeader\">\n                <span [attr.id]=\"id + '-label'\" class=\"ui-dialog-title\" *ngIf=\"header\">{{header}}</span>\n                <span [attr.id]=\"id + '-label'\" class=\"ui-dialog-title\" *ngIf=\"headerFacet && headerFacet.first\">\n                    <ng-content select=\"p-header\"></ng-content>\n                </span>\n                <a *ngIf=\"closable\" [ngClass]=\"{'ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all':true}\" href=\"#\" role=\"button\" (click)=\"close($event)\" (mousedown)=\"onCloseMouseDown($event)\">\n                    <span class=\"fa fa-fw fa-close\"></span>\n                </a>\n            </div>\n            <div #content class=\"ui-dialog-content ui-widget-content\" [ngStyle]=\"contentStyle\">\n                <ng-content></ng-content>\n            </div>\n            <div class=\"ui-dialog-footer ui-widget-content\" *ngIf=\"footerFacet && footerFacet.first\">\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n            <div *ngIf=\"resizable\" class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"\n                (mousedown)=\"initResize($event)\"></div>\n        </div>\n    ",
                     animations: [
                         animations_1.trigger('dialogState', [
                             animations_1.state('hidden', animations_1.style({
@@ -405,6 +441,9 @@ var Dialog = (function () {
         "blockScroll": [{ type: core_1.Input },],
         "autoZIndex": [{ type: core_1.Input },],
         "baseZIndex": [{ type: core_1.Input },],
+        "minX": [{ type: core_1.Input },],
+        "minY": [{ type: core_1.Input },],
+        "autoAlign": [{ type: core_1.Input },],
         "headerFacet": [{ type: core_1.ContentChildren, args: [shared_1.Header, { descendants: false },] },],
         "footerFacet": [{ type: core_1.ContentChildren, args: [shared_1.Footer, { descendants: false },] },],
         "containerViewChild": [{ type: core_1.ViewChild, args: ['container',] },],

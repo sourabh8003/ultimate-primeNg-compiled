@@ -256,6 +256,7 @@ var AutoComplete = (function () {
         var removedValue = this.value[itemIndex];
         this.value = this.value.filter(function (val, i) { return i != itemIndex; });
         this.onModelChange(this.value);
+        this.updateFilledState();
         this.onUnselect.emit(removedValue);
     };
     AutoComplete.prototype.onKeydown = function (event) {

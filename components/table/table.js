@@ -79,6 +79,7 @@ var Table = (function () {
         this.onContextMenuSelect = new core_1.EventEmitter();
         this.onColResize = new core_1.EventEmitter();
         this.onColReorder = new core_1.EventEmitter();
+        this.onRowReorder = new core_1.EventEmitter();
         this.onEditInit = new core_1.EventEmitter();
         this.onEditComplete = new core_1.EventEmitter();
         this.onEditCancel = new core_1.EventEmitter();
@@ -334,6 +335,7 @@ var Table = (function () {
             first: this.first,
             rows: this.rows
         });
+        this.tableService.onValueChange(this.value);
     };
     Table.prototype.sort = function (event) {
         var originalEvent = event.originalEvent;
@@ -364,47 +366,49 @@ var Table = (function () {
     };
     Table.prototype.sortSingle = function () {
         var _this = this;
-        this.first = 0;
-        if (this.lazy) {
-            this.onLazyLoad.emit(this.createLazyLoadMetadata());
+        if (this.sortField && this.sortOrder) {
+            this.first = 0;
+            if (this.lazy) {
+                this.onLazyLoad.emit(this.createLazyLoadMetadata());
+            }
+            else if (this.value) {
+                if (this.customSort) {
+                    this.sortFunction.emit({
+                        data: this.value,
+                        mode: this.sortMode,
+                        field: this.sortField,
+                        order: this.sortOrder
+                    });
+                }
+                else {
+                    this.value.sort(function (data1, data2) {
+                        var value1 = _this.objectUtils.resolveFieldData(data1, _this.sortField);
+                        var value2 = _this.objectUtils.resolveFieldData(data2, _this.sortField);
+                        var result = null;
+                        if (value1 == null && value2 != null)
+                            result = -1;
+                        else if (value1 != null && value2 == null)
+                            result = 1;
+                        else if (value1 == null && value2 == null)
+                            result = 0;
+                        else if (typeof value1 === 'string' && typeof value2 === 'string')
+                            result = value1.localeCompare(value2);
+                        else
+                            result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
+                        return (_this.sortOrder * result);
+                    });
+                }
+                if (this.hasFilter()) {
+                    this._filter();
+                }
+            }
+            var sortMeta = {
+                field: this.sortField,
+                order: this.sortOrder
+            };
+            this.onSort.emit(sortMeta);
+            this.tableService.onSort(sortMeta);
         }
-        else if (this.value) {
-            if (this.customSort) {
-                this.sortFunction.emit({
-                    data: this.value,
-                    mode: this.sortMode,
-                    field: this.sortField,
-                    order: this.sortOrder
-                });
-            }
-            else {
-                this.value.sort(function (data1, data2) {
-                    var value1 = _this.objectUtils.resolveFieldData(data1, _this.sortField);
-                    var value2 = _this.objectUtils.resolveFieldData(data2, _this.sortField);
-                    var result = null;
-                    if (value1 == null && value2 != null)
-                        result = -1;
-                    else if (value1 != null && value2 == null)
-                        result = 1;
-                    else if (value1 == null && value2 == null)
-                        result = 0;
-                    else if (typeof value1 === 'string' && typeof value2 === 'string')
-                        result = value1.localeCompare(value2);
-                    else
-                        result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
-                    return (_this.sortOrder * result);
-                });
-            }
-            if (this.hasFilter()) {
-                this._filter();
-            }
-        }
-        var sortMeta = {
-            field: this.sortField,
-            order: this.sortOrder
-        };
-        this.onSort.emit(sortMeta);
-        this.tableService.onSort(sortMeta);
     };
     Table.prototype.sortMultiple = function () {
         var _this = this;
@@ -496,49 +500,100 @@ var Table = (function () {
             }
             else {
                 var rowData = event.rowData;
-                var dataKeyValue = this.dataKey ? String(this.objectUtils.resolveFieldData(rowData, this.dataKey)) : null;
                 var selected = this.isSelected(rowData);
+                var metaSelection = this.rowTouched ? false : this.metaKeySelection;
+                var dataKeyValue = this.dataKey ? String(this.objectUtils.resolveFieldData(rowData, this.dataKey)) : null;
                 this.anchorRowIndex = event.rowIndex;
                 this.rangeRowIndex = event.rowIndex;
-                if (this.selectionMode === 'single') {
-                    if (selected) {
-                        this._selection = null;
-                        this.selectionKeys = {};
-                        this.selectionChange.emit(this.selection);
+                if (metaSelection) {
+                    var metaKey = event.originalEvent.metaKey || event.originalEvent.ctrlKey;
+                    if (selected && metaKey) {
+                        if (this.isSingleSelectionMode()) {
+                            this._selection = null;
+                            this.selectionKeys = {};
+                            this.selectionChange.emit(null);
+                        }
+                        else {
+                            var selectionIndex_1 = this.findIndexInSelection(rowData);
+                            this._selection = this.selection.filter(function (val, i) { return i != selectionIndex_1; });
+                            this.selectionChange.emit(this.selection);
+                            if (dataKeyValue) {
+                                delete this.selectionKeys[dataKeyValue];
+                            }
+                        }
                         this.onRowUnselect.emit({ originalEvent: event.originalEvent, data: rowData, type: 'row' });
                     }
                     else {
-                        this._selection = rowData;
-                        this.selectionChange.emit(this.selection);
-                        this.onRowSelect.emit({ originalEvent: event.originalEvent, data: rowData, type: 'row' });
-                        if (dataKeyValue) {
-                            this.selectionKeys = {};
-                            this.selectionKeys[dataKeyValue] = 1;
+                        if (this.isSingleSelectionMode()) {
+                            this._selection = rowData;
+                            this.selectionChange.emit(rowData);
+                            if (dataKeyValue) {
+                                this.selectionKeys = {};
+                                this.selectionKeys[dataKeyValue] = 1;
+                            }
                         }
+                        else if (this.isMultipleSelectionMode()) {
+                            if (metaKey) {
+                                this._selection = this.selection || [];
+                            }
+                            else {
+                                this._selection = [];
+                                this.selectionKeys = {};
+                            }
+                            this._selection = this.selection.concat([rowData]);
+                            this.selectionChange.emit(this.selection);
+                            if (dataKeyValue) {
+                                this.selectionKeys[dataKeyValue] = 1;
+                            }
+                        }
+                        this.onRowSelect.emit({ originalEvent: event.originalEvent, data: rowData, type: 'row' });
                     }
                 }
-                else if (this.selectionMode === 'multiple') {
-                    if (selected) {
-                        var selectionIndex_1 = this.findIndexInSelection(rowData);
-                        this._selection = this.selection.filter(function (val, i) { return i != selectionIndex_1; });
-                        this.selectionChange.emit(this.selection);
-                        this.onRowUnselect.emit({ originalEvent: event.originalEvent, data: rowData, type: 'row' });
-                        if (dataKeyValue) {
-                            delete this.selectionKeys[dataKeyValue];
+                else {
+                    if (this.selectionMode === 'single') {
+                        if (selected) {
+                            this._selection = null;
+                            this.selectionKeys = {};
+                            this.selectionChange.emit(this.selection);
+                            this.onRowUnselect.emit({ originalEvent: event.originalEvent, data: rowData, type: 'row' });
+                        }
+                        else {
+                            this._selection = rowData;
+                            this.selectionChange.emit(this.selection);
+                            this.onRowSelect.emit({ originalEvent: event.originalEvent, data: rowData, type: 'row' });
+                            if (dataKeyValue) {
+                                this.selectionKeys = {};
+                                this.selectionKeys[dataKeyValue] = 1;
+                            }
                         }
                     }
-                    else {
-                        this._selection = this.selection ? this.selection.concat([rowData]) : [rowData];
-                        this.selectionChange.emit(this.selection);
-                        this.onRowSelect.emit({ originalEvent: event.originalEvent, data: rowData, type: 'row' });
-                        if (dataKeyValue) {
-                            this.selectionKeys[dataKeyValue] = 1;
+                    else if (this.selectionMode === 'multiple') {
+                        if (selected) {
+                            var selectionIndex_2 = this.findIndexInSelection(rowData);
+                            this._selection = this.selection.filter(function (val, i) { return i != selectionIndex_2; });
+                            this.selectionChange.emit(this.selection);
+                            this.onRowUnselect.emit({ originalEvent: event.originalEvent, data: rowData, type: 'row' });
+                            if (dataKeyValue) {
+                                delete this.selectionKeys[dataKeyValue];
+                            }
+                        }
+                        else {
+                            this._selection = this.selection ? this.selection.concat([rowData]) : [rowData];
+                            this.selectionChange.emit(this.selection);
+                            this.onRowSelect.emit({ originalEvent: event.originalEvent, data: rowData, type: 'row' });
+                            if (dataKeyValue) {
+                                this.selectionKeys[dataKeyValue] = 1;
+                            }
                         }
                     }
                 }
             }
             this.tableService.onSelectionChange();
         }
+        this.rowTouched = false;
+    };
+    Table.prototype.handleRowTouchEnd = function (event) {
+        this.rowTouched = true;
     };
     Table.prototype.handleRowRightClick = function (event) {
         if (this.contextMenu) {
@@ -655,8 +710,8 @@ var Table = (function () {
         var dataKeyValue = this.dataKey ? String(this.objectUtils.resolveFieldData(rowData, this.dataKey)) : null;
         this.preventSelectionSetterPropagation = true;
         if (selected) {
-            var selectionIndex_2 = this.findIndexInSelection(rowData);
-            this._selection = this.selection.filter(function (val, i) { return i != selectionIndex_2; });
+            var selectionIndex_3 = this.findIndexInSelection(rowData);
+            this._selection = this.selection.filter(function (val, i) { return i != selectionIndex_3; });
             this.selectionChange.emit(this.selection);
             this.onRowUnselect.emit({ originalEvent: event.originalEvent, data: rowData, type: 'checkbox' });
             if (dataKeyValue) {
@@ -787,6 +842,7 @@ var Table = (function () {
             filters: this.filters,
             filteredValue: this.filteredValue || this.value
         });
+        this.tableService.onValueChange(this.value);
     };
     Table.prototype.hasFilter = function () {
         var empty = true;
@@ -1053,8 +1109,8 @@ var Table = (function () {
     Table.prototype.onColumnDrop = function (event, dropColumn) {
         event.preventDefault();
         if (this.draggedColumn) {
-            var dragIndex = this.domHandler.index(this.draggedColumn);
-            var dropIndex = this.domHandler.index(dropColumn);
+            var dragIndex = this.domHandler.indexWithinGroup(this.draggedColumn, 'preorderablecolumn');
+            var dropIndex = this.domHandler.indexWithinGroup(dropColumn, 'preorderablecolumn');
             var allowDrop = (dragIndex != dropIndex);
             if (allowDrop && ((dropIndex - dragIndex == 1 && this.dropPosition === -1) || (dragIndex - dropIndex == 1 && this.dropPosition === 1))) {
                 allowDrop = false;
@@ -1073,6 +1129,61 @@ var Table = (function () {
             this.draggedColumn = null;
             this.dropPosition = null;
         }
+    };
+    Table.prototype.onRowDragStart = function (event, index) {
+        this.rowDragging = true;
+        this.draggedRowIndex = index;
+        event.dataTransfer.setData('text', 'b'); // For firefox
+    };
+    Table.prototype.onRowDragOver = function (event, index, rowElement) {
+        if (this.rowDragging && this.draggedRowIndex !== index) {
+            var rowY = this.domHandler.getOffset(rowElement).top + this.domHandler.getWindowScrollTop();
+            var pageY = event.pageY;
+            var rowMidY = rowY + this.domHandler.getOuterHeight(rowElement) / 2;
+            var prevRowElement = rowElement.previousElementSibling;
+            if (pageY < rowMidY) {
+                this.domHandler.removeClass(rowElement, 'ui-table-dragpoint-bottom');
+                this.droppedRowIndex = index;
+                if (prevRowElement)
+                    this.domHandler.addClass(prevRowElement, 'ui-table-dragpoint-bottom');
+                else
+                    this.domHandler.addClass(rowElement, 'ui-table-dragpoint-top');
+            }
+            else {
+                if (prevRowElement)
+                    this.domHandler.removeClass(prevRowElement, 'ui-table-dragpoint-bottom');
+                else
+                    this.domHandler.addClass(rowElement, 'ui-table-dragpoint-top');
+                this.droppedRowIndex = index + 1;
+                this.domHandler.addClass(rowElement, 'ui-table-dragpoint-bottom');
+            }
+        }
+    };
+    Table.prototype.onRowDragLeave = function (event, rowElement) {
+        var prevRowElement = rowElement.previousElementSibling;
+        if (prevRowElement) {
+            this.domHandler.removeClass(prevRowElement, 'ui-table-dragpoint-bottom');
+        }
+        this.domHandler.removeClass(rowElement, 'ui-table-dragpoint-bottom');
+        this.domHandler.removeClass(rowElement, 'ui-table-dragpoint-top');
+    };
+    Table.prototype.onRowDragEnd = function (event) {
+        this.rowDragging = false;
+        this.draggedRowIndex = null;
+        this.droppedRowIndex = null;
+    };
+    Table.prototype.onRowDrop = function (event, rowElement) {
+        if (this.droppedRowIndex != null) {
+            var dropIndex = (this.draggedRowIndex > this.droppedRowIndex) ? this.droppedRowIndex : (this.droppedRowIndex === 0) ? 0 : this.droppedRowIndex - 1;
+            this.objectUtils.reorderArray(this.value, this.draggedRowIndex, dropIndex);
+            this.onRowReorder.emit({
+                dragIndex: this.draggedRowIndex,
+                dropIndex: this.droppedRowIndex
+            });
+        }
+        //cleanup
+        this.onRowDragLeave(event, rowElement);
+        this.onRowDragEnd(event);
     };
     Table.prototype.handleVirtualScroll = function (event) {
         var _this = this;
@@ -1132,6 +1243,7 @@ var Table = (function () {
         "contextMenuSelection": [{ type: core_1.Input },],
         "contextMenuSelectionChange": [{ type: core_1.Output },],
         "dataKey": [{ type: core_1.Input },],
+        "metaKeySelection": [{ type: core_1.Input },],
         "rowTrackBy": [{ type: core_1.Input },],
         "lazy": [{ type: core_1.Input },],
         "compareSelectionBy": [{ type: core_1.Input },],
@@ -1169,6 +1281,7 @@ var Table = (function () {
         "onContextMenuSelect": [{ type: core_1.Output },],
         "onColResize": [{ type: core_1.Output },],
         "onColReorder": [{ type: core_1.Output },],
+        "onRowReorder": [{ type: core_1.Output },],
         "onEditInit": [{ type: core_1.Output },],
         "onEditComplete": [{ type: core_1.Output },],
         "onEditCancel": [{ type: core_1.Output },],
@@ -1395,22 +1508,32 @@ var SortableColumn = (function () {
         var _this = this;
         this.dt = dt;
         this.domHandler = domHandler;
-        this.subscription = this.dt.tableService.sortSource$.subscribe(function (sortMeta) {
-            _this.updateSortState();
-        });
+        if (this.isEnabled()) {
+            this.subscription = this.dt.tableService.sortSource$.subscribe(function (sortMeta) {
+                _this.updateSortState();
+            });
+        }
     }
     SortableColumn.prototype.ngOnInit = function () {
-        this.updateSortState();
+        if (this.isEnabled()) {
+            this.updateSortState();
+        }
     };
     SortableColumn.prototype.updateSortState = function () {
         this.sorted = this.dt.isSorted(this.field);
     };
     SortableColumn.prototype.onClick = function (event) {
-        this.dt.sort({
-            originalEvent: event,
-            field: this.field
-        });
-        this.domHandler.clearSelection();
+        if (this.isEnabled()) {
+            this.updateSortState();
+            this.dt.sort({
+                originalEvent: event,
+                field: this.field
+            });
+            this.domHandler.clearSelection();
+        }
+    };
+    SortableColumn.prototype.isEnabled = function () {
+        return this.pSortableColumnDisabled !== true;
     };
     SortableColumn.prototype.ngOnDestroy = function () {
         if (this.subscription) {
@@ -1434,6 +1557,7 @@ var SortableColumn = (function () {
     ]; };
     SortableColumn.propDecorators = {
         "field": [{ type: core_1.Input, args: ["pSortableColumn",] },],
+        "pSortableColumnDisabled": [{ type: core_1.Input },],
         "onClick": [{ type: core_1.HostListener, args: ['click', ['$event'],] },],
     };
     return SortableColumn;
@@ -1486,19 +1610,33 @@ var SelectableRow = (function () {
         this.dt = dt;
         this.domHandler = domHandler;
         this.tableService = tableService;
-        this.subscription = this.dt.tableService.selectionSource$.subscribe(function () {
-            _this.selected = _this.dt.isSelected(_this.data);
-        });
+        if (this.isEnabled()) {
+            this.subscription = this.dt.tableService.selectionSource$.subscribe(function () {
+                _this.selected = _this.dt.isSelected(_this.data);
+            });
+        }
     }
     SelectableRow.prototype.ngOnInit = function () {
-        this.selected = this.dt.isSelected(this.data);
+        if (this.isEnabled()) {
+            this.selected = this.dt.isSelected(this.data);
+        }
     };
     SelectableRow.prototype.onClick = function (event) {
-        this.dt.handleRowClick({
-            originalEvent: event,
-            rowData: this.data,
-            rowIndex: this.index
-        });
+        if (this.isEnabled()) {
+            this.dt.handleRowClick({
+                originalEvent: event,
+                rowData: this.data,
+                rowIndex: this.index
+            });
+        }
+    };
+    SelectableRow.prototype.onTouchEnd = function (event) {
+        if (this.isEnabled()) {
+            this.dt.handleRowTouchEnd(event);
+        }
+    };
+    SelectableRow.prototype.isEnabled = function () {
+        return this.pSelectableRowDisabled !== true;
     };
     SelectableRow.prototype.ngOnDestroy = function () {
         if (this.subscription) {
@@ -1523,26 +1661,93 @@ var SelectableRow = (function () {
     SelectableRow.propDecorators = {
         "data": [{ type: core_1.Input, args: ["pSelectableRow",] },],
         "index": [{ type: core_1.Input, args: ["pSelectableRowIndex",] },],
+        "pSelectableRowDisabled": [{ type: core_1.Input },],
         "onClick": [{ type: core_1.HostListener, args: ['click', ['$event'],] },],
+        "onTouchEnd": [{ type: core_1.HostListener, args: ['touchend', ['$event'],] },],
     };
     return SelectableRow;
 }());
 exports.SelectableRow = SelectableRow;
+var SelectableRowDblClick = (function () {
+    function SelectableRowDblClick(dt, domHandler, tableService) {
+        var _this = this;
+        this.dt = dt;
+        this.domHandler = domHandler;
+        this.tableService = tableService;
+        if (this.isEnabled()) {
+            this.subscription = this.dt.tableService.selectionSource$.subscribe(function () {
+                _this.selected = _this.dt.isSelected(_this.data);
+            });
+        }
+    }
+    SelectableRowDblClick.prototype.ngOnInit = function () {
+        if (this.isEnabled()) {
+            this.selected = this.dt.isSelected(this.data);
+        }
+    };
+    SelectableRowDblClick.prototype.onClick = function (event) {
+        if (this.isEnabled()) {
+            this.dt.handleRowClick({
+                originalEvent: event,
+                rowData: this.data,
+                rowIndex: this.index
+            });
+        }
+    };
+    SelectableRowDblClick.prototype.isEnabled = function () {
+        return this.pSelectableRowDisabled !== true;
+    };
+    SelectableRowDblClick.prototype.ngOnDestroy = function () {
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
+    };
+    SelectableRowDblClick.decorators = [
+        { type: core_1.Directive, args: [{
+                    selector: '[pSelectableRowDblClick]',
+                    providers: [domhandler_1.DomHandler],
+                    host: {
+                        '[class.ui-state-highlight]': 'selected'
+                    }
+                },] },
+    ];
+    /** @nocollapse */
+    SelectableRowDblClick.ctorParameters = function () { return [
+        { type: Table, },
+        { type: domhandler_1.DomHandler, },
+        { type: TableService, },
+    ]; };
+    SelectableRowDblClick.propDecorators = {
+        "data": [{ type: core_1.Input, args: ["pSelectableRowDblClick",] },],
+        "index": [{ type: core_1.Input, args: ["pSelectableRowIndex",] },],
+        "pSelectableRowDisabled": [{ type: core_1.Input },],
+        "onClick": [{ type: core_1.HostListener, args: ['dblclick', ['$event'],] },],
+    };
+    return SelectableRowDblClick;
+}());
+exports.SelectableRowDblClick = SelectableRowDblClick;
 var ContextMenuRow = (function () {
     function ContextMenuRow(dt, tableService) {
         var _this = this;
         this.dt = dt;
         this.tableService = tableService;
-        this.subscription = this.dt.tableService.contextMenuSource$.subscribe(function (data) {
-            _this.selected = _this.dt.equals(_this.data, data);
-        });
+        if (this.isEnabled()) {
+            this.subscription = this.dt.tableService.contextMenuSource$.subscribe(function (data) {
+                _this.selected = _this.dt.equals(_this.data, data);
+            });
+        }
     }
     ContextMenuRow.prototype.onContextMenu = function (event) {
-        this.dt.handleRowRightClick({
-            originalEvent: event,
-            rowData: this.data
-        });
-        event.preventDefault();
+        if (this.isEnabled()) {
+            this.dt.handleRowRightClick({
+                originalEvent: event,
+                rowData: this.data
+            });
+            event.preventDefault();
+        }
+    };
+    ContextMenuRow.prototype.isEnabled = function () {
+        return this.pContextMenuRowDisabled !== true;
     };
     ContextMenuRow.prototype.ngOnDestroy = function () {
         if (this.subscription) {
@@ -1564,6 +1769,7 @@ var ContextMenuRow = (function () {
     ]; };
     ContextMenuRow.propDecorators = {
         "data": [{ type: core_1.Input, args: ["pContextMenuRow",] },],
+        "pContextMenuRowDisabled": [{ type: core_1.Input },],
         "onContextMenu": [{ type: core_1.HostListener, args: ['contextmenu', ['$event'],] },],
     };
     return ContextMenuRow;
@@ -1574,8 +1780,13 @@ var RowToggler = (function () {
         this.dt = dt;
     }
     RowToggler.prototype.onClick = function (event) {
-        this.dt.toggleRow(this.data, event);
-        event.preventDefault();
+        if (this.isEnabled()) {
+            this.dt.toggleRow(this.data, event);
+            event.preventDefault();
+        }
+    };
+    RowToggler.prototype.isEnabled = function () {
+        return this.pRowTogglerDisabled !== true;
     };
     RowToggler.decorators = [
         { type: core_1.Directive, args: [{
@@ -1588,6 +1799,7 @@ var RowToggler = (function () {
     ]; };
     RowToggler.propDecorators = {
         "data": [{ type: core_1.Input, args: ['pRowToggler',] },],
+        "pRowTogglerDisabled": [{ type: core_1.Input },],
         "onClick": [{ type: core_1.HostListener, args: ['click', ['$event'],] },],
     };
     return RowToggler;
@@ -1602,14 +1814,16 @@ var ResizableColumn = (function () {
     }
     ResizableColumn.prototype.ngAfterViewInit = function () {
         var _this = this;
-        this.domHandler.addClass(this.el.nativeElement, 'ui-resizable-column');
-        this.resizer = document.createElement('span');
-        this.resizer.className = 'ui-column-resizer ui-clickable';
-        this.el.nativeElement.appendChild(this.resizer);
-        this.zone.runOutsideAngular(function () {
-            _this.resizerMouseDownListener = _this.onMouseDown.bind(_this);
-            _this.resizer.addEventListener('mousedown', _this.resizerMouseDownListener);
-        });
+        if (this.isEnabled()) {
+            this.domHandler.addClass(this.el.nativeElement, 'ui-resizable-column');
+            this.resizer = document.createElement('span');
+            this.resizer.className = 'ui-column-resizer ui-clickable';
+            this.el.nativeElement.appendChild(this.resizer);
+            this.zone.runOutsideAngular(function () {
+                _this.resizerMouseDownListener = _this.onMouseDown.bind(_this);
+                _this.resizer.addEventListener('mousedown', _this.resizerMouseDownListener);
+            });
+        }
     };
     ResizableColumn.prototype.bindDocumentEvents = function () {
         var _this = this;
@@ -1641,6 +1855,9 @@ var ResizableColumn = (function () {
         this.dt.onColumnResizeEnd(event, this.el.nativeElement);
         this.unbindDocumentEvents();
     };
+    ResizableColumn.prototype.isEnabled = function () {
+        return this.pResizableColumnDisabled !== true;
+    };
     ResizableColumn.prototype.ngOnDestroy = function () {
         if (this.resizerMouseDownListener) {
             this.resizer.removeEventListener('mousedown', this.resizerMouseDownListener);
@@ -1659,6 +1876,9 @@ var ResizableColumn = (function () {
         { type: domhandler_1.DomHandler, },
         { type: core_1.NgZone, },
     ]; };
+    ResizableColumn.propDecorators = {
+        "pResizableColumnDisabled": [{ type: core_1.Input },],
+    };
     return ResizableColumn;
 }());
 exports.ResizableColumn = ResizableColumn;
@@ -1670,7 +1890,9 @@ var ReorderableColumn = (function () {
         this.zone = zone;
     }
     ReorderableColumn.prototype.ngAfterViewInit = function () {
-        this.bindEvents();
+        if (this.isEnabled()) {
+            this.bindEvents();
+        }
     };
     ReorderableColumn.prototype.bindEvents = function () {
         var _this = this;
@@ -1728,7 +1950,12 @@ var ReorderableColumn = (function () {
         this.dt.onColumnDragLeave(event);
     };
     ReorderableColumn.prototype.onDrop = function (event) {
-        this.dt.onColumnDrop(event, this.el.nativeElement);
+        if (this.isEnabled()) {
+            this.dt.onColumnDrop(event, this.el.nativeElement);
+        }
+    };
+    ReorderableColumn.prototype.isEnabled = function () {
+        return this.pReorderableColumnDisabled !== true;
     };
     ReorderableColumn.prototype.ngOnDestroy = function () {
         this.unbindEvents();
@@ -1746,6 +1973,7 @@ var ReorderableColumn = (function () {
         { type: core_1.NgZone, },
     ]; };
     ReorderableColumn.propDecorators = {
+        "pReorderableColumnDisabled": [{ type: core_1.Input },],
         "onDrop": [{ type: core_1.HostListener, args: ['drop', ['$event'],] },],
     };
     return ReorderableColumn;
@@ -1759,23 +1987,27 @@ var EditableColumn = (function () {
         this.zone = zone;
     }
     EditableColumn.prototype.ngAfterViewInit = function () {
-        this.domHandler.addClass(this.el.nativeElement, 'ui-editable-column');
+        if (this.isEnabled()) {
+            this.domHandler.addClass(this.el.nativeElement, 'ui-editable-column');
+        }
     };
     EditableColumn.prototype.isValid = function () {
         return (this.dt.editingCell && this.domHandler.find(this.dt.editingCell, '.ng-invalid.ng-dirty').length === 0);
     };
     EditableColumn.prototype.onClick = function (event) {
-        if (this.dt.editingCell) {
-            if (this.dt.editingCell !== this.el.nativeElement) {
-                if (!this.isValid()) {
-                    return;
+        if (this.isEnabled()) {
+            if (this.dt.editingCell) {
+                if (this.dt.editingCell !== this.el.nativeElement) {
+                    if (!this.isValid()) {
+                        return;
+                    }
+                    this.domHandler.removeClass(this.dt.editingCell, 'ui-editing-cell');
+                    this.openCell();
                 }
-                this.domHandler.removeClass(this.dt.editingCell, 'ui-editing-cell');
+            }
+            else {
                 this.openCell();
             }
-        }
-        else {
-            this.openCell();
         }
     };
     EditableColumn.prototype.openCell = function () {
@@ -1793,28 +2025,30 @@ var EditableColumn = (function () {
         });
     };
     EditableColumn.prototype.onKeyDown = function (event) {
-        //enter
-        if (event.keyCode == 13) {
-            if (this.isValid()) {
-                this.domHandler.removeClass(this.dt.editingCell, 'ui-editing-cell');
-                this.dt.editingCell = null;
-                this.dt.onEditComplete.emit({ field: this.field, data: this.data });
+        if (this.isEnabled()) {
+            //enter
+            if (event.keyCode == 13) {
+                if (this.isValid()) {
+                    this.domHandler.removeClass(this.dt.editingCell, 'ui-editing-cell');
+                    this.dt.editingCell = null;
+                    this.dt.onEditComplete.emit({ field: this.field, data: this.data });
+                }
+                event.preventDefault();
             }
-            event.preventDefault();
-        }
-        else if (event.keyCode == 27) {
-            if (this.isValid()) {
-                this.domHandler.removeClass(this.dt.editingCell, 'ui-editing-cell');
-                this.dt.editingCell = null;
-                this.dt.onEditCancel.emit({ field: this.field, data: this.data });
+            else if (event.keyCode == 27) {
+                if (this.isValid()) {
+                    this.domHandler.removeClass(this.dt.editingCell, 'ui-editing-cell');
+                    this.dt.editingCell = null;
+                    this.dt.onEditCancel.emit({ field: this.field, data: this.data });
+                }
+                event.preventDefault();
             }
-            event.preventDefault();
-        }
-        else if (event.keyCode == 9) {
-            if (event.shiftKey)
-                this.moveToPreviousCell(event);
-            else
-                this.moveToNextCell(event);
+            else if (event.keyCode == 9) {
+                if (event.shiftKey)
+                    this.moveToPreviousCell(event);
+                else
+                    this.moveToNextCell(event);
+            }
         }
     };
     EditableColumn.prototype.findCell = function (element) {
@@ -1883,6 +2117,9 @@ var EditableColumn = (function () {
             return null;
         }
     };
+    EditableColumn.prototype.isEnabled = function () {
+        return this.pEditableColumnDisabled !== true;
+    };
     EditableColumn.decorators = [
         { type: core_1.Directive, args: [{
                     selector: '[pEditableColumn]'
@@ -1898,6 +2135,7 @@ var EditableColumn = (function () {
     EditableColumn.propDecorators = {
         "data": [{ type: core_1.Input, args: ["pEditableColumn",] },],
         "field": [{ type: core_1.Input, args: ["pEditableColumnField",] },],
+        "pEditableColumnDisabled": [{ type: core_1.Input },],
         "onClick": [{ type: core_1.HostListener, args: ['click', ['$event'],] },],
         "onKeyDown": [{ type: core_1.HostListener, args: ['keydown', ['$event'],] },],
     };
@@ -2086,14 +2324,136 @@ var TableHeaderCheckbox = (function () {
     return TableHeaderCheckbox;
 }());
 exports.TableHeaderCheckbox = TableHeaderCheckbox;
+var ReorderableRowHandle = (function () {
+    function ReorderableRowHandle(el, domHandler) {
+        this.el = el;
+        this.domHandler = domHandler;
+    }
+    ReorderableRowHandle.prototype.ngAfterViewInit = function () {
+        this.domHandler.addClass(this.el.nativeElement, 'ui-table-reorderablerow-handle');
+    };
+    ReorderableRowHandle.decorators = [
+        { type: core_1.Directive, args: [{
+                    selector: '[pReorderableRowHandle]'
+                },] },
+    ];
+    /** @nocollapse */
+    ReorderableRowHandle.ctorParameters = function () { return [
+        { type: core_1.ElementRef, },
+        { type: domhandler_1.DomHandler, },
+    ]; };
+    ReorderableRowHandle.propDecorators = {
+        "index": [{ type: core_1.Input, args: ["pReorderableRowHandle",] },],
+    };
+    return ReorderableRowHandle;
+}());
+exports.ReorderableRowHandle = ReorderableRowHandle;
+var ReorderableRow = (function () {
+    function ReorderableRow(dt, el, domHandler, zone) {
+        this.dt = dt;
+        this.el = el;
+        this.domHandler = domHandler;
+        this.zone = zone;
+    }
+    ReorderableRow.prototype.ngAfterViewInit = function () {
+        if (this.isEnabled()) {
+            this.el.nativeElement.droppable = true;
+            this.bindEvents();
+        }
+    };
+    ReorderableRow.prototype.bindEvents = function () {
+        var _this = this;
+        this.zone.runOutsideAngular(function () {
+            _this.mouseDownListener = _this.onMouseDown.bind(_this);
+            _this.el.nativeElement.addEventListener('mousedown', _this.mouseDownListener);
+            _this.dragStartListener = _this.onDragStart.bind(_this);
+            _this.el.nativeElement.addEventListener('dragstart', _this.dragStartListener);
+            _this.dragEndListener = _this.onDragEnd.bind(_this);
+            _this.el.nativeElement.addEventListener('dragend', _this.dragEndListener);
+            _this.dragOverListener = _this.onDragOver.bind(_this);
+            _this.el.nativeElement.addEventListener('dragover', _this.dragOverListener);
+            _this.dragLeaveListener = _this.onDragLeave.bind(_this);
+            _this.el.nativeElement.addEventListener('dragleave', _this.dragLeaveListener);
+        });
+    };
+    ReorderableRow.prototype.unbindEvents = function () {
+        if (this.mouseDownListener) {
+            document.removeEventListener('mousedown', this.mouseDownListener);
+            this.mouseDownListener = null;
+        }
+        if (this.dragStartListener) {
+            document.removeEventListener('dragstart', this.dragStartListener);
+            this.dragStartListener = null;
+        }
+        if (this.dragEndListener) {
+            document.removeEventListener('dragend', this.dragEndListener);
+            this.dragEndListener = null;
+        }
+        if (this.dragOverListener) {
+            document.removeEventListener('dragover', this.dragOverListener);
+            this.dragOverListener = null;
+        }
+        if (this.dragLeaveListener) {
+            document.removeEventListener('dragleave', this.dragLeaveListener);
+            this.dragLeaveListener = null;
+        }
+    };
+    ReorderableRow.prototype.onMouseDown = function (event) {
+        if (this.domHandler.hasClass(event.target, 'ui-table-reorderablerow-handle'))
+            this.el.nativeElement.draggable = true;
+        else
+            this.el.nativeElement.draggable = false;
+    };
+    ReorderableRow.prototype.onDragStart = function (event) {
+        this.dt.onRowDragStart(event, this.index);
+    };
+    ReorderableRow.prototype.onDragEnd = function (event) {
+        this.dt.onRowDragEnd(event);
+        this.el.nativeElement.draggable = false;
+    };
+    ReorderableRow.prototype.onDragOver = function (event) {
+        this.dt.onRowDragOver(event, this.index, this.el.nativeElement);
+        event.preventDefault();
+    };
+    ReorderableRow.prototype.onDragLeave = function (event) {
+        this.dt.onRowDragLeave(event, this.el.nativeElement);
+    };
+    ReorderableRow.prototype.isEnabled = function () {
+        return this.pReorderableRowDisabled !== true;
+    };
+    ReorderableRow.prototype.onDrop = function (event) {
+        if (this.isEnabled() && this.dt.rowDragging) {
+            this.dt.onRowDrop(event, this.el.nativeElement);
+        }
+    };
+    ReorderableRow.decorators = [
+        { type: core_1.Directive, args: [{
+                    selector: '[pReorderableRow]'
+                },] },
+    ];
+    /** @nocollapse */
+    ReorderableRow.ctorParameters = function () { return [
+        { type: Table, },
+        { type: core_1.ElementRef, },
+        { type: domhandler_1.DomHandler, },
+        { type: core_1.NgZone, },
+    ]; };
+    ReorderableRow.propDecorators = {
+        "index": [{ type: core_1.Input, args: ["pReorderableRow",] },],
+        "pReorderableRowDisabled": [{ type: core_1.Input },],
+        "onDrop": [{ type: core_1.HostListener, args: ['drop', ['$event'],] },],
+    };
+    return ReorderableRow;
+}());
+exports.ReorderableRow = ReorderableRow;
 var TableModule = (function () {
     function TableModule() {
     }
     TableModule.decorators = [
         { type: core_1.NgModule, args: [{
                     imports: [common_1.CommonModule, paginator_1.PaginatorModule],
-                    exports: [Table, shared_1.SharedModule, SortableColumn, SelectableRow, RowToggler, ContextMenuRow, ResizableColumn, ReorderableColumn, EditableColumn, CellEditor, SortIcon, TableRadioButton, TableCheckbox, TableHeaderCheckbox],
-                    declarations: [Table, SortableColumn, SelectableRow, RowToggler, ContextMenuRow, ResizableColumn, ReorderableColumn, EditableColumn, CellEditor, TableBody, ScrollableView, SortIcon, TableRadioButton, TableCheckbox, TableHeaderCheckbox]
+                    exports: [Table, shared_1.SharedModule, SortableColumn, SelectableRow, RowToggler, ContextMenuRow, ResizableColumn, ReorderableColumn, EditableColumn, CellEditor, SortIcon, TableRadioButton, TableCheckbox, TableHeaderCheckbox, ReorderableRowHandle, ReorderableRow, SelectableRowDblClick],
+                    declarations: [Table, SortableColumn, SelectableRow, RowToggler, ContextMenuRow, ResizableColumn, ReorderableColumn, EditableColumn, CellEditor, TableBody, ScrollableView, SortIcon, TableRadioButton, TableCheckbox, TableHeaderCheckbox, ReorderableRowHandle, ReorderableRow, SelectableRowDblClick]
                 },] },
     ];
     /** @nocollapse */

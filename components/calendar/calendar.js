@@ -44,6 +44,7 @@ var Calendar = (function () {
         this.onTodayClick = new core_1.EventEmitter();
         this.onClearClick = new core_1.EventEmitter();
         this.onMonthChange = new core_1.EventEmitter();
+        this.onYearChange = new core_1.EventEmitter();
         this._locale = {
             firstDayOfWeek: 0,
             dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
@@ -64,7 +65,7 @@ var Calendar = (function () {
         },
         set: function (date) {
             this._minDate = date;
-            if (this.currentMonth != null && this.currentYear) {
+            if (this.currentMonth != undefined && this.currentMonth != null && this.currentYear) {
                 this.createMonth(this.currentMonth, this.currentYear);
             }
         },
@@ -77,7 +78,7 @@ var Calendar = (function () {
         },
         set: function (date) {
             this._maxDate = date;
-            if (this.currentMonth != null && this.currentYear) {
+            if (this.currentMonth != undefined && this.currentMonth != null && this.currentYear) {
                 this.createMonth(this.currentMonth, this.currentYear);
             }
         },
@@ -90,7 +91,7 @@ var Calendar = (function () {
         },
         set: function (disabledDates) {
             this._disabledDates = disabledDates;
-            if (this.currentMonth != null && this.currentYear) {
+            if (this.currentMonth != undefined && this.currentMonth != null && this.currentYear) {
                 this.createMonth(this.currentMonth, this.currentYear);
             }
         },
@@ -103,7 +104,7 @@ var Calendar = (function () {
         },
         set: function (disabledDays) {
             this._disabledDays = disabledDays;
-            if (this.currentMonth != null && this.currentYear) {
+            if (this.currentMonth != undefined && this.currentMonth != null && this.currentYear) {
                 this.createMonth(this.currentMonth, this.currentYear);
             }
         },
@@ -638,10 +639,12 @@ var Calendar = (function () {
     };
     Calendar.prototype.onMonthDropdownChange = function (m) {
         this.currentMonth = parseInt(m);
+        this.onMonthChange.emit({ month: this.currentMonth + 1, year: this.currentYear });
         this.createMonth(this.currentMonth, this.currentYear);
     };
     Calendar.prototype.onYearDropdownChange = function (y) {
         this.currentYear = parseInt(y);
+        this.onYearChange.emit({ month: this.currentMonth + 1, year: this.currentYear });
         this.createMonth(this.currentMonth, this.currentYear);
     };
     Calendar.prototype.incrementHour = function (event) {
@@ -1227,12 +1230,17 @@ var Calendar = (function () {
                 day -= dim;
             } while (true);
         }
-        if (this.utc)
+        if (this.utc) {
             date = new Date(Date.UTC(year, month - 1, day));
-        else
+            if (date.getUTCFullYear() !== year || date.getUTCMonth() + 1 !== month || date.getUTCDate() !== day) {
+                throw "Invalid date"; // E.g. 31/02/00
+            }
+        }
+        else {
             date = this.daylightSavingAdjust(new Date(year, month - 1, day));
-        if (date.getFullYear() !== year || date.getMonth() + 1 !== month || date.getDate() !== day) {
-            throw "Invalid date"; // E.g. 31/02/00
+            if (date.getFullYear() !== year || date.getMonth() + 1 !== month || date.getDate() !== day) {
+                throw "Invalid date"; // E.g. 31/02/00
+            }
         }
         return date;
     };
@@ -1365,6 +1373,7 @@ var Calendar = (function () {
         "onTodayClick": [{ type: core_1.Output },],
         "onClearClick": [{ type: core_1.Output },],
         "onMonthChange": [{ type: core_1.Output },],
+        "onYearChange": [{ type: core_1.Output },],
         "templates": [{ type: core_1.ContentChildren, args: [shared_1.PrimeTemplate,] },],
         "tabindex": [{ type: core_1.Input },],
         "overlayViewChild": [{ type: core_1.ViewChild, args: ['datepicker',] },],

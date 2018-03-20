@@ -23,10 +23,13 @@ var Growl = (function () {
         if (messageService) {
             this.subscription = messageService.messageObserver.subscribe(function (messages) {
                 if (messages) {
-                    if (messages instanceof Array)
-                        _this.value = _this.value ? _this.value.concat(messages) : messages.slice();
-                    else
+                    if (messages instanceof Array) {
+                        var filteredMessages = messages.filter(function (m) { return _this.key === m.key; });
+                        _this.value = _this.value ? _this.value.concat(filteredMessages) : filteredMessages.slice();
+                    }
+                    else if (_this.key === messages.key) {
                         _this.value = _this.value ? _this.value.concat([messages]) : [messages];
+                    }
                 }
                 else {
                     _this.value = null;
@@ -165,6 +168,7 @@ var Growl = (function () {
         "immutable": [{ type: core_1.Input },],
         "autoZIndex": [{ type: core_1.Input },],
         "baseZIndex": [{ type: core_1.Input },],
+        "key": [{ type: core_1.Input },],
         "onClick": [{ type: core_1.Output },],
         "onHover": [{ type: core_1.Output },],
         "onClose": [{ type: core_1.Output },],

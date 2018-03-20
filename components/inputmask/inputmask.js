@@ -1,32 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-/*
-    Port of jQuery MaskedInput by DigitalBush as a Native Angular2 Component in Typescript without jQuery
-    https://github.com/digitalBush/jquery.maskedinput/
-    
-    Copyright (c) 2007-2014 Josh Bush (digitalbush.com)
-
-    Permission is hereby granted, free of charge, to any person
-    obtaining a copy of this software and associated documentation
-    files (the "Software"), to deal in the Software without
-    restriction, including without limitation the rights to use,
-    copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the
-    Software is furnished to do so, subject to the following
-    conditions:
-
-    The above copyright notice and this permission notice shall be
-    included in all copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-    OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-    NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-    HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-    WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-    OTHER DEALINGS IN THE SOFTWARE.
-*/
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var domhandler_1 = require("../dom/domhandler");
@@ -238,19 +211,26 @@ var InputMask = (function () {
                 while (pos.begin < this.firstNonMaskPos && !this.tests[pos.begin])
                     pos.begin++;
             }
-            this.caret(pos.begin, pos.begin);
+            setTimeout(function () {
+                _this.caret(pos.begin, pos.begin);
+                _this.updateModel(e);
+                if (_this.isCompleted()) {
+                    _this.onComplete.emit();
+                }
+            }, 0);
         }
         else {
             this.checkVal(true);
-            var newPos_1 = this.seekNext(pos.begin);
-            setTimeout(function () { return _this.caret(newPos_1, newPos_1); });
+            while (pos.begin < this.len && !this.tests[pos.begin])
+                pos.begin++;
+            setTimeout(function () {
+                _this.caret(pos.begin, pos.begin);
+                _this.updateModel(e);
+                if (_this.isCompleted()) {
+                    _this.onComplete.emit();
+                }
+            }, 0);
         }
-        setTimeout(function () {
-            _this.updateModel(e);
-            if (_this.isCompleted()) {
-                _this.onComplete.emit();
-            }
-        }, 0);
     };
     InputMask.prototype.onInputBlur = function (e) {
         this.focus = false;
@@ -305,7 +285,7 @@ var InputMask = (function () {
             return;
         }
         var k = e.which || e.keyCode, pos = this.caret(), p, c, next, completed;
-        if (e.ctrlKey || e.altKey || e.metaKey || k < 32) {
+        if (e.ctrlKey || e.altKey || e.metaKey || k < 32 || (k > 34 && k < 41)) {
             //Ignore
             return;
         }
@@ -462,7 +442,11 @@ var InputMask = (function () {
         return unmaskedBuffer.join('');
     };
     InputMask.prototype.updateModel = function (e) {
-        this.onModelChange(this.unmask ? this.getUnmaskedValue() : e.target.value);
+        var updatedValue = this.unmask ? this.getUnmaskedValue() : e.target.value;
+        if (updatedValue) {
+            this.value = updatedValue;
+            this.onModelChange(this.value);
+        }
     };
     InputMask.prototype.updateFilledState = function () {
         this.filled = this.inputViewChild.nativeElement && this.inputViewChild.nativeElement.value != '';

@@ -5,24 +5,30 @@ var common_1 = require("@angular/common");
 var messageservice_1 = require("../common/messageservice");
 var Messages = (function () {
     function Messages(messageService) {
-        var _this = this;
         this.messageService = messageService;
         this.closable = true;
+        this.enableService = true;
         this.valueChange = new core_1.EventEmitter();
-        if (messageService) {
-            this.subscription = messageService.messageObserver.subscribe(function (messages) {
+    }
+    Messages.prototype.ngOnInit = function () {
+        var _this = this;
+        if (this.messageService && this.enableService) {
+            this.subscription = this.messageService.messageObserver.subscribe(function (messages) {
                 if (messages) {
-                    if (messages instanceof Array)
-                        _this.value = _this.value ? _this.value.concat(messages) : messages.slice();
-                    else
+                    if (messages instanceof Array) {
+                        var filteredMessages = messages.filter(function (m) { return _this.key === m.key; });
+                        _this.value = _this.value ? _this.value.concat(filteredMessages) : filteredMessages.slice();
+                    }
+                    else if (_this.key === messages.key) {
                         _this.value = _this.value ? _this.value.concat([messages]) : [messages];
+                    }
                 }
                 else {
                     _this.value = null;
                 }
             });
         }
-    }
+    };
     Messages.prototype.hasMessages = function () {
         return this.value && this.value.length > 0;
     };
@@ -82,6 +88,8 @@ var Messages = (function () {
         "closable": [{ type: core_1.Input },],
         "style": [{ type: core_1.Input },],
         "styleClass": [{ type: core_1.Input },],
+        "enableService": [{ type: core_1.Input },],
+        "key": [{ type: core_1.Input },],
         "valueChange": [{ type: core_1.Output },],
     };
     return Messages;

@@ -134,8 +134,15 @@ var PickList = (function () {
         }
         this.itemTouched = true;
     };
+    PickList.prototype.sortByIndexInList = function (items, list) {
+        var _this = this;
+        return items.sort(function (item1, item2) {
+            return _this.findIndexInList(item1, list) - _this.findIndexInList(item2, list);
+        });
+    };
     PickList.prototype.moveUp = function (listElement, list, selectedItems, callback) {
         if (selectedItems && selectedItems.length) {
+            selectedItems = this.sortByIndexInList(selectedItems, list);
             for (var i = 0; i < selectedItems.length; i++) {
                 var selectedItem = selectedItems[i];
                 var selectedItemIndex = this.findIndexInList(selectedItem, list);
@@ -156,6 +163,7 @@ var PickList = (function () {
     };
     PickList.prototype.moveTop = function (listElement, list, selectedItems, callback) {
         if (selectedItems && selectedItems.length) {
+            selectedItems = this.sortByIndexInList(selectedItems, list);
             for (var i = 0; i < selectedItems.length; i++) {
                 var selectedItem = selectedItems[i];
                 var selectedItemIndex = this.findIndexInList(selectedItem, list);
@@ -173,6 +181,7 @@ var PickList = (function () {
     };
     PickList.prototype.moveDown = function (listElement, list, selectedItems, callback) {
         if (selectedItems && selectedItems.length) {
+            selectedItems = this.sortByIndexInList(selectedItems, list);
             for (var i = selectedItems.length - 1; i >= 0; i--) {
                 var selectedItem = selectedItems[i];
                 var selectedItemIndex = this.findIndexInList(selectedItem, list);
@@ -193,6 +202,7 @@ var PickList = (function () {
     };
     PickList.prototype.moveBottom = function (listElement, list, selectedItems, callback) {
         if (selectedItems && selectedItems.length) {
+            selectedItems = this.sortByIndexInList(selectedItems, list);
             for (var i = selectedItems.length - 1; i >= 0; i--) {
                 var selectedItem = selectedItems[i];
                 var selectedItemIndex = this.findIndexInList(selectedItem, list);

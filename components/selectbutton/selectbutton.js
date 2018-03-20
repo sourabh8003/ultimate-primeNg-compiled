@@ -79,7 +79,7 @@ var SelectButton = (function () {
         if (this.multiple)
             return this.findItemIndex(option) != -1;
         else
-            return option.value == this.value;
+            return this.objectUtils.equals(option.value, this.value, this.dataKey);
     };
     SelectButton.prototype.findItemIndex = function (option) {
         var index = -1;
@@ -111,6 +111,7 @@ var SelectButton = (function () {
         "style": [{ type: core_1.Input },],
         "styleClass": [{ type: core_1.Input },],
         "disabled": [{ type: core_1.Input },],
+        "dataKey": [{ type: core_1.Input },],
         "optionLabel": [{ type: core_1.Input },],
         "onOptionClick": [{ type: core_1.Output },],
         "onChange": [{ type: core_1.Output },],
