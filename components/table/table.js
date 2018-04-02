@@ -14,10 +14,12 @@ var TableService = (function () {
         this.selectionSource = new Subject_1.Subject();
         this.contextMenuSource = new Subject_1.Subject();
         this.valueSource = new Subject_1.Subject();
+        this.totalRecordsSource = new Subject_1.Subject();
         this.sortSource$ = this.sortSource.asObservable();
         this.selectionSource$ = this.selectionSource.asObservable();
         this.contextMenuSource$ = this.contextMenuSource.asObservable();
         this.valueSource$ = this.valueSource.asObservable();
+        this.totalRecordsSource$ = this.totalRecordsSource.asObservable();
     }
     TableService.prototype.onSort = function (sortMeta) {
         this.sortSource.next(sortMeta);
@@ -30,6 +32,9 @@ var TableService = (function () {
     };
     TableService.prototype.onValueChange = function (value) {
         this.valueSource.next(value);
+    };
+    TableService.prototype.onTotalRecordsChange = function (value) {
+        this.totalRecordsSource.next(value);
     };
     TableService.decorators = [
         { type: core_2.Injectable },
@@ -47,12 +52,12 @@ var Table = (function () {
         this.zone = zone;
         this.tableService = tableService;
         this.first = 0;
-        this.totalRecords = 0;
         this.pageLinks = 5;
         this.alwaysShowPaginator = true;
         this.paginatorPosition = 'bottom';
         this.defaultSortOrder = 1;
         this.sortMode = 'single';
+        this.resetPageOnSort = true;
         this.selectionChange = new core_1.EventEmitter();
         this.contextMenuSelectionChange = new core_1.EventEmitter();
         this.rowTrackBy = function (index, item) { return item; };
@@ -86,6 +91,7 @@ var Table = (function () {
         this.onHeaderCheckboxToggle = new core_1.EventEmitter();
         this.sortFunction = new core_1.EventEmitter();
         this._value = [];
+        this._totalRecords = 0;
         this.selectionKeys = {};
         this._sortOrder = 1;
         this.filterConstraints = {
@@ -233,8 +239,8 @@ var Table = (function () {
         },
         set: function (val) {
             this._value = val;
-            this.updateTotalRecords();
             if (!this.lazy) {
+                this.totalRecords = (this._value ? this._value.length : 0);
                 if (this.sortMode == 'single')
                     this.sortSingle();
                 else if (this.sortMode == 'multiple')
@@ -244,6 +250,17 @@ var Table = (function () {
                 this.virtualScrollCallback();
             }
             this.tableService.onValueChange(val);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Table.prototype, "totalRecords", {
+        get: function () {
+            return this._totalRecords;
+        },
+        set: function (val) {
+            this._totalRecords = val;
+            this.tableService.onTotalRecordsChange(this._totalRecords);
         },
         enumerable: true,
         configurable: true
@@ -322,9 +339,6 @@ var Table = (function () {
             }
         }
     };
-    Table.prototype.updateTotalRecords = function () {
-        this.totalRecords = this.lazy ? this.totalRecords : (this._value ? this._value.length : 0);
-    };
     Table.prototype.onPageChange = function (event) {
         this.first = event.first;
         this.rows = event.rows;
@@ -367,7 +381,7 @@ var Table = (function () {
     Table.prototype.sortSingle = function () {
         var _this = this;
         if (this.sortField && this.sortOrder) {
-            this.first = 0;
+            this.first = this.resetPageOnSort ? 0 : this.first;
             if (this.lazy) {
                 this.onLazyLoad.emit(this.createLazyLoadMetadata());
             }
@@ -546,7 +560,7 @@ var Table = (function () {
                                 this.selectionKeys[dataKeyValue] = 1;
                             }
                         }
-                        this.onRowSelect.emit({ originalEvent: event.originalEvent, data: rowData, type: 'row' });
+                        this.onRowSelect.emit({ originalEvent: event.originalEvent, data: rowData, type: 'row', index: event.rowIndex });
                     }
                 }
                 else {
@@ -560,7 +574,7 @@ var Table = (function () {
                         else {
                             this._selection = rowData;
                             this.selectionChange.emit(this.selection);
-                            this.onRowSelect.emit({ originalEvent: event.originalEvent, data: rowData, type: 'row' });
+                            this.onRowSelect.emit({ originalEvent: event.originalEvent, data: rowData, type: 'row', index: event.rowIndex });
                             if (dataKeyValue) {
                                 this.selectionKeys = {};
                                 this.selectionKeys[dataKeyValue] = 1;
@@ -580,7 +594,7 @@ var Table = (function () {
                         else {
                             this._selection = this.selection ? this.selection.concat([rowData]) : [rowData];
                             this.selectionChange.emit(this.selection);
-                            this.onRowSelect.emit({ originalEvent: event.originalEvent, data: rowData, type: 'row' });
+                            this.onRowSelect.emit({ originalEvent: event.originalEvent, data: rowData, type: 'row', index: event.rowIndex });
                             if (dataKeyValue) {
                                 this.selectionKeys[dataKeyValue] = 1;
                             }
@@ -729,7 +743,7 @@ var Table = (function () {
         this.tableService.onSelectionChange();
     };
     Table.prototype.toggleRowsWithCheckbox = function (event, check) {
-        this._selection = check ? this.value.slice() : [];
+        this._selection = check ? this.filteredValue ? this.filteredValue.slice() : this.value.slice() : [];
         this.preventSelectionSetterPropagation = true;
         this.updateSelectionKeys();
         this.selectionChange.emit(this._selection);
@@ -872,9 +886,11 @@ var Table = (function () {
         this.filteredValue = null;
         this.filters = {};
         this.first = 0;
-        this.updateTotalRecords();
         if (this.lazy) {
             this.onLazyLoad.emit(this.createLazyLoadMetadata());
+        }
+        else {
+            this.totalRecords = (this._value ? this._value.length : 0);
         }
     };
     Table.prototype.exportCSV = function (options) {
@@ -1061,10 +1077,6 @@ var Table = (function () {
         }
     };
     Table.prototype.onColumnDragStart = function (event, columnElement) {
-        if (this.domHandler.hasClass(event.target, 'ui-column-resizer')) {
-            event.preventDefault();
-            return;
-        }
         this.reorderIconWidth = this.domHandler.getHiddenElementOuterWidth(this.reorderIndicatorUpViewChild.nativeElement);
         this.reorderIconHeight = this.domHandler.getHiddenElementOuterHeight(this.reorderIndicatorDownViewChild.nativeElement);
         this.draggedColumn = columnElement;
@@ -1209,7 +1221,7 @@ var Table = (function () {
     Table.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-table',
-                    template: "\n        <div #container [ngStyle]=\"style\" [class]=\"styleClass\" \n            [ngClass]=\"{'ui-table ui-widget': true, 'ui-table-responsive': responsive, 'ui-table-resizable': resizableColumns, \n                'ui-table-resizable-fit': (resizableColumns && columnResizeMode === 'fit'),\n                'ui-table-hoverable-rows': (rowHover||selectionMode), 'ui-table-auto-layout': autoLayout}\">\n            <div class=\"ui-table-loading ui-widget-overlay\" *ngIf=\"loading\"></div>\n            <div class=\"ui-table-loading-content\" *ngIf=\"loading\">\n                <i [class]=\"'fa fa-spin fa-2x ' + loadingIcon\"></i>\n            </div>\n            <div *ngIf=\"captionTemplate\" class=\"ui-table-caption ui-widget-header\">\n                <ng-container *ngTemplateOutlet=\"captionTemplate\"></ng-container>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" styleClass=\"ui-paginator-top\" [alwaysShow]=\"alwaysShowPaginator\"\n                (onPageChange)=\"onPageChange($event)\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && (paginatorPosition === 'top' || paginatorPosition =='both')\"\n                [templateLeft]=\"paginatorLeftTemplate\" [templateRight]=\"paginatorRightTemplate\" [dropdownAppendTo]=\"paginatorDropdownAppendTo\"></p-paginator>\n            \n            <div class=\"ui-table-wrapper\" *ngIf=\"!scrollable\">\n                <table #table>\n                    <ng-container *ngTemplateOutlet=\"colGroupTemplate; context {$implicit: columns}\"></ng-container>\n                    <thead class=\"ui-table-thead\">\n                        <ng-container *ngTemplateOutlet=\"headerTemplate; context: {$implicit: columns}\"></ng-container>\n                    </thead>\n                    <tfoot class=\"ui-table-tfoot\">\n                        <ng-container *ngTemplateOutlet=\"footerTemplate; context {$implicit: columns}\"></ng-container>\n                    </tfoot>\n                    <tbody class=\"ui-table-tbody\" [pTableBody]=\"columns\" [pTableBodyTemplate]=\"bodyTemplate\"></tbody>\n                </table>\n            </div>\n\n            <div class=\"ui-table-scrollable-wrapper\" *ngIf=\"scrollable\">\n               <div class=\"ui-table-frozen-view\" *ngIf=\"frozenColumns||frozenBodyTemplate\" [pScrollableView]=\"frozenColumns\" [frozen]=\"true\" [ngStyle]=\"{width: frozenWidth}\" [scrollHeight]=\"scrollHeight\"></div>\n               <div [pScrollableView]=\"columns\" [frozen]=\"false\" [scrollHeight]=\"scrollHeight\"></div>\n            </div>\n                        \n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" styleClass=\"ui-paginator-bottom\" [alwaysShow]=\"alwaysShowPaginator\"\n                (onPageChange)=\"onPageChange($event)\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && (paginatorPosition === 'bottom' || paginatorPosition =='both')\"\n                [templateLeft]=\"paginatorLeftTemplate\" [templateRight]=\"paginatorRightTemplate\" [dropdownAppendTo]=\"paginatorDropdownAppendTo\"></p-paginator>\n            <div *ngIf=\"summaryTemplate\" class=\"ui-table-summary ui-widget-header\">\n                <ng-container *ngTemplateOutlet=\"summaryTemplate\"></ng-container>\n            </div>\n\n            <div #resizeHelper class=\"ui-column-resizer-helper ui-state-highlight\" style=\"display:none\" *ngIf=\"resizableColumns\"></div>\n\n            <span #reorderIndicatorUp class=\"fa fa-arrow-down ui-table-reorder-indicator-up\" *ngIf=\"reorderableColumns\"></span>\n            <span #reorderIndicatorDown class=\"fa fa-arrow-up ui-table-reorder-indicator-down\" *ngIf=\"reorderableColumns\"></span>\n        </div>\n    ",
+                    template: "\n        <div #container [ngStyle]=\"style\" [class]=\"styleClass\"\n            [ngClass]=\"{'ui-table ui-widget': true, 'ui-table-responsive': responsive, 'ui-table-resizable': resizableColumns,\n                'ui-table-resizable-fit': (resizableColumns && columnResizeMode === 'fit'),\n                'ui-table-hoverable-rows': (rowHover||selectionMode), 'ui-table-auto-layout': autoLayout}\">\n            <div class=\"ui-table-loading ui-widget-overlay\" *ngIf=\"loading\"></div>\n            <div class=\"ui-table-loading-content\" *ngIf=\"loading\">\n                <i [class]=\"'fa fa-spin fa-2x ' + loadingIcon\"></i>\n            </div>\n            <div *ngIf=\"captionTemplate\" class=\"ui-table-caption ui-widget-header\">\n                <ng-container *ngTemplateOutlet=\"captionTemplate\"></ng-container>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" styleClass=\"ui-paginator-top\" [alwaysShow]=\"alwaysShowPaginator\"\n                (onPageChange)=\"onPageChange($event)\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && (paginatorPosition === 'top' || paginatorPosition =='both')\"\n                [templateLeft]=\"paginatorLeftTemplate\" [templateRight]=\"paginatorRightTemplate\" [dropdownAppendTo]=\"paginatorDropdownAppendTo\"></p-paginator>\n            \n            <div class=\"ui-table-wrapper\" *ngIf=\"!scrollable\">\n                <table #table>\n                    <ng-container *ngTemplateOutlet=\"colGroupTemplate; context {$implicit: columns}\"></ng-container>\n                    <thead class=\"ui-table-thead\">\n                        <ng-container *ngTemplateOutlet=\"headerTemplate; context: {$implicit: columns}\"></ng-container>\n                    </thead>\n                    <tfoot class=\"ui-table-tfoot\">\n                        <ng-container *ngTemplateOutlet=\"footerTemplate; context {$implicit: columns}\"></ng-container>\n                    </tfoot>\n                    <tbody class=\"ui-table-tbody\" [pTableBody]=\"columns\" [pTableBodyTemplate]=\"bodyTemplate\"></tbody>\n                </table>\n            </div>\n\n            <div class=\"ui-table-scrollable-wrapper\" *ngIf=\"scrollable\">\n               <div class=\"ui-table-frozen-view\" *ngIf=\"frozenColumns||frozenBodyTemplate\" [pScrollableView]=\"frozenColumns\" [frozen]=\"true\" [ngStyle]=\"{width: frozenWidth}\" [scrollHeight]=\"scrollHeight\"></div>\n               <div [pScrollableView]=\"columns\" [frozen]=\"false\" [scrollHeight]=\"scrollHeight\"></div>\n            </div>\n            \n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" styleClass=\"ui-paginator-bottom\" [alwaysShow]=\"alwaysShowPaginator\"\n                (onPageChange)=\"onPageChange($event)\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && (paginatorPosition === 'bottom' || paginatorPosition =='both')\"\n                [templateLeft]=\"paginatorLeftTemplate\" [templateRight]=\"paginatorRightTemplate\" [dropdownAppendTo]=\"paginatorDropdownAppendTo\"></p-paginator>\n            <div *ngIf=\"summaryTemplate\" class=\"ui-table-summary ui-widget-header\">\n                <ng-container *ngTemplateOutlet=\"summaryTemplate\"></ng-container>\n            </div>\n\n            <div #resizeHelper class=\"ui-column-resizer-helper ui-state-highlight\" style=\"display:none\" *ngIf=\"resizableColumns\"></div>\n\n            <span #reorderIndicatorUp class=\"fa fa-arrow-down ui-table-reorder-indicator-up\" *ngIf=\"reorderableColumns\"></span>\n            <span #reorderIndicatorDown class=\"fa fa-arrow-up ui-table-reorder-indicator-down\" *ngIf=\"reorderableColumns\"></span>\n        </div>\n    ",
                     providers: [domhandler_1.DomHandler, objectutils_1.ObjectUtils, TableService]
                 },] },
     ];
@@ -1230,7 +1242,6 @@ var Table = (function () {
         "paginator": [{ type: core_1.Input },],
         "rows": [{ type: core_1.Input },],
         "first": [{ type: core_1.Input },],
-        "totalRecords": [{ type: core_1.Input },],
         "pageLinks": [{ type: core_1.Input },],
         "rowsPerPageOptions": [{ type: core_1.Input },],
         "alwaysShowPaginator": [{ type: core_1.Input },],
@@ -1238,6 +1249,7 @@ var Table = (function () {
         "paginatorDropdownAppendTo": [{ type: core_1.Input },],
         "defaultSortOrder": [{ type: core_1.Input },],
         "sortMode": [{ type: core_1.Input },],
+        "resetPageOnSort": [{ type: core_1.Input },],
         "selectionMode": [{ type: core_1.Input },],
         "selectionChange": [{ type: core_1.Output },],
         "contextMenuSelection": [{ type: core_1.Input },],
@@ -1294,6 +1306,7 @@ var Table = (function () {
         "tableViewChild": [{ type: core_1.ViewChild, args: ['table',] },],
         "templates": [{ type: core_1.ContentChildren, args: [shared_1.PrimeTemplate,] },],
         "value": [{ type: core_1.Input },],
+        "totalRecords": [{ type: core_1.Input },],
         "sortField": [{ type: core_1.Input },],
         "sortOrder": [{ type: core_1.Input },],
         "multiSortMeta": [{ type: core_1.Input },],
@@ -1309,7 +1322,7 @@ var TableBody = (function () {
     TableBody.decorators = [
         { type: core_1.Component, args: [{
                     selector: '[pTableBody]',
-                    template: "\n        <ng-container *ngIf=\"!dt.expandedRowTemplate\">\n            <ng-template ngFor let-rowData let-rowIndex=\"index\" [ngForOf]=\"dt.paginator ? ((dt.filteredValue||dt.value) | slice:(dt.lazy ? 0 : dt.first):((dt.lazy ? 0 : dt.first) + dt.rows)) : (dt.filteredValue||dt.value)\" [ngForTrackBy]=\"dt.rowTrackBy\">\n                <ng-container *ngTemplateOutlet=\"template; context: {$implicit: rowData, rowIndex: rowIndex, columns: columns}\"></ng-container>\n            </ng-template>\n        </ng-container>\n        <ng-container *ngIf=\"dt.expandedRowTemplate\">\n            <ng-template ngFor let-rowData let-rowIndex=\"index\" [ngForOf]=\"dt.paginator ? ((dt.filteredValue||dt.value) | slice:(dt.lazy ? 0 : dt.first):((dt.lazy ? 0 : dt.first) + dt.rows)) : (dt.filteredValue||dt.value)\" [ngForTrackBy]=\"dt.rowTrackBy\">\n                <ng-container *ngIf=\"dt.isRowExpanded(rowData); else collapsedrow\">\n                    <ng-container *ngTemplateOutlet=\"template; context: {$implicit: rowData, rowIndex: rowIndex, columns: columns, expanded: true}\"></ng-container>\n                    <ng-container *ngTemplateOutlet=\"dt.expandedRowTemplate; context: {$implicit: rowData, rowIndex: rowIndex, columns: columns}\"></ng-container>\n                </ng-container>\n                <ng-template #collapsedrow>\n                    <ng-container *ngTemplateOutlet=\"template; context: {$implicit: rowData, rowIndex: rowIndex, expanded: false, columns: columns}\"></ng-container>\n                </ng-template>\n            </ng-template>\n        </ng-container>\n        <ng-container *ngIf=\"dt.isEmpty()\">\n            <ng-container *ngTemplateOutlet=\"dt.emptyMessageTemplate; context: {$implicit: columns}\"></ng-container>\n        </ng-container>\n    "
+                    template: "\n        <ng-container *ngIf=\"!dt.expandedRowTemplate\">\n            <ng-template ngFor let-rowData let-rowIndex=\"index\" [ngForOf]=\"dt.paginator ? ((dt.filteredValue||dt.value) | slice:(dt.lazy ? 0 : dt.first):((dt.lazy ? 0 : dt.first) + dt.rows)) : (dt.filteredValue||dt.value)\" [ngForTrackBy]=\"dt.rowTrackBy\">\n                <ng-container *ngTemplateOutlet=\"template; context: {$implicit: rowData, rowIndex: dt.paginator ? (dt.first + rowIndex) : rowIndex, columns: columns}\"></ng-container>\n            </ng-template>\n        </ng-container>\n        <ng-container *ngIf=\"dt.expandedRowTemplate\">\n            <ng-template ngFor let-rowData let-rowIndex=\"index\" [ngForOf]=\"dt.paginator ? ((dt.filteredValue||dt.value) | slice:(dt.lazy ? 0 : dt.first):((dt.lazy ? 0 : dt.first) + dt.rows)) : (dt.filteredValue||dt.value)\" [ngForTrackBy]=\"dt.rowTrackBy\">\n                <ng-container *ngIf=\"dt.isRowExpanded(rowData); else collapsedrow\">\n                    <ng-container *ngTemplateOutlet=\"template; context: {$implicit: rowData, rowIndex: dt.paginator ? (dt.first + rowIndex) : rowIndex, columns: columns, expanded: true}\"></ng-container>\n                    <ng-container *ngTemplateOutlet=\"dt.expandedRowTemplate; context: {$implicit: rowData, rowIndex: dt.paginator ? (dt.first + rowIndex) : rowIndex, columns: columns}\"></ng-container>\n                </ng-container>\n                <ng-template #collapsedrow>\n                    <ng-container *ngTemplateOutlet=\"template; context: {$implicit: rowData, rowIndex: dt.paginator ? (dt.first + rowIndex) : rowIndex, expanded: false, columns: columns}\"></ng-container>\n                </ng-template>\n            </ng-template>\n        </ng-container>\n        <ng-container *ngIf=\"dt.isEmpty()\">\n            <ng-container *ngTemplateOutlet=\"dt.emptyMessageTemplate; context: {$implicit: columns}\"></ng-container>\n        </ng-container>\n    "
                 },] },
     ];
     /** @nocollapse */
@@ -1337,6 +1350,16 @@ var ScrollableView = (function () {
                 }, 50);
             });
         });
+        if (this.dt.virtualScroll) {
+            this.totalRecordsSubscription = this.dt.tableService.totalRecordsSource$.subscribe(function () {
+                _this.zone.runOutsideAngular(function () {
+                    setTimeout(function () {
+                        _this.setVirtualScrollerHeight();
+                    }, 50);
+                });
+            });
+        }
+        this.initialized = false;
     }
     Object.defineProperty(ScrollableView.prototype, "scrollHeight", {
         get: function () {
@@ -1349,6 +1372,12 @@ var ScrollableView = (function () {
         enumerable: true,
         configurable: true
     });
+    ScrollableView.prototype.ngAfterViewChecked = function () {
+        if (!this.initialized && this.el.nativeElement.offsetParent) {
+            this.alignScrollBar();
+            this.initialized = true;
+        }
+    };
     ScrollableView.prototype.ngAfterViewInit = function () {
         this.bindEvents();
         this.setScrollHeight();
@@ -1370,7 +1399,7 @@ var ScrollableView = (function () {
             this.scrollBodyViewChild.nativeElement.style.paddingBottom = this.domHandler.calculateScrollbarWidth() + 'px';
         }
         if (this.dt.virtualScroll) {
-            this.virtualScrollerViewChild.nativeElement.style.height = this.dt.totalRecords * this.dt.virtualRowHeight + 'px';
+            this.setVirtualScrollerHeight();
         }
     };
     ScrollableView.prototype.bindEvents = function () {
@@ -1447,13 +1476,24 @@ var ScrollableView = (function () {
                 var relativeHeight = this.domHandler.getOuterHeight(this.dt.el.nativeElement.parentElement) * parseInt(this.scrollHeight) / 100;
                 var staticHeight = containerHeight - 100; //total height of headers, footers, paginators
                 var scrollBodyHeight = (relativeHeight - staticHeight);
+                if (this.frozen) {
+                    scrollBodyHeight -= this.domHandler.calculateScrollbarWidth();
+                }
                 this.scrollBodyViewChild.nativeElement.style.height = 'auto';
                 this.scrollBodyViewChild.nativeElement.style.maxHeight = scrollBodyHeight + 'px';
                 this.scrollBodyViewChild.nativeElement.style.visibility = 'visible';
             }
             else {
-                this.scrollBodyViewChild.nativeElement.style.maxHeight = this.scrollHeight;
+                if (this.frozen)
+                    this.scrollBodyViewChild.nativeElement.style.maxHeight = (parseInt(this.scrollHeight) - this.domHandler.calculateScrollbarWidth()) + 'px';
+                else
+                    this.scrollBodyViewChild.nativeElement.style.maxHeight = this.scrollHeight;
             }
+        }
+    };
+    ScrollableView.prototype.setVirtualScrollerHeight = function () {
+        if (this.virtualScrollerViewChild.nativeElement) {
+            this.virtualScrollerViewChild.nativeElement.style.height = this.dt.totalRecords * this.dt.virtualRowHeight + 'px';
         }
     };
     ScrollableView.prototype.hasVerticalOverflow = function () {
@@ -1467,6 +1507,7 @@ var ScrollableView = (function () {
                 this.scrollFooterBoxViewChild.nativeElement.style.marginRight = scrollBarWidth + 'px';
             }
         }
+        this.initialized = false;
     };
     ScrollableView.prototype.ngOnDestroy = function () {
         this.unbindEvents();
@@ -1474,6 +1515,10 @@ var ScrollableView = (function () {
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
+        if (this.totalRecordsSubscription) {
+            this.totalRecordsSubscription.unsubscribe();
+        }
+        this.initialized = false;
     };
     ScrollableView.decorators = [
         { type: core_1.Component, args: [{
@@ -1932,7 +1977,7 @@ var ReorderableColumn = (function () {
         }
     };
     ReorderableColumn.prototype.onMouseDown = function (event) {
-        if (event.target.nodeName === 'INPUT')
+        if (event.target.nodeName === 'INPUT' || this.domHandler.hasClass(event.target, 'ui-column-resizer'))
             this.el.nativeElement.draggable = false;
         else
             this.el.nativeElement.draggable = true;

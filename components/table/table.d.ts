@@ -1,4 +1,4 @@
-import { OnInit, AfterViewInit, AfterContentInit, EventEmitter, ElementRef, TemplateRef, QueryList, NgZone } from '@angular/core';
+import { OnInit, AfterViewInit, AfterViewChecked, AfterContentInit, EventEmitter, ElementRef, TemplateRef, QueryList, NgZone } from '@angular/core';
 import { Column, PrimeTemplate } from '../common/shared';
 import { DomHandler } from '../dom/domhandler';
 import { ObjectUtils } from '../utils/objectutils';
@@ -12,14 +12,17 @@ export declare class TableService {
     private selectionSource;
     private contextMenuSource;
     private valueSource;
+    private totalRecordsSource;
     sortSource$: Observable<SortMeta | SortMeta[]>;
     selectionSource$: Observable<{}>;
     contextMenuSource$: Observable<any>;
     valueSource$: Observable<any>;
+    totalRecordsSource$: Observable<any>;
     onSort(sortMeta: SortMeta | SortMeta[]): void;
     onSelectionChange(): void;
     onContextMenu(data: any): void;
     onValueChange(value: any): void;
+    onTotalRecordsChange(value: number): void;
 }
 export declare class Table implements OnInit, AfterContentInit {
     el: ElementRef;
@@ -35,7 +38,6 @@ export declare class Table implements OnInit, AfterContentInit {
     paginator: boolean;
     rows: number;
     first: number;
-    totalRecords: number;
     pageLinks: number;
     rowsPerPageOptions: number[];
     alwaysShowPaginator: boolean;
@@ -43,6 +45,7 @@ export declare class Table implements OnInit, AfterContentInit {
     paginatorDropdownAppendTo: any;
     defaultSortOrder: number;
     sortMode: string;
+    resetPageOnSort: boolean;
     selectionMode: string;
     selectionChange: EventEmitter<any>;
     contextMenuSelection: any;
@@ -103,6 +106,7 @@ export declare class Table implements OnInit, AfterContentInit {
     tableViewChild: ElementRef;
     templates: QueryList<PrimeTemplate>;
     _value: any[];
+    _totalRecords: number;
     filteredValue: any[];
     headerTemplate: TemplateRef<any>;
     bodyTemplate: TemplateRef<any>;
@@ -145,12 +149,12 @@ export declare class Table implements OnInit, AfterContentInit {
     ngOnInit(): void;
     ngAfterContentInit(): void;
     value: any[];
+    totalRecords: number;
     sortField: string;
     sortOrder: number;
     multiSortMeta: SortMeta[];
     selection: any;
     updateSelectionKeys(): void;
-    updateTotalRecords(): void;
     onPageChange(event: any): void;
     sort(event: any): void;
     sortSingle(): void;
@@ -214,7 +218,7 @@ export declare class TableBody {
     template: TemplateRef<any>;
     constructor(dt: Table);
 }
-export declare class ScrollableView implements AfterViewInit, OnDestroy {
+export declare class ScrollableView implements AfterViewInit, OnDestroy, AfterViewChecked {
     dt: Table;
     el: ElementRef;
     domHandler: DomHandler;
@@ -234,8 +238,11 @@ export declare class ScrollableView implements AfterViewInit, OnDestroy {
     frozenSiblingBody: Element;
     _scrollHeight: string;
     subscription: Subscription;
+    totalRecordsSubscription: Subscription;
+    initialized: boolean;
     constructor(dt: Table, el: ElementRef, domHandler: DomHandler, zone: NgZone);
     scrollHeight: string;
+    ngAfterViewChecked(): void;
     ngAfterViewInit(): void;
     bindEvents(): void;
     unbindEvents(): void;
@@ -243,6 +250,7 @@ export declare class ScrollableView implements AfterViewInit, OnDestroy {
     onFooterScroll(event: any): void;
     onBodyScroll(event: any): void;
     setScrollHeight(): void;
+    setVirtualScrollerHeight(): void;
     hasVerticalOverflow(): boolean;
     alignScrollBar(): void;
     ngOnDestroy(): void;

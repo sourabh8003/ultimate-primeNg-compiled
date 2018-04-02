@@ -34,7 +34,7 @@ var TieredMenuSub = (function () {
         var _this = this;
         this.hideTimeout = setTimeout(function () {
             _this.activeItem = null;
-        }, 1000);
+        }, 250);
     };
     TieredMenuSub.prototype.itemClick = function (event, item) {
         if (item.disabled) {

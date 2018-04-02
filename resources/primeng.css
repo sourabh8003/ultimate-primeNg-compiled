@@ -224,12 +224,12 @@ button {
     padding: .5em 2em .5em .5em;
 }
  
-.ui-rtl .ui-accordion .ui-accordion-header > .fa {
+.ui-rtl .ui-accordion .ui-accordion-toggle-icon {
     left: initial;
     right: .5em;
 }
 
-.ui-rtl .ui-accordion .ui-accordion-header > .fa-caret-right::before {
+.ui-rtl .ui-accordion .ui-accordion-toggle-icon.fa-caret-right:before {
     content: '\f0d9';
 }
 .ui-autocomplete {
@@ -912,10 +912,6 @@ button.ui-button::-moz-focus-inner {
     margin-bottom: .5em;
     margin-top: -.25em;
     font-weight: bold;
-}
-
-.ui-card-content {
-    line-height: 1.5;
 }
 
 .ui-card-footer {
@@ -2081,6 +2077,22 @@ button.ui-button::-moz-focus-inner {
     width: 2em;
 }
 
+@media (max-width: 40em) {
+    .ui-fileupload-buttonbar .ui-button {
+        display: block;
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: .25em;
+    }
+
+    .ui-fileupload-buttonbar .ui-button:last-child {
+        margin-bottom: 0;
+    }
+
+    .ui-fileupload-row > div {
+        display: block;
+    }
+}
 
 
 
@@ -3859,6 +3871,7 @@ button.ui-button::-moz-focus-inner {
 .ui-organizationchart .ui-organizationchart-table {
     border-spacing: 0;
     border-collapse: separate;
+    margin: 0 auto;
 }
 
 .ui-organizationchart .ui-organizationchart-table > tr > td {
@@ -4919,9 +4932,6 @@ button.ui-button::-moz-focus-inner {
 
 .ui-splitbutton .ui-button.ui-splitbutton-menubutton {
     width: 2em;
-}
-
-.ui-splitbutton .ui-button {
     vertical-align: top;
 }
 

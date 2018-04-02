@@ -16,6 +16,7 @@ var Galleria = (function () {
         this.autoPlay = true;
         this.transitionInterval = 4000;
         this.showCaption = true;
+        this.effectDuration = 500;
         this.onImageClicked = new core_1.EventEmitter();
         this.onImageChange = new core_1.EventEmitter();
         this.stripLeft = 0;
@@ -116,7 +117,7 @@ var Galleria = (function () {
     Galleria.prototype.select = function (index, reposition) {
         if (index !== this.activeIndex) {
             var oldPanel = this.panels[this.activeIndex], newPanel = this.panels[index];
-            this.domHandler.fadeIn(newPanel, 500);
+            this.domHandler.fadeIn(newPanel, this.effectDuration);
             if (this.showFilmstrip) {
                 var oldFrame = this.frames[this.activeIndex], newFrame = this.frames[index];
                 if (reposition === undefined || reposition === true) {
@@ -161,6 +162,7 @@ var Galleria = (function () {
         "autoPlay": [{ type: core_1.Input },],
         "transitionInterval": [{ type: core_1.Input },],
         "showCaption": [{ type: core_1.Input },],
+        "effectDuration": [{ type: core_1.Input },],
         "onImageClicked": [{ type: core_1.Output },],
         "onImageChange": [{ type: core_1.Output },],
         "images": [{ type: core_1.Input },],

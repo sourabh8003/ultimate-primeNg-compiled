@@ -4,7 +4,6 @@ var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var shared_1 = require("../common/shared");
 var inputtext_1 = require("../inputtext/inputtext");
-var tooltip_1 = require("../tooltip/tooltip");
 var domhandler_1 = require("../dom/domhandler");
 var forms_1 = require("@angular/forms");
 exports.CHIPS_VALUE_ACCESSOR = {
@@ -149,7 +148,7 @@ var Chips = (function () {
     Chips.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-chips',
-                    template: "\n        <div [ngClass]=\"'ui-chips ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ul [ngClass]=\"{'ui-inputtext ui-state-default ui-corner-all':true,'ui-state-focus':focus,'ui-state-disabled':disabled}\" (click)=\"inputtext.focus()\">\n                <li #token *ngFor=\"let item of value; let i = index;\" class=\"ui-chips-token ui-state-highlight ui-corner-all\">\n                    <span *ngIf=\"!disabled\" class=\"ui-chips-token-icon fa fa-fw fa-close\" (click)=\"removeItem($event,i)\"></span>\n                    <span *ngIf=\"!itemTemplate\" class=\"ui-chips-token-label\">{{field ? resolveFieldData(item,field) : item}}</span>\n                    <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: item}\"></ng-container>\n                </li>\n                <li class=\"ui-chips-input-token\">\n                    <input #inputtext type=\"text\" [attr.id]=\"inputId\" [attr.placeholder]=\"(value && value.length ? null : placeholder)\" [attr.tabindex]=\"tabindex\" (keydown)=\"onKeydown($event,inputtext)\"\n                           (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event,inputtext)\" [disabled]=\"maxedOut||disabled\" [disabled]=\"disabled\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\"\n                           [pTooltip]=\"toolTipMessage\" [tooltipPosition]=\"toolTipPosition\" [tooltipEvent]=\"toolTipEvent\" [positionStyle]=\"positionStyles\" [tooltipDisabled]=\"toolTipDisabled\" [tooltipStyleClass]=\"toolTipStyleClasses\" [escape]=\"toolTipEscape\">\n                </li>\n            </ul>\n        </div>\n    ",
+                    template: "\n        <div [ngClass]=\"'ui-chips ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ul [ngClass]=\"{'ui-inputtext ui-state-default ui-corner-all':true,'ui-state-focus':focus,'ui-state-disabled':disabled}\" (click)=\"inputtext.focus()\">\n                <li #token *ngFor=\"let item of value; let i = index;\" class=\"ui-chips-token ui-state-highlight ui-corner-all\">\n                    <span *ngIf=\"!disabled\" class=\"ui-chips-token-icon fa fa-fw fa-close\" (click)=\"removeItem($event,i)\"></span>\n                    <span *ngIf=\"!itemTemplate\" class=\"ui-chips-token-label\">{{field ? resolveFieldData(item,field) : item}}</span>\n                    <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: item}\"></ng-container>\n                </li>\n                <li class=\"ui-chips-input-token\">\n                    <input #inputtext type=\"text\" [attr.id]=\"inputId\" [attr.placeholder]=\"(value && value.length ? null : placeholder)\" [attr.tabindex]=\"tabindex\" (keydown)=\"onKeydown($event,inputtext)\" \n                        (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event,inputtext)\" [disabled]=\"maxedOut||disabled\" [disabled]=\"disabled\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\">\n                </li>\n            </ul>\n        </div>\n    ",
                     providers: [domhandler_1.DomHandler, exports.CHIPS_VALUE_ACCESSOR]
                 },] },
     ];
@@ -159,14 +158,6 @@ var Chips = (function () {
         { type: domhandler_1.DomHandler, },
     ]; };
     Chips.propDecorators = {
-        "toolTipMessage": [{ type: core_1.Input },],
-        "toolTipPosition": [{ type: core_1.Input },],
-        "toolTipEvent": [{ type: core_1.Input },],
-        "positionStyles": [{ type: core_1.Input },],
-        "toolTipDisabled": [{ type: core_1.Input },],
-        "toolTipAppendTo": [{ type: core_1.Input },],
-        "toolTipStyleClasses": [{ type: core_1.Input },],
-        "toolTipEscape": [{ type: core_1.Input },],
         "style": [{ type: core_1.Input },],
         "styleClass": [{ type: core_1.Input },],
         "disabled": [{ type: core_1.Input },],
@@ -194,7 +185,7 @@ var ChipsModule = (function () {
     }
     ChipsModule.decorators = [
         { type: core_1.NgModule, args: [{
-                    imports: [common_1.CommonModule, inputtext_1.InputTextModule, shared_1.SharedModule, tooltip_1.TooltipModule],
+                    imports: [common_1.CommonModule, inputtext_1.InputTextModule, shared_1.SharedModule],
                     exports: [Chips, inputtext_1.InputTextModule, shared_1.SharedModule],
                     declarations: [Chips]
                 },] },

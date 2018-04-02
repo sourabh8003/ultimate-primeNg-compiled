@@ -23,6 +23,7 @@ export declare class Spinner implements OnInit, ControlValueAccessor {
     formatInput: boolean;
     type: string;
     required: boolean;
+    name: string;
     value: number;
     valueAsString: string;
     onModelChange: Function;

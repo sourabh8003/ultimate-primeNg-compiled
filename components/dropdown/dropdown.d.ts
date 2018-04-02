@@ -42,6 +42,7 @@ export declare class Dropdown implements OnInit, AfterViewInit, AfterContentInit
     onChange: EventEmitter<any>;
     onFocus: EventEmitter<any>;
     onBlur: EventEmitter<any>;
+    onClick: EventEmitter<any>;
     containerViewChild: ElementRef;
     panelViewChild: ElementRef;
     itemsWrapperViewChild: ElementRef;
@@ -59,7 +60,7 @@ export declare class Dropdown implements OnInit, AfterViewInit, AfterContentInit
     onModelTouched: Function;
     optionsToDisplay: any[];
     hover: boolean;
-    focus: boolean;
+    focused: boolean;
     filled: boolean;
     panelVisible: boolean;
     shown: boolean;
@@ -109,6 +110,7 @@ export declare class Dropdown implements OnInit, AfterViewInit, AfterContentInit
     onFilter(event: any): void;
     activateFilter(): void;
     applyFocus(): void;
+    focus(): void;
     bindDocumentClickListener(): void;
     unbindDocumentClickListener(): void;
     updateFilledState(): void;

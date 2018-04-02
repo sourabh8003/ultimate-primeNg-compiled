@@ -39,8 +39,8 @@ var Editor = (function () {
         this.quill.on('text-change', function (delta, oldContents, source) {
             if (source === 'user') {
                 var html = editorElement.children[0].innerHTML;
-                var text = _this.quill.getText();
-                if (html == '<p><br></p>') {
+                var text = _this.quill.getText().trim();
+                if (text.length === 0) {
                     html = null;
                 }
                 _this.onTextChange.emit({

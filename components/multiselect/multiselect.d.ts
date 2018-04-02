@@ -24,6 +24,7 @@ export declare class MultiSelect implements OnInit, AfterViewInit, AfterContentI
     tabindex: number;
     appendTo: any;
     dataKey: string;
+    name: string;
     displaySelectedLabel: boolean;
     maxSelectedLabels: number;
     selectedItemsLabel: string;
@@ -31,6 +32,7 @@ export declare class MultiSelect implements OnInit, AfterViewInit, AfterContentI
     resetFilterOnHide: boolean;
     dropdownIcon: string;
     optionLabel: string;
+    showHeader: boolean;
     containerViewChild: ElementRef;
     panelViewChild: ElementRef;
     filterInputChild: ElementRef;

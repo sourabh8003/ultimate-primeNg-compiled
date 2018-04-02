@@ -5,14 +5,6 @@ export declare const CHIPS_VALUE_ACCESSOR: any;
 export declare class Chips implements AfterContentInit, ControlValueAccessor {
     el: ElementRef;
     domHandler: DomHandler;
-    toolTipMessage: string;
-    toolTipPosition: string;
-    toolTipEvent: string;
-    positionStyles: string;
-    toolTipDisabled: boolean;
-    toolTipAppendTo: string;
-    toolTipStyleClasses: string;
-    toolTipEscape: boolean;
     style: any;
     styleClass: string;
     disabled: boolean;

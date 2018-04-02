@@ -190,10 +190,15 @@ var Tooltip = (function () {
         }
     };
     Tooltip.prototype.getHostOffset = function () {
-        var offset = this.el.nativeElement.getBoundingClientRect();
-        var targetLeft = offset.left + this.domHandler.getWindowScrollLeft();
-        var targetTop = offset.top + this.domHandler.getWindowScrollTop();
-        return { left: targetLeft, top: targetTop };
+        if (this.appendTo === 'body' || this.appendTo === 'target') {
+            var offset = this.el.nativeElement.getBoundingClientRect();
+            var targetLeft = offset.left + this.domHandler.getWindowScrollLeft();
+            var targetTop = offset.top + this.domHandler.getWindowScrollTop();
+            return { left: targetLeft, top: targetTop };
+        }
+        else {
+            return { left: 0, top: 0 };
+        }
     };
     Tooltip.prototype.alignRight = function () {
         this.preAlign('right');

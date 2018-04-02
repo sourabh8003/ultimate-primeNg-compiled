@@ -83,7 +83,7 @@ var MenubarSub = (function () {
         if (this.autoDisplay) {
             this.hideTimeout = setTimeout(function () {
                 _this.activeItem = null;
-            }, 1000);
+            }, 250);
         }
     };
     MenubarSub.prototype.itemClick = function (event, item) {

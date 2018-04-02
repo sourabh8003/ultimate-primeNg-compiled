@@ -213,6 +213,9 @@ var FileUpload = (function () {
         if (this.advancedFileInput && this.advancedFileInput.nativeElement) {
             this.advancedFileInput.nativeElement.value = '';
         }
+        if (this.basicFileInput && this.basicFileInput.nativeElement) {
+            this.basicFileInput.nativeElement.value = '';
+        }
     };
     FileUpload.prototype.clearIEInput = function () {
         if (this.advancedFileInput && this.advancedFileInput.nativeElement) {

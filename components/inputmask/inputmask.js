@@ -456,7 +456,7 @@ var InputMask = (function () {
     InputMask.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-inputMask',
-                    template: "<input #input pInputText [attr.id]=\"inputId\" [attr.type]=\"type\" [attr.name]=\"name\" [ngStyle]=\"style\" [ngClass]=\"styleClass\" [attr.placeholder]=\"placeholder\"\n        [attr.size]=\"size\" [attr.maxlength]=\"maxlength\" [attr.tabindex]=\"tabindex\" [disabled]=\"disabled\" [readonly]=\"readonly\" [attr.required]=\"required\"\n        (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\" (keydown)=\"onKeyDown($event)\" (keypress)=\"onKeyPress($event)\"\n        (input)=\"onInput($event)\" (paste)=\"handleInputChange($event)\">",
+                    template: "<input #input pInputText [attr.id]=\"inputId\" [attr.type]=\"type\" [attr.name]=\"name\" [ngStyle]=\"style\" [ngClass]=\"styleClass\" [attr.placeholder]=\"placeholder\"\n        [attr.size]=\"size\" [attr.maxlength]=\"maxlength\" [attr.tabindex]=\"tabindex\" [disabled]=\"disabled\" [readonly]=\"readonly\" [attr.required]=\"required\"\n        (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\" (keydown)=\"onKeyDown($event)\" (keypress)=\"onKeyPress($event)\" [attr.autofocus]=\"autoFocus\"\n        (input)=\"onInput($event)\" (paste)=\"handleInputChange($event)\">",
                     host: {
                         '[class.ui-inputwrapper-filled]': 'filled',
                         '[class.ui-inputwrapper-focus]': 'focus'
@@ -486,6 +486,7 @@ var InputMask = (function () {
         "name": [{ type: core_1.Input },],
         "required": [{ type: core_1.Input },],
         "characterPattern": [{ type: core_1.Input },],
+        "autoFocus": [{ type: core_1.Input },],
         "inputViewChild": [{ type: core_1.ViewChild, args: ['input',] },],
         "onComplete": [{ type: core_1.Output },],
         "onFocus": [{ type: core_1.Output },],

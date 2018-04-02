@@ -11,6 +11,7 @@ export declare class RadioButton implements ControlValueAccessor {
     inputId: string;
     style: any;
     styleClass: string;
+    labelStyleClass: string;
     onClick: EventEmitter<any>;
     inputViewChild: ElementRef;
     onModelChange: Function;
