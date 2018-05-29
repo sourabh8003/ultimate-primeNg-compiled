@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var core_2 = require("@angular/core");
-var Header = (function () {
+var Header = /** @class */ (function () {
     function Header() {
     }
     Header.decorators = [
@@ -12,12 +12,10 @@ var Header = (function () {
                     template: '<ng-content></ng-content>'
                 },] },
     ];
-    /** @nocollapse */
-    Header.ctorParameters = function () { return []; };
     return Header;
 }());
 exports.Header = Header;
-var Footer = (function () {
+var Footer = /** @class */ (function () {
     function Footer() {
     }
     Footer.decorators = [
@@ -26,12 +24,10 @@ var Footer = (function () {
                     template: '<ng-content></ng-content>'
                 },] },
     ];
-    /** @nocollapse */
-    Footer.ctorParameters = function () { return []; };
     return Footer;
 }());
 exports.Footer = Footer;
-var PrimeTemplate = (function () {
+var PrimeTemplate = /** @class */ (function () {
     function PrimeTemplate(template) {
         this.template = template;
     }
@@ -56,7 +52,7 @@ var PrimeTemplate = (function () {
 }());
 exports.PrimeTemplate = PrimeTemplate;
 /* Deprecated */
-var Column = (function () {
+var Column = /** @class */ (function () {
     function Column() {
         this.filterType = 'text';
         this.exportable = true;
@@ -95,7 +91,6 @@ var Column = (function () {
                 },] },
     ];
     /** @nocollapse */
-    Column.ctorParameters = function () { return []; };
     Column.propDecorators = {
         "field": [{ type: core_1.Input },],
         "colId": [{ type: core_1.Input },],
@@ -137,7 +132,7 @@ var Column = (function () {
 }());
 exports.Column = Column;
 /* Deprecated */
-var Row = (function () {
+var Row = /** @class */ (function () {
     function Row() {
     }
     Row.decorators = [
@@ -147,7 +142,6 @@ var Row = (function () {
                 },] },
     ];
     /** @nocollapse */
-    Row.ctorParameters = function () { return []; };
     Row.propDecorators = {
         "columns": [{ type: core_1.ContentChildren, args: [Column,] },],
     };
@@ -155,7 +149,7 @@ var Row = (function () {
 }());
 exports.Row = Row;
 /* Deprecated */
-var HeaderColumnGroup = (function () {
+var HeaderColumnGroup = /** @class */ (function () {
     function HeaderColumnGroup() {
     }
     HeaderColumnGroup.decorators = [
@@ -165,7 +159,6 @@ var HeaderColumnGroup = (function () {
                 },] },
     ];
     /** @nocollapse */
-    HeaderColumnGroup.ctorParameters = function () { return []; };
     HeaderColumnGroup.propDecorators = {
         "frozen": [{ type: core_1.Input },],
         "rows": [{ type: core_1.ContentChildren, args: [Row,] },],
@@ -174,7 +167,7 @@ var HeaderColumnGroup = (function () {
 }());
 exports.HeaderColumnGroup = HeaderColumnGroup;
 /* Deprecated */
-var FooterColumnGroup = (function () {
+var FooterColumnGroup = /** @class */ (function () {
     function FooterColumnGroup() {
     }
     FooterColumnGroup.decorators = [
@@ -184,7 +177,6 @@ var FooterColumnGroup = (function () {
                 },] },
     ];
     /** @nocollapse */
-    FooterColumnGroup.ctorParameters = function () { return []; };
     FooterColumnGroup.propDecorators = {
         "frozen": [{ type: core_1.Input },],
         "rows": [{ type: core_1.ContentChildren, args: [Row,] },],
@@ -192,7 +184,7 @@ var FooterColumnGroup = (function () {
     return FooterColumnGroup;
 }());
 exports.FooterColumnGroup = FooterColumnGroup;
-var SharedModule = (function () {
+var SharedModule = /** @class */ (function () {
     function SharedModule() {
     }
     SharedModule.decorators = [
@@ -202,8 +194,6 @@ var SharedModule = (function () {
                     declarations: [Header, Footer, Column, PrimeTemplate, Row, HeaderColumnGroup, FooterColumnGroup]
                 },] },
     ];
-    /** @nocollapse */
-    SharedModule.ctorParameters = function () { return []; };
     return SharedModule;
 }());
 exports.SharedModule = SharedModule;

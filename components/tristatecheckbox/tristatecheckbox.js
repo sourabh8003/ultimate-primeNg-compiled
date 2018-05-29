@@ -8,7 +8,7 @@ exports.TRISTATECHECKBOX_VALUE_ACCESSOR = {
     useExisting: core_1.forwardRef(function () { return TriStateCheckbox; }),
     multi: true
 };
-var TriStateCheckbox = (function () {
+var TriStateCheckbox = /** @class */ (function () {
     function TriStateCheckbox(cd) {
         this.cd = cd;
         this.onChange = new core_1.EventEmitter();
@@ -90,7 +90,7 @@ var TriStateCheckbox = (function () {
     return TriStateCheckbox;
 }());
 exports.TriStateCheckbox = TriStateCheckbox;
-var TriStateCheckboxModule = (function () {
+var TriStateCheckboxModule = /** @class */ (function () {
     function TriStateCheckboxModule() {
     }
     TriStateCheckboxModule.decorators = [
@@ -100,8 +100,6 @@ var TriStateCheckboxModule = (function () {
                     declarations: [TriStateCheckbox]
                 },] },
     ];
-    /** @nocollapse */
-    TriStateCheckboxModule.ctorParameters = function () { return []; };
     return TriStateCheckboxModule;
 }());
 exports.TriStateCheckboxModule = TriStateCheckboxModule;

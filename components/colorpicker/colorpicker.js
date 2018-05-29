@@ -10,7 +10,7 @@ exports.COLORPICKER_VALUE_ACCESSOR = {
     useExisting: core_1.forwardRef(function () { return ColorPicker; }),
     multi: true
 };
-var ColorPicker = (function () {
+var ColorPicker = /** @class */ (function () {
     function ColorPicker(el, domHandler, renderer, cd) {
         this.el = el;
         this.domHandler = domHandler;
@@ -435,7 +435,7 @@ var ColorPicker = (function () {
     return ColorPicker;
 }());
 exports.ColorPicker = ColorPicker;
-var ColorPickerModule = (function () {
+var ColorPickerModule = /** @class */ (function () {
     function ColorPickerModule() {
     }
     ColorPickerModule.decorators = [
@@ -445,8 +445,6 @@ var ColorPickerModule = (function () {
                     declarations: [ColorPicker]
                 },] },
     ];
-    /** @nocollapse */
-    ColorPickerModule.ctorParameters = function () { return []; };
     return ColorPickerModule;
 }());
 exports.ColorPickerModule = ColorPickerModule;

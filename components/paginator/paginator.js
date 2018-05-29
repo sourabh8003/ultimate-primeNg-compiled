@@ -5,7 +5,7 @@ var common_1 = require("@angular/common");
 var forms_1 = require("@angular/forms");
 var dropdown_1 = require("../dropdown/dropdown");
 var shared_1 = require("../common/shared");
-var Paginator = (function () {
+var Paginator = /** @class */ (function () {
     function Paginator() {
         this.pageLinkSize = 5;
         this.onPageChange = new core_1.EventEmitter();
@@ -152,7 +152,6 @@ var Paginator = (function () {
                 },] },
     ];
     /** @nocollapse */
-    Paginator.ctorParameters = function () { return []; };
     Paginator.propDecorators = {
         "pageLinkSize": [{ type: core_1.Input },],
         "onPageChange": [{ type: core_1.Output },],
@@ -170,7 +169,7 @@ var Paginator = (function () {
     return Paginator;
 }());
 exports.Paginator = Paginator;
-var PaginatorModule = (function () {
+var PaginatorModule = /** @class */ (function () {
     function PaginatorModule() {
     }
     PaginatorModule.decorators = [
@@ -180,8 +179,6 @@ var PaginatorModule = (function () {
                     declarations: [Paginator]
                 },] },
     ];
-    /** @nocollapse */
-    PaginatorModule.ctorParameters = function () { return []; };
     return PaginatorModule;
 }());
 exports.PaginatorModule = PaginatorModule;

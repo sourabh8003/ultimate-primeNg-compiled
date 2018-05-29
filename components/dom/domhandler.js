@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var DomHandler = (function () {
+var DomHandler = /** @class */ (function () {
     function DomHandler() {
         this.calculatedScrollbarWidth = null;
     }
@@ -270,6 +270,12 @@ var DomHandler = (function () {
             left: rect.left + document.body.scrollLeft
         };
     };
+    DomHandler.prototype.replaceElementWith = function (element, replacementElement) {
+        var parentNode = element.parentNode;
+        if (!parentNode)
+            throw "Can't replace element";
+        return parentNode.replaceChild(replacementElement, element);
+    };
     DomHandler.prototype.getUserAgent = function () {
         return navigator.userAgent;
     };
@@ -380,8 +386,6 @@ var DomHandler = (function () {
     DomHandler.decorators = [
         { type: core_1.Injectable },
     ];
-    /** @nocollapse */
-    DomHandler.ctorParameters = function () { return []; };
     return DomHandler;
 }());
 exports.DomHandler = DomHandler;

@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var common_1 = require("@angular/common");
-var InputText = (function () {
+var InputText = /** @class */ (function () {
     function InputText(el, ngModel) {
         this.el = el;
         this.ngModel = ngModel;
@@ -44,7 +44,7 @@ var InputText = (function () {
     return InputText;
 }());
 exports.InputText = InputText;
-var InputTextModule = (function () {
+var InputTextModule = /** @class */ (function () {
     function InputTextModule() {
     }
     InputTextModule.decorators = [
@@ -54,8 +54,6 @@ var InputTextModule = (function () {
                     declarations: [InputText]
                 },] },
     ];
-    /** @nocollapse */
-    InputTextModule.ctorParameters = function () { return []; };
     return InputTextModule;
 }());
 exports.InputTextModule = InputTextModule;

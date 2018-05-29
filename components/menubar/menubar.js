@@ -5,10 +5,11 @@ var common_1 = require("@angular/common");
 var domhandler_1 = require("../dom/domhandler");
 var tooltip_1 = require("../tooltip/tooltip");
 var router_1 = require("@angular/router");
-var MenubarSub = (function () {
-    function MenubarSub(domHandler, renderer) {
+var MenubarSub = /** @class */ (function () {
+    function MenubarSub(domHandler, renderer, cd) {
         this.domHandler = domHandler;
         this.renderer = renderer;
+        this.cd = cd;
         this.autoZIndex = true;
         this.baseZIndex = 0;
         this.menuHoverActive = false;
@@ -61,7 +62,7 @@ var MenubarSub = (function () {
                 clearTimeout(this.hideTimeout);
                 this.hideTimeout = null;
             }
-            this.activeItem = item;
+            this.activeItem = this.activeItem ? (this.activeItem.isEqualNode(item) ? null : item) : item;
             var nextElement = item.children[0].nextElementSibling;
             if (nextElement) {
                 var sublist = nextElement.children[0];
@@ -83,6 +84,7 @@ var MenubarSub = (function () {
         if (this.autoDisplay) {
             this.hideTimeout = setTimeout(function () {
                 _this.activeItem = null;
+                _this.cd.markForCheck();
             }, 250);
         }
     };
@@ -124,6 +126,7 @@ var MenubarSub = (function () {
     MenubarSub.ctorParameters = function () { return [
         { type: domhandler_1.DomHandler, },
         { type: core_1.Renderer2, },
+        { type: core_1.ChangeDetectorRef, },
     ]; };
     MenubarSub.propDecorators = {
         "item": [{ type: core_1.Input },],
@@ -135,7 +138,7 @@ var MenubarSub = (function () {
     return MenubarSub;
 }());
 exports.MenubarSub = MenubarSub;
-var Menubar = (function () {
+var Menubar = /** @class */ (function () {
     function Menubar(el, domHandler, renderer) {
         this.el = el;
         this.domHandler = domHandler;
@@ -168,7 +171,7 @@ var Menubar = (function () {
     return Menubar;
 }());
 exports.Menubar = Menubar;
-var MenubarModule = (function () {
+var MenubarModule = /** @class */ (function () {
     function MenubarModule() {
     }
     MenubarModule.decorators = [
@@ -178,8 +181,6 @@ var MenubarModule = (function () {
                     declarations: [Menubar, MenubarSub]
                 },] },
     ];
-    /** @nocollapse */
-    MenubarModule.ctorParameters = function () { return []; };
     return MenubarModule;
 }());
 exports.MenubarModule = MenubarModule;

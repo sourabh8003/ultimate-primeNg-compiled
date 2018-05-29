@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var domhandler_1 = require("../dom/domhandler");
-var BlockUI = (function () {
+var BlockUI = /** @class */ (function () {
     function BlockUI(el, domHandler) {
         this.el = el;
         this.domHandler = domHandler;
@@ -73,7 +73,7 @@ var BlockUI = (function () {
     return BlockUI;
 }());
 exports.BlockUI = BlockUI;
-var BlockUIModule = (function () {
+var BlockUIModule = /** @class */ (function () {
     function BlockUIModule() {
     }
     BlockUIModule.decorators = [
@@ -83,8 +83,6 @@ var BlockUIModule = (function () {
                     declarations: [BlockUI]
                 },] },
     ];
-    /** @nocollapse */
-    BlockUIModule.ctorParameters = function () { return []; };
     return BlockUIModule;
 }());
 exports.BlockUIModule = BlockUIModule;

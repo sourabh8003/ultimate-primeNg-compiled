@@ -19,7 +19,7 @@ export declare class RadioButton implements ControlValueAccessor {
     checked: boolean;
     focused: boolean;
     constructor(cd: ChangeDetectorRef);
-    handleClick(): void;
+    handleClick(event: any, radioButton: any, focus: any): void;
     select(): void;
     writeValue(value: any): void;
     registerOnChange(fn: Function): void;

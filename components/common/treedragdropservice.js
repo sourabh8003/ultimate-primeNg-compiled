@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var Subject_1 = require("rxjs/Subject");
-var TreeDragDropService = (function () {
+var rxjs_1 = require("rxjs");
+var TreeDragDropService = /** @class */ (function () {
     function TreeDragDropService() {
-        this.dragStartSource = new Subject_1.Subject();
-        this.dragStopSource = new Subject_1.Subject();
+        this.dragStartSource = new rxjs_1.Subject();
+        this.dragStopSource = new rxjs_1.Subject();
         this.dragStart$ = this.dragStartSource.asObservable();
         this.dragStop$ = this.dragStopSource.asObservable();
     }
@@ -18,8 +18,6 @@ var TreeDragDropService = (function () {
     TreeDragDropService.decorators = [
         { type: core_1.Injectable },
     ];
-    /** @nocollapse */
-    TreeDragDropService.ctorParameters = function () { return []; };
     return TreeDragDropService;
 }());
 exports.TreeDragDropService = TreeDragDropService;

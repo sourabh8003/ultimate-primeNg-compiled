@@ -4,7 +4,7 @@ var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var shared_1 = require("../common/shared");
 var paginator_1 = require("../paginator/paginator");
-var DataList = (function () {
+var DataList = /** @class */ (function () {
     function DataList(el, differs) {
         this.el = el;
         this.differs = differs;
@@ -156,7 +156,7 @@ var DataList = (function () {
     return DataList;
 }());
 exports.DataList = DataList;
-var DataListModule = (function () {
+var DataListModule = /** @class */ (function () {
     function DataListModule() {
     }
     DataListModule.decorators = [
@@ -166,8 +166,6 @@ var DataListModule = (function () {
                     declarations: [DataList]
                 },] },
     ];
-    /** @nocollapse */
-    DataListModule.ctorParameters = function () { return []; };
     return DataListModule;
 }());
 exports.DataListModule = DataListModule;

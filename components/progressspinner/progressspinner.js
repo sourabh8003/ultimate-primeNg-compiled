@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
-var ProgressSpinner = (function () {
+var ProgressSpinner = /** @class */ (function () {
     function ProgressSpinner() {
         this.strokeWidth = "2";
         this.fill = "none";
@@ -15,7 +15,6 @@ var ProgressSpinner = (function () {
                 },] },
     ];
     /** @nocollapse */
-    ProgressSpinner.ctorParameters = function () { return []; };
     ProgressSpinner.propDecorators = {
         "style": [{ type: core_1.Input },],
         "styleClass": [{ type: core_1.Input },],
@@ -26,7 +25,7 @@ var ProgressSpinner = (function () {
     return ProgressSpinner;
 }());
 exports.ProgressSpinner = ProgressSpinner;
-var ProgressSpinnerModule = (function () {
+var ProgressSpinnerModule = /** @class */ (function () {
     function ProgressSpinnerModule() {
     }
     ProgressSpinnerModule.decorators = [
@@ -36,8 +35,6 @@ var ProgressSpinnerModule = (function () {
                     declarations: [ProgressSpinner]
                 },] },
     ];
-    /** @nocollapse */
-    ProgressSpinnerModule.ctorParameters = function () { return []; };
     return ProgressSpinnerModule;
 }());
 exports.ProgressSpinnerModule = ProgressSpinnerModule;

@@ -2,11 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
-var CodeHighlighter = (function () {
+var CodeHighlighter = /** @class */ (function () {
     function CodeHighlighter(el) {
         this.el = el;
     }
-    CodeHighlighter.prototype.ngOnInit = function () {
+    CodeHighlighter.prototype.ngAfterViewInit = function () {
         if (window['Prism']) {
             window['Prism'].highlightElement(this.el.nativeElement);
         }
@@ -23,7 +23,7 @@ var CodeHighlighter = (function () {
     return CodeHighlighter;
 }());
 exports.CodeHighlighter = CodeHighlighter;
-var CodeHighlighterModule = (function () {
+var CodeHighlighterModule = /** @class */ (function () {
     function CodeHighlighterModule() {
     }
     CodeHighlighterModule.decorators = [
@@ -33,8 +33,6 @@ var CodeHighlighterModule = (function () {
                     declarations: [CodeHighlighter]
                 },] },
     ];
-    /** @nocollapse */
-    CodeHighlighterModule.ctorParameters = function () { return []; };
     return CodeHighlighterModule;
 }());
 exports.CodeHighlighterModule = CodeHighlighterModule;

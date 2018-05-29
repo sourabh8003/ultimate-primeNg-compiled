@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var domhandler_1 = require("../dom/domhandler");
-var Tooltip = (function () {
+var Tooltip = /** @class */ (function () {
     function Tooltip(el, domHandler, zone) {
         this.el = el;
         this.domHandler = domHandler;
@@ -34,53 +34,46 @@ var Tooltip = (function () {
         });
     };
     Tooltip.prototype.onMouseEnter = function (e) {
-        if (!this.container) {
-            if (this.hideTimeout) {
-                clearTimeout(this.hideTimeout);
-                this.remove();
-            }
+        if (!this.container && !this.showTimeout) {
             this.activate();
         }
     };
     Tooltip.prototype.onMouseLeave = function (e) {
-        this.deactivate(true);
+        this.deactivate();
     };
     Tooltip.prototype.onFocus = function (e) {
         this.activate();
     };
     Tooltip.prototype.onBlur = function (e) {
-        this.deactivate(true);
+        this.deactivate();
     };
     Tooltip.prototype.onClick = function (e) {
-        this.deactivate(true);
+        this.deactivate();
     };
     Tooltip.prototype.activate = function () {
         var _this = this;
         this.active = true;
-        if (this.hideTimeout) {
-            clearTimeout(this.hideTimeout);
-        }
+        this.clearHideTimeout();
         if (this.showDelay)
             this.showTimeout = setTimeout(function () { _this.show(); }, this.showDelay);
         else
             this.show();
         if (this.life) {
-            this.lifeTimeout = setTimeout(function () { _this.deactivate(false); }, this.life);
+            var duration = this.showDelay ? this.life + this.showDelay : this.life;
+            this.hideTimeout = setTimeout(function () { _this.hide(); }, duration);
         }
     };
-    Tooltip.prototype.deactivate = function (useDelay) {
+    Tooltip.prototype.deactivate = function () {
         var _this = this;
         this.active = false;
-        if (this.showTimeout) {
-            clearTimeout(this.showTimeout);
-        }
-        if (this.lifeTimeout) {
-            clearTimeout(this.lifeTimeout);
-        }
-        if (this.hideDelay && useDelay)
+        this.clearShowTimeout();
+        if (this.hideDelay) {
+            this.clearHideTimeout(); //life timeout
             this.hideTimeout = setTimeout(function () { _this.hide(); }, this.hideDelay);
-        else
+        }
+        else {
             this.hide();
+        }
     };
     Object.defineProperty(Tooltip.prototype, "text", {
         get: function () {
@@ -284,7 +277,25 @@ var Tooltip = (function () {
             else
                 this.domHandler.removeChild(this.container, this.appendTo);
         }
+        this.unbindDocumentResizeListener();
+        this.clearTimeouts();
         this.container = null;
+    };
+    Tooltip.prototype.clearShowTimeout = function () {
+        if (this.showTimeout) {
+            clearTimeout(this.showTimeout);
+            this.showTimeout = null;
+        }
+    };
+    Tooltip.prototype.clearHideTimeout = function () {
+        if (this.hideTimeout) {
+            clearTimeout(this.hideTimeout);
+            this.hideTimeout = null;
+        }
+    };
+    Tooltip.prototype.clearTimeouts = function () {
+        this.clearShowTimeout();
+        this.clearHideTimeout();
     };
     Tooltip.prototype.ngOnDestroy = function () {
         this.unbindEvents();
@@ -319,7 +330,7 @@ var Tooltip = (function () {
     return Tooltip;
 }());
 exports.Tooltip = Tooltip;
-var TooltipModule = (function () {
+var TooltipModule = /** @class */ (function () {
     function TooltipModule() {
     }
     TooltipModule.decorators = [
@@ -329,8 +340,6 @@ var TooltipModule = (function () {
                     declarations: [Tooltip]
                 },] },
     ];
-    /** @nocollapse */
-    TooltipModule.ctorParameters = function () { return []; };
     return TooltipModule;
 }());
 exports.TooltipModule = TooltipModule;

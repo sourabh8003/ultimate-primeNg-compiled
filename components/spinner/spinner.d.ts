@@ -24,6 +24,8 @@ export declare class Spinner implements OnInit, ControlValueAccessor {
     type: string;
     required: boolean;
     name: string;
+    inputStyle: string;
+    inputStyleClass: string;
     value: number;
     valueAsString: string;
     onModelChange: Function;
@@ -33,6 +35,7 @@ export declare class Spinner implements OnInit, ControlValueAccessor {
     timer: any;
     focus: boolean;
     filled: boolean;
+    negativeSeparator: string;
     inputfieldViewChild: ElementRef;
     constructor(el: ElementRef, domHandler: DomHandler);
     ngOnInit(): void;
@@ -51,6 +54,7 @@ export declare class Spinner implements OnInit, ControlValueAccessor {
     onInputBlur(event: any): void;
     onInputFocus(event: any): void;
     parseValue(val: string): number;
+    restrictValue(): void;
     formatValue(): void;
     handleChange(event: Event): void;
     clearTimer(): void;

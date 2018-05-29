@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var domhandler_1 = require("../dom/domhandler");
-var DeferredLoader = (function () {
+var DeferredLoader = /** @class */ (function () {
     function DeferredLoader(el, domHandler, renderer, viewContainer) {
         this.el = el;
         this.domHandler = domHandler;
@@ -62,7 +62,7 @@ var DeferredLoader = (function () {
     return DeferredLoader;
 }());
 exports.DeferredLoader = DeferredLoader;
-var DeferModule = (function () {
+var DeferModule = /** @class */ (function () {
     function DeferModule() {
     }
     DeferModule.decorators = [
@@ -72,8 +72,6 @@ var DeferModule = (function () {
                     declarations: [DeferredLoader]
                 },] },
     ];
-    /** @nocollapse */
-    DeferModule.ctorParameters = function () { return []; };
     return DeferModule;
 }());
 exports.DeferModule = DeferModule;

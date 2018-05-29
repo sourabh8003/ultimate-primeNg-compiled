@@ -6,7 +6,7 @@ var common_1 = require("@angular/common");
 var domhandler_1 = require("../dom/domhandler");
 var shared_1 = require("../common/shared");
 var idx = 0;
-var Dialog = (function () {
+var Dialog = /** @class */ (function () {
     function Dialog(el, domHandler, renderer, zone) {
         this.el = el;
         this.domHandler = domHandler;
@@ -27,6 +27,7 @@ var Dialog = (function () {
         this.minX = 0;
         this.minY = 0;
         this.autoAlign = true;
+        this.focusOnShow = true;
         this.onShow = new core_1.EventEmitter();
         this.onHide = new core_1.EventEmitter();
         this.visibleChange = new core_1.EventEmitter();
@@ -57,7 +58,9 @@ var Dialog = (function () {
         if (this.executePostDisplayActions) {
             this.onShow.emit({});
             this.positionOverlay();
-            this.focus();
+            if (this.focusOnShow) {
+                this.focus();
+            }
             this.currentHeight = this.domHandler.getOuterHeight(this.containerViewChild.nativeElement);
             this.executePostDisplayActions = false;
         }
@@ -444,6 +447,7 @@ var Dialog = (function () {
         "minX": [{ type: core_1.Input },],
         "minY": [{ type: core_1.Input },],
         "autoAlign": [{ type: core_1.Input },],
+        "focusOnShow": [{ type: core_1.Input },],
         "headerFacet": [{ type: core_1.ContentChildren, args: [shared_1.Header, { descendants: false },] },],
         "footerFacet": [{ type: core_1.ContentChildren, args: [shared_1.Footer, { descendants: false },] },],
         "containerViewChild": [{ type: core_1.ViewChild, args: ['container',] },],
@@ -457,7 +461,7 @@ var Dialog = (function () {
     return Dialog;
 }());
 exports.Dialog = Dialog;
-var DialogModule = (function () {
+var DialogModule = /** @class */ (function () {
     function DialogModule() {
     }
     DialogModule.decorators = [
@@ -467,8 +471,6 @@ var DialogModule = (function () {
                     declarations: [Dialog]
                 },] },
     ];
-    /** @nocollapse */
-    DialogModule.ctorParameters = function () { return []; };
     return DialogModule;
 }());
 exports.DialogModule = DialogModule;

@@ -9,7 +9,7 @@ exports.SLIDER_VALUE_ACCESSOR = {
     useExisting: core_1.forwardRef(function () { return Slider; }),
     multi: true
 };
-var Slider = (function () {
+var Slider = /** @class */ (function () {
     function Slider(el, domHandler, renderer, ngZone) {
         this.el = el;
         this.domHandler = domHandler;
@@ -297,7 +297,7 @@ var Slider = (function () {
     return Slider;
 }());
 exports.Slider = Slider;
-var SliderModule = (function () {
+var SliderModule = /** @class */ (function () {
     function SliderModule() {
     }
     SliderModule.decorators = [
@@ -307,8 +307,6 @@ var SliderModule = (function () {
                     declarations: [Slider]
                 },] },
     ];
-    /** @nocollapse */
-    SliderModule.ctorParameters = function () { return []; };
     return SliderModule;
 }());
 exports.SliderModule = SliderModule;

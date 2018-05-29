@@ -11,7 +11,7 @@ exports.CHIPS_VALUE_ACCESSOR = {
     useExisting: core_1.forwardRef(function () { return Chips; }),
     multi: true
 };
-var Chips = (function () {
+var Chips = /** @class */ (function () {
     function Chips(el, domHandler) {
         this.el = el;
         this.domHandler = domHandler;
@@ -36,8 +36,12 @@ var Chips = (function () {
             }
         });
     };
+    Chips.prototype.onClick = function (event) {
+        this.inputViewChild.nativeElement.focus();
+    };
     Chips.prototype.writeValue = function (value) {
         this.value = value;
+        this.updateMaxedOut();
     };
     Chips.prototype.registerOnChange = function (fn) {
         this.onModelChange = fn;
@@ -70,11 +74,11 @@ var Chips = (function () {
         this.focus = true;
         this.onFocus.emit(event);
     };
-    Chips.prototype.onInputBlur = function (event, inputEL) {
+    Chips.prototype.onInputBlur = function (event) {
         this.focus = false;
-        if (this.addOnBlur && inputEL.value) {
-            this.addItem(event, inputEL.value);
-            inputEL.value = '';
+        if (this.addOnBlur && this.inputViewChild.nativeElement.value) {
+            this.addItem(event, this.inputViewChild.nativeElement.value);
+            this.inputViewChild.nativeElement.value = '';
         }
         this.onModelTouched();
         this.onBlur.emit(event);
@@ -90,10 +94,11 @@ var Chips = (function () {
             originalEvent: event,
             value: removedItem
         });
+        this.updateMaxedOut();
     };
     Chips.prototype.addItem = function (event, item) {
         this.value = this.value || [];
-        if (item && item.trim().length && (!this.max || this.max > item.length)) {
+        if (item && item.trim().length) {
             if (this.allowDuplicate || this.value.indexOf(item) === -1) {
                 this.value = this.value.concat([item]);
                 this.onModelChange(this.value);
@@ -103,12 +108,13 @@ var Chips = (function () {
                 });
             }
         }
+        this.updateMaxedOut();
     };
-    Chips.prototype.onKeydown = function (event, inputEL) {
+    Chips.prototype.onKeydown = function (event) {
         switch (event.which) {
             //backspace
             case 8:
-                if (inputEL.value.length === 0 && this.value && this.value.length > 0) {
+                if (this.inputViewChild.nativeElement.value.length === 0 && this.value && this.value.length > 0) {
                     this.value = this.value.slice();
                     var removedItem = this.value.pop();
                     this.onModelChange(this.value);
@@ -120,14 +126,14 @@ var Chips = (function () {
                 break;
             //enter
             case 13:
-                this.addItem(event, inputEL.value);
-                inputEL.value = '';
+                this.addItem(event, this.inputViewChild.nativeElement.value);
+                this.inputViewChild.nativeElement.value = '';
                 event.preventDefault();
                 break;
             case 9:
-                if (this.addOnTab && inputEL.value !== '') {
-                    this.addItem(event, inputEL.value);
-                    inputEL.value = '';
+                if (this.addOnTab && this.inputViewChild.nativeElement.value !== '') {
+                    this.addItem(event, this.inputViewChild.nativeElement.value);
+                    this.inputViewChild.nativeElement.value = '';
                     event.preventDefault();
                 }
                 break;
@@ -138,17 +144,18 @@ var Chips = (function () {
                 break;
         }
     };
-    Object.defineProperty(Chips.prototype, "maxedOut", {
-        get: function () {
-            return this.max && this.value && this.max === this.value.length;
-        },
-        enumerable: true,
-        configurable: true
-    });
+    Chips.prototype.updateMaxedOut = function () {
+        if (this.inputViewChild && this.inputViewChild.nativeElement) {
+            if (this.max && this.value && this.max === this.value.length)
+                this.inputViewChild.nativeElement.disabled = true;
+            else
+                this.inputViewChild.nativeElement.disabled = false;
+        }
+    };
     Chips.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-chips',
-                    template: "\n        <div [ngClass]=\"'ui-chips ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ul [ngClass]=\"{'ui-inputtext ui-state-default ui-corner-all':true,'ui-state-focus':focus,'ui-state-disabled':disabled}\" (click)=\"inputtext.focus()\">\n                <li #token *ngFor=\"let item of value; let i = index;\" class=\"ui-chips-token ui-state-highlight ui-corner-all\">\n                    <span *ngIf=\"!disabled\" class=\"ui-chips-token-icon fa fa-fw fa-close\" (click)=\"removeItem($event,i)\"></span>\n                    <span *ngIf=\"!itemTemplate\" class=\"ui-chips-token-label\">{{field ? resolveFieldData(item,field) : item}}</span>\n                    <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: item}\"></ng-container>\n                </li>\n                <li class=\"ui-chips-input-token\">\n                    <input #inputtext type=\"text\" [attr.id]=\"inputId\" [attr.placeholder]=\"(value && value.length ? null : placeholder)\" [attr.tabindex]=\"tabindex\" (keydown)=\"onKeydown($event,inputtext)\" \n                        (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event,inputtext)\" [disabled]=\"maxedOut||disabled\" [disabled]=\"disabled\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\">\n                </li>\n            </ul>\n        </div>\n    ",
+                    template: "\n        <div [ngClass]=\"'ui-chips ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\" (click)=\"onClick($event)\">\n            <ul [ngClass]=\"{'ui-inputtext ui-state-default ui-corner-all':true,'ui-state-focus':focus,'ui-state-disabled':disabled}\">\n                <li #token *ngFor=\"let item of value; let i = index;\" class=\"ui-chips-token ui-state-highlight ui-corner-all\">\n                    <span *ngIf=\"!disabled\" class=\"ui-chips-token-icon fa fa-fw fa-close\" (click)=\"removeItem($event,i)\"></span>\n                    <span *ngIf=\"!itemTemplate\" class=\"ui-chips-token-label\">{{field ? resolveFieldData(item,field) : item}}</span>\n                    <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: item}\"></ng-container>\n                </li>\n                <li class=\"ui-chips-input-token\">\n                    <input #inputtext type=\"text\" [attr.id]=\"inputId\" [attr.placeholder]=\"(value && value.length ? null : placeholder)\" [attr.tabindex]=\"tabindex\" (keydown)=\"onKeydown($event)\" \n                        (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\" [disabled]=\"disabled\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\">\n                </li>\n            </ul>\n        </div>\n    ",
                     providers: [domhandler_1.DomHandler, exports.CHIPS_VALUE_ACCESSOR]
                 },] },
     ];
@@ -175,12 +182,13 @@ var Chips = (function () {
         "addOnBlur": [{ type: core_1.Input },],
         "onFocus": [{ type: core_1.Output },],
         "onBlur": [{ type: core_1.Output },],
+        "inputViewChild": [{ type: core_1.ViewChild, args: ['inputtext',] },],
         "templates": [{ type: core_1.ContentChildren, args: [shared_1.PrimeTemplate,] },],
     };
     return Chips;
 }());
 exports.Chips = Chips;
-var ChipsModule = (function () {
+var ChipsModule = /** @class */ (function () {
     function ChipsModule() {
     }
     ChipsModule.decorators = [
@@ -190,8 +198,6 @@ var ChipsModule = (function () {
                     declarations: [Chips]
                 },] },
     ];
-    /** @nocollapse */
-    ChipsModule.ctorParameters = function () { return []; };
     return ChipsModule;
 }());
 exports.ChipsModule = ChipsModule;

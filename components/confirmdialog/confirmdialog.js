@@ -7,7 +7,7 @@ var domhandler_1 = require("../dom/domhandler");
 var shared_1 = require("../common/shared");
 var button_1 = require("../button/button");
 var confirmationservice_1 = require("../common/confirmationservice");
-var ConfirmDialog = (function () {
+var ConfirmDialog = /** @class */ (function () {
     function ConfirmDialog(el, domHandler, renderer, confirmationService, zone) {
         var _this = this;
         this.el = el;
@@ -32,6 +32,8 @@ var ConfirmDialog = (function () {
                 _this.header = _this.confirmation.header || _this.header;
                 _this.rejectVisible = _this.confirmation.rejectVisible == null ? _this.rejectVisible : _this.confirmation.rejectVisible;
                 _this.acceptVisible = _this.confirmation.acceptVisible == null ? _this.acceptVisible : _this.confirmation.acceptVisible;
+                _this.acceptLabel = _this.confirmation.acceptLabel || _this.acceptLabel;
+                _this.rejectLabel = _this.confirmation.rejectLabel || _this.rejectLabel;
                 if (_this.confirmation.accept) {
                     _this.confirmation.acceptEvent = new core_1.EventEmitter();
                     _this.confirmation.acceptEvent.subscribe(_this.confirmation.accept);
@@ -238,7 +240,7 @@ var ConfirmDialog = (function () {
     return ConfirmDialog;
 }());
 exports.ConfirmDialog = ConfirmDialog;
-var ConfirmDialogModule = (function () {
+var ConfirmDialogModule = /** @class */ (function () {
     function ConfirmDialogModule() {
     }
     ConfirmDialogModule.decorators = [
@@ -248,8 +250,6 @@ var ConfirmDialogModule = (function () {
                     declarations: [ConfirmDialog]
                 },] },
     ];
-    /** @nocollapse */
-    ConfirmDialogModule.ctorParameters = function () { return []; };
     return ConfirmDialogModule;
 }());
 exports.ConfirmDialogModule = ConfirmDialogModule;

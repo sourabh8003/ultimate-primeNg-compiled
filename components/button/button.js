@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var domhandler_1 = require("../dom/domhandler");
 var common_1 = require("@angular/common");
-var ButtonDirective = (function () {
+var ButtonDirective = /** @class */ (function () {
     function ButtonDirective(el, domHandler) {
         this.el = el;
         this.domHandler = domHandler;
@@ -14,6 +14,7 @@ var ButtonDirective = (function () {
         this.domHandler.addMultipleClasses(this.el.nativeElement, this.getStyleClass());
         if (this.icon) {
             var iconElement = document.createElement("span");
+            iconElement.setAttribute("aria-hidden", "true");
             var iconPosClass = (this.iconPos == 'right') ? 'ui-button-icon-right' : 'ui-button-icon-left';
             iconElement.className = iconPosClass + ' ui-clickable fa fa-fw ' + this.icon;
             this.el.nativeElement.appendChild(iconElement);
@@ -111,7 +112,7 @@ var ButtonDirective = (function () {
     return ButtonDirective;
 }());
 exports.ButtonDirective = ButtonDirective;
-var Button = (function () {
+var Button = /** @class */ (function () {
     function Button() {
         this.type = 'button';
         this.iconPos = 'left';
@@ -126,7 +127,6 @@ var Button = (function () {
                 },] },
     ];
     /** @nocollapse */
-    Button.ctorParameters = function () { return []; };
     Button.propDecorators = {
         "type": [{ type: core_1.Input },],
         "iconPos": [{ type: core_1.Input },],
@@ -142,7 +142,7 @@ var Button = (function () {
     return Button;
 }());
 exports.Button = Button;
-var ButtonModule = (function () {
+var ButtonModule = /** @class */ (function () {
     function ButtonModule() {
     }
     ButtonModule.decorators = [
@@ -152,8 +152,6 @@ var ButtonModule = (function () {
                     declarations: [ButtonDirective, Button]
                 },] },
     ];
-    /** @nocollapse */
-    ButtonModule.ctorParameters = function () { return []; };
     return ButtonModule;
 }());
 exports.ButtonModule = ButtonModule;

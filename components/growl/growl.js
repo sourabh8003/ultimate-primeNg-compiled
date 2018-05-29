@@ -4,13 +4,14 @@ var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var domhandler_1 = require("../dom/domhandler");
 var messageservice_1 = require("../common/messageservice");
-var Growl = (function () {
-    function Growl(el, domHandler, differs, messageService) {
+var Growl = /** @class */ (function () {
+    function Growl(el, domHandler, differs, messageService, zone) {
         var _this = this;
         this.el = el;
         this.domHandler = domHandler;
         this.differs = differs;
         this.messageService = messageService;
+        this.zone = zone;
         this.life = 3000;
         this.immutable = true;
         this.autoZIndex = true;
@@ -94,9 +95,13 @@ var Growl = (function () {
         if (this.timeout) {
             clearTimeout(this.timeout);
         }
-        this.timeout = setTimeout(function () {
-            _this.removeAll();
-        }, this.life);
+        this.zone.runOutsideAngular(function () {
+            _this.timeout = setTimeout(function () {
+                _this.zone.run(function () {
+                    _this.removeAll();
+                });
+            }, _this.life);
+        });
     };
     Growl.prototype.remove = function (index, msgel) {
         var _this = this;
@@ -160,6 +165,7 @@ var Growl = (function () {
         { type: domhandler_1.DomHandler, },
         { type: core_1.IterableDiffers, },
         { type: messageservice_1.MessageService, decorators: [{ type: core_1.Optional },] },
+        { type: core_1.NgZone, },
     ]; };
     Growl.propDecorators = {
         "life": [{ type: core_1.Input },],
@@ -180,7 +186,7 @@ var Growl = (function () {
     return Growl;
 }());
 exports.Growl = Growl;
-var GrowlModule = (function () {
+var GrowlModule = /** @class */ (function () {
     function GrowlModule() {
     }
     GrowlModule.decorators = [
@@ -190,8 +196,6 @@ var GrowlModule = (function () {
                     declarations: [Growl]
                 },] },
     ];
-    /** @nocollapse */
-    GrowlModule.ctorParameters = function () { return []; };
     return GrowlModule;
 }());
 exports.GrowlModule = GrowlModule;

@@ -5,7 +5,7 @@ var animations_1 = require("@angular/animations");
 var common_1 = require("@angular/common");
 var shared_1 = require("../common/shared");
 var idx = 0;
-var Fieldset = (function () {
+var Fieldset = /** @class */ (function () {
     function Fieldset(el) {
         this.el = el;
         this.collapsed = false;
@@ -76,7 +76,7 @@ var Fieldset = (function () {
     return Fieldset;
 }());
 exports.Fieldset = Fieldset;
-var FieldsetModule = (function () {
+var FieldsetModule = /** @class */ (function () {
     function FieldsetModule() {
     }
     FieldsetModule.decorators = [
@@ -86,8 +86,6 @@ var FieldsetModule = (function () {
                     declarations: [Fieldset]
                 },] },
     ];
-    /** @nocollapse */
-    FieldsetModule.ctorParameters = function () { return []; };
     return FieldsetModule;
 }());
 exports.FieldsetModule = FieldsetModule;

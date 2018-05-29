@@ -4,7 +4,7 @@ var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var domhandler_1 = require("../dom/domhandler");
 var router_1 = require("@angular/router");
-var ContextMenuSub = (function () {
+var ContextMenuSub = /** @class */ (function () {
     function ContextMenuSub(domHandler, contextMenu) {
         this.domHandler = domHandler;
         this.contextMenu = contextMenu;
@@ -73,7 +73,7 @@ var ContextMenuSub = (function () {
     ContextMenuSub.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-contextMenuSub',
-                    template: "\n        <ul [ngClass]=\"{'ui-widget-content ui-corner-all ui-submenu-list ui-shadow':!root}\" class=\"ui-menu-list\" (click)=\"listClick($event)\">\n            <ng-template ngFor let-child [ngForOf]=\"(root ? item : item.items)\">\n                <li *ngIf=\"child.separator\" class=\"ui-menu-separator ui-widget-content\">\n                <li *ngIf=\"!child.separator\" #item [ngClass]=\"{'ui-menuitem ui-corner-all':true,'ui-menuitem-active':item==activeItem}\"\n                    (mouseenter)=\"onItemMouseEnter($event,item,child)\" (mouseleave)=\"onItemMouseLeave($event,item)\">\n                    <a *ngIf=\"!child.routerLink\" [href]=\"child.url||'#'\" [attr.target]=\"child.target\" [attr.title]=\"child.title\" [attr.id]=\"child.id\" (click)=\"itemClick($event, child)\"\n                        [ngClass]=\"{'ui-menuitem-link ui-corner-all':true,'ui-state-disabled':child.disabled}\" [ngStyle]=\"child.style\" [class]=\"child.styleClass\">\n                        <span class=\"ui-submenu-icon fa fa-fw fa-caret-right\" *ngIf=\"child.items\"></span>\n                        <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"child.icon\" [ngClass]=\"child.icon\"></span>\n                        <span class=\"ui-menuitem-text\">{{child.label}}</span>\n                    </a>\n                    <a *ngIf=\"child.routerLink\" [routerLink]=\"child.routerLink\" [queryParams]=\"child.queryParams\" [routerLinkActive]=\"'ui-state-active'\" \n                        [routerLinkActiveOptions]=\"child.routerLinkActiveOptions||{exact:false}\" [attr.target]=\"child.target\" [attr.title]=\"child.title\" [attr.id]=\"child.id\"\n                        (click)=\"itemClick($event, child)\" [ngClass]=\"{'ui-menuitem-link ui-corner-all':true,'ui-state-disabled':child.disabled}\" \n                        [ngStyle]=\"child.style\" [class]=\"child.styleClass\">\n                        <span class=\"ui-submenu-icon fa fa-fw fa-caret-right\" *ngIf=\"child.items\"></span>\n                        <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"child.icon\" [ngClass]=\"child.icon\"></span>\n                        <span class=\"ui-menuitem-text\">{{child.label}}</span>\n                    </a>\n                    <p-contextMenuSub class=\"ui-submenu\" [item]=\"child\" *ngIf=\"child.items\"></p-contextMenuSub>\n                </li>\n            </ng-template>\n        </ul>\n    ",
+                    template: "\n        <ul [ngClass]=\"{'ui-widget-content ui-corner-all ui-submenu-list ui-shadow':!root}\" class=\"ui-menu-list\" (click)=\"listClick($event)\">\n            <ng-template ngFor let-child [ngForOf]=\"(root ? item : item.items)\">\n                <li *ngIf=\"child.separator\" class=\"ui-menu-separator ui-widget-content\" [ngClass]=\"{'ui-helper-hidden': child.visible === false}\">\n                <li *ngIf=\"!child.separator\" #item [ngClass]=\"{'ui-menuitem ui-corner-all':true,'ui-menuitem-active':item==activeItem,'ui-helper-hidden': child.visible === false}\"\n                    (mouseenter)=\"onItemMouseEnter($event,item,child)\" (mouseleave)=\"onItemMouseLeave($event,item)\">\n                    <a *ngIf=\"!child.routerLink\" [href]=\"child.url||'#'\" [attr.target]=\"child.target\" [attr.title]=\"child.title\" [attr.id]=\"child.id\" (click)=\"itemClick($event, child)\"\n                        [ngClass]=\"{'ui-menuitem-link ui-corner-all':true,'ui-state-disabled':child.disabled}\" [ngStyle]=\"child.style\" [class]=\"child.styleClass\">\n                        <span class=\"ui-submenu-icon fa fa-fw fa-caret-right\" *ngIf=\"child.items\"></span>\n                        <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"child.icon\" [ngClass]=\"child.icon\"></span>\n                        <span class=\"ui-menuitem-text\">{{child.label}}</span>\n                    </a>\n                    <a *ngIf=\"child.routerLink\" [routerLink]=\"child.routerLink\" [queryParams]=\"child.queryParams\" [routerLinkActive]=\"'ui-state-active'\" \n                        [routerLinkActiveOptions]=\"child.routerLinkActiveOptions||{exact:false}\" [attr.target]=\"child.target\" [attr.title]=\"child.title\" [attr.id]=\"child.id\"\n                        (click)=\"itemClick($event, child)\" [ngClass]=\"{'ui-menuitem-link ui-corner-all':true,'ui-state-disabled':child.disabled}\" \n                        [ngStyle]=\"child.style\" [class]=\"child.styleClass\">\n                        <span class=\"ui-submenu-icon fa fa-fw fa-caret-right\" *ngIf=\"child.items\"></span>\n                        <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"child.icon\" [ngClass]=\"child.icon\"></span>\n                        <span class=\"ui-menuitem-text\">{{child.label}}</span>\n                    </a>\n                    <p-contextMenuSub class=\"ui-submenu\" [item]=\"child\" *ngIf=\"child.items\"></p-contextMenuSub>\n                </li>\n            </ng-template>\n        </ul>\n    ",
                     providers: [domhandler_1.DomHandler]
                 },] },
     ];
@@ -89,11 +89,12 @@ var ContextMenuSub = (function () {
     return ContextMenuSub;
 }());
 exports.ContextMenuSub = ContextMenuSub;
-var ContextMenu = (function () {
-    function ContextMenu(el, domHandler, renderer) {
+var ContextMenu = /** @class */ (function () {
+    function ContextMenu(el, domHandler, renderer, zone) {
         this.el = el;
         this.domHandler = domHandler;
         this.renderer = renderer;
+        this.zone = zone;
         this.autoZIndex = true;
         this.baseZIndex = 0;
     }
@@ -124,14 +125,14 @@ var ContextMenu = (function () {
         this.moveOnTop();
         this.containerViewChild.nativeElement.style.display = 'block';
         this.domHandler.fadeIn(this.containerViewChild.nativeElement, 250);
-        this.bindDocumentClickListener();
+        this.bindGlobalListeners();
         if (event) {
             event.preventDefault();
         }
     };
     ContextMenu.prototype.hide = function () {
         this.containerViewChild.nativeElement.style.display = 'none';
-        this.unbindDocumentClickListener();
+        this.unbindGlobalListeners();
     };
     ContextMenu.prototype.moveOnTop = function () {
         if (this.autoZIndex) {
@@ -171,7 +172,7 @@ var ContextMenu = (function () {
             this.containerViewChild.nativeElement.style.top = top_1 + 'px';
         }
     };
-    ContextMenu.prototype.bindDocumentClickListener = function () {
+    ContextMenu.prototype.bindGlobalListeners = function () {
         var _this = this;
         if (!this.documentClickListener) {
             this.documentClickListener = this.renderer.listen('document', 'click', function (event) {
@@ -180,15 +181,30 @@ var ContextMenu = (function () {
                 }
             });
         }
+        this.zone.runOutsideAngular(function () {
+            if (!_this.windowResizeListener) {
+                _this.windowResizeListener = _this.onWindowResize.bind(_this);
+                window.addEventListener('resize', _this.windowResizeListener);
+            }
+        });
     };
-    ContextMenu.prototype.unbindDocumentClickListener = function () {
+    ContextMenu.prototype.unbindGlobalListeners = function () {
         if (this.documentClickListener) {
             this.documentClickListener();
             this.documentClickListener = null;
         }
+        if (this.windowResizeListener) {
+            window.removeEventListener('resize', this.windowResizeListener);
+            this.windowResizeListener = null;
+        }
+    };
+    ContextMenu.prototype.onWindowResize = function (event) {
+        if (this.containerViewChild.nativeElement.offsetParent) {
+            this.hide();
+        }
     };
     ContextMenu.prototype.ngOnDestroy = function () {
-        this.unbindDocumentClickListener();
+        this.unbindGlobalListeners();
         if (this.rightClickListener) {
             this.rightClickListener();
         }
@@ -208,6 +224,7 @@ var ContextMenu = (function () {
         { type: core_1.ElementRef, },
         { type: domhandler_1.DomHandler, },
         { type: core_1.Renderer2, },
+        { type: core_1.NgZone, },
     ]; };
     ContextMenu.propDecorators = {
         "model": [{ type: core_1.Input },],
@@ -223,7 +240,7 @@ var ContextMenu = (function () {
     return ContextMenu;
 }());
 exports.ContextMenu = ContextMenu;
-var ContextMenuModule = (function () {
+var ContextMenuModule = /** @class */ (function () {
     function ContextMenuModule() {
     }
     ContextMenuModule.decorators = [
@@ -233,8 +250,6 @@ var ContextMenuModule = (function () {
                     declarations: [ContextMenu, ContextMenuSub]
                 },] },
     ];
-    /** @nocollapse */
-    ContextMenuModule.ctorParameters = function () { return []; };
     return ContextMenuModule;
 }());
 exports.ContextMenuModule = ContextMenuModule;

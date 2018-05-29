@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var Subject_1 = require("rxjs/Subject");
-var TerminalService = (function () {
+var rxjs_1 = require("rxjs");
+var TerminalService = /** @class */ (function () {
     function TerminalService() {
-        this.commandSource = new Subject_1.Subject();
-        this.responseSource = new Subject_1.Subject();
+        this.commandSource = new rxjs_1.Subject();
+        this.responseSource = new rxjs_1.Subject();
         this.commandHandler = this.commandSource.asObservable();
         this.responseHandler = this.responseSource.asObservable();
     }
@@ -22,8 +22,6 @@ var TerminalService = (function () {
     TerminalService.decorators = [
         { type: core_1.Injectable },
     ];
-    /** @nocollapse */
-    TerminalService.ctorParameters = function () { return []; };
     return TerminalService;
 }());
 exports.TerminalService = TerminalService;

@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var domhandler_1 = require("../dom/domhandler");
-var ScrollPanel = (function () {
+var ScrollPanel = /** @class */ (function () {
     function ScrollPanel(el, zone, domHandler) {
         this.el = el;
         this.zone = zone;
@@ -24,8 +24,23 @@ var ScrollPanel = (function () {
             _this.contentViewChild.nativeElement.addEventListener('mouseenter', _this.moveBar);
             _this.xBarViewChild.nativeElement.addEventListener('mousedown', _this.onXBarMouseDown);
             _this.yBarViewChild.nativeElement.addEventListener('mousedown', _this.onYBarMouseDown);
+            _this.calculateContainerHeight();
             _this.initialized = true;
         });
+    };
+    ScrollPanel.prototype.calculateContainerHeight = function () {
+        var container = this.containerViewChild.nativeElement;
+        var content = this.contentViewChild.nativeElement;
+        var xBar = this.xBarViewChild.nativeElement;
+        var containerStyles = getComputedStyle(container), xBarStyles = getComputedStyle(xBar), pureContainerHeight = this.domHandler.getHeight(container) - parseInt(xBarStyles['height'], 10);
+        if (containerStyles['max-height'] != "none" && pureContainerHeight == 0) {
+            if (content.offsetHeight + parseInt(xBarStyles['height'], 10) > parseInt(containerStyles['max-height'], 10)) {
+                container.style.height = containerStyles['max-height'];
+            }
+            else {
+                container.style.height = content.offsetHeight + parseFloat(containerStyles.paddingTop) + parseFloat(containerStyles.paddingBottom) + parseFloat(containerStyles.borderTopWidth) + parseFloat(containerStyles.borderBottomWidth) + "px";
+            }
+        }
     };
     ScrollPanel.prototype.moveBar = function () {
         var _this = this;
@@ -155,7 +170,7 @@ var ScrollPanel = (function () {
     return ScrollPanel;
 }());
 exports.ScrollPanel = ScrollPanel;
-var ScrollPanelModule = (function () {
+var ScrollPanelModule = /** @class */ (function () {
     function ScrollPanelModule() {
     }
     ScrollPanelModule.decorators = [
@@ -165,8 +180,6 @@ var ScrollPanelModule = (function () {
                     declarations: [ScrollPanel]
                 },] },
     ];
-    /** @nocollapse */
-    ScrollPanelModule.ctorParameters = function () { return []; };
     return ScrollPanelModule;
 }());
 exports.ScrollPanelModule = ScrollPanelModule;

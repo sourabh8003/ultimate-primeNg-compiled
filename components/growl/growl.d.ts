@@ -1,13 +1,14 @@
-import { ElementRef, AfterViewInit, DoCheck, OnDestroy, EventEmitter, IterableDiffers } from '@angular/core';
+import { ElementRef, AfterViewInit, DoCheck, OnDestroy, EventEmitter, IterableDiffers, NgZone } from '@angular/core';
 import { Message } from '../common/message';
 import { DomHandler } from '../dom/domhandler';
 import { MessageService } from '../common/messageservice';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 export declare class Growl implements AfterViewInit, DoCheck, OnDestroy {
     el: ElementRef;
     domHandler: DomHandler;
     differs: IterableDiffers;
     messageService: MessageService;
+    private zone;
     life: number;
     style: any;
     styleClass: string;
@@ -27,7 +28,7 @@ export declare class Growl implements AfterViewInit, DoCheck, OnDestroy {
     differ: any;
     subscription: Subscription;
     closeIconClick: boolean;
-    constructor(el: ElementRef, domHandler: DomHandler, differs: IterableDiffers, messageService: MessageService);
+    constructor(el: ElementRef, domHandler: DomHandler, differs: IterableDiffers, messageService: MessageService, zone: NgZone);
     ngAfterViewInit(): void;
     value: Message[];
     sticky: boolean;

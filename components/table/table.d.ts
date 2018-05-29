@@ -5,8 +5,7 @@ import { ObjectUtils } from '../utils/objectutils';
 import { SortMeta } from '../common/sortmeta';
 import { FilterMetadata } from '../common/filtermetadata';
 import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { Subscription, Observable } from 'rxjs';
 export declare class TableService {
     private sortSource;
     private selectionSource;
@@ -82,6 +81,7 @@ export declare class Table implements OnInit, AfterContentInit {
     rowHover: boolean;
     customSort: boolean;
     autoLayout: boolean;
+    exportFunction: any;
     onRowSelect: EventEmitter<any>;
     onRowUnselect: EventEmitter<any>;
     onPage: EventEmitter<any>;
@@ -272,11 +272,13 @@ export declare class SortableColumn implements OnInit, OnDestroy {
 export declare class SortIcon implements OnInit, OnDestroy {
     dt: Table;
     field: string;
+    ariaLabelDesc: string;
+    ariaLabelAsc: string;
     subscription: Subscription;
     sortOrder: number;
-    sorted: boolean;
     constructor(dt: Table);
     ngOnInit(): void;
+    onClick(event: any): void;
     updateSortState(): void;
     ngOnDestroy(): void;
 }
@@ -444,7 +446,8 @@ export declare class TableHeaderCheckbox {
     boxViewChild: ElementRef;
     checked: boolean;
     disabled: boolean;
-    subscription: Subscription;
+    selectionChangeSubscription: Subscription;
+    valueChangeSubscription: Subscription;
     constructor(dt: Table, domHandler: DomHandler, tableService: TableService);
     ngOnInit(): void;
     onClick(event: Event, checked: any): void;

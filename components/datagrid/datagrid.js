@@ -4,7 +4,7 @@ var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var shared_1 = require("../common/shared");
 var paginator_1 = require("../paginator/paginator");
-var DataGrid = (function () {
+var DataGrid = /** @class */ (function () {
     function DataGrid(el, differs) {
         this.el = el;
         this.differs = differs;
@@ -154,7 +154,7 @@ var DataGrid = (function () {
     return DataGrid;
 }());
 exports.DataGrid = DataGrid;
-var DataGridModule = (function () {
+var DataGridModule = /** @class */ (function () {
     function DataGridModule() {
     }
     DataGridModule.decorators = [
@@ -164,8 +164,6 @@ var DataGridModule = (function () {
                     declarations: [DataGrid]
                 },] },
     ];
-    /** @nocollapse */
-    DataGridModule.ctorParameters = function () { return []; };
     return DataGridModule;
 }());
 exports.DataGridModule = DataGridModule;

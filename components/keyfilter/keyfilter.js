@@ -9,7 +9,7 @@ exports.KEYFILTER_VALIDATOR = {
     useExisting: core_1.forwardRef(function () { return KeyFilter; }),
     multi: true
 };
-var KeyFilter = (function () {
+var KeyFilter = /** @class */ (function () {
     function KeyFilter(el, domHandler) {
         this.el = el;
         this.domHandler = domHandler;
@@ -69,11 +69,13 @@ var KeyFilter = (function () {
         }
     };
     KeyFilter.prototype.validate = function (c) {
-        var value = this.el.nativeElement.value;
-        if (!this.regex.test(value)) {
-            return {
-                validatePattern: false
-            };
+        if (this.pValidateOnly) {
+            var value = this.el.nativeElement.value;
+            if (value && !this.regex.test(value)) {
+                return {
+                    validatePattern: false
+                };
+            }
         }
     };
     KeyFilter.DEFAULT_MASKS = {
@@ -132,7 +134,7 @@ var KeyFilter = (function () {
     return KeyFilter;
 }());
 exports.KeyFilter = KeyFilter;
-var KeyFilterModule = (function () {
+var KeyFilterModule = /** @class */ (function () {
     function KeyFilterModule() {
     }
     KeyFilterModule.decorators = [
@@ -142,8 +144,6 @@ var KeyFilterModule = (function () {
                     declarations: [KeyFilter]
                 },] },
     ];
-    /** @nocollapse */
-    KeyFilterModule.ctorParameters = function () { return []; };
     return KeyFilterModule;
 }());
 exports.KeyFilterModule = KeyFilterModule;

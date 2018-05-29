@@ -9,7 +9,7 @@ exports.INPUTSWITCH_VALUE_ACCESSOR = {
     useExisting: core_1.forwardRef(function () { return InputSwitch; }),
     multi: true
 };
-var InputSwitch = (function () {
+var InputSwitch = /** @class */ (function () {
     function InputSwitch(el, domHandler) {
         this.el = el;
         this.domHandler = domHandler;
@@ -148,7 +148,7 @@ var InputSwitch = (function () {
     return InputSwitch;
 }());
 exports.InputSwitch = InputSwitch;
-var InputSwitchModule = (function () {
+var InputSwitchModule = /** @class */ (function () {
     function InputSwitchModule() {
     }
     InputSwitchModule.decorators = [
@@ -158,8 +158,6 @@ var InputSwitchModule = (function () {
                     declarations: [InputSwitch]
                 },] },
     ];
-    /** @nocollapse */
-    InputSwitchModule.ctorParameters = function () { return []; };
     return InputSwitchModule;
 }());
 exports.InputSwitchModule = InputSwitchModule;

@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
-var GMap = (function () {
+var GMap = /** @class */ (function () {
     function GMap(el, differs, cd, zone) {
         this.el = el;
         this.cd = cd;
@@ -154,7 +154,7 @@ var GMap = (function () {
     return GMap;
 }());
 exports.GMap = GMap;
-var GMapModule = (function () {
+var GMapModule = /** @class */ (function () {
     function GMapModule() {
     }
     GMapModule.decorators = [
@@ -164,8 +164,6 @@ var GMapModule = (function () {
                     declarations: [GMap]
                 },] },
     ];
-    /** @nocollapse */
-    GMapModule.ctorParameters = function () { return []; };
     return GMapModule;
 }());
 exports.GMapModule = GMapModule;

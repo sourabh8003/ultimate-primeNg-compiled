@@ -5,7 +5,7 @@ var forms_1 = require("@angular/forms");
 var common_1 = require("@angular/common");
 var domhandler_1 = require("../dom/domhandler");
 var terminalservice_1 = require("./terminalservice");
-var Terminal = (function () {
+var Terminal = /** @class */ (function () {
     function Terminal(el, domHandler, terminalService) {
         var _this = this;
         this.el = el;
@@ -74,7 +74,7 @@ var Terminal = (function () {
     return Terminal;
 }());
 exports.Terminal = Terminal;
-var TerminalModule = (function () {
+var TerminalModule = /** @class */ (function () {
     function TerminalModule() {
     }
     TerminalModule.decorators = [
@@ -84,8 +84,6 @@ var TerminalModule = (function () {
                     declarations: [Terminal]
                 },] },
     ];
-    /** @nocollapse */
-    TerminalModule.ctorParameters = function () { return []; };
     return TerminalModule;
 }());
 exports.TerminalModule = TerminalModule;

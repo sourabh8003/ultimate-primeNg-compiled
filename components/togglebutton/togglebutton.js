@@ -8,7 +8,7 @@ exports.TOGGLEBUTTON_VALUE_ACCESSOR = {
     useExisting: core_1.forwardRef(function () { return ToggleButton; }),
     multi: true
 };
-var ToggleButton = (function () {
+var ToggleButton = /** @class */ (function () {
     function ToggleButton() {
         this.onLabel = 'Yes';
         this.offLabel = 'No';
@@ -22,7 +22,7 @@ var ToggleButton = (function () {
         this.checkbox = this.checkboxViewChild.nativeElement;
     };
     ToggleButton.prototype.getIconClass = function () {
-        var baseClass = 'ui-button-icon-left fa fa-fw';
+        var baseClass = 'ui-button-icon-left ui-togglebutton-icon fa fa-fw';
         return baseClass + ' ' + (this.checked ? this.onIcon : this.offIcon);
     };
     ToggleButton.prototype.toggle = function (event) {
@@ -78,7 +78,6 @@ var ToggleButton = (function () {
                 },] },
     ];
     /** @nocollapse */
-    ToggleButton.ctorParameters = function () { return []; };
     ToggleButton.propDecorators = {
         "onLabel": [{ type: core_1.Input },],
         "offLabel": [{ type: core_1.Input },],
@@ -95,7 +94,7 @@ var ToggleButton = (function () {
     return ToggleButton;
 }());
 exports.ToggleButton = ToggleButton;
-var ToggleButtonModule = (function () {
+var ToggleButtonModule = /** @class */ (function () {
     function ToggleButtonModule() {
     }
     ToggleButtonModule.decorators = [
@@ -105,8 +104,6 @@ var ToggleButtonModule = (function () {
                     declarations: [ToggleButton]
                 },] },
     ];
-    /** @nocollapse */
-    ToggleButtonModule.ctorParameters = function () { return []; };
     return ToggleButtonModule;
 }());
 exports.ToggleButtonModule = ToggleButtonModule;

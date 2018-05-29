@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var Subject_1 = require("rxjs/Subject");
-var ConfirmationService = (function () {
+var rxjs_1 = require("rxjs");
+var ConfirmationService = /** @class */ (function () {
     function ConfirmationService() {
-        this.requireConfirmationSource = new Subject_1.Subject();
-        this.acceptConfirmationSource = new Subject_1.Subject();
+        this.requireConfirmationSource = new rxjs_1.Subject();
+        this.acceptConfirmationSource = new rxjs_1.Subject();
         this.requireConfirmation$ = this.requireConfirmationSource.asObservable();
         this.accept = this.acceptConfirmationSource.asObservable();
     }
@@ -19,8 +19,6 @@ var ConfirmationService = (function () {
     ConfirmationService.decorators = [
         { type: core_1.Injectable },
     ];
-    /** @nocollapse */
-    ConfirmationService.ctorParameters = function () { return []; };
     return ConfirmationService;
 }());
 exports.ConfirmationService = ConfirmationService;

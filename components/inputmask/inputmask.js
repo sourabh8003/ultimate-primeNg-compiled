@@ -10,7 +10,7 @@ exports.INPUTMASK_VALUE_ACCESSOR = {
     useExisting: core_1.forwardRef(function () { return InputMask; }),
     multi: true
 };
-var InputMask = (function () {
+var InputMask = /** @class */ (function () {
     function InputMask(el, domHandler) {
         this.el = el;
         this.domHandler = domHandler;
@@ -236,10 +236,10 @@ var InputMask = (function () {
         this.focus = false;
         this.onModelTouched();
         this.checkVal();
-        this.updateModel(e);
         this.updateFilledState();
         this.onBlur.emit(e);
         if (this.inputViewChild.nativeElement.value != this.focusText) {
+            this.updateModel(e);
             var event_1 = document.createEvent('HTMLEvents');
             event_1.initEvent('change', true, false);
             this.inputViewChild.nativeElement.dispatchEvent(event_1);
@@ -443,7 +443,7 @@ var InputMask = (function () {
     };
     InputMask.prototype.updateModel = function (e) {
         var updatedValue = this.unmask ? this.getUnmaskedValue() : e.target.value;
-        if (updatedValue) {
+        if (updatedValue !== null || updatedValue !== undefined) {
             this.value = updatedValue;
             this.onModelChange(this.value);
         }
@@ -496,7 +496,7 @@ var InputMask = (function () {
     return InputMask;
 }());
 exports.InputMask = InputMask;
-var InputMaskModule = (function () {
+var InputMaskModule = /** @class */ (function () {
     function InputMaskModule() {
     }
     InputMaskModule.decorators = [
@@ -506,8 +506,6 @@ var InputMaskModule = (function () {
                     declarations: [InputMask]
                 },] },
     ];
-    /** @nocollapse */
-    InputMaskModule.ctorParameters = function () { return []; };
     return InputMaskModule;
 }());
 exports.InputMaskModule = InputMaskModule;

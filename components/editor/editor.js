@@ -10,7 +10,7 @@ exports.EDITOR_VALUE_ACCESSOR = {
     useExisting: core_1.forwardRef(function () { return Editor; }),
     multi: true
 };
-var Editor = (function () {
+var Editor = /** @class */ (function () {
     function Editor(el, domHandler) {
         this.el = el;
         this.domHandler = domHandler;
@@ -124,7 +124,7 @@ var Editor = (function () {
     return Editor;
 }());
 exports.Editor = Editor;
-var EditorModule = (function () {
+var EditorModule = /** @class */ (function () {
     function EditorModule() {
     }
     EditorModule.decorators = [
@@ -134,8 +134,6 @@ var EditorModule = (function () {
                     declarations: [Editor]
                 },] },
     ];
-    /** @nocollapse */
-    EditorModule.ctorParameters = function () { return []; };
     return EditorModule;
 }());
 exports.EditorModule = EditorModule;

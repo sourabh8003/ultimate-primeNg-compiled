@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
-var ProgressBar = (function () {
+var ProgressBar = /** @class */ (function () {
     function ProgressBar() {
         this.showValue = true;
         this.unit = '%';
@@ -15,7 +15,6 @@ var ProgressBar = (function () {
                 },] },
     ];
     /** @nocollapse */
-    ProgressBar.ctorParameters = function () { return []; };
     ProgressBar.propDecorators = {
         "value": [{ type: core_1.Input },],
         "showValue": [{ type: core_1.Input },],
@@ -27,7 +26,7 @@ var ProgressBar = (function () {
     return ProgressBar;
 }());
 exports.ProgressBar = ProgressBar;
-var ProgressBarModule = (function () {
+var ProgressBarModule = /** @class */ (function () {
     function ProgressBarModule() {
     }
     ProgressBarModule.decorators = [
@@ -37,8 +36,6 @@ var ProgressBarModule = (function () {
                     declarations: [ProgressBar]
                 },] },
     ];
-    /** @nocollapse */
-    ProgressBarModule.ctorParameters = function () { return []; };
     return ProgressBarModule;
 }());
 exports.ProgressBarModule = ProgressBarModule;

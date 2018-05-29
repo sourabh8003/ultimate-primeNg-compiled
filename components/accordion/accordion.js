@@ -5,7 +5,7 @@ var animations_1 = require("@angular/animations");
 var common_1 = require("@angular/common");
 var shared_1 = require("../common/shared");
 var idx = 0;
-var AccordionTab = (function () {
+var AccordionTab = /** @class */ (function () {
     function AccordionTab(accordion) {
         this.accordion = accordion;
         this.selectedChange = new core_1.EventEmitter();
@@ -95,7 +95,7 @@ var AccordionTab = (function () {
     return AccordionTab;
 }());
 exports.AccordionTab = AccordionTab;
-var Accordion = (function () {
+var Accordion = /** @class */ (function () {
     function Accordion(el, changeDetector) {
         this.el = el;
         this.changeDetector = changeDetector;
@@ -175,7 +175,7 @@ var Accordion = (function () {
     return Accordion;
 }());
 exports.Accordion = Accordion;
-var AccordionModule = (function () {
+var AccordionModule = /** @class */ (function () {
     function AccordionModule() {
     }
     AccordionModule.decorators = [
@@ -185,8 +185,6 @@ var AccordionModule = (function () {
                     declarations: [Accordion, AccordionTab]
                 },] },
     ];
-    /** @nocollapse */
-    AccordionModule.ctorParameters = function () { return []; };
     return AccordionModule;
 }());
 exports.AccordionModule = AccordionModule;

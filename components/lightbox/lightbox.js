@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var domhandler_1 = require("../dom/domhandler");
-var Lightbox = (function () {
+var Lightbox = /** @class */ (function () {
     function Lightbox(el, domHandler, renderer) {
         this.el = el;
         this.domHandler = domHandler;
@@ -173,7 +173,7 @@ var Lightbox = (function () {
     return Lightbox;
 }());
 exports.Lightbox = Lightbox;
-var LightboxModule = (function () {
+var LightboxModule = /** @class */ (function () {
     function LightboxModule() {
     }
     LightboxModule.decorators = [
@@ -183,8 +183,6 @@ var LightboxModule = (function () {
                     declarations: [Lightbox]
                 },] },
     ];
-    /** @nocollapse */
-    LightboxModule.ctorParameters = function () { return []; };
     return LightboxModule;
 }());
 exports.LightboxModule = LightboxModule;

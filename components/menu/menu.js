@@ -5,7 +5,7 @@ var common_1 = require("@angular/common");
 var domhandler_1 = require("../dom/domhandler");
 var tooltip_1 = require("../tooltip/tooltip");
 var router_1 = require("@angular/router");
-var MenuItemContent = (function () {
+var MenuItemContent = /** @class */ (function () {
     function MenuItemContent(menu) {
         this.menu = menu;
     }
@@ -25,7 +25,7 @@ var MenuItemContent = (function () {
     return MenuItemContent;
 }());
 exports.MenuItemContent = MenuItemContent;
-var Menu = (function () {
+var Menu = /** @class */ (function () {
     function Menu(el, domHandler, renderer) {
         this.el = el;
         this.domHandler = domHandler;
@@ -146,7 +146,7 @@ var Menu = (function () {
     return Menu;
 }());
 exports.Menu = Menu;
-var MenuModule = (function () {
+var MenuModule = /** @class */ (function () {
     function MenuModule() {
     }
     MenuModule.decorators = [
@@ -156,8 +156,6 @@ var MenuModule = (function () {
                     declarations: [Menu, MenuItemContent]
                 },] },
     ];
-    /** @nocollapse */
-    MenuModule.ctorParameters = function () { return []; };
     return MenuModule;
 }());
 exports.MenuModule = MenuModule;

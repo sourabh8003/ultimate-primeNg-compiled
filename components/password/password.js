@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var domhandler_1 = require("../dom/domhandler");
-var Password = (function () {
+var Password = /** @class */ (function () {
     function Password(el, domHandler) {
         this.el = el;
         this.domHandler = domHandler;
@@ -142,7 +142,7 @@ var Password = (function () {
     return Password;
 }());
 exports.Password = Password;
-var PasswordModule = (function () {
+var PasswordModule = /** @class */ (function () {
     function PasswordModule() {
     }
     PasswordModule.decorators = [
@@ -152,8 +152,6 @@ var PasswordModule = (function () {
                     declarations: [Password]
                 },] },
     ];
-    /** @nocollapse */
-    PasswordModule.ctorParameters = function () { return []; };
     return PasswordModule;
 }());
 exports.PasswordModule = PasswordModule;

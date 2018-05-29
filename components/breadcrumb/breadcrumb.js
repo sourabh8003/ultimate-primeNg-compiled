@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var router_1 = require("@angular/router");
-var Breadcrumb = (function () {
+var Breadcrumb = /** @class */ (function () {
     function Breadcrumb() {
     }
     Breadcrumb.prototype.itemClick = function (event, item) {
@@ -33,7 +33,6 @@ var Breadcrumb = (function () {
                 },] },
     ];
     /** @nocollapse */
-    Breadcrumb.ctorParameters = function () { return []; };
     Breadcrumb.propDecorators = {
         "model": [{ type: core_1.Input },],
         "style": [{ type: core_1.Input },],
@@ -43,7 +42,7 @@ var Breadcrumb = (function () {
     return Breadcrumb;
 }());
 exports.Breadcrumb = Breadcrumb;
-var BreadcrumbModule = (function () {
+var BreadcrumbModule = /** @class */ (function () {
     function BreadcrumbModule() {
     }
     BreadcrumbModule.decorators = [
@@ -53,8 +52,6 @@ var BreadcrumbModule = (function () {
                     declarations: [Breadcrumb]
                 },] },
     ];
-    /** @nocollapse */
-    BreadcrumbModule.ctorParameters = function () { return []; };
     return BreadcrumbModule;
 }());
 exports.BreadcrumbModule = BreadcrumbModule;

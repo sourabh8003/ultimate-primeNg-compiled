@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var Subject_1 = require("rxjs/Subject");
-var MessageService = (function () {
+var rxjs_1 = require("rxjs");
+var MessageService = /** @class */ (function () {
     function MessageService() {
-        this.messageSource = new Subject_1.Subject();
+        this.messageSource = new rxjs_1.Subject();
         this.messageObserver = this.messageSource.asObservable();
     }
     MessageService.prototype.add = function (message) {
@@ -23,8 +23,6 @@ var MessageService = (function () {
     MessageService.decorators = [
         { type: core_1.Injectable },
     ];
-    /** @nocollapse */
-    MessageService.ctorParameters = function () { return []; };
     return MessageService;
 }());
 exports.MessageService = MessageService;

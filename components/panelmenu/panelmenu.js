@@ -14,7 +14,7 @@ var core_1 = require("@angular/core");
 var animations_1 = require("@angular/animations");
 var common_1 = require("@angular/common");
 var router_1 = require("@angular/router");
-var BasePanelMenuItem = (function () {
+var BasePanelMenuItem = /** @class */ (function () {
     function BasePanelMenuItem() {
     }
     BasePanelMenuItem.prototype.handleClick = function (event, item) {
@@ -36,7 +36,7 @@ var BasePanelMenuItem = (function () {
     return BasePanelMenuItem;
 }());
 exports.BasePanelMenuItem = BasePanelMenuItem;
-var PanelMenuSub = (function (_super) {
+var PanelMenuSub = /** @class */ (function (_super) {
     __extends(PanelMenuSub, _super);
     function PanelMenuSub() {
         return _super !== null && _super.apply(this, arguments) || this;
@@ -60,7 +60,6 @@ var PanelMenuSub = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    PanelMenuSub.ctorParameters = function () { return []; };
     PanelMenuSub.propDecorators = {
         "item": [{ type: core_1.Input },],
         "expanded": [{ type: core_1.Input },],
@@ -68,7 +67,7 @@ var PanelMenuSub = (function (_super) {
     return PanelMenuSub;
 }(BasePanelMenuItem));
 exports.PanelMenuSub = PanelMenuSub;
-var PanelMenu = (function (_super) {
+var PanelMenu = /** @class */ (function (_super) {
     __extends(PanelMenu, _super);
     function PanelMenu() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -117,7 +116,6 @@ var PanelMenu = (function (_super) {
                 },] },
     ];
     /** @nocollapse */
-    PanelMenu.ctorParameters = function () { return []; };
     PanelMenu.propDecorators = {
         "model": [{ type: core_1.Input },],
         "style": [{ type: core_1.Input },],
@@ -127,7 +125,7 @@ var PanelMenu = (function (_super) {
     return PanelMenu;
 }(BasePanelMenuItem));
 exports.PanelMenu = PanelMenu;
-var PanelMenuModule = (function () {
+var PanelMenuModule = /** @class */ (function () {
     function PanelMenuModule() {
     }
     PanelMenuModule.decorators = [
@@ -137,8 +135,6 @@ var PanelMenuModule = (function () {
                     declarations: [PanelMenu, PanelMenuSub]
                 },] },
     ];
-    /** @nocollapse */
-    PanelMenuModule.ctorParameters = function () { return []; };
     return PanelMenuModule;
 }());
 exports.PanelMenuModule = PanelMenuModule;

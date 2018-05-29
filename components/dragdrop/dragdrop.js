@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var domhandler_1 = require("../dom/domhandler");
-var Draggable = (function () {
+var Draggable = /** @class */ (function () {
     function Draggable(el, domHandler, zone) {
         this.el = el;
         this.domHandler = domHandler;
@@ -35,23 +35,23 @@ var Draggable = (function () {
     };
     Draggable.prototype.bindMouseListeners = function () {
         var _this = this;
-        if (!this.mouseOverListener && this.mouseLeaveListener) {
+        if (!this.mouseDownListener && !this.mouseUpListener) {
             this.zone.runOutsideAngular(function () {
-                _this.mouseOverListener = _this.mouseover.bind(_this);
-                _this.mouseLeaveListener = _this.mouseleave.bind(_this);
-                _this.el.nativeElement.addEventListener('mouseover', _this.mouseOverListener);
-                _this.el.nativeElement.addEventListener('mouseleave', _this.mouseLeaveListener);
+                _this.mouseDownListener = _this.mousedown.bind(_this);
+                _this.mouseUpListener = _this.mouseup.bind(_this);
+                _this.el.nativeElement.addEventListener('mousedown', _this.mouseDownListener);
+                _this.el.nativeElement.addEventListener('mouseup', _this.mouseUpListener);
             });
         }
     };
     Draggable.prototype.unbindMouseListeners = function () {
         var _this = this;
-        if (this.mouseOverListener && this.mouseLeaveListener) {
+        if (this.mouseDownListener && this.mouseUpListener) {
             this.zone.runOutsideAngular(function () {
-                _this.el.nativeElement.removeEventListener('mouseover', _this.mouseOverListener);
-                _this.el.nativeElement.removeEventListener('mouseleave', _this.mouseLeaveListener);
-                _this.mouseOverListener = null;
-                _this.mouseLeaveListener = null;
+                _this.el.nativeElement.removeEventListener('mousedown', _this.mouseDownListener);
+                _this.el.nativeElement.removeEventListener('mouseup', _this.mouseUpListener);
+                _this.mouseDownListener = null;
+                _this.mouseUpListener = null;
             });
         }
     };
@@ -75,10 +75,10 @@ var Draggable = (function () {
         this.onDragEnd.emit(event);
         this.unbindDragListener();
     };
-    Draggable.prototype.mouseover = function (event) {
+    Draggable.prototype.mousedown = function (event) {
         this.handle = event.target;
     };
-    Draggable.prototype.mouseleave = function (event) {
+    Draggable.prototype.mouseup = function (event) {
         this.handle = null;
     };
     Draggable.prototype.allowDrag = function () {
@@ -119,7 +119,7 @@ var Draggable = (function () {
     return Draggable;
 }());
 exports.Draggable = Draggable;
-var Droppable = (function () {
+var Droppable = /** @class */ (function () {
     function Droppable(el, domHandler, zone) {
         this.el = el;
         this.domHandler = domHandler;
@@ -211,7 +211,7 @@ var Droppable = (function () {
     return Droppable;
 }());
 exports.Droppable = Droppable;
-var DragDropModule = (function () {
+var DragDropModule = /** @class */ (function () {
     function DragDropModule() {
     }
     DragDropModule.decorators = [
@@ -221,8 +221,6 @@ var DragDropModule = (function () {
                     declarations: [Draggable, Droppable]
                 },] },
     ];
-    /** @nocollapse */
-    DragDropModule.ctorParameters = function () { return []; };
     return DragDropModule;
 }());
 exports.DragDropModule = DragDropModule;

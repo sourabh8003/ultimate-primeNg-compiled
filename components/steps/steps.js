@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var router_1 = require("@angular/router");
-var Steps = (function () {
+var Steps = /** @class */ (function () {
     function Steps() {
         this.activeIndex = 0;
         this.readonly = true;
@@ -33,7 +33,6 @@ var Steps = (function () {
                 },] },
     ];
     /** @nocollapse */
-    Steps.ctorParameters = function () { return []; };
     Steps.propDecorators = {
         "activeIndex": [{ type: core_1.Input },],
         "model": [{ type: core_1.Input },],
@@ -45,7 +44,7 @@ var Steps = (function () {
     return Steps;
 }());
 exports.Steps = Steps;
-var StepsModule = (function () {
+var StepsModule = /** @class */ (function () {
     function StepsModule() {
     }
     StepsModule.decorators = [
@@ -55,8 +54,6 @@ var StepsModule = (function () {
                     declarations: [Steps]
                 },] },
     ];
-    /** @nocollapse */
-    StepsModule.ctorParameters = function () { return []; };
     return StepsModule;
 }());
 exports.StepsModule = StepsModule;

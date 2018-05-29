@@ -5,7 +5,7 @@ var common_1 = require("@angular/common");
 var objectutils_1 = require("../utils/objectutils");
 var shared_1 = require("../common/shared");
 var paginator_1 = require("../paginator/paginator");
-var DataView = (function () {
+var DataView = /** @class */ (function () {
     function DataView(el, objectUtils) {
         this.el = el;
         this.objectUtils = objectUtils;
@@ -16,6 +16,7 @@ var DataView = (function () {
         this.emptyMessage = 'No records found';
         this.onLazyLoad = new core_1.EventEmitter();
         this.trackBy = function (index, item) { return item; };
+        this.loadingIcon = 'fa fa-spin fa-2x fa-circle-o-notch';
         this.onPage = new core_1.EventEmitter();
         this.onSort = new core_1.EventEmitter();
         this.first = 0;
@@ -165,7 +166,7 @@ var DataView = (function () {
     DataView.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-dataView',
-                    template: "\n        <div [ngClass]=\"{'ui-dataview ui-widget': true, 'ui-dataview-list': (layout === 'list'), 'ui-dataview-grid': (layout === 'grid')}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-dataview-header ui-widget-header ui-corner-top\">\n                <ng-content select=\"p-header\"></ng-content>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" [alwaysShow]=\"alwaysShowPaginator\"\n                (onPageChange)=\"paginate($event)\" styleClass=\"ui-paginator-top\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && (paginatorPosition === 'top' || paginatorPosition =='both')\"\n                [dropdownAppendTo]=\"paginatorDropdownAppendTo\"></p-paginator>\n            <div class=\"ui-dataview-content ui-widget-content\">\n                <div class=\"ui-g\">\n                    <ng-template ngFor let-rowData let-rowIndex=\"index\" [ngForOf]=\"paginator ? ((filteredValue||value) | slice:(lazy ? 0 : first):((lazy ? 0 : first) + rows)) : (filteredValue||value)\" [ngForTrackBy]=\"trackBy\">\n                        <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: rowData, rowIndex: rowIndex}\"></ng-container>\n                    </ng-template>\n                    <div *ngIf=\"isEmpty()\" class=\"ui-widget-content ui-g-12\">{{emptyMessage}}</div>\n                </div>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" [alwaysShow]=\"alwaysShowPaginator\"\n                (onPageChange)=\"paginate($event)\" styleClass=\"ui-paginator-bottom\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && (paginatorPosition === 'bottom' || paginatorPosition =='both')\"\n                [dropdownAppendTo]=\"paginatorDropdownAppendTo\"></p-paginator>\n            <div class=\"ui-dataview-footer ui-widget-header ui-corner-bottom\" *ngIf=\"footer\">\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n        </div>\n    ",
+                    template: "\n        <div [ngClass]=\"{'ui-dataview ui-widget': true, 'ui-dataview-list': (layout === 'list'), 'ui-dataview-grid': (layout === 'grid')}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-dataview-loading ui-widget-overlay\" *ngIf=\"loading\"></div>\n            <div class=\"ui-dataview-loading-content\" *ngIf=\"loading\">\n                <i [class]=\"'fa fa-spin fa-2x ' + loadingIcon\"></i>\n            </div>\n            <div class=\"ui-dataview-header ui-widget-header ui-corner-top\">\n                <ng-content select=\"p-header\"></ng-content>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" [alwaysShow]=\"alwaysShowPaginator\"\n                (onPageChange)=\"paginate($event)\" styleClass=\"ui-paginator-top\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && (paginatorPosition === 'top' || paginatorPosition =='both')\"\n                [dropdownAppendTo]=\"paginatorDropdownAppendTo\"></p-paginator>\n            <div class=\"ui-dataview-content ui-widget-content\">\n                <div class=\"ui-g\">\n                    <ng-template ngFor let-rowData let-rowIndex=\"index\" [ngForOf]=\"paginator ? ((filteredValue||value) | slice:(lazy ? 0 : first):((lazy ? 0 : first) + rows)) : (filteredValue||value)\" [ngForTrackBy]=\"trackBy\">\n                        <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: rowData, rowIndex: rowIndex}\"></ng-container>\n                    </ng-template>\n                    <div *ngIf=\"isEmpty()\" class=\"ui-widget-content ui-g-12\">{{emptyMessage}}</div>\n                </div>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" [alwaysShow]=\"alwaysShowPaginator\"\n                (onPageChange)=\"paginate($event)\" styleClass=\"ui-paginator-bottom\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && (paginatorPosition === 'bottom' || paginatorPosition =='both')\"\n                [dropdownAppendTo]=\"paginatorDropdownAppendTo\"></p-paginator>\n            <div class=\"ui-dataview-footer ui-widget-header ui-corner-bottom\" *ngIf=\"footer\">\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n        </div>\n    ",
                     providers: [objectutils_1.ObjectUtils]
                 },] },
     ];
@@ -191,6 +192,8 @@ var DataView = (function () {
         "styleClass": [{ type: core_1.Input },],
         "trackBy": [{ type: core_1.Input },],
         "filterBy": [{ type: core_1.Input },],
+        "loading": [{ type: core_1.Input },],
+        "loadingIcon": [{ type: core_1.Input },],
         "onPage": [{ type: core_1.Output },],
         "onSort": [{ type: core_1.Output },],
         "header": [{ type: core_1.ContentChild, args: [shared_1.Header,] },],
@@ -203,7 +206,7 @@ var DataView = (function () {
     return DataView;
 }());
 exports.DataView = DataView;
-var DataViewLayoutOptions = (function () {
+var DataViewLayoutOptions = /** @class */ (function () {
     function DataViewLayoutOptions(dv) {
         this.dv = dv;
     }
@@ -228,7 +231,7 @@ var DataViewLayoutOptions = (function () {
     return DataViewLayoutOptions;
 }());
 exports.DataViewLayoutOptions = DataViewLayoutOptions;
-var DataViewModule = (function () {
+var DataViewModule = /** @class */ (function () {
     function DataViewModule() {
     }
     DataViewModule.decorators = [
@@ -238,8 +241,6 @@ var DataViewModule = (function () {
                     declarations: [DataView, DataViewLayoutOptions]
                 },] },
     ];
-    /** @nocollapse */
-    DataViewModule.ctorParameters = function () { return []; };
     return DataViewModule;
 }());
 exports.DataViewModule = DataViewModule;

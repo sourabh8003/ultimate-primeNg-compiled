@@ -6,7 +6,7 @@ var common_1 = require("@angular/common");
 var shared_1 = require("../common/shared");
 var shared_2 = require("../common/shared");
 var treedragdropservice_1 = require("../common/treedragdropservice");
-var UITreeNode = (function () {
+var UITreeNode = /** @class */ (function () {
     function UITreeNode(tree) {
         this.tree = tree;
     }
@@ -183,7 +183,7 @@ var UITreeNode = (function () {
     return UITreeNode;
 }());
 exports.UITreeNode = UITreeNode;
-var Tree = (function () {
+var Tree = /** @class */ (function () {
     function Tree(el, dragDropService) {
         this.el = el;
         this.dragDropService = dragDropService;
@@ -579,7 +579,7 @@ var Tree = (function () {
     return Tree;
 }());
 exports.Tree = Tree;
-var TreeModule = (function () {
+var TreeModule = /** @class */ (function () {
     function TreeModule() {
     }
     TreeModule.decorators = [
@@ -589,8 +589,6 @@ var TreeModule = (function () {
                     declarations: [Tree, UITreeNode]
                 },] },
     ];
-    /** @nocollapse */
-    TreeModule.ctorParameters = function () { return []; };
     return TreeModule;
 }());
 exports.TreeModule = TreeModule;

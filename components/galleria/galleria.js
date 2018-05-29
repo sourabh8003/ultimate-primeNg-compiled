@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var domhandler_1 = require("../dom/domhandler");
-var Galleria = (function () {
+var Galleria = /** @class */ (function () {
     function Galleria(el, domHandler) {
         this.el = el;
         this.domHandler = domHandler;
@@ -170,7 +170,7 @@ var Galleria = (function () {
     return Galleria;
 }());
 exports.Galleria = Galleria;
-var GalleriaModule = (function () {
+var GalleriaModule = /** @class */ (function () {
     function GalleriaModule() {
     }
     GalleriaModule.decorators = [
@@ -180,8 +180,6 @@ var GalleriaModule = (function () {
                     declarations: [Galleria]
                 },] },
     ];
-    /** @nocollapse */
-    GalleriaModule.ctorParameters = function () { return []; };
     return GalleriaModule;
 }());
 exports.GalleriaModule = GalleriaModule;

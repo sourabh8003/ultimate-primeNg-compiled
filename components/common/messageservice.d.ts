@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Message } from './message';
 export declare class MessageService {
     private messageSource;

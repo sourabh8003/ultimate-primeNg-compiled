@@ -7,14 +7,14 @@ var paginator_1 = require("../paginator/paginator");
 var domhandler_1 = require("../dom/domhandler");
 var objectutils_1 = require("../utils/objectutils");
 var core_2 = require("@angular/core");
-var Subject_1 = require("rxjs/Subject");
-var TableService = (function () {
+var rxjs_1 = require("rxjs");
+var TableService = /** @class */ (function () {
     function TableService() {
-        this.sortSource = new Subject_1.Subject();
-        this.selectionSource = new Subject_1.Subject();
-        this.contextMenuSource = new Subject_1.Subject();
-        this.valueSource = new Subject_1.Subject();
-        this.totalRecordsSource = new Subject_1.Subject();
+        this.sortSource = new rxjs_1.Subject();
+        this.selectionSource = new rxjs_1.Subject();
+        this.contextMenuSource = new rxjs_1.Subject();
+        this.valueSource = new rxjs_1.Subject();
+        this.totalRecordsSource = new rxjs_1.Subject();
         this.sortSource$ = this.sortSource.asObservable();
         this.selectionSource$ = this.selectionSource.asObservable();
         this.contextMenuSource$ = this.contextMenuSource.asObservable();
@@ -39,12 +39,10 @@ var TableService = (function () {
     TableService.decorators = [
         { type: core_2.Injectable },
     ];
-    /** @nocollapse */
-    TableService.ctorParameters = function () { return []; };
     return TableService;
 }());
 exports.TableService = TableService;
-var Table = (function () {
+var Table = /** @class */ (function () {
     function Table(el, domHandler, objectUtils, zone, tableService) {
         this.el = el;
         this.domHandler = domHandler;
@@ -70,7 +68,7 @@ var Table = (function () {
         this.expandedRowKeys = {};
         this.rowExpandMode = 'multiple';
         this.virtualScrollDelay = 500;
-        this.virtualRowHeight = 27;
+        this.virtualRowHeight = 28;
         this.columnResizeMode = 'fit';
         this.loadingIcon = 'fa fa-spin fa-2x fa-circle-o-notch';
         this.onRowSelect = new core_1.EventEmitter();
@@ -241,10 +239,13 @@ var Table = (function () {
             this._value = val;
             if (!this.lazy) {
                 this.totalRecords = (this._value ? this._value.length : 0);
-                if (this.sortMode == 'single')
+                if (this.sortMode == 'single' && this.sortField)
                     this.sortSingle();
-                else if (this.sortMode == 'multiple')
+                else if (this.sortMode == 'multiple' && this.multiSortMeta)
                     this.sortMultiple();
+                else if (this.hasFilter())
+                    //sort already filters
+                    this._filter();
             }
             if (this.virtualScroll && this.virtualScrollCallback) {
                 this.virtualScrollCallback();
@@ -381,7 +382,9 @@ var Table = (function () {
     Table.prototype.sortSingle = function () {
         var _this = this;
         if (this.sortField && this.sortOrder) {
-            this.first = this.resetPageOnSort ? 0 : this.first;
+            if (this.resetPageOnSort) {
+                this.first = 0;
+            }
             if (this.lazy) {
                 this.onLazyLoad.emit(this.createLazyLoadMetadata());
             }
@@ -457,6 +460,12 @@ var Table = (function () {
         var value1 = this.objectUtils.resolveFieldData(data1, multiSortMeta[index].field);
         var value2 = this.objectUtils.resolveFieldData(data2, multiSortMeta[index].field);
         var result = null;
+        if (value1 == null && value2 != null)
+            result = -1;
+        else if (value1 != null && value2 == null)
+            result = 1;
+        else if (value1 == null && value2 == null)
+            result = 0;
         if (typeof value1 == 'string' || value1 instanceof String) {
             if (value1.localeCompare && (value1 != value2)) {
                 return (multiSortMeta[index].order * value1.localeCompare(value2));
@@ -883,6 +892,7 @@ var Table = (function () {
         this._sortField = null;
         this._sortOrder = 1;
         this._multiSortMeta = null;
+        this.tableService.onSort(null);
         this.filteredValue = null;
         this.filters = {};
         this.first = 0;
@@ -917,8 +927,16 @@ var Table = (function () {
                 var column = _this.columns[i_1];
                 if (column.exportable !== false && column.field) {
                     var cellData = _this.objectUtils.resolveFieldData(record, column.field);
-                    if (cellData != null)
-                        cellData = String(cellData).replace(/"/g, '""');
+                    if (cellData != null) {
+                        if (_this.exportFunction) {
+                            cellData = _this.exportFunction({
+                                data: cellData,
+                                field: column.field
+                            });
+                        }
+                        else
+                            cellData = String(cellData).replace(/"/g, '""');
+                    }
                     else
                         cellData = '';
                     csv += '"' + cellData + '"';
@@ -1282,6 +1300,7 @@ var Table = (function () {
         "rowHover": [{ type: core_1.Input },],
         "customSort": [{ type: core_1.Input },],
         "autoLayout": [{ type: core_1.Input },],
+        "exportFunction": [{ type: core_1.Input },],
         "onRowSelect": [{ type: core_1.Output },],
         "onRowUnselect": [{ type: core_1.Output },],
         "onPage": [{ type: core_1.Output },],
@@ -1315,7 +1334,7 @@ var Table = (function () {
     return Table;
 }());
 exports.Table = Table;
-var TableBody = (function () {
+var TableBody = /** @class */ (function () {
     function TableBody(dt) {
         this.dt = dt;
     }
@@ -1336,7 +1355,7 @@ var TableBody = (function () {
     return TableBody;
 }());
 exports.TableBody = TableBody;
-var ScrollableView = (function () {
+var ScrollableView = /** @class */ (function () {
     function ScrollableView(dt, el, domHandler, zone) {
         var _this = this;
         this.dt = dt;
@@ -1449,7 +1468,7 @@ var ScrollableView = (function () {
         if (this.dt.virtualScroll) {
             var viewport = this.domHandler.getOuterHeight(this.scrollBodyViewChild.nativeElement);
             var tableHeight = this.domHandler.getOuterHeight(this.scrollTableViewChild.nativeElement);
-            var pageHeight_1 = 28 * this.dt.rows;
+            var pageHeight_1 = this.dt.virtualRowHeight * this.dt.rows;
             var virtualTableHeight = this.domHandler.getOuterHeight(this.virtualScrollerViewChild.nativeElement);
             var pageCount = (virtualTableHeight / pageHeight_1) || 1;
             var scrollBodyTop = this.scrollTableViewChild.nativeElement.style.top || '0';
@@ -1548,7 +1567,7 @@ var ScrollableView = (function () {
     return ScrollableView;
 }());
 exports.ScrollableView = ScrollableView;
-var SortableColumn = (function () {
+var SortableColumn = /** @class */ (function () {
     function SortableColumn(dt, domHandler) {
         var _this = this;
         this.dt = dt;
@@ -1608,7 +1627,7 @@ var SortableColumn = (function () {
     return SortableColumn;
 }());
 exports.SortableColumn = SortableColumn;
-var SortIcon = (function () {
+var SortIcon = /** @class */ (function () {
     function SortIcon(dt) {
         var _this = this;
         this.dt = dt;
@@ -1618,6 +1637,9 @@ var SortIcon = (function () {
     }
     SortIcon.prototype.ngOnInit = function () {
         this.updateSortState();
+    };
+    SortIcon.prototype.onClick = function (event) {
+        event.preventDefault();
     };
     SortIcon.prototype.updateSortState = function () {
         if (this.dt.sortMode === 'single') {
@@ -1636,7 +1658,7 @@ var SortIcon = (function () {
     SortIcon.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-sortIcon',
-                    template: "\n        <span class=\"ui-sortable-column-icon fa fa-fw fa-sort\" [ngClass]=\"{'fa-sort-asc': sortOrder === 1, 'fa-sort-desc': sortOrder === -1}\"></span>\n    "
+                    template: "\n        <a href=\"#\" (click)=\"onClick($event)\" [attr.aria-label]=\" sortOrder === 1 ? ariaLabelAsc : sortOrder === -1 ? ariaLabelDesc : '' \">\n            <i class=\"ui-sortable-column-icon fa fa-fw fa-sort\" [ngClass]=\"{'fa-sort-asc': sortOrder === 1, 'fa-sort-desc': sortOrder === -1}\"></i>\n        </a>\n    "
                 },] },
     ];
     /** @nocollapse */
@@ -1645,11 +1667,13 @@ var SortIcon = (function () {
     ]; };
     SortIcon.propDecorators = {
         "field": [{ type: core_1.Input },],
+        "ariaLabelDesc": [{ type: core_1.Input },],
+        "ariaLabelAsc": [{ type: core_1.Input },],
     };
     return SortIcon;
 }());
 exports.SortIcon = SortIcon;
-var SelectableRow = (function () {
+var SelectableRow = /** @class */ (function () {
     function SelectableRow(dt, domHandler, tableService) {
         var _this = this;
         this.dt = dt;
@@ -1713,7 +1737,7 @@ var SelectableRow = (function () {
     return SelectableRow;
 }());
 exports.SelectableRow = SelectableRow;
-var SelectableRowDblClick = (function () {
+var SelectableRowDblClick = /** @class */ (function () {
     function SelectableRowDblClick(dt, domHandler, tableService) {
         var _this = this;
         this.dt = dt;
@@ -1771,7 +1795,7 @@ var SelectableRowDblClick = (function () {
     return SelectableRowDblClick;
 }());
 exports.SelectableRowDblClick = SelectableRowDblClick;
-var ContextMenuRow = (function () {
+var ContextMenuRow = /** @class */ (function () {
     function ContextMenuRow(dt, tableService) {
         var _this = this;
         this.dt = dt;
@@ -1820,7 +1844,7 @@ var ContextMenuRow = (function () {
     return ContextMenuRow;
 }());
 exports.ContextMenuRow = ContextMenuRow;
-var RowToggler = (function () {
+var RowToggler = /** @class */ (function () {
     function RowToggler(dt) {
         this.dt = dt;
     }
@@ -1850,7 +1874,7 @@ var RowToggler = (function () {
     return RowToggler;
 }());
 exports.RowToggler = RowToggler;
-var ResizableColumn = (function () {
+var ResizableColumn = /** @class */ (function () {
     function ResizableColumn(dt, el, domHandler, zone) {
         this.dt = dt;
         this.el = el;
@@ -1927,7 +1951,7 @@ var ResizableColumn = (function () {
     return ResizableColumn;
 }());
 exports.ResizableColumn = ResizableColumn;
-var ReorderableColumn = (function () {
+var ReorderableColumn = /** @class */ (function () {
     function ReorderableColumn(dt, el, domHandler, zone) {
         this.dt = dt;
         this.el = el;
@@ -2024,7 +2048,7 @@ var ReorderableColumn = (function () {
     return ReorderableColumn;
 }());
 exports.ReorderableColumn = ReorderableColumn;
-var EditableColumn = (function () {
+var EditableColumn = /** @class */ (function () {
     function EditableColumn(dt, el, domHandler, zone) {
         this.dt = dt;
         this.el = el;
@@ -2089,6 +2113,7 @@ var EditableColumn = (function () {
                 event.preventDefault();
             }
             else if (event.keyCode == 9) {
+                this.dt.onEditComplete.emit({ field: this.field, data: this.data });
                 if (event.shiftKey)
                     this.moveToPreviousCell(event);
                 else
@@ -2187,7 +2212,7 @@ var EditableColumn = (function () {
     return EditableColumn;
 }());
 exports.EditableColumn = EditableColumn;
-var CellEditor = (function () {
+var CellEditor = /** @class */ (function () {
     function CellEditor(dt, editableColumn) {
         this.dt = dt;
         this.editableColumn = editableColumn;
@@ -2222,7 +2247,7 @@ var CellEditor = (function () {
     return CellEditor;
 }());
 exports.CellEditor = CellEditor;
-var TableRadioButton = (function () {
+var TableRadioButton = /** @class */ (function () {
     function TableRadioButton(dt, domHandler, tableService) {
         var _this = this;
         this.dt = dt;
@@ -2236,7 +2261,9 @@ var TableRadioButton = (function () {
         this.checked = this.dt.isSelected(this.value);
     };
     TableRadioButton.prototype.onClick = function (event) {
-        this.dt.toggleRowWithRadio(event, this.value);
+        if (!this.disabled) {
+            this.dt.toggleRowWithRadio(event, this.value);
+        }
         this.domHandler.clearSelection();
     };
     TableRadioButton.prototype.onFocus = function () {
@@ -2270,7 +2297,7 @@ var TableRadioButton = (function () {
     return TableRadioButton;
 }());
 exports.TableRadioButton = TableRadioButton;
-var TableCheckbox = (function () {
+var TableCheckbox = /** @class */ (function () {
     function TableCheckbox(dt, domHandler, tableService) {
         var _this = this;
         this.dt = dt;
@@ -2284,7 +2311,9 @@ var TableCheckbox = (function () {
         this.checked = this.dt.isSelected(this.value);
     };
     TableCheckbox.prototype.onClick = function (event) {
-        this.dt.toggleRowWithCheckbox(event, this.value);
+        if (!this.disabled) {
+            this.dt.toggleRowWithCheckbox(event, this.value);
+        }
         this.domHandler.clearSelection();
     };
     TableCheckbox.prototype.onFocus = function () {
@@ -2318,13 +2347,16 @@ var TableCheckbox = (function () {
     return TableCheckbox;
 }());
 exports.TableCheckbox = TableCheckbox;
-var TableHeaderCheckbox = (function () {
+var TableHeaderCheckbox = /** @class */ (function () {
     function TableHeaderCheckbox(dt, domHandler, tableService) {
         var _this = this;
         this.dt = dt;
         this.domHandler = domHandler;
         this.tableService = tableService;
-        this.subscription = this.dt.tableService.selectionSource$.subscribe(function () {
+        this.valueChangeSubscription = this.dt.tableService.valueSource$.subscribe(function () {
+            _this.checked = _this.updateCheckedState();
+        });
+        this.selectionChangeSubscription = this.dt.tableService.selectionSource$.subscribe(function () {
             _this.checked = _this.updateCheckedState();
         });
     }
@@ -2344,12 +2376,16 @@ var TableHeaderCheckbox = (function () {
         this.domHandler.removeClass(this.boxViewChild.nativeElement, 'ui-state-focus');
     };
     TableHeaderCheckbox.prototype.ngOnDestroy = function () {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
+        if (this.selectionChangeSubscription) {
+            this.selectionChangeSubscription.unsubscribe();
+        }
+        if (this.valueChangeSubscription) {
+            this.valueChangeSubscription.unsubscribe();
         }
     };
     TableHeaderCheckbox.prototype.updateCheckedState = function () {
-        return (this.dt.value && this.dt.value.length > 0 && this.dt.selection && this.dt.selection.length > 0 && this.dt.selection.length === this.dt.value.length);
+        var val = this.dt.filteredValue || this.dt.value;
+        return (val && val.length > 0 && this.dt.selection && this.dt.selection.length > 0 && this.dt.selection.length === val.length);
     };
     TableHeaderCheckbox.decorators = [
         { type: core_1.Component, args: [{
@@ -2369,7 +2405,7 @@ var TableHeaderCheckbox = (function () {
     return TableHeaderCheckbox;
 }());
 exports.TableHeaderCheckbox = TableHeaderCheckbox;
-var ReorderableRowHandle = (function () {
+var ReorderableRowHandle = /** @class */ (function () {
     function ReorderableRowHandle(el, domHandler) {
         this.el = el;
         this.domHandler = domHandler;
@@ -2393,7 +2429,7 @@ var ReorderableRowHandle = (function () {
     return ReorderableRowHandle;
 }());
 exports.ReorderableRowHandle = ReorderableRowHandle;
-var ReorderableRow = (function () {
+var ReorderableRow = /** @class */ (function () {
     function ReorderableRow(dt, el, domHandler, zone) {
         this.dt = dt;
         this.el = el;
@@ -2470,6 +2506,7 @@ var ReorderableRow = (function () {
         if (this.isEnabled() && this.dt.rowDragging) {
             this.dt.onRowDrop(event, this.el.nativeElement);
         }
+        event.preventDefault();
     };
     ReorderableRow.decorators = [
         { type: core_1.Directive, args: [{
@@ -2491,7 +2528,7 @@ var ReorderableRow = (function () {
     return ReorderableRow;
 }());
 exports.ReorderableRow = ReorderableRow;
-var TableModule = (function () {
+var TableModule = /** @class */ (function () {
     function TableModule() {
     }
     TableModule.decorators = [
@@ -2501,8 +2538,6 @@ var TableModule = (function () {
                     declarations: [Table, SortableColumn, SelectableRow, RowToggler, ContextMenuRow, ResizableColumn, ReorderableColumn, EditableColumn, CellEditor, TableBody, ScrollableView, SortIcon, TableRadioButton, TableCheckbox, TableHeaderCheckbox, ReorderableRowHandle, ReorderableRow, SelectableRowDblClick]
                 },] },
     ];
-    /** @nocollapse */
-    TableModule.ctorParameters = function () { return []; };
     return TableModule;
 }());
 exports.TableModule = TableModule;

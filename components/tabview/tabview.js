@@ -4,7 +4,7 @@ var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var shared_1 = require("../common/shared");
 var idx = 0;
-var TabViewNav = (function () {
+var TabViewNav = /** @class */ (function () {
     function TabViewNav() {
         this.orientation = 'top';
         this.onTabClick = new core_1.EventEmitter();
@@ -43,7 +43,6 @@ var TabViewNav = (function () {
                 },] },
     ];
     /** @nocollapse */
-    TabViewNav.ctorParameters = function () { return []; };
     TabViewNav.propDecorators = {
         "tabs": [{ type: core_1.Input },],
         "orientation": [{ type: core_1.Input },],
@@ -53,7 +52,7 @@ var TabViewNav = (function () {
     return TabViewNav;
 }());
 exports.TabViewNav = TabViewNav;
-var TabPanel = (function () {
+var TabPanel = /** @class */ (function () {
     function TabPanel(viewContainer) {
         this.viewContainer = viewContainer;
         this.cache = true;
@@ -89,7 +88,7 @@ var TabPanel = (function () {
     TabPanel.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-tabPanel',
-                    template: "\n        <div [attr.id]=\"id\" class=\"ui-tabview-panel ui-widget-content\" [ngClass]=\"{'ui-helper-hidden': !selected}\" \n            role=\"tabpanel\" [attr.aria-hidden]=\"!selected\" [attr.aria-labelledby]=\"id + '-label'\" *ngIf=\"!closed\">\n            <ng-content></ng-content>\n            <ng-container *ngIf=\"contentTemplate && (cache ? loaded : selected)\">\n                <ng-container *ngTemplateOutlet=\"contentTemplate; context: {$implicit: columns}\"></ng-container>\n            </ng-container>\n        </div>\n    "
+                    template: "\n        <div [attr.id]=\"id\" class=\"ui-tabview-panel ui-widget-content\" [ngClass]=\"{'ui-helper-hidden': !selected}\"\n            role=\"tabpanel\" [attr.aria-hidden]=\"!selected\" [attr.aria-labelledby]=\"id + '-label'\" *ngIf=\"!closed\">\n            <ng-content></ng-content>\n            <ng-container *ngIf=\"contentTemplate && (cache ? loaded : selected)\">\n                <ng-container *ngTemplateOutlet=\"contentTemplate\"></ng-container>\n            </ng-container>\n        </div>\n    "
                 },] },
     ];
     /** @nocollapse */
@@ -111,12 +110,13 @@ var TabPanel = (function () {
     return TabPanel;
 }());
 exports.TabPanel = TabPanel;
-var TabView = (function () {
+var TabView = /** @class */ (function () {
     function TabView(el) {
         this.el = el;
         this.orientation = 'top';
         this.onChange = new core_1.EventEmitter();
         this.onClose = new core_1.EventEmitter();
+        this.activeIndexChange = new core_1.EventEmitter();
     }
     Object.defineProperty(TabView.prototype, "lazy", {
         get: function () {
@@ -159,7 +159,10 @@ var TabView = (function () {
                 selectedTab.selected = false;
             }
             tab.selected = true;
-            this.onChange.emit({ originalEvent: event, index: this.findTabIndex(tab) });
+            var selectedTabIndex = this.findTabIndex(tab);
+            this.preventActiveIndexPropagation = true;
+            this.activeIndexChange.emit(selectedTabIndex);
+            this.onChange.emit({ originalEvent: event, index: selectedTabIndex });
         }
         if (event) {
             event.preventDefault();
@@ -186,6 +189,9 @@ var TabView = (function () {
         event.stopPropagation();
     };
     TabView.prototype.closeTab = function (tab) {
+        if (tab.disabled) {
+            return;
+        }
         if (tab.selected) {
             tab.selected = false;
             for (var i = 0; i < this.tabs.length; i++) {
@@ -225,6 +231,10 @@ var TabView = (function () {
         },
         set: function (val) {
             this._activeIndex = val;
+            if (this.preventActiveIndexPropagation) {
+                this.preventActiveIndexPropagation = false;
+                return;
+            }
             if (this.tabs && this.tabs.length && this._activeIndex != null && this.tabs.length > this._activeIndex) {
                 this.findSelectedTab().selected = false;
                 this.tabs[this._activeIndex].selected = true;
@@ -236,7 +246,7 @@ var TabView = (function () {
     TabView.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-tabView',
-                    template: "\n        <div [ngClass]=\"'ui-tabview ui-widget ui-widget-content ui-corner-all ui-tabview-' + orientation\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ul p-tabViewNav role=\"tablist\" *ngIf=\"orientation!='bottom'\" [tabs]=\"tabs\" [orientation]=\"orientation\" \n                (onTabClick)=\"open($event.originalEvent, $event.tab)\" (onTabCloseClick)=\"close($event.originalEvent, $event.tab)\"></ul>\n            <div class=\"ui-tabview-panels\">\n                <ng-content></ng-content>\n            </div>\n            <ul p-tabViewNav role=\"tablist\" *ngIf=\"orientation=='bottom'\" [tabs]=\"tabs\" [orientation]=\"orientation\"\n                (onTabClick)=\"open($event.originalEvent, $event.tab)\" (onTabCloseClick)=\"close($event.originalEvent, $event.tab)\"></ul>\n        </div>\n    ",
+                    template: "\n        <div [ngClass]=\"'ui-tabview ui-widget ui-widget-content ui-corner-all ui-tabview-' + orientation\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ul p-tabViewNav role=\"tablist\" *ngIf=\"orientation!='bottom'\" [tabs]=\"tabs\" [orientation]=\"orientation\"\n                (onTabClick)=\"open($event.originalEvent, $event.tab)\" (onTabCloseClick)=\"close($event.originalEvent, $event.tab)\"></ul>\n            <div class=\"ui-tabview-panels\">\n                <ng-content></ng-content>\n            </div>\n            <ul p-tabViewNav role=\"tablist\" *ngIf=\"orientation=='bottom'\" [tabs]=\"tabs\" [orientation]=\"orientation\"\n                (onTabClick)=\"open($event.originalEvent, $event.tab)\" (onTabCloseClick)=\"close($event.originalEvent, $event.tab)\"></ul>\n        </div>\n    ",
                 },] },
     ];
     /** @nocollapse */
@@ -251,13 +261,14 @@ var TabView = (function () {
         "tabPanels": [{ type: core_1.ContentChildren, args: [TabPanel,] },],
         "onChange": [{ type: core_1.Output },],
         "onClose": [{ type: core_1.Output },],
+        "activeIndexChange": [{ type: core_1.Output },],
         "lazy": [{ type: core_1.Input },],
         "activeIndex": [{ type: core_1.Input },],
     };
     return TabView;
 }());
 exports.TabView = TabView;
-var TabViewModule = (function () {
+var TabViewModule = /** @class */ (function () {
     function TabViewModule() {
     }
     TabViewModule.decorators = [
@@ -267,8 +278,6 @@ var TabViewModule = (function () {
                     declarations: [TabView, TabPanel, TabViewNav]
                 },] },
     ];
-    /** @nocollapse */
-    TabViewModule.ctorParameters = function () { return []; };
     return TabViewModule;
 }());
 exports.TabViewModule = TabViewModule;

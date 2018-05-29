@@ -2,7 +2,7 @@ import { ElementRef, AfterViewInit, OnDestroy, AfterViewChecked, Renderer2, NgZo
 import { DomHandler } from '../dom/domhandler';
 import { Confirmation } from '../common/confirmation';
 import { ConfirmationService } from '../common/confirmationservice';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 export declare class ConfirmDialog implements AfterViewInit, AfterViewChecked, OnDestroy {
     el: ElementRef;
     domHandler: DomHandler;

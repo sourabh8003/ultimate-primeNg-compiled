@@ -5,7 +5,7 @@ import { FilterMetadata } from '../common/filtermetadata';
 import { SortMeta } from '../common/sortmeta';
 import { DomHandler } from '../dom/domhandler';
 import { ObjectUtils } from '../utils/objectutils';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { BlockableUI } from '../common/blockableui';
 export declare class DTRadioButton {
     checked: boolean;
@@ -306,9 +306,9 @@ export declare class DataTable implements AfterViewChecked, AfterViewInit, After
         in(value: any, filter: any[]): boolean;
     };
     switchCellToEditMode(cell: any, column: Column, rowData: any): void;
-    switchCellToViewMode(element: any, column: Column): void;
-    closeCell(isAlwaysEditable: boolean): void;
-    bindDocumentEditListener(isAlwaysEditable: boolean): void;
+    switchCellToViewMode(element: any): void;
+    closeCell(): void;
+    bindDocumentEditListener(): void;
     unbindDocumentEditListener(): void;
     onCellEditorKeydown(event: any, column: Column, rowData: any, rowIndex: number): void;
     onCellEditorInput(event: any, column: Column, rowData: any, rowIndex: number): void;

@@ -4,7 +4,7 @@ var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var domhandler_1 = require("../dom/domhandler");
 var animations_1 = require("@angular/animations");
-var OverlayPanel = (function () {
+var OverlayPanel = /** @class */ (function () {
     function OverlayPanel(el, domHandler, renderer, cd) {
         this.el = el;
         this.domHandler = domHandler;
@@ -148,7 +148,7 @@ var OverlayPanel = (function () {
     return OverlayPanel;
 }());
 exports.OverlayPanel = OverlayPanel;
-var OverlayPanelModule = (function () {
+var OverlayPanelModule = /** @class */ (function () {
     function OverlayPanelModule() {
     }
     OverlayPanelModule.decorators = [
@@ -158,8 +158,6 @@ var OverlayPanelModule = (function () {
                     declarations: [OverlayPanel]
                 },] },
     ];
-    /** @nocollapse */
-    OverlayPanelModule.ctorParameters = function () { return []; };
     return OverlayPanelModule;
 }());
 exports.OverlayPanelModule = OverlayPanelModule;

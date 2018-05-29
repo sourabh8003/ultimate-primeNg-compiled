@@ -4,7 +4,7 @@ var core_1 = require("@angular/core");
 var animations_1 = require("@angular/animations");
 var common_1 = require("@angular/common");
 var domhandler_1 = require("../dom/domhandler");
-var Sidebar = (function () {
+var Sidebar = /** @class */ (function () {
     function Sidebar(el, domHandler, renderer) {
         this.el = el;
         this.domHandler = domHandler;
@@ -13,6 +13,7 @@ var Sidebar = (function () {
         this.blockScroll = false;
         this.autoZIndex = true;
         this.baseZIndex = 0;
+        this.modal = true;
         this.onShow = new core_1.EventEmitter();
         this.onHide = new core_1.EventEmitter();
         this.visibleChange = new core_1.EventEmitter();
@@ -60,11 +61,15 @@ var Sidebar = (function () {
         if (this.autoZIndex) {
             this.containerViewChild.nativeElement.style.zIndex = String(this.baseZIndex + (++domhandler_1.DomHandler.zindex));
         }
-        this.enableModality();
+        if (this.modal) {
+            this.enableModality();
+        }
     };
     Sidebar.prototype.hide = function () {
         this.onHide.emit({});
-        this.disableModality();
+        if (this.modal) {
+            this.disableModality();
+        }
     };
     Sidebar.prototype.close = function (event) {
         this.preventVisibleChangePropagation = true;
@@ -147,6 +152,7 @@ var Sidebar = (function () {
         "styleClass": [{ type: core_1.Input },],
         "autoZIndex": [{ type: core_1.Input },],
         "baseZIndex": [{ type: core_1.Input },],
+        "modal": [{ type: core_1.Input },],
         "containerViewChild": [{ type: core_1.ViewChild, args: ['container',] },],
         "onShow": [{ type: core_1.Output },],
         "onHide": [{ type: core_1.Output },],
@@ -156,7 +162,7 @@ var Sidebar = (function () {
     return Sidebar;
 }());
 exports.Sidebar = Sidebar;
-var SidebarModule = (function () {
+var SidebarModule = /** @class */ (function () {
     function SidebarModule() {
     }
     SidebarModule.decorators = [
@@ -166,8 +172,6 @@ var SidebarModule = (function () {
                     declarations: [Sidebar]
                 },] },
     ];
-    /** @nocollapse */
-    SidebarModule.ctorParameters = function () { return []; };
     return SidebarModule;
 }());
 exports.SidebarModule = SidebarModule;

@@ -5,7 +5,7 @@ var common_1 = require("@angular/common");
 var shared_1 = require("../common/shared");
 var animations_1 = require("@angular/animations");
 var idx = 0;
-var Panel = (function () {
+var Panel = /** @class */ (function () {
     function Panel(el) {
         this.el = el;
         this.collapsed = false;
@@ -53,10 +53,12 @@ var Panel = (function () {
                     animations: [
                         animations_1.trigger('panelContent', [
                             animations_1.state('hidden', animations_1.style({
-                                height: '0'
+                                height: '0',
+                                opacity: 0
                             })),
                             animations_1.state('visible', animations_1.style({
-                                height: '*'
+                                height: '*',
+                                opacity: 1
                             })),
                             animations_1.transition('visible <=> hidden', animations_1.animate('400ms cubic-bezier(0.86, 0, 0.07, 1)'))
                         ])
@@ -84,7 +86,7 @@ var Panel = (function () {
     return Panel;
 }());
 exports.Panel = Panel;
-var PanelModule = (function () {
+var PanelModule = /** @class */ (function () {
     function PanelModule() {
     }
     PanelModule.decorators = [
@@ -94,8 +96,6 @@ var PanelModule = (function () {
                     declarations: [Panel]
                 },] },
     ];
-    /** @nocollapse */
-    PanelModule.ctorParameters = function () { return []; };
     return PanelModule;
 }());
 exports.PanelModule = PanelModule;

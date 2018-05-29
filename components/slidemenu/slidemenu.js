@@ -4,7 +4,7 @@ var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var domhandler_1 = require("../dom/domhandler");
 var router_1 = require("@angular/router");
-var SlideMenuSub = (function () {
+var SlideMenuSub = /** @class */ (function () {
     function SlideMenuSub(slideMenu) {
         this.slideMenu = slideMenu;
         this.backLabel = 'Back';
@@ -56,7 +56,7 @@ var SlideMenuSub = (function () {
     return SlideMenuSub;
 }());
 exports.SlideMenuSub = SlideMenuSub;
-var SlideMenu = (function () {
+var SlideMenu = /** @class */ (function () {
     function SlideMenu(el, domHandler, renderer) {
         this.el = el;
         this.domHandler = domHandler;
@@ -162,7 +162,7 @@ var SlideMenu = (function () {
     return SlideMenu;
 }());
 exports.SlideMenu = SlideMenu;
-var SlideMenuModule = (function () {
+var SlideMenuModule = /** @class */ (function () {
     function SlideMenuModule() {
     }
     SlideMenuModule.decorators = [
@@ -172,8 +172,6 @@ var SlideMenuModule = (function () {
                     declarations: [SlideMenu, SlideMenuSub]
                 },] },
     ];
-    /** @nocollapse */
-    SlideMenuModule.ctorParameters = function () { return []; };
     return SlideMenuModule;
 }());
 exports.SlideMenuModule = SlideMenuModule;

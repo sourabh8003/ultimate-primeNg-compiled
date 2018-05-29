@@ -8,16 +8,21 @@ exports.RADIO_VALUE_ACCESSOR = {
     useExisting: core_1.forwardRef(function () { return RadioButton; }),
     multi: true
 };
-var RadioButton = (function () {
+var RadioButton = /** @class */ (function () {
     function RadioButton(cd) {
         this.cd = cd;
         this.onClick = new core_1.EventEmitter();
         this.onModelChange = function () { };
         this.onModelTouched = function () { };
     }
-    RadioButton.prototype.handleClick = function () {
-        if (!this.disabled) {
-            this.select();
+    RadioButton.prototype.handleClick = function (event, radioButton, focus) {
+        event.preventDefault();
+        if (this.disabled) {
+            return;
+        }
+        this.select();
+        if (focus) {
+            radioButton.focus();
         }
     };
     RadioButton.prototype.select = function () {
@@ -57,7 +62,7 @@ var RadioButton = (function () {
     RadioButton.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-radioButton',
-                    template: "\n        <div [ngStyle]=\"style\" [ngClass]=\"'ui-radiobutton ui-widget'\" [class]=\"styleClass\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #rb type=\"radio\" [attr.id]=\"inputId\" [attr.name]=\"name\" [attr.value]=\"value\" [attr.tabindex]=\"tabindex\" \n                    [checked]=\"checked\" (change)=\"onChange($event)\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\">\n            </div>\n            <div (click)=\"handleClick()\"\n                [ngClass]=\"{'ui-radiobutton-box ui-widget ui-state-default':true,\n                'ui-state-active':rb.checked,'ui-state-disabled':disabled,'ui-state-focus':focused}\">\n                <span class=\"ui-radiobutton-icon ui-clickable\" [ngClass]=\"{'fa fa-circle':rb.checked}\"></span>\n            </div>\n        </div>\n        <label (click)=\"select()\" [class]=\"labelStyleClass\"\n            [ngClass]=\"{'ui-radiobutton-label':true, 'ui-label-active':rb.checked, 'ui-label-disabled':disabled, 'ui-label-focus':focused}\"\n            *ngIf=\"label\" [attr.for]=\"inputId\">{{label}}</label>\n    ",
+                    template: "\n        <div [ngStyle]=\"style\" [ngClass]=\"'ui-radiobutton ui-widget'\" [class]=\"styleClass\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #rb type=\"radio\" [attr.id]=\"inputId\" [attr.name]=\"name\" [attr.value]=\"value\" [attr.tabindex]=\"tabindex\" \n                    [checked]=\"checked\" (change)=\"onChange($event)\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\" [disabled]=\"disabled\">\n            </div>\n            <div (click)=\"handleClick($event, rb, true)\"\n                [ngClass]=\"{'ui-radiobutton-box ui-widget ui-state-default':true,\n                'ui-state-active':rb.checked,'ui-state-disabled':disabled,'ui-state-focus':focused}\">\n                <span class=\"ui-radiobutton-icon ui-clickable\" [ngClass]=\"{'fa fa-circle':rb.checked}\"></span>\n            </div>\n        </div>\n        <label (click)=\"select()\" [class]=\"labelStyleClass\"\n            [ngClass]=\"{'ui-radiobutton-label':true, 'ui-label-active':rb.checked, 'ui-label-disabled':disabled, 'ui-label-focus':focused}\"\n            *ngIf=\"label\" [attr.for]=\"inputId\">{{label}}</label>\n    ",
                     providers: [exports.RADIO_VALUE_ACCESSOR]
                 },] },
     ];
@@ -81,7 +86,7 @@ var RadioButton = (function () {
     return RadioButton;
 }());
 exports.RadioButton = RadioButton;
-var RadioButtonModule = (function () {
+var RadioButtonModule = /** @class */ (function () {
     function RadioButtonModule() {
     }
     RadioButtonModule.decorators = [
@@ -91,8 +96,6 @@ var RadioButtonModule = (function () {
                     declarations: [RadioButton]
                 },] },
     ];
-    /** @nocollapse */
-    RadioButtonModule.ctorParameters = function () { return []; };
     return RadioButtonModule;
 }());
 exports.RadioButtonModule = RadioButtonModule;

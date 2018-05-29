@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var button_1 = require("../button/button");
-var InplaceDisplay = (function () {
+var InplaceDisplay = /** @class */ (function () {
     function InplaceDisplay() {
     }
     InplaceDisplay.decorators = [
@@ -12,12 +12,10 @@ var InplaceDisplay = (function () {
                     template: '<ng-content></ng-content>'
                 },] },
     ];
-    /** @nocollapse */
-    InplaceDisplay.ctorParameters = function () { return []; };
     return InplaceDisplay;
 }());
 exports.InplaceDisplay = InplaceDisplay;
-var InplaceContent = (function () {
+var InplaceContent = /** @class */ (function () {
     function InplaceContent() {
     }
     InplaceContent.decorators = [
@@ -26,12 +24,10 @@ var InplaceContent = (function () {
                     template: '<ng-content></ng-content>'
                 },] },
     ];
-    /** @nocollapse */
-    InplaceContent.ctorParameters = function () { return []; };
     return InplaceContent;
 }());
 exports.InplaceContent = InplaceContent;
-var Inplace = (function () {
+var Inplace = /** @class */ (function () {
     function Inplace() {
         this.onActivate = new core_1.EventEmitter();
         this.onDeactivate = new core_1.EventEmitter();
@@ -56,7 +52,6 @@ var Inplace = (function () {
                 },] },
     ];
     /** @nocollapse */
-    Inplace.ctorParameters = function () { return []; };
     Inplace.propDecorators = {
         "active": [{ type: core_1.Input },],
         "closable": [{ type: core_1.Input },],
@@ -69,7 +64,7 @@ var Inplace = (function () {
     return Inplace;
 }());
 exports.Inplace = Inplace;
-var InplaceModule = (function () {
+var InplaceModule = /** @class */ (function () {
     function InplaceModule() {
     }
     InplaceModule.decorators = [
@@ -79,8 +74,6 @@ var InplaceModule = (function () {
                     declarations: [Inplace, InplaceDisplay, InplaceContent]
                 },] },
     ];
-    /** @nocollapse */
-    InplaceModule.ctorParameters = function () { return []; };
     return InplaceModule;
 }());
 exports.InplaceModule = InplaceModule;

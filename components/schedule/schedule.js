@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
-var Schedule = (function () {
+var Schedule = /** @class */ (function () {
     function Schedule(el, differs) {
         this.el = el;
         this.aspectRatio = 1.35;
@@ -32,6 +32,8 @@ var Schedule = (function () {
         this.onEventResize = new core_1.EventEmitter();
         this.onViewRender = new core_1.EventEmitter();
         this.onViewDestroy = new core_1.EventEmitter();
+        this.onNavLinkDayClick = new core_1.EventEmitter();
+        this.onNavLinkWeekClick = new core_1.EventEmitter();
         this.differ = differs.find([]).create(null);
         this.initialized = false;
     }
@@ -171,6 +173,18 @@ var Schedule = (function () {
                 _this.onViewDestroy.emit({
                     'view': view,
                     'element': element
+                });
+            },
+            navLinkDayClick: function (weekStart, jsEvent) {
+                _this.onNavLinkDayClick.emit({
+                    'weekStart': weekStart,
+                    'event': jsEvent
+                });
+            },
+            navLinkWeekClick: function (weekStart, jsEvent) {
+                _this.onNavLinkWeekClick.emit({
+                    'weekStart': weekStart,
+                    'event': jsEvent
                 });
             }
         };
@@ -339,11 +353,13 @@ var Schedule = (function () {
         "onEventResize": [{ type: core_1.Output },],
         "onViewRender": [{ type: core_1.Output },],
         "onViewDestroy": [{ type: core_1.Output },],
+        "onNavLinkDayClick": [{ type: core_1.Output },],
+        "onNavLinkWeekClick": [{ type: core_1.Output },],
     };
     return Schedule;
 }());
 exports.Schedule = Schedule;
-var ScheduleModule = (function () {
+var ScheduleModule = /** @class */ (function () {
     function ScheduleModule() {
     }
     ScheduleModule.decorators = [
@@ -353,8 +369,6 @@ var ScheduleModule = (function () {
                     declarations: [Schedule]
                 },] },
     ];
-    /** @nocollapse */
-    ScheduleModule.ctorParameters = function () { return []; };
     return ScheduleModule;
 }());
 exports.ScheduleModule = ScheduleModule;

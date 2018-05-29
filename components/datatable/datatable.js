@@ -8,7 +8,7 @@ var paginator_1 = require("../paginator/paginator");
 var shared_2 = require("../common/shared");
 var domhandler_1 = require("../dom/domhandler");
 var objectutils_1 = require("../utils/objectutils");
-var DTRadioButton = (function () {
+var DTRadioButton = /** @class */ (function () {
     function DTRadioButton() {
         this.onClick = new core_1.EventEmitter();
     }
@@ -22,7 +22,6 @@ var DTRadioButton = (function () {
                 },] },
     ];
     /** @nocollapse */
-    DTRadioButton.ctorParameters = function () { return []; };
     DTRadioButton.propDecorators = {
         "checked": [{ type: core_1.Input },],
         "onClick": [{ type: core_1.Output },],
@@ -30,7 +29,7 @@ var DTRadioButton = (function () {
     return DTRadioButton;
 }());
 exports.DTRadioButton = DTRadioButton;
-var DTCheckbox = (function () {
+var DTCheckbox = /** @class */ (function () {
     function DTCheckbox() {
         this.onChange = new core_1.EventEmitter();
     }
@@ -46,7 +45,6 @@ var DTCheckbox = (function () {
                 },] },
     ];
     /** @nocollapse */
-    DTCheckbox.ctorParameters = function () { return []; };
     DTCheckbox.propDecorators = {
         "checked": [{ type: core_1.Input },],
         "disabled": [{ type: core_1.Input },],
@@ -55,7 +53,7 @@ var DTCheckbox = (function () {
     return DTCheckbox;
 }());
 exports.DTCheckbox = DTCheckbox;
-var ColumnHeaders = (function () {
+var ColumnHeaders = /** @class */ (function () {
     function ColumnHeaders(dt) {
         this.dt = dt;
     }
@@ -75,7 +73,7 @@ var ColumnHeaders = (function () {
     return ColumnHeaders;
 }());
 exports.ColumnHeaders = ColumnHeaders;
-var ColumnFooters = (function () {
+var ColumnFooters = /** @class */ (function () {
     function ColumnFooters(dt) {
         this.dt = dt;
     }
@@ -95,7 +93,7 @@ var ColumnFooters = (function () {
     return ColumnFooters;
 }());
 exports.ColumnFooters = ColumnFooters;
-var TableBody = (function () {
+var TableBody = /** @class */ (function () {
     function TableBody(dt) {
         this.dt = dt;
     }
@@ -105,7 +103,7 @@ var TableBody = (function () {
     TableBody.decorators = [
         { type: core_1.Component, args: [{
                     selector: '[pTableBody]',
-                    template: "\n        <ng-template ngFor let-rowData [ngForOf]=\"data\" let-even=\"even\" let-odd=\"odd\" let-rowIndex=\"index\" [ngForTrackBy]=\"dt.rowTrackBy\">\n            <tr #rowGroupElement class=\"ui-widget-header ui-rowgroup-header\"\n                *ngIf=\"dt.rowGroupMode=='subheader' && (rowIndex === 0||(dt.resolveFieldData(rowData,dt.groupField) !== dt.resolveFieldData(dt.dataToRender[rowIndex - 1], dt.groupField)))\"\n                (click)=\"dt.onRowGroupClick($event)\" [ngStyle]=\"{'cursor': dt.sortableRowGroup ? 'pointer' : 'auto'}\">\n                <td [attr.colspan]=\"dt.visibleColumns().length\">\n                    <a href=\"#\" *ngIf=\"dt.expandableRowGroups\" (click)=\"dt.toggleRowGroup($event,rowData)\">\n                        <span class=\"fa fa-fw\" [ngClass]=\"dt.isRowGroupExpanded(rowData) ? dt.expandedIcon : dt.collapsedIcon\"></span>\n                    </a>\n                    <span class=\"ui-rowgroup-header-name\">\n                        <ng-container *ngTemplateOutlet=\"dt.rowGroupHeaderTemplate; context: {$implicit: rowData}\"></ng-container>\n                    </span>\n                </td>\n            </tr>\n            <tr #rowElement *ngIf=\"!dt.expandableRowGroups||dt.isRowGroupExpanded(rowData)\"\n                    (click)=\"dt.handleRowClick($event, rowData, rowIndex)\" (dblclick)=\"dt.rowDblclick($event,rowData)\" (contextmenu)=\"dt.onRowRightClick($event,rowData)\" (touchend)=\"dt.handleRowTouchEnd($event)\"\n                    [ngClass]=\"[even&&dt.rowGroupMode!='rowspan'? 'ui-datatable-even':'',\n                                odd&&dt.rowGroupMode!='rowspan'?'ui-datatable-odd':'',\n                                dt.isSelected(rowData)? 'ui-state-highlight': '',\n                                dt.isRowExpanded(rowData) ? 'ui-expanded-row': '',\n                                dt.getRowStyleClass(rowData,rowIndex)]\">\n                <ng-template ngFor let-col [ngForOf]=\"columns\" let-colIndex=\"index\">\n                    <td #cell *ngIf=\"!dt.rowGroupMode || (dt.rowGroupMode == 'subheader') ||\n                        (dt.rowGroupMode=='rowspan' && ((dt.sortField==col.field && dt.rowGroupMetadata[dt.resolveFieldData(rowData,dt.sortField)].index == rowIndex) || (dt.sortField!=col.field)))\"\n                        [ngStyle]=\"col.bodyStyle||col.style\" [class]=\"col.bodyStyleClass||col.styleClass\" (click)=\"col.editable ? dt.switchCellToEditMode(cell,col,rowData) : dt.handleRowClick($event, rowData, rowIndex)\"\n                        [ngClass]=\"{'ui-editable-column':col.editable,'ui-selection-column':col.selectionMode, 'ui-helper-hidden': col.hidden}\"\n                        [attr.rowspan]=\"(dt.rowGroupMode=='rowspan' && dt.sortField == col.field && dt.rowGroupMetadata[dt.resolveFieldData(rowData,dt.sortField)].index == rowIndex) ? dt.rowGroupMetadata[dt.resolveFieldData(rowData,dt.sortField)].size : null\">\n                        <span class=\"ui-column-title\" *ngIf=\"dt.responsive\">{{col.header}}</span>\n                        <span class=\"ui-cell-data\" *ngIf=\"!col.bodyTemplate && !col.expander && !col.selectionMode\">{{dt.resolveFieldData(rowData,col.field)}}</span>\n                        <span class=\"ui-cell-data\" *ngIf=\"col.bodyTemplate\">\n                            <ng-container *ngTemplateOutlet=\"col.bodyTemplate; context: {$implicit: col, rowData: rowData, rowIndex: (rowIndex + dt.first)}\"></ng-container>\n                        </span>\n                        <div class=\"ui-cell-editor\" *ngIf=\"col.editable\">\n                            <input *ngIf=\"!col.editorTemplate\" type=\"text\" [(ngModel)]=\"rowData[col.field]\"\n                                (keydown)=\"dt.onCellEditorKeydown($event, col, rowData, rowIndex)\" (blur)=\"dt.onCellEditorBlur($event, col, rowData, rowIndex)\"\n                                (input)=\"dt.onCellEditorInput($event, col, rowData, rowIndex)\" (change)=\"dt.onCellEditorChange($event, col, rowData, rowIndex)\"\n                                class=\"ui-inputtext ui-widget ui-state-default ui-corner-all\"/>\n                            <a *ngIf=\"col.editorTemplate\" class=\"ui-cell-editor-proxy-focus\" href=\"#\" (focus)=\"dt.onCustomEditorFocusPrev($event)\"></a>\n                            <ng-container *ngTemplateOutlet=\"col.editorTemplate; context: {$implicit: col, rowData: rowData, rowIndex: rowIndex}\"></ng-container>\n                            <a *ngIf=\"col.editorTemplate\" class=\"ui-cell-editor-proxy-focus\" href=\"#\" (focus)=\"dt.onCustomEditorFocusNext($event)\"></a>\n                        </div>\n                        <a href=\"#\" *ngIf=\"col.expander\" (click)=\"dt.toggleRow(rowData,$event)\">\n                            <span class=\"ui-row-toggler fa fa-fw ui-clickable\" [ngClass]=\"dt.isRowExpanded(rowData) ? dt.expandedIcon : dt.collapsedIcon\"></span>\n                        </a>\n                        <p-dtRadioButton *ngIf=\"col.selectionMode=='single'\" (onClick)=\"dt.selectRowWithRadio($event, rowData)\" [checked]=\"dt.isSelected(rowData)\"></p-dtRadioButton>\n                        <p-dtCheckbox *ngIf=\"col.selectionMode=='multiple'\" (onChange)=\"dt.toggleRowWithCheckbox($event,rowData)\" [checked]=\"dt.isSelected(rowData)\"></p-dtCheckbox>\n                    </td>\n                </ng-template>\n            </tr>\n            <tr *ngIf=\"dt.expandableRows && dt.isRowExpanded(rowData)\" class=\"ui-expanded-row-content\">\n                <td [attr.colspan]=\"dt.visibleColumns().length\">\n                    <ng-container *ngTemplateOutlet=\"dt.rowExpansionTemplate; context: {$implicit: rowData, rowIndex: rowIndex}\"></ng-container>\n                </td>\n            </tr>\n            <tr class=\"ui-widget-header ui-rowgroup-footer\" *ngIf=\"dt.rowGroupFooterTemplate && dt.rowGroupMode=='subheader' && ((rowIndex === dt.dataToRender.length - 1)||(dt.resolveFieldData(rowData,dt.groupField) !== dt.resolveFieldData(dt.dataToRender[rowIndex + 1],dt.groupField))) && (!dt.expandableRowGroups || dt.isRowGroupExpanded(rowData))\">\n                <ng-container *ngTemplateOutlet=\"dt.rowGroupFooterTemplate; context: {$implicit: rowData}\"></ng-container>\n            </tr>\n        </ng-template>\n\n        <tr *ngIf=\"dt.isEmpty()\" class=\"ui-widget-content ui-datatable-emptymessage-row\" [style.visibility]=\"dt.loading ? 'hidden' : 'visible'\">\n            <td [attr.colspan]=\"dt.visibleColumns().length\" class=\"ui-datatable-emptymessage\">\n                <span *ngIf=\"!dt.emptyMessageTemplate\">{{dt.emptyMessage}}</span>\n                <ng-template *ngIf=\"dt.emptyMessageTemplate\">\n                    <ng-container *ngTemplateOutlet=\"dt.emptyMessageTemplate\"></ng-container>\n                </ng-template>\n            </td>\n        </tr>\n    "
+                    template: "\n        <ng-template ngFor let-rowData [ngForOf]=\"data\" let-even=\"even\" let-odd=\"odd\" let-rowIndex=\"index\" [ngForTrackBy]=\"dt.rowTrackBy\">\n            <tr #rowGroupElement class=\"ui-widget-header ui-rowgroup-header\"\n                *ngIf=\"dt.rowGroupMode=='subheader' && (rowIndex === 0||(dt.resolveFieldData(rowData,dt.groupField) !== dt.resolveFieldData(dt.dataToRender[rowIndex - 1], dt.groupField)))\"\n                (click)=\"dt.onRowGroupClick($event)\" [ngStyle]=\"{'cursor': dt.sortableRowGroup ? 'pointer' : 'auto'}\">\n                <td [attr.colspan]=\"dt.visibleColumns().length\">\n                    <a href=\"#\" *ngIf=\"dt.expandableRowGroups\" (click)=\"dt.toggleRowGroup($event,rowData)\">\n                        <span class=\"fa fa-fw\" [ngClass]=\"dt.isRowGroupExpanded(rowData) ? dt.expandedIcon : dt.collapsedIcon\"></span>\n                    </a>\n                    <span class=\"ui-rowgroup-header-name\">\n                        <ng-container *ngTemplateOutlet=\"dt.rowGroupHeaderTemplate; context: {$implicit: rowData}\"></ng-container>\n                    </span>\n                </td>\n            </tr>\n            <tr #rowElement *ngIf=\"!dt.expandableRowGroups||dt.isRowGroupExpanded(rowData)\"\n                    (click)=\"dt.handleRowClick($event, rowData, rowIndex)\" (dblclick)=\"dt.rowDblclick($event,rowData)\" (contextmenu)=\"dt.onRowRightClick($event,rowData)\" (touchend)=\"dt.handleRowTouchEnd($event)\"\n                    [ngClass]=\"[even&&dt.rowGroupMode!='rowspan'? 'ui-datatable-even':'',\n                                odd&&dt.rowGroupMode!='rowspan'?'ui-datatable-odd':'',\n                                dt.isSelected(rowData)? 'ui-state-highlight': '',\n                                dt.isRowExpanded(rowData) ? 'ui-expanded-row': '',\n                                dt.getRowStyleClass(rowData,rowIndex)]\">\n                <ng-template ngFor let-col [ngForOf]=\"columns\" let-colIndex=\"index\">\n                    <td #cell *ngIf=\"!dt.rowGroupMode || (dt.rowGroupMode == 'subheader') ||\n                        (dt.rowGroupMode=='rowspan' && ((dt.sortField==col.field && dt.rowGroupMetadata[dt.resolveFieldData(rowData,dt.sortField)].index == rowIndex) || (dt.sortField!=col.field)))\"\n                        [ngStyle]=\"col.bodyStyle||col.style\" [class]=\"col.bodyStyleClass||col.styleClass\" (click)=\"dt.switchCellToEditMode(cell,col,rowData)\"\n                        [ngClass]=\"{'ui-editable-column':col.editable,'ui-selection-column':col.selectionMode, 'ui-helper-hidden': col.hidden}\"\n                        [attr.rowspan]=\"(dt.rowGroupMode=='rowspan' && dt.sortField == col.field && dt.rowGroupMetadata[dt.resolveFieldData(rowData,dt.sortField)].index == rowIndex) ? dt.rowGroupMetadata[dt.resolveFieldData(rowData,dt.sortField)].size : null\">\n                        <span class=\"ui-column-title\" *ngIf=\"dt.responsive\">{{col.header}}</span>\n                        <span class=\"ui-cell-data\" *ngIf=\"!col.bodyTemplate && !col.expander && !col.selectionMode\">{{dt.resolveFieldData(rowData,col.field)}}</span>\n                        <span class=\"ui-cell-data\" *ngIf=\"col.bodyTemplate\">\n                            <ng-container *ngTemplateOutlet=\"col.bodyTemplate; context: {$implicit: col, rowData: rowData, rowIndex: (rowIndex + dt.first)}\"></ng-container>\n                        </span>\n                        <div class=\"ui-cell-editor\" *ngIf=\"col.editable\">\n                            <input *ngIf=\"!col.editorTemplate\" type=\"text\" [(ngModel)]=\"rowData[col.field]\"\n                                (keydown)=\"dt.onCellEditorKeydown($event, col, rowData, rowIndex)\" (blur)=\"dt.onCellEditorBlur($event, col, rowData, rowIndex)\"\n                                (input)=\"dt.onCellEditorInput($event, col, rowData, rowIndex)\" (change)=\"dt.onCellEditorChange($event, col, rowData, rowIndex)\"\n                                class=\"ui-inputtext ui-widget ui-state-default ui-corner-all\"/>\n                            <a *ngIf=\"col.editorTemplate\" class=\"ui-cell-editor-proxy-focus\" href=\"#\" (focus)=\"dt.onCustomEditorFocusPrev($event)\"></a>\n                            <ng-container *ngTemplateOutlet=\"col.editorTemplate; context: {$implicit: col, rowData: rowData, rowIndex: rowIndex}\"></ng-container>\n                            <a *ngIf=\"col.editorTemplate\" class=\"ui-cell-editor-proxy-focus\" href=\"#\" (focus)=\"dt.onCustomEditorFocusNext($event)\"></a>\n                        </div>\n                        <a href=\"#\" *ngIf=\"col.expander\" (click)=\"dt.toggleRow(rowData,$event)\">\n                            <span class=\"ui-row-toggler fa fa-fw ui-clickable\" [ngClass]=\"dt.isRowExpanded(rowData) ? dt.expandedIcon : dt.collapsedIcon\"></span>\n                        </a>\n                        <p-dtRadioButton *ngIf=\"col.selectionMode=='single'\" (onClick)=\"dt.selectRowWithRadio($event, rowData)\" [checked]=\"dt.isSelected(rowData)\"></p-dtRadioButton>\n                        <p-dtCheckbox *ngIf=\"col.selectionMode=='multiple'\" (onChange)=\"dt.toggleRowWithCheckbox($event,rowData)\" [checked]=\"dt.isSelected(rowData)\"></p-dtCheckbox>\n                    </td>\n                </ng-template>\n            </tr>\n            <tr *ngIf=\"dt.expandableRows && dt.isRowExpanded(rowData)\" class=\"ui-expanded-row-content\">\n                <td [attr.colspan]=\"dt.visibleColumns().length\">\n                    <ng-container *ngTemplateOutlet=\"dt.rowExpansionTemplate; context: {$implicit: rowData, rowIndex: rowIndex}\"></ng-container>\n                </td>\n            </tr>\n            <tr class=\"ui-widget-header ui-rowgroup-footer\" *ngIf=\"dt.rowGroupFooterTemplate && dt.rowGroupMode=='subheader' && ((rowIndex === dt.dataToRender.length - 1)||(dt.resolveFieldData(rowData,dt.groupField) !== dt.resolveFieldData(dt.dataToRender[rowIndex + 1],dt.groupField))) && (!dt.expandableRowGroups || dt.isRowGroupExpanded(rowData))\">\n                <ng-container *ngTemplateOutlet=\"dt.rowGroupFooterTemplate; context: {$implicit: rowData}\"></ng-container>\n            </tr>\n        </ng-template>\n\n        <tr *ngIf=\"dt.isEmpty()\" class=\"ui-widget-content ui-datatable-emptymessage-row\" [style.visibility]=\"dt.loading ? 'hidden' : 'visible'\">\n            <td [attr.colspan]=\"dt.visibleColumns().length\" class=\"ui-datatable-emptymessage\">\n                <span *ngIf=\"!dt.emptyMessageTemplate\">{{dt.emptyMessage}}</span>\n                <ng-container *ngIf=\"dt.emptyMessageTemplate\">\n                    <ng-container *ngTemplateOutlet=\"dt.emptyMessageTemplate\"></ng-container>\n                </ng-container>\n            </td>\n        </tr>\n    "
                 },] },
     ];
     /** @nocollapse */
@@ -119,7 +117,7 @@ var TableBody = (function () {
     return TableBody;
 }());
 exports.TableBody = TableBody;
-var ScrollableView = (function () {
+var ScrollableView = /** @class */ (function () {
     function ScrollableView(dt, domHandler, el, renderer, zone) {
         this.dt = dt;
         this.domHandler = domHandler;
@@ -268,7 +266,7 @@ var ScrollableView = (function () {
     return ScrollableView;
 }());
 exports.ScrollableView = ScrollableView;
-var DataTable = (function () {
+var DataTable = /** @class */ (function () {
     function DataTable(el, domHandler, differs, renderer, changeDetector, objectUtils, zone) {
         this.el = el;
         this.domHandler = domHandler;
@@ -1312,11 +1310,10 @@ var DataTable = (function () {
     };
     DataTable.prototype.switchCellToEditMode = function (cell, column, rowData) {
         var _this = this;
-        // customized (this.selectionMode: rem `!` repl `&&` with `||`)
-        if (this.selectionMode || this.editable && column.editable) {
+        if (!this.selectionMode && this.editable && column.editable) {
             this.editorClick = true;
-            this.bindDocumentEditListener(column.isEditableAlways);
-            if (cell != this.editingCell && column.isEditableAlways === undefined) {
+            this.bindDocumentEditListener();
+            if (cell != this.editingCell) {
                 if (this.editingCell && this.domHandler.find(this.editingCell, '.ng-invalid.ng-dirty').length == 0) {
                     this.domHandler.removeClass(this.editingCell, 'ui-cell-editing');
                 }
@@ -1330,27 +1327,25 @@ var DataTable = (function () {
             }
         }
     };
-    DataTable.prototype.switchCellToViewMode = function (element, column) {
-        if (column.isEditableAlways === undefined) {
-            this.editingCell = null;
-            var cell = this.findCell(element);
-            this.domHandler.removeClass(cell, 'ui-cell-editing');
-            this.unbindDocumentEditListener();
-        }
+    DataTable.prototype.switchCellToViewMode = function (element) {
+        this.editingCell = null;
+        var cell = this.findCell(element);
+        this.domHandler.removeClass(cell, 'ui-cell-editing');
+        this.unbindDocumentEditListener();
     };
-    DataTable.prototype.closeCell = function (isAlwaysEditable) {
-        if (this.editingCell && isAlwaysEditable === undefined) {
+    DataTable.prototype.closeCell = function () {
+        if (this.editingCell) {
             this.domHandler.removeClass(this.editingCell, 'ui-cell-editing');
             this.editingCell = null;
             this.unbindDocumentEditListener();
         }
     };
-    DataTable.prototype.bindDocumentEditListener = function (isAlwaysEditable) {
+    DataTable.prototype.bindDocumentEditListener = function () {
         var _this = this;
         if (!this.documentEditListener) {
             this.documentEditListener = this.renderer.listen('document', 'click', function (event) {
-                if (!_this.editorClick) {
-                    _this.closeCell(isAlwaysEditable);
+                if (!_this.editorClick && event.button !== 2) {
+                    _this.closeCell();
                 }
                 _this.editorClick = false;
             });
@@ -1367,12 +1362,12 @@ var DataTable = (function () {
             //enter
             if (event.keyCode == 13) {
                 if (this.domHandler.find(this.editingCell, '.ng-invalid.ng-dirty').length == 0) {
-                    this.switchCellToViewMode(event.target, column);
+                    this.switchCellToViewMode(event.target);
                     event.preventDefault();
                 }
             }
             else if (event.keyCode == 27) {
-                this.switchCellToViewMode(event.target, column);
+                this.switchCellToViewMode(event.target);
                 event.preventDefault();
             }
             else if (event.keyCode == 9) {
@@ -2053,7 +2048,7 @@ var DataTable = (function () {
     return DataTable;
 }());
 exports.DataTable = DataTable;
-var DataTableModule = (function () {
+var DataTableModule = /** @class */ (function () {
     function DataTableModule() {
     }
     DataTableModule.decorators = [
@@ -2063,8 +2058,6 @@ var DataTableModule = (function () {
                     declarations: [DataTable, DTRadioButton, DTCheckbox, ColumnHeaders, ColumnFooters, TableBody, ScrollableView]
                 },] },
     ];
-    /** @nocollapse */
-    DataTableModule.ctorParameters = function () { return []; };
     return DataTableModule;
 }());
 exports.DataTableModule = DataTableModule;

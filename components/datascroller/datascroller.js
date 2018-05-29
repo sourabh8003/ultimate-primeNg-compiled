@@ -4,7 +4,7 @@ var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var shared_1 = require("../common/shared");
 var domhandler_1 = require("../dom/domhandler");
-var DataScroller = (function () {
+var DataScroller = /** @class */ (function () {
     function DataScroller(el, renderer, domHandler, zone) {
         this.el = el;
         this.renderer = renderer;
@@ -156,7 +156,7 @@ var DataScroller = (function () {
     return DataScroller;
 }());
 exports.DataScroller = DataScroller;
-var DataScrollerModule = (function () {
+var DataScrollerModule = /** @class */ (function () {
     function DataScrollerModule() {
     }
     DataScrollerModule.decorators = [
@@ -166,8 +166,6 @@ var DataScrollerModule = (function () {
                     declarations: [DataScroller]
                 },] },
     ];
-    /** @nocollapse */
-    DataScrollerModule.ctorParameters = function () { return []; };
     return DataScrollerModule;
 }());
 exports.DataScrollerModule = DataScrollerModule;

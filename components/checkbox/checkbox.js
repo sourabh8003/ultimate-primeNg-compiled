@@ -8,7 +8,7 @@ exports.CHECKBOX_VALUE_ACCESSOR = {
     useExisting: core_1.forwardRef(function () { return Checkbox; }),
     multi: true
 };
-var Checkbox = (function () {
+var Checkbox = /** @class */ (function () {
     function Checkbox(cd) {
         this.cd = cd;
         this.onChange = new core_1.EventEmitter();
@@ -113,7 +113,7 @@ var Checkbox = (function () {
     return Checkbox;
 }());
 exports.Checkbox = Checkbox;
-var CheckboxModule = (function () {
+var CheckboxModule = /** @class */ (function () {
     function CheckboxModule() {
     }
     CheckboxModule.decorators = [
@@ -123,8 +123,6 @@ var CheckboxModule = (function () {
                     declarations: [Checkbox]
                 },] },
     ];
-    /** @nocollapse */
-    CheckboxModule.ctorParameters = function () { return []; };
     return CheckboxModule;
 }());
 exports.CheckboxModule = CheckboxModule;

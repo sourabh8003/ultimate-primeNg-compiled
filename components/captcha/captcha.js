@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
-var Captcha = (function () {
+var Captcha = /** @class */ (function () {
     function Captcha(el, _zone) {
         this.el = el;
         this._zone = _zone;
@@ -89,7 +89,7 @@ var Captcha = (function () {
     return Captcha;
 }());
 exports.Captcha = Captcha;
-var CaptchaModule = (function () {
+var CaptchaModule = /** @class */ (function () {
     function CaptchaModule() {
     }
     CaptchaModule.decorators = [
@@ -99,8 +99,6 @@ var CaptchaModule = (function () {
                     declarations: [Captcha]
                 },] },
     ];
-    /** @nocollapse */
-    CaptchaModule.ctorParameters = function () { return []; };
     return CaptchaModule;
 }());
 exports.CaptchaModule = CaptchaModule;

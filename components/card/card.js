@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var shared_1 = require("../common/shared");
-var Card = (function () {
+var Card = /** @class */ (function () {
     function Card(el) {
         this.el = el;
     }
@@ -31,7 +31,7 @@ var Card = (function () {
     return Card;
 }());
 exports.Card = Card;
-var CardModule = (function () {
+var CardModule = /** @class */ (function () {
     function CardModule() {
     }
     CardModule.decorators = [
@@ -41,8 +41,6 @@ var CardModule = (function () {
                     declarations: [Card]
                 },] },
     ];
-    /** @nocollapse */
-    CardModule.ctorParameters = function () { return []; };
     return CardModule;
 }());
 exports.CardModule = CardModule;

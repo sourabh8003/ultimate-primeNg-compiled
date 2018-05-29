@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var ObjectUtils = (function () {
+var ObjectUtils = /** @class */ (function () {
     function ObjectUtils() {
     }
     ObjectUtils.prototype.equals = function (obj1, obj2, field) {
@@ -151,8 +151,6 @@ var ObjectUtils = (function () {
     ObjectUtils.decorators = [
         { type: core_1.Injectable },
     ];
-    /** @nocollapse */
-    ObjectUtils.ctorParameters = function () { return []; };
     return ObjectUtils;
 }());
 exports.ObjectUtils = ObjectUtils;

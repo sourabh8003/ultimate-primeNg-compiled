@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
-var Toolbar = (function () {
+var Toolbar = /** @class */ (function () {
     function Toolbar(el) {
         this.el = el;
     }
@@ -26,7 +26,7 @@ var Toolbar = (function () {
     return Toolbar;
 }());
 exports.Toolbar = Toolbar;
-var ToolbarModule = (function () {
+var ToolbarModule = /** @class */ (function () {
     function ToolbarModule() {
     }
     ToolbarModule.decorators = [
@@ -36,8 +36,6 @@ var ToolbarModule = (function () {
                     declarations: [Toolbar]
                 },] },
     ];
-    /** @nocollapse */
-    ToolbarModule.ctorParameters = function () { return []; };
     return ToolbarModule;
 }());
 exports.ToolbarModule = ToolbarModule;

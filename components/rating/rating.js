@@ -8,7 +8,7 @@ exports.RATING_VALUE_ACCESSOR = {
     useExisting: core_1.forwardRef(function () { return Rating; }),
     multi: true
 };
-var Rating = (function () {
+var Rating = /** @class */ (function () {
     function Rating(cd) {
         this.cd = cd;
         this.stars = 5;
@@ -64,7 +64,7 @@ var Rating = (function () {
     Rating.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-rating',
-                    template: "\n        <div class=\"ui-rating\" [ngClass]=\"{'ui-state-disabled': disabled}\">\n            <a href=\"#\" *ngIf=\"cancel\" (click)=\"clear($event)\">\n                <span class=\"fa\" [ngClass]=\"iconCancelClass\" [ngStyle]=\"iconCancelStyle\"></span>\n            </a>\n            <a href=\"#\" *ngFor=\"let star of starsArray;let i=index\" (click)=\"rate($event,i)\">\n                <span class=\"fa\" \n                    [ngClass]=\"(!value || i >= value) ? iconOffClass : iconOnClass\"\n                    [ngStyle]=\"(!value || i >= value) ? iconOffStyle : iconOnStyle\"\n                ></span>\n            </a>\n        </div>\n    ",
+                    template: "\n        <div class=\"ui-rating\" [ngClass]=\"{'ui-state-disabled': disabled}\">\n            <a href=\"#\" *ngIf=\"cancel\" (click)=\"clear($event)\" class=\"ui-rating-cancel\">\n                <span class=\"ui-rating-icon fa\" [ngClass]=\"iconCancelClass\" [ngStyle]=\"iconCancelStyle\"></span>\n            </a>\n            <a href=\"#\" *ngFor=\"let star of starsArray;let i=index\" (click)=\"rate($event,i)\">\n                <span class=\"ui-rating-icon fa\" \n                    [ngClass]=\"(!value || i >= value) ? iconOffClass : iconOnClass\"\n                    [ngStyle]=\"(!value || i >= value) ? iconOffStyle : iconOnStyle\"\n                ></span>\n            </a>\n        </div>\n    ",
                     providers: [exports.RATING_VALUE_ACCESSOR]
                 },] },
     ];
@@ -89,7 +89,7 @@ var Rating = (function () {
     return Rating;
 }());
 exports.Rating = Rating;
-var RatingModule = (function () {
+var RatingModule = /** @class */ (function () {
     function RatingModule() {
     }
     RatingModule.decorators = [
@@ -99,8 +99,6 @@ var RatingModule = (function () {
                     declarations: [Rating]
                 },] },
     ];
-    /** @nocollapse */
-    RatingModule.ctorParameters = function () { return []; };
     return RatingModule;
 }());
 exports.RatingModule = RatingModule;

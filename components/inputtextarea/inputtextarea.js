@@ -3,10 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var common_1 = require("@angular/common");
-var InputTextarea = (function () {
+var InputTextarea = /** @class */ (function () {
     function InputTextarea(el, ngModel) {
         this.el = el;
         this.ngModel = ngModel;
+        this.rows = 2;
+        this.cols = 20;
         this.onResize = new core_1.EventEmitter();
     }
     InputTextarea.prototype.ngOnInit = function () {
@@ -81,7 +83,7 @@ var InputTextarea = (function () {
     return InputTextarea;
 }());
 exports.InputTextarea = InputTextarea;
-var InputTextareaModule = (function () {
+var InputTextareaModule = /** @class */ (function () {
     function InputTextareaModule() {
     }
     InputTextareaModule.decorators = [
@@ -91,8 +93,6 @@ var InputTextareaModule = (function () {
                     declarations: [InputTextarea]
                 },] },
     ];
-    /** @nocollapse */
-    InputTextareaModule.ctorParameters = function () { return []; };
     return InputTextareaModule;
 }());
 exports.InputTextareaModule = InputTextareaModule;

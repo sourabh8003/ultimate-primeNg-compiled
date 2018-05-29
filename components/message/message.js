@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
-var UIMessage = (function () {
+var UIMessage = /** @class */ (function () {
     function UIMessage() {
     }
     Object.defineProperty(UIMessage.prototype, "icon", {
@@ -39,7 +39,6 @@ var UIMessage = (function () {
                 },] },
     ];
     /** @nocollapse */
-    UIMessage.ctorParameters = function () { return []; };
     UIMessage.propDecorators = {
         "severity": [{ type: core_1.Input },],
         "text": [{ type: core_1.Input },],
@@ -47,7 +46,7 @@ var UIMessage = (function () {
     return UIMessage;
 }());
 exports.UIMessage = UIMessage;
-var MessageModule = (function () {
+var MessageModule = /** @class */ (function () {
     function MessageModule() {
     }
     MessageModule.decorators = [
@@ -57,8 +56,6 @@ var MessageModule = (function () {
                     declarations: [UIMessage]
                 },] },
     ];
-    /** @nocollapse */
-    MessageModule.ctorParameters = function () { return []; };
     return MessageModule;
 }());
 exports.MessageModule = MessageModule;

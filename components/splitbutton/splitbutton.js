@@ -7,7 +7,7 @@ var domhandler_1 = require("../dom/domhandler");
 var button_1 = require("../button/button");
 var router_1 = require("@angular/router");
 var router_2 = require("@angular/router");
-var SplitButton = (function () {
+var SplitButton = /** @class */ (function () {
     function SplitButton(el, domHandler, renderer, router, cd) {
         this.el = el;
         this.domHandler = domHandler;
@@ -146,7 +146,7 @@ var SplitButton = (function () {
     return SplitButton;
 }());
 exports.SplitButton = SplitButton;
-var SplitButtonModule = (function () {
+var SplitButtonModule = /** @class */ (function () {
     function SplitButtonModule() {
     }
     SplitButtonModule.decorators = [
@@ -156,8 +156,6 @@ var SplitButtonModule = (function () {
                     declarations: [SplitButton]
                 },] },
     ];
-    /** @nocollapse */
-    SplitButtonModule.ctorParameters = function () { return []; };
     return SplitButtonModule;
 }());
 exports.SplitButtonModule = SplitButtonModule;

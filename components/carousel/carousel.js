@@ -4,7 +4,7 @@ var core_1 = require("@angular/core");
 var domhandler_1 = require("../dom/domhandler");
 var shared_1 = require("../common/shared");
 var common_1 = require("@angular/common");
-var Carousel = (function () {
+var Carousel = /** @class */ (function () {
     function Carousel(el, domHandler, renderer, cd) {
         this.el = el;
         this.domHandler = domHandler;
@@ -259,7 +259,7 @@ var Carousel = (function () {
     return Carousel;
 }());
 exports.Carousel = Carousel;
-var CarouselModule = (function () {
+var CarouselModule = /** @class */ (function () {
     function CarouselModule() {
     }
     CarouselModule.decorators = [
@@ -269,8 +269,6 @@ var CarouselModule = (function () {
                     declarations: [Carousel]
                 },] },
     ];
-    /** @nocollapse */
-    CarouselModule.ctorParameters = function () { return []; };
     return CarouselModule;
 }());
 exports.CarouselModule = CarouselModule;

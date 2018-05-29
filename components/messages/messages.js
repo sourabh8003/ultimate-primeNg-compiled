@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var messageservice_1 = require("../common/messageservice");
-var Messages = (function () {
+var Messages = /** @class */ (function () {
     function Messages(messageService) {
         this.messageService = messageService;
         this.closable = true;
@@ -95,7 +95,7 @@ var Messages = (function () {
     return Messages;
 }());
 exports.Messages = Messages;
-var MessagesModule = (function () {
+var MessagesModule = /** @class */ (function () {
     function MessagesModule() {
     }
     MessagesModule.decorators = [
@@ -105,8 +105,6 @@ var MessagesModule = (function () {
                     declarations: [Messages]
                 },] },
     ];
-    /** @nocollapse */
-    MessagesModule.ctorParameters = function () { return []; };
     return MessagesModule;
 }());
 exports.MessagesModule = MessagesModule;

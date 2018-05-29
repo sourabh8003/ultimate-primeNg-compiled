@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
-var UIChart = (function () {
+var UIChart = /** @class */ (function () {
     function UIChart(el) {
         this.el = el;
         this.options = {};
@@ -93,7 +93,7 @@ var UIChart = (function () {
     return UIChart;
 }());
 exports.UIChart = UIChart;
-var ChartModule = (function () {
+var ChartModule = /** @class */ (function () {
     function ChartModule() {
     }
     ChartModule.decorators = [
@@ -103,8 +103,6 @@ var ChartModule = (function () {
                     declarations: [UIChart]
                 },] },
     ];
-    /** @nocollapse */
-    ChartModule.ctorParameters = function () { return []; };
     return ChartModule;
 }());
 exports.ChartModule = ChartModule;

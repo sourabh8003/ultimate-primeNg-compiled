@@ -6,7 +6,7 @@ var common_1 = require("@angular/common");
 var domhandler_1 = require("../dom/domhandler");
 var shared_1 = require("../common/shared");
 var shared_2 = require("../common/shared");
-var OrganizationChartNode = (function () {
+var OrganizationChartNode = /** @class */ (function () {
     function OrganizationChartNode(chart) {
         this.chart = chart;
     }
@@ -65,7 +65,7 @@ var OrganizationChartNode = (function () {
     return OrganizationChartNode;
 }());
 exports.OrganizationChartNode = OrganizationChartNode;
-var OrganizationChart = (function () {
+var OrganizationChart = /** @class */ (function () {
     function OrganizationChart(el, domHandler) {
         this.el = el;
         this.domHandler = domHandler;
@@ -175,7 +175,7 @@ var OrganizationChart = (function () {
     return OrganizationChart;
 }());
 exports.OrganizationChart = OrganizationChart;
-var OrganizationChartModule = (function () {
+var OrganizationChartModule = /** @class */ (function () {
     function OrganizationChartModule() {
     }
     OrganizationChartModule.decorators = [
@@ -185,8 +185,6 @@ var OrganizationChartModule = (function () {
                     declarations: [OrganizationChart, OrganizationChartNode]
                 },] },
     ];
-    /** @nocollapse */
-    OrganizationChartModule.ctorParameters = function () { return []; };
     return OrganizationChartModule;
 }());
 exports.OrganizationChartModule = OrganizationChartModule;
