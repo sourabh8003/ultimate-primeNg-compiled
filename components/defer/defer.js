@@ -50,14 +50,14 @@ var DeferredLoader = /** @class */ (function () {
     ];
     /** @nocollapse */
     DeferredLoader.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: domhandler_1.DomHandler, },
-        { type: core_1.Renderer2, },
-        { type: core_1.ViewContainerRef, },
+        { type: core_1.ElementRef },
+        { type: domhandler_1.DomHandler },
+        { type: core_1.Renderer2 },
+        { type: core_1.ViewContainerRef }
     ]; };
     DeferredLoader.propDecorators = {
-        "onLoad": [{ type: core_1.Output },],
-        "template": [{ type: core_1.ContentChild, args: [core_1.TemplateRef,] },],
+        onLoad: [{ type: core_1.Output }],
+        template: [{ type: core_1.ContentChild, args: [core_1.TemplateRef,] }]
     };
     return DeferredLoader;
 }());

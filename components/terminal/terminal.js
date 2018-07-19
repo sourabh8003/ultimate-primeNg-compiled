@@ -60,16 +60,16 @@ var Terminal = /** @class */ (function () {
     ];
     /** @nocollapse */
     Terminal.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: domhandler_1.DomHandler, },
-        { type: terminalservice_1.TerminalService, },
+        { type: core_1.ElementRef },
+        { type: domhandler_1.DomHandler },
+        { type: terminalservice_1.TerminalService }
     ]; };
     Terminal.propDecorators = {
-        "welcomeMessage": [{ type: core_1.Input },],
-        "prompt": [{ type: core_1.Input },],
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "response": [{ type: core_1.Input },],
+        welcomeMessage: [{ type: core_1.Input }],
+        prompt: [{ type: core_1.Input }],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        response: [{ type: core_1.Input }]
     };
     return Terminal;
 }());

@@ -96,27 +96,27 @@ var SelectButton = /** @class */ (function () {
     SelectButton.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-selectButton',
-                    template: "\n        <div [ngClass]=\"'ui-selectbutton ui-buttonset ui-widget ui-corner-all ui-buttonset-' + options.length\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div *ngFor=\"let option of options; let i = index\" class=\"ui-button ui-widget ui-state-default ui-button-text-only {{option.styleClass}}\"\n                [ngClass]=\"{'ui-state-active':isSelected(option), 'ui-state-disabled':disabled, 'ui-state-focus': cbox == focusedItem, \n                'ui-button-text-icon-left': (option.icon != null), 'ui-button-icon-only': (option.icon && !option.label)}\" (click)=\"onItemClick($event,option,cbox,i)\" [attr.title]=\"option.title\">\n                <ng-container *ngIf=\"!itemTemplate else customcontent\">\n                    <span [ngClass]=\"['ui-clickable', 'ui-button-icon-left']\" [class]=\"option.icon\" *ngIf=\"option.icon\"></span>\n                    <span class=\"ui-button-text ui-clickable\">{{option.label||'ui-btn'}}</span>\n                </ng-container>\n                <ng-template #customcontent>\n                    <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: option.value, index: i}\"></ng-container>\n                </ng-template>\n                <div class=\"ui-helper-hidden-accessible\">\n                    <input #cbox type=\"checkbox\" [checked]=\"isSelected(option)\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\" [attr.tabindex]=\"tabindex\" [attr.disabled]=\"disabled\">\n                </div>\n            </div>\n        </div>\n    ",
+                    template: "\n        <div [ngClass]=\"'ui-selectbutton ui-buttonset ui-widget ui-corner-all ui-buttonset-' + (options ? options.length : 0)\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div *ngFor=\"let option of options; let i = index\" class=\"ui-button ui-widget ui-state-default ui-button-text-only {{option.styleClass}}\"\n                [ngClass]=\"{'ui-state-active':isSelected(option), 'ui-state-disabled':disabled, 'ui-state-focus': cbox == focusedItem, \n                'ui-button-text-icon-left': (option.icon != null), 'ui-button-icon-only': (option.icon && !option.label)}\" (click)=\"onItemClick($event,option,cbox,i)\" [attr.title]=\"option.title\">\n                <ng-container *ngIf=\"!itemTemplate else customcontent\">\n                    <span [ngClass]=\"['ui-clickable', 'ui-button-icon-left']\" [class]=\"option.icon\" *ngIf=\"option.icon\"></span>\n                    <span class=\"ui-button-text ui-clickable\">{{option.label||'ui-btn'}}</span>\n                </ng-container>\n                <ng-template #customcontent>\n                    <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: option.value, index: i}\"></ng-container>\n                </ng-template>\n                <div class=\"ui-helper-hidden-accessible\">\n                    <input #cbox type=\"checkbox\" [checked]=\"isSelected(option)\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\" [attr.tabindex]=\"tabindex\" [attr.disabled]=\"disabled\">\n                </div>\n            </div>\n        </div>\n    ",
                     providers: [objectutils_1.ObjectUtils, exports.SELECTBUTTON_VALUE_ACCESSOR]
                 },] },
     ];
     /** @nocollapse */
     SelectButton.ctorParameters = function () { return [
-        { type: objectutils_1.ObjectUtils, },
-        { type: core_1.ChangeDetectorRef, },
+        { type: objectutils_1.ObjectUtils },
+        { type: core_1.ChangeDetectorRef }
     ]; };
     SelectButton.propDecorators = {
-        "tabindex": [{ type: core_1.Input },],
-        "multiple": [{ type: core_1.Input },],
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "disabled": [{ type: core_1.Input },],
-        "dataKey": [{ type: core_1.Input },],
-        "optionLabel": [{ type: core_1.Input },],
-        "onOptionClick": [{ type: core_1.Output },],
-        "onChange": [{ type: core_1.Output },],
-        "itemTemplate": [{ type: core_1.ContentChild, args: [core_1.TemplateRef,] },],
-        "options": [{ type: core_1.Input },],
+        tabindex: [{ type: core_1.Input }],
+        multiple: [{ type: core_1.Input }],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        disabled: [{ type: core_1.Input }],
+        dataKey: [{ type: core_1.Input }],
+        optionLabel: [{ type: core_1.Input }],
+        onOptionClick: [{ type: core_1.Output }],
+        onChange: [{ type: core_1.Output }],
+        itemTemplate: [{ type: core_1.ContentChild, args: [core_1.TemplateRef,] }],
+        options: [{ type: core_1.Input }]
     };
     return SelectButton;
 }());

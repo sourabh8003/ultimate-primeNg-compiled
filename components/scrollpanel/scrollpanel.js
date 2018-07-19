@@ -155,17 +155,17 @@ var ScrollPanel = /** @class */ (function () {
     ];
     /** @nocollapse */
     ScrollPanel.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: core_1.NgZone, },
-        { type: domhandler_1.DomHandler, },
+        { type: core_1.ElementRef },
+        { type: core_1.NgZone },
+        { type: domhandler_1.DomHandler }
     ]; };
     ScrollPanel.propDecorators = {
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "containerViewChild": [{ type: core_1.ViewChild, args: ['container',] },],
-        "contentViewChild": [{ type: core_1.ViewChild, args: ['content',] },],
-        "xBarViewChild": [{ type: core_1.ViewChild, args: ['xBar',] },],
-        "yBarViewChild": [{ type: core_1.ViewChild, args: ['yBar',] },],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        containerViewChild: [{ type: core_1.ViewChild, args: ['container',] }],
+        contentViewChild: [{ type: core_1.ViewChild, args: ['content',] }],
+        xBarViewChild: [{ type: core_1.ViewChild, args: ['xBar',] }],
+        yBarViewChild: [{ type: core_1.ViewChild, args: ['yBar',] }]
     };
     return ScrollPanel;
 }());

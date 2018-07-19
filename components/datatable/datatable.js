@@ -21,10 +21,9 @@ var DTRadioButton = /** @class */ (function () {
                     template: "\n        <div class=\"ui-radiobutton ui-widget\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input type=\"radio\" [checked]=\"checked\">\n            </div>\n            <div class=\"ui-radiobutton-box ui-widget ui-radiobutton-relative ui-state-default\" (click)=\"handleClick($event)\"\n                        [ngClass]=\"{'ui-state-active':checked}\">\n                <span class=\"ui-radiobutton-icon ui-clickable\" [ngClass]=\"{'fa fa-circle':checked}\"></span>\n            </div>\n        </div>\n    "
                 },] },
     ];
-    /** @nocollapse */
     DTRadioButton.propDecorators = {
-        "checked": [{ type: core_1.Input },],
-        "onClick": [{ type: core_1.Output },],
+        checked: [{ type: core_1.Input }],
+        onClick: [{ type: core_1.Output }]
     };
     return DTRadioButton;
 }());
@@ -44,11 +43,10 @@ var DTCheckbox = /** @class */ (function () {
                     template: "\n        <div class=\"ui-chkbox ui-widget\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input type=\"checkbox\" [checked]=\"checked\">\n            </div>\n            <div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\" (click)=\"handleClick($event)\"\n                        [ngClass]=\"{'ui-state-active':checked&&!disabled,'ui-state-disabled':disabled}\">\n                <span class=\"ui-chkbox-icon ui-clickable\" [ngClass]=\"{'fa fa-check':checked}\"></span>\n            </div>\n        </div>\n    "
                 },] },
     ];
-    /** @nocollapse */
     DTCheckbox.propDecorators = {
-        "checked": [{ type: core_1.Input },],
-        "disabled": [{ type: core_1.Input },],
-        "onChange": [{ type: core_1.Output },],
+        checked: [{ type: core_1.Input }],
+        disabled: [{ type: core_1.Input }],
+        onChange: [{ type: core_1.Output }]
     };
     return DTCheckbox;
 }());
@@ -65,10 +63,10 @@ var ColumnHeaders = /** @class */ (function () {
     ];
     /** @nocollapse */
     ColumnHeaders.ctorParameters = function () { return [
-        { type: DataTable, decorators: [{ type: core_1.Inject, args: [core_1.forwardRef(function () { return DataTable; }),] },] },
+        { type: DataTable, decorators: [{ type: core_1.Inject, args: [core_1.forwardRef(function () { return DataTable; }),] }] }
     ]; };
     ColumnHeaders.propDecorators = {
-        "columns": [{ type: core_1.Input, args: ["pColumnHeaders",] },],
+        columns: [{ type: core_1.Input, args: ["pColumnHeaders",] }]
     };
     return ColumnHeaders;
 }());
@@ -85,10 +83,10 @@ var ColumnFooters = /** @class */ (function () {
     ];
     /** @nocollapse */
     ColumnFooters.ctorParameters = function () { return [
-        { type: DataTable, decorators: [{ type: core_1.Inject, args: [core_1.forwardRef(function () { return DataTable; }),] },] },
+        { type: DataTable, decorators: [{ type: core_1.Inject, args: [core_1.forwardRef(function () { return DataTable; }),] }] }
     ]; };
     ColumnFooters.propDecorators = {
-        "columns": [{ type: core_1.Input, args: ["pColumnFooters",] },],
+        columns: [{ type: core_1.Input, args: ["pColumnFooters",] }]
     };
     return ColumnFooters;
 }());
@@ -108,11 +106,11 @@ var TableBody = /** @class */ (function () {
     ];
     /** @nocollapse */
     TableBody.ctorParameters = function () { return [
-        { type: DataTable, decorators: [{ type: core_1.Inject, args: [core_1.forwardRef(function () { return DataTable; }),] },] },
+        { type: DataTable, decorators: [{ type: core_1.Inject, args: [core_1.forwardRef(function () { return DataTable; }),] }] }
     ]; };
     TableBody.propDecorators = {
-        "columns": [{ type: core_1.Input, args: ["pTableBody",] },],
-        "data": [{ type: core_1.Input },],
+        columns: [{ type: core_1.Input, args: ["pTableBody",] }],
+        data: [{ type: core_1.Input }]
     };
     return TableBody;
 }());
@@ -241,27 +239,27 @@ var ScrollableView = /** @class */ (function () {
     ];
     /** @nocollapse */
     ScrollableView.ctorParameters = function () { return [
-        { type: DataTable, decorators: [{ type: core_1.Inject, args: [core_1.forwardRef(function () { return DataTable; }),] },] },
-        { type: domhandler_1.DomHandler, },
-        { type: core_1.ElementRef, },
-        { type: core_1.Renderer2, },
-        { type: core_1.NgZone, },
+        { type: DataTable, decorators: [{ type: core_1.Inject, args: [core_1.forwardRef(function () { return DataTable; }),] }] },
+        { type: domhandler_1.DomHandler },
+        { type: core_1.ElementRef },
+        { type: core_1.Renderer2 },
+        { type: core_1.NgZone }
     ]; };
     ScrollableView.propDecorators = {
-        "columns": [{ type: core_1.Input, args: ["pScrollableView",] },],
-        "headerColumnGroup": [{ type: core_1.Input },],
-        "footerColumnGroup": [{ type: core_1.Input },],
-        "scrollHeaderViewChild": [{ type: core_1.ViewChild, args: ['scrollHeader',] },],
-        "scrollHeaderBoxViewChild": [{ type: core_1.ViewChild, args: ['scrollHeaderBox',] },],
-        "scrollBodyViewChild": [{ type: core_1.ViewChild, args: ['scrollBody',] },],
-        "scrollTableViewChild": [{ type: core_1.ViewChild, args: ['scrollTable',] },],
-        "scrollTableWrapperViewChild": [{ type: core_1.ViewChild, args: ['scrollTableWrapper',] },],
-        "scrollFooterViewChild": [{ type: core_1.ViewChild, args: ['scrollFooter',] },],
-        "scrollFooterBoxViewChild": [{ type: core_1.ViewChild, args: ['scrollFooterBox',] },],
-        "frozen": [{ type: core_1.Input },],
-        "width": [{ type: core_1.Input },],
-        "virtualScroll": [{ type: core_1.Input },],
-        "onVirtualScroll": [{ type: core_1.Output },],
+        columns: [{ type: core_1.Input, args: ["pScrollableView",] }],
+        headerColumnGroup: [{ type: core_1.Input }],
+        footerColumnGroup: [{ type: core_1.Input }],
+        scrollHeaderViewChild: [{ type: core_1.ViewChild, args: ['scrollHeader',] }],
+        scrollHeaderBoxViewChild: [{ type: core_1.ViewChild, args: ['scrollHeaderBox',] }],
+        scrollBodyViewChild: [{ type: core_1.ViewChild, args: ['scrollBody',] }],
+        scrollTableViewChild: [{ type: core_1.ViewChild, args: ['scrollTable',] }],
+        scrollTableWrapperViewChild: [{ type: core_1.ViewChild, args: ['scrollTableWrapper',] }],
+        scrollFooterViewChild: [{ type: core_1.ViewChild, args: ['scrollFooter',] }],
+        scrollFooterBoxViewChild: [{ type: core_1.ViewChild, args: ['scrollFooterBox',] }],
+        frozen: [{ type: core_1.Input }],
+        width: [{ type: core_1.Input }],
+        virtualScroll: [{ type: core_1.Input }],
+        onVirtualScroll: [{ type: core_1.Output }]
     };
     return ScrollableView;
 }());
@@ -1939,111 +1937,111 @@ var DataTable = /** @class */ (function () {
     ];
     /** @nocollapse */
     DataTable.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: domhandler_1.DomHandler, },
-        { type: core_1.IterableDiffers, },
-        { type: core_1.Renderer2, },
-        { type: core_1.ChangeDetectorRef, },
-        { type: objectutils_1.ObjectUtils, },
-        { type: core_1.NgZone, },
+        { type: core_1.ElementRef },
+        { type: domhandler_1.DomHandler },
+        { type: core_1.IterableDiffers },
+        { type: core_1.Renderer2 },
+        { type: core_1.ChangeDetectorRef },
+        { type: objectutils_1.ObjectUtils },
+        { type: core_1.NgZone }
     ]; };
     DataTable.propDecorators = {
-        "paginator": [{ type: core_1.Input },],
-        "rows": [{ type: core_1.Input },],
-        "pageLinks": [{ type: core_1.Input },],
-        "rowsPerPageOptions": [{ type: core_1.Input },],
-        "responsive": [{ type: core_1.Input },],
-        "stacked": [{ type: core_1.Input },],
-        "selectionMode": [{ type: core_1.Input },],
-        "selectionChange": [{ type: core_1.Output },],
-        "editable": [{ type: core_1.Input },],
-        "showHeaderCheckbox": [{ type: core_1.Input },],
-        "onRowClick": [{ type: core_1.Output },],
-        "onRowSelect": [{ type: core_1.Output },],
-        "onRowUnselect": [{ type: core_1.Output },],
-        "onRowDblclick": [{ type: core_1.Output },],
-        "onHeaderCheckboxToggle": [{ type: core_1.Output },],
-        "headerCheckboxToggleAllPages": [{ type: core_1.Input },],
-        "onContextMenuSelect": [{ type: core_1.Output },],
-        "filterDelay": [{ type: core_1.Input },],
-        "lazy": [{ type: core_1.Input },],
-        "onLazyLoad": [{ type: core_1.Output },],
-        "resizableColumns": [{ type: core_1.Input },],
-        "columnResizeMode": [{ type: core_1.Input },],
-        "onColResize": [{ type: core_1.Output },],
-        "reorderableColumns": [{ type: core_1.Input },],
-        "onColReorder": [{ type: core_1.Output },],
-        "scrollable": [{ type: core_1.Input },],
-        "virtualScroll": [{ type: core_1.Input },],
-        "scrollHeight": [{ type: core_1.Input },],
-        "scrollWidth": [{ type: core_1.Input },],
-        "frozenWidth": [{ type: core_1.Input },],
-        "unfrozenWidth": [{ type: core_1.Input },],
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "tableStyle": [{ type: core_1.Input },],
-        "tableStyleClass": [{ type: core_1.Input },],
-        "globalFilter": [{ type: core_1.Input },],
-        "sortMode": [{ type: core_1.Input },],
-        "defaultSortOrder": [{ type: core_1.Input },],
-        "groupField": [{ type: core_1.Input },],
-        "contextMenu": [{ type: core_1.Input },],
-        "csvSeparator": [{ type: core_1.Input },],
-        "exportFilename": [{ type: core_1.Input },],
-        "emptyMessage": [{ type: core_1.Input },],
-        "paginatorPosition": [{ type: core_1.Input },],
-        "alwaysShowPaginator": [{ type: core_1.Input },],
-        "metaKeySelection": [{ type: core_1.Input },],
-        "rowTrackBy": [{ type: core_1.Input },],
-        "immutable": [{ type: core_1.Input },],
-        "frozenValue": [{ type: core_1.Input },],
-        "compareSelectionBy": [{ type: core_1.Input },],
-        "onEditInit": [{ type: core_1.Output },],
-        "onEditComplete": [{ type: core_1.Output },],
-        "onEdit": [{ type: core_1.Output },],
-        "onEditCancel": [{ type: core_1.Output },],
-        "onPage": [{ type: core_1.Output },],
-        "onSort": [{ type: core_1.Output },],
-        "onFilter": [{ type: core_1.Output },],
-        "header": [{ type: core_1.ContentChild, args: [shared_2.Header,] },],
-        "footer": [{ type: core_1.ContentChild, args: [shared_2.Footer,] },],
-        "expandableRows": [{ type: core_1.Input },],
-        "expandedRows": [{ type: core_1.Input },],
-        "expandableRowGroups": [{ type: core_1.Input },],
-        "rowExpandMode": [{ type: core_1.Input },],
-        "expandedRowsGroups": [{ type: core_1.Input },],
-        "expandedIcon": [{ type: core_1.Input },],
-        "collapsedIcon": [{ type: core_1.Input },],
-        "tabindex": [{ type: core_1.Input },],
-        "rowStyleClass": [{ type: core_1.Input },],
-        "rowStyleMap": [{ type: core_1.Input },],
-        "rowGroupMode": [{ type: core_1.Input },],
-        "sortableRowGroup": [{ type: core_1.Input },],
-        "sortFile": [{ type: core_1.Input },],
-        "rowHover": [{ type: core_1.Input },],
-        "filters": [{ type: core_1.Input },],
-        "dataKey": [{ type: core_1.Input },],
-        "loading": [{ type: core_1.Input },],
-        "loadingIcon": [{ type: core_1.Input },],
-        "virtualScrollDelay": [{ type: core_1.Input },],
-        "rowGroupExpandMode": [{ type: core_1.Input },],
-        "valueChange": [{ type: core_1.Output },],
-        "firstChange": [{ type: core_1.Output },],
-        "onRowExpand": [{ type: core_1.Output },],
-        "onRowCollapse": [{ type: core_1.Output },],
-        "onRowGroupExpand": [{ type: core_1.Output },],
-        "onRowGroupCollapse": [{ type: core_1.Output },],
-        "templates": [{ type: core_1.ContentChildren, args: [shared_2.PrimeTemplate,] },],
-        "cols": [{ type: core_1.ContentChildren, args: [shared_2.Column,] },],
-        "headerColumnGroups": [{ type: core_1.ContentChildren, args: [shared_2.HeaderColumnGroup,] },],
-        "footerColumnGroups": [{ type: core_1.ContentChildren, args: [shared_2.FooterColumnGroup,] },],
-        "multiSortMeta": [{ type: core_1.Input },],
-        "sortField": [{ type: core_1.Input },],
-        "sortOrder": [{ type: core_1.Input },],
-        "value": [{ type: core_1.Input },],
-        "first": [{ type: core_1.Input },],
-        "totalRecords": [{ type: core_1.Input },],
-        "selection": [{ type: core_1.Input },],
+        paginator: [{ type: core_1.Input }],
+        rows: [{ type: core_1.Input }],
+        pageLinks: [{ type: core_1.Input }],
+        rowsPerPageOptions: [{ type: core_1.Input }],
+        responsive: [{ type: core_1.Input }],
+        stacked: [{ type: core_1.Input }],
+        selectionMode: [{ type: core_1.Input }],
+        selectionChange: [{ type: core_1.Output }],
+        editable: [{ type: core_1.Input }],
+        showHeaderCheckbox: [{ type: core_1.Input }],
+        onRowClick: [{ type: core_1.Output }],
+        onRowSelect: [{ type: core_1.Output }],
+        onRowUnselect: [{ type: core_1.Output }],
+        onRowDblclick: [{ type: core_1.Output }],
+        onHeaderCheckboxToggle: [{ type: core_1.Output }],
+        headerCheckboxToggleAllPages: [{ type: core_1.Input }],
+        onContextMenuSelect: [{ type: core_1.Output }],
+        filterDelay: [{ type: core_1.Input }],
+        lazy: [{ type: core_1.Input }],
+        onLazyLoad: [{ type: core_1.Output }],
+        resizableColumns: [{ type: core_1.Input }],
+        columnResizeMode: [{ type: core_1.Input }],
+        onColResize: [{ type: core_1.Output }],
+        reorderableColumns: [{ type: core_1.Input }],
+        onColReorder: [{ type: core_1.Output }],
+        scrollable: [{ type: core_1.Input }],
+        virtualScroll: [{ type: core_1.Input }],
+        scrollHeight: [{ type: core_1.Input }],
+        scrollWidth: [{ type: core_1.Input }],
+        frozenWidth: [{ type: core_1.Input }],
+        unfrozenWidth: [{ type: core_1.Input }],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        tableStyle: [{ type: core_1.Input }],
+        tableStyleClass: [{ type: core_1.Input }],
+        globalFilter: [{ type: core_1.Input }],
+        sortMode: [{ type: core_1.Input }],
+        defaultSortOrder: [{ type: core_1.Input }],
+        groupField: [{ type: core_1.Input }],
+        contextMenu: [{ type: core_1.Input }],
+        csvSeparator: [{ type: core_1.Input }],
+        exportFilename: [{ type: core_1.Input }],
+        emptyMessage: [{ type: core_1.Input }],
+        paginatorPosition: [{ type: core_1.Input }],
+        alwaysShowPaginator: [{ type: core_1.Input }],
+        metaKeySelection: [{ type: core_1.Input }],
+        rowTrackBy: [{ type: core_1.Input }],
+        immutable: [{ type: core_1.Input }],
+        frozenValue: [{ type: core_1.Input }],
+        compareSelectionBy: [{ type: core_1.Input }],
+        onEditInit: [{ type: core_1.Output }],
+        onEditComplete: [{ type: core_1.Output }],
+        onEdit: [{ type: core_1.Output }],
+        onEditCancel: [{ type: core_1.Output }],
+        onPage: [{ type: core_1.Output }],
+        onSort: [{ type: core_1.Output }],
+        onFilter: [{ type: core_1.Output }],
+        header: [{ type: core_1.ContentChild, args: [shared_2.Header,] }],
+        footer: [{ type: core_1.ContentChild, args: [shared_2.Footer,] }],
+        expandableRows: [{ type: core_1.Input }],
+        expandedRows: [{ type: core_1.Input }],
+        expandableRowGroups: [{ type: core_1.Input }],
+        rowExpandMode: [{ type: core_1.Input }],
+        expandedRowsGroups: [{ type: core_1.Input }],
+        expandedIcon: [{ type: core_1.Input }],
+        collapsedIcon: [{ type: core_1.Input }],
+        tabindex: [{ type: core_1.Input }],
+        rowStyleClass: [{ type: core_1.Input }],
+        rowStyleMap: [{ type: core_1.Input }],
+        rowGroupMode: [{ type: core_1.Input }],
+        sortableRowGroup: [{ type: core_1.Input }],
+        sortFile: [{ type: core_1.Input }],
+        rowHover: [{ type: core_1.Input }],
+        filters: [{ type: core_1.Input }],
+        dataKey: [{ type: core_1.Input }],
+        loading: [{ type: core_1.Input }],
+        loadingIcon: [{ type: core_1.Input }],
+        virtualScrollDelay: [{ type: core_1.Input }],
+        rowGroupExpandMode: [{ type: core_1.Input }],
+        valueChange: [{ type: core_1.Output }],
+        firstChange: [{ type: core_1.Output }],
+        onRowExpand: [{ type: core_1.Output }],
+        onRowCollapse: [{ type: core_1.Output }],
+        onRowGroupExpand: [{ type: core_1.Output }],
+        onRowGroupCollapse: [{ type: core_1.Output }],
+        templates: [{ type: core_1.ContentChildren, args: [shared_2.PrimeTemplate,] }],
+        cols: [{ type: core_1.ContentChildren, args: [shared_2.Column,] }],
+        headerColumnGroups: [{ type: core_1.ContentChildren, args: [shared_2.HeaderColumnGroup,] }],
+        footerColumnGroups: [{ type: core_1.ContentChildren, args: [shared_2.FooterColumnGroup,] }],
+        multiSortMeta: [{ type: core_1.Input }],
+        sortField: [{ type: core_1.Input }],
+        sortOrder: [{ type: core_1.Input }],
+        value: [{ type: core_1.Input }],
+        first: [{ type: core_1.Input }],
+        totalRecords: [{ type: core_1.Input }],
+        selection: [{ type: core_1.Input }]
     };
     return DataTable;
 }());

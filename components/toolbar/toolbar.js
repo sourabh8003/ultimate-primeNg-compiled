@@ -17,11 +17,11 @@ var Toolbar = /** @class */ (function () {
     ];
     /** @nocollapse */
     Toolbar.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
+        { type: core_1.ElementRef }
     ]; };
     Toolbar.propDecorators = {
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }]
     };
     return Toolbar;
 }());

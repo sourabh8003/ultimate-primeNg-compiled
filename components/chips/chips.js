@@ -155,35 +155,35 @@ var Chips = /** @class */ (function () {
     Chips.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-chips',
-                    template: "\n        <div [ngClass]=\"'ui-chips ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\" (click)=\"onClick($event)\">\n            <ul [ngClass]=\"{'ui-inputtext ui-state-default ui-corner-all':true,'ui-state-focus':focus,'ui-state-disabled':disabled}\">\n                <li #token *ngFor=\"let item of value; let i = index;\" class=\"ui-chips-token ui-state-highlight ui-corner-all\">\n                    <span *ngIf=\"!disabled\" class=\"ui-chips-token-icon fa fa-fw fa-close\" (click)=\"removeItem($event,i)\"></span>\n                    <span *ngIf=\"!itemTemplate\" class=\"ui-chips-token-label\">{{field ? resolveFieldData(item,field) : item}}</span>\n                    <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: item}\"></ng-container>\n                </li>\n                <li class=\"ui-chips-input-token\">\n                    <input #inputtext type=\"text\" [attr.id]=\"inputId\" [attr.placeholder]=\"(value && value.length ? null : placeholder)\" [attr.tabindex]=\"tabindex\" (keydown)=\"onKeydown($event)\" \n                        (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\" [disabled]=\"disabled\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\">\n                </li>\n            </ul>\n        </div>\n    ",
+                    template: "\n        <div [ngClass]=\"'ui-chips ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\" (click)=\"onClick($event)\">\n            <ul [ngClass]=\"{'ui-inputtext ui-state-default ui-corner-all':true,'ui-state-focus':focus,'ui-state-disabled':disabled}\">\n                <li #token *ngFor=\"let item of value; let i = index;\" class=\"ui-chips-token ui-state-highlight ui-corner-all\">\n                    <span *ngIf=\"!disabled\" class=\"ui-chips-token-icon pi pi-fw pi-times\" (click)=\"removeItem($event,i)\"></span>\n                    <span *ngIf=\"!itemTemplate\" class=\"ui-chips-token-label\">{{field ? resolveFieldData(item,field) : item}}</span>\n                    <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: item}\"></ng-container>\n                </li>\n                <li class=\"ui-chips-input-token\">\n                    <input #inputtext type=\"text\" [attr.id]=\"inputId\" [attr.placeholder]=\"(value && value.length ? null : placeholder)\" [attr.tabindex]=\"tabindex\" (keydown)=\"onKeydown($event)\" \n                        (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\" [disabled]=\"disabled\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\">\n                </li>\n            </ul>\n        </div>\n    ",
                     providers: [domhandler_1.DomHandler, exports.CHIPS_VALUE_ACCESSOR]
                 },] },
     ];
     /** @nocollapse */
     Chips.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: domhandler_1.DomHandler, },
+        { type: core_1.ElementRef },
+        { type: domhandler_1.DomHandler }
     ]; };
     Chips.propDecorators = {
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "disabled": [{ type: core_1.Input },],
-        "onAdd": [{ type: core_1.Output },],
-        "onRemove": [{ type: core_1.Output },],
-        "field": [{ type: core_1.Input },],
-        "placeholder": [{ type: core_1.Input },],
-        "max": [{ type: core_1.Input },],
-        "tabindex": [{ type: core_1.Input },],
-        "inputId": [{ type: core_1.Input },],
-        "allowDuplicate": [{ type: core_1.Input },],
-        "inputStyle": [{ type: core_1.Input },],
-        "inputStyleClass": [{ type: core_1.Input },],
-        "addOnTab": [{ type: core_1.Input },],
-        "addOnBlur": [{ type: core_1.Input },],
-        "onFocus": [{ type: core_1.Output },],
-        "onBlur": [{ type: core_1.Output },],
-        "inputViewChild": [{ type: core_1.ViewChild, args: ['inputtext',] },],
-        "templates": [{ type: core_1.ContentChildren, args: [shared_1.PrimeTemplate,] },],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        disabled: [{ type: core_1.Input }],
+        onAdd: [{ type: core_1.Output }],
+        onRemove: [{ type: core_1.Output }],
+        field: [{ type: core_1.Input }],
+        placeholder: [{ type: core_1.Input }],
+        max: [{ type: core_1.Input }],
+        tabindex: [{ type: core_1.Input }],
+        inputId: [{ type: core_1.Input }],
+        allowDuplicate: [{ type: core_1.Input }],
+        inputStyle: [{ type: core_1.Input }],
+        inputStyleClass: [{ type: core_1.Input }],
+        addOnTab: [{ type: core_1.Input }],
+        addOnBlur: [{ type: core_1.Input }],
+        onFocus: [{ type: core_1.Output }],
+        onBlur: [{ type: core_1.Output }],
+        inputViewChild: [{ type: core_1.ViewChild, args: ['inputtext',] }],
+        templates: [{ type: core_1.ContentChildren, args: [shared_1.PrimeTemplate,] }]
     };
     return Chips;
 }());

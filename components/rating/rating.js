@@ -13,9 +13,9 @@ var Rating = /** @class */ (function () {
         this.cd = cd;
         this.stars = 5;
         this.cancel = true;
-        this.iconOnClass = 'fa-star';
-        this.iconOffClass = 'fa-star-o';
-        this.iconCancelClass = 'fa-ban';
+        this.iconOnClass = 'pi pi-star';
+        this.iconOffClass = 'pi pi-star-o';
+        this.iconCancelClass = 'pi pi-ban';
         this.onRate = new core_1.EventEmitter();
         this.onCancel = new core_1.EventEmitter();
         this.onModelChange = function () { };
@@ -64,27 +64,27 @@ var Rating = /** @class */ (function () {
     Rating.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-rating',
-                    template: "\n        <div class=\"ui-rating\" [ngClass]=\"{'ui-state-disabled': disabled}\">\n            <a href=\"#\" *ngIf=\"cancel\" (click)=\"clear($event)\" class=\"ui-rating-cancel\">\n                <span class=\"ui-rating-icon fa\" [ngClass]=\"iconCancelClass\" [ngStyle]=\"iconCancelStyle\"></span>\n            </a>\n            <a href=\"#\" *ngFor=\"let star of starsArray;let i=index\" (click)=\"rate($event,i)\">\n                <span class=\"ui-rating-icon fa\" \n                    [ngClass]=\"(!value || i >= value) ? iconOffClass : iconOnClass\"\n                    [ngStyle]=\"(!value || i >= value) ? iconOffStyle : iconOnStyle\"\n                ></span>\n            </a>\n        </div>\n    ",
+                    template: "\n        <div class=\"ui-rating\" [ngClass]=\"{'ui-state-disabled': disabled}\">\n            <a href=\"#\" *ngIf=\"cancel\" (click)=\"clear($event)\" class=\"ui-rating-cancel\">\n                <span class=\"ui-rating-icon\" [ngClass]=\"iconCancelClass\" [ngStyle]=\"iconCancelStyle\"></span>\n            </a>\n            <a href=\"#\" *ngFor=\"let star of starsArray;let i=index\" (click)=\"rate($event,i)\">\n                <span class=\"ui-rating-icon\" \n                    [ngClass]=\"(!value || i >= value) ? iconOffClass : iconOnClass\"\n                    [ngStyle]=\"(!value || i >= value) ? iconOffStyle : iconOnStyle\"\n                ></span>\n            </a>\n        </div>\n    ",
                     providers: [exports.RATING_VALUE_ACCESSOR]
                 },] },
     ];
     /** @nocollapse */
     Rating.ctorParameters = function () { return [
-        { type: core_1.ChangeDetectorRef, },
+        { type: core_1.ChangeDetectorRef }
     ]; };
     Rating.propDecorators = {
-        "disabled": [{ type: core_1.Input },],
-        "readonly": [{ type: core_1.Input },],
-        "stars": [{ type: core_1.Input },],
-        "cancel": [{ type: core_1.Input },],
-        "iconOnClass": [{ type: core_1.Input },],
-        "iconOnStyle": [{ type: core_1.Input },],
-        "iconOffClass": [{ type: core_1.Input },],
-        "iconOffStyle": [{ type: core_1.Input },],
-        "iconCancelClass": [{ type: core_1.Input },],
-        "iconCancelStyle": [{ type: core_1.Input },],
-        "onRate": [{ type: core_1.Output },],
-        "onCancel": [{ type: core_1.Output },],
+        disabled: [{ type: core_1.Input }],
+        readonly: [{ type: core_1.Input }],
+        stars: [{ type: core_1.Input }],
+        cancel: [{ type: core_1.Input }],
+        iconOnClass: [{ type: core_1.Input }],
+        iconOnStyle: [{ type: core_1.Input }],
+        iconOffClass: [{ type: core_1.Input }],
+        iconOffStyle: [{ type: core_1.Input }],
+        iconCancelClass: [{ type: core_1.Input }],
+        iconCancelStyle: [{ type: core_1.Input }],
+        onRate: [{ type: core_1.Output }],
+        onCancel: [{ type: core_1.Output }]
     };
     return Rating;
 }());

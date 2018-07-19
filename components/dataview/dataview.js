@@ -16,7 +16,7 @@ var DataView = /** @class */ (function () {
         this.emptyMessage = 'No records found';
         this.onLazyLoad = new core_1.EventEmitter();
         this.trackBy = function (index, item) { return item; };
-        this.loadingIcon = 'fa fa-spin fa-2x fa-circle-o-notch';
+        this.loadingIcon = 'pi pi-spinner';
         this.onPage = new core_1.EventEmitter();
         this.onSort = new core_1.EventEmitter();
         this.first = 0;
@@ -166,42 +166,42 @@ var DataView = /** @class */ (function () {
     DataView.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-dataView',
-                    template: "\n        <div [ngClass]=\"{'ui-dataview ui-widget': true, 'ui-dataview-list': (layout === 'list'), 'ui-dataview-grid': (layout === 'grid')}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-dataview-loading ui-widget-overlay\" *ngIf=\"loading\"></div>\n            <div class=\"ui-dataview-loading-content\" *ngIf=\"loading\">\n                <i [class]=\"'fa fa-spin fa-2x ' + loadingIcon\"></i>\n            </div>\n            <div class=\"ui-dataview-header ui-widget-header ui-corner-top\">\n                <ng-content select=\"p-header\"></ng-content>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" [alwaysShow]=\"alwaysShowPaginator\"\n                (onPageChange)=\"paginate($event)\" styleClass=\"ui-paginator-top\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && (paginatorPosition === 'top' || paginatorPosition =='both')\"\n                [dropdownAppendTo]=\"paginatorDropdownAppendTo\"></p-paginator>\n            <div class=\"ui-dataview-content ui-widget-content\">\n                <div class=\"ui-g\">\n                    <ng-template ngFor let-rowData let-rowIndex=\"index\" [ngForOf]=\"paginator ? ((filteredValue||value) | slice:(lazy ? 0 : first):((lazy ? 0 : first) + rows)) : (filteredValue||value)\" [ngForTrackBy]=\"trackBy\">\n                        <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: rowData, rowIndex: rowIndex}\"></ng-container>\n                    </ng-template>\n                    <div *ngIf=\"isEmpty()\" class=\"ui-widget-content ui-g-12\">{{emptyMessage}}</div>\n                </div>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" [alwaysShow]=\"alwaysShowPaginator\"\n                (onPageChange)=\"paginate($event)\" styleClass=\"ui-paginator-bottom\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && (paginatorPosition === 'bottom' || paginatorPosition =='both')\"\n                [dropdownAppendTo]=\"paginatorDropdownAppendTo\"></p-paginator>\n            <div class=\"ui-dataview-footer ui-widget-header ui-corner-bottom\" *ngIf=\"footer\">\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n        </div>\n    ",
+                    template: "\n        <div [ngClass]=\"{'ui-dataview ui-widget': true, 'ui-dataview-list': (layout === 'list'), 'ui-dataview-grid': (layout === 'grid')}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-dataview-loading ui-widget-overlay\" *ngIf=\"loading\"></div>\n            <div class=\"ui-dataview-loading-content\" *ngIf=\"loading\">\n                <i [class]=\"'ui-dataview-loading-icon pi-spin ' + loadingIcon\"></i>\n            </div>\n            <div class=\"ui-dataview-header ui-widget-header ui-corner-top\">\n                <ng-content select=\"p-header\"></ng-content>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" [alwaysShow]=\"alwaysShowPaginator\"\n                (onPageChange)=\"paginate($event)\" styleClass=\"ui-paginator-top\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && (paginatorPosition === 'top' || paginatorPosition =='both')\"\n                [dropdownAppendTo]=\"paginatorDropdownAppendTo\"></p-paginator>\n            <div class=\"ui-dataview-content ui-widget-content\">\n                <div class=\"ui-g\">\n                    <ng-template ngFor let-rowData let-rowIndex=\"index\" [ngForOf]=\"paginator ? ((filteredValue||value) | slice:(lazy ? 0 : first):((lazy ? 0 : first) + rows)) : (filteredValue||value)\" [ngForTrackBy]=\"trackBy\">\n                        <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: rowData, rowIndex: rowIndex}\"></ng-container>\n                    </ng-template>\n                    <div *ngIf=\"isEmpty()\" class=\"ui-widget-content ui-g-12\">{{emptyMessage}}</div>\n                </div>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" [alwaysShow]=\"alwaysShowPaginator\"\n                (onPageChange)=\"paginate($event)\" styleClass=\"ui-paginator-bottom\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && (paginatorPosition === 'bottom' || paginatorPosition =='both')\"\n                [dropdownAppendTo]=\"paginatorDropdownAppendTo\"></p-paginator>\n            <div class=\"ui-dataview-footer ui-widget-header ui-corner-bottom\" *ngIf=\"footer\">\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n        </div>\n    ",
                     providers: [objectutils_1.ObjectUtils]
                 },] },
     ];
     /** @nocollapse */
     DataView.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: objectutils_1.ObjectUtils, },
+        { type: core_1.ElementRef },
+        { type: objectutils_1.ObjectUtils }
     ]; };
     DataView.propDecorators = {
-        "layout": [{ type: core_1.Input },],
-        "paginator": [{ type: core_1.Input },],
-        "rows": [{ type: core_1.Input },],
-        "totalRecords": [{ type: core_1.Input },],
-        "pageLinks": [{ type: core_1.Input },],
-        "rowsPerPageOptions": [{ type: core_1.Input },],
-        "paginatorPosition": [{ type: core_1.Input },],
-        "alwaysShowPaginator": [{ type: core_1.Input },],
-        "paginatorDropdownAppendTo": [{ type: core_1.Input },],
-        "lazy": [{ type: core_1.Input },],
-        "emptyMessage": [{ type: core_1.Input },],
-        "onLazyLoad": [{ type: core_1.Output },],
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "trackBy": [{ type: core_1.Input },],
-        "filterBy": [{ type: core_1.Input },],
-        "loading": [{ type: core_1.Input },],
-        "loadingIcon": [{ type: core_1.Input },],
-        "onPage": [{ type: core_1.Output },],
-        "onSort": [{ type: core_1.Output },],
-        "header": [{ type: core_1.ContentChild, args: [shared_1.Header,] },],
-        "footer": [{ type: core_1.ContentChild, args: [shared_1.Footer,] },],
-        "templates": [{ type: core_1.ContentChildren, args: [shared_1.PrimeTemplate,] },],
-        "sortField": [{ type: core_1.Input },],
-        "sortOrder": [{ type: core_1.Input },],
-        "value": [{ type: core_1.Input },],
+        layout: [{ type: core_1.Input }],
+        paginator: [{ type: core_1.Input }],
+        rows: [{ type: core_1.Input }],
+        totalRecords: [{ type: core_1.Input }],
+        pageLinks: [{ type: core_1.Input }],
+        rowsPerPageOptions: [{ type: core_1.Input }],
+        paginatorPosition: [{ type: core_1.Input }],
+        alwaysShowPaginator: [{ type: core_1.Input }],
+        paginatorDropdownAppendTo: [{ type: core_1.Input }],
+        lazy: [{ type: core_1.Input }],
+        emptyMessage: [{ type: core_1.Input }],
+        onLazyLoad: [{ type: core_1.Output }],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        trackBy: [{ type: core_1.Input }],
+        filterBy: [{ type: core_1.Input }],
+        loading: [{ type: core_1.Input }],
+        loadingIcon: [{ type: core_1.Input }],
+        onPage: [{ type: core_1.Output }],
+        onSort: [{ type: core_1.Output }],
+        header: [{ type: core_1.ContentChild, args: [shared_1.Header,] }],
+        footer: [{ type: core_1.ContentChild, args: [shared_1.Footer,] }],
+        templates: [{ type: core_1.ContentChildren, args: [shared_1.PrimeTemplate,] }],
+        sortField: [{ type: core_1.Input }],
+        sortOrder: [{ type: core_1.Input }],
+        value: [{ type: core_1.Input }]
     };
     return DataView;
 }());
@@ -217,16 +217,16 @@ var DataViewLayoutOptions = /** @class */ (function () {
     DataViewLayoutOptions.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-dataViewLayoutOptions',
-                    template: "\n        <div [ngClass]=\"'ui-dataview-layout-options ui-selectbutton ui-buttonset'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <a href=\"#\" class=\"ui-button ui-button-icon-only ui-state-default\" (click)=\"changeLayout($event, 'list')\"\n                [ngClass]=\"{'ui-state-active': dv.layout === 'list'}\">\n                <i class=\"fa fa-bars ui-button-icon-left\"></i>\n                <span class=\"ui-button-text ui-clickable\">ui-btn</span>\n            </a><a href=\"#\" class=\"ui-button ui-button-icon-only ui-state-default\" (click)=\"changeLayout($event, 'grid')\"\n                [ngClass]=\"{'ui-state-active': dv.layout === 'grid'}\">\n                <i class=\"fa fa-th-large ui-button-icon-left\"></i>\n                <span class=\"ui-button-text ui-clickable\">ui-btn</span>\n            </a>\n        </div>\n    "
+                    template: "\n        <div [ngClass]=\"'ui-dataview-layout-options ui-selectbutton ui-buttonset'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <a href=\"#\" class=\"ui-button ui-button-icon-only ui-state-default\" (click)=\"changeLayout($event, 'list')\"\n                [ngClass]=\"{'ui-state-active': dv.layout === 'list'}\">\n                <i class=\"pi pi-bars ui-button-icon-left\"></i>\n                <span class=\"ui-button-text ui-clickable\">ui-btn</span>\n            </a><a href=\"#\" class=\"ui-button ui-button-icon-only ui-state-default\" (click)=\"changeLayout($event, 'grid')\"\n                [ngClass]=\"{'ui-state-active': dv.layout === 'grid'}\">\n                <i class=\"pi pi-th-large ui-button-icon-left\"></i>\n                <span class=\"ui-button-text ui-clickable\">ui-btn</span>\n            </a>\n        </div>\n    "
                 },] },
     ];
     /** @nocollapse */
     DataViewLayoutOptions.ctorParameters = function () { return [
-        { type: DataView, },
+        { type: DataView }
     ]; };
     DataViewLayoutOptions.propDecorators = {
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }]
     };
     return DataViewLayoutOptions;
 }());

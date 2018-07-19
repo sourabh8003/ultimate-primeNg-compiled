@@ -33,7 +33,6 @@ export declare class Listbox implements AfterContentInit, ControlValueAccessor {
     value: any;
     onModelChange: Function;
     onModelTouched: Function;
-    checkboxClick: boolean;
     optionTouched: boolean;
     focus: boolean;
     _options: any[];
@@ -48,6 +47,7 @@ export declare class Listbox implements AfterContentInit, ControlValueAccessor {
     onOptionTouchEnd(event: any, option: any): void;
     onOptionClickSingle(event: any, option: any): void;
     onOptionClickMultiple(event: any, option: any): void;
+    onOptionClickCheckbox(event: any, option: any): void;
     removeOption(option: any): void;
     isSelected(option: SelectItem): boolean;
     readonly allChecked: boolean;
@@ -56,7 +56,6 @@ export declare class Listbox implements AfterContentInit, ControlValueAccessor {
     toggleAll(event: any, checkbox: any): void;
     isItemVisible(option: SelectItem): boolean;
     onDoubleClick(event: Event, option: SelectItem): any;
-    onCheckboxClick(event: Event, option: SelectItem): void;
     onInputFocus(event: any): void;
     onInputBlur(event: any): void;
 }

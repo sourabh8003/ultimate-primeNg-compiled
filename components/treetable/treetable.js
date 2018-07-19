@@ -24,8 +24,8 @@ var TreeTableService = /** @class */ (function () {
     TreeTableService.prototype.onSelectionChange = function () {
         this.selectionSource.next();
     };
-    TreeTableService.prototype.onContextMenu = function (data) {
-        this.contextMenuSource.next(data);
+    TreeTableService.prototype.onContextMenu = function (node) {
+        this.contextMenuSource.next(node);
     };
     TreeTableService.prototype.onUIUpdate = function (value) {
         this.uiUpdateSource.next(value);
@@ -52,7 +52,11 @@ var TreeTable = /** @class */ (function () {
         this.defaultSortOrder = 1;
         this.sortMode = 'single';
         this.resetPageOnSort = true;
-        this.loadingIcon = 'fa fa-spin fa-2x fa-circle-o-notch';
+        this.selectionChange = new core_1.EventEmitter();
+        this.contextMenuSelectionChange = new core_1.EventEmitter();
+        this.contextMenuSelectionMode = "separate";
+        this.compareSelectionBy = 'deepEquals';
+        this.loadingIcon = 'pi pi-spinner';
         this.columnResizeMode = 'fit';
         this.rowTrackBy = function (index, item) { return item; };
         this.onNodeExpand = new core_1.EventEmitter();
@@ -63,8 +67,16 @@ var TreeTable = /** @class */ (function () {
         this.sortFunction = new core_1.EventEmitter();
         this.onColResize = new core_1.EventEmitter();
         this.onColReorder = new core_1.EventEmitter();
+        this.onNodeSelect = new core_1.EventEmitter();
+        this.onNodeUnselect = new core_1.EventEmitter();
+        this.onContextMenuSelect = new core_1.EventEmitter();
+        this.onHeaderCheckboxToggle = new core_1.EventEmitter();
+        this.onEditInit = new core_1.EventEmitter();
+        this.onEditComplete = new core_1.EventEmitter();
+        this.onEditCancel = new core_1.EventEmitter();
         this._value = [];
         this._sortOrder = 1;
+        this.selectionKeys = {};
     }
     TreeTable.prototype.ngOnInit = function () {
         if (this.lazy) {
@@ -148,6 +160,7 @@ var TreeTable = /** @class */ (function () {
         if (nodes && nodes.length) {
             for (var _i = 0, nodes_1 = nodes; _i < nodes_1.length; _i++) {
                 var node = nodes_1[_i];
+                node.parent = parent;
                 var rowNode = {
                     node: node,
                     parent: parent,
@@ -222,6 +235,35 @@ var TreeTable = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(TreeTable.prototype, "selection", {
+        get: function () {
+            return this._selection;
+        },
+        set: function (val) {
+            this._selection = val;
+            if (!this.preventSelectionSetterPropagation) {
+                this.updateSelectionKeys();
+                this.tableService.onSelectionChange();
+            }
+            this.preventSelectionSetterPropagation = false;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    TreeTable.prototype.updateSelectionKeys = function () {
+        if (this.dataKey && this._selection) {
+            this.selectionKeys = {};
+            if (Array.isArray(this._selection)) {
+                for (var _i = 0, _a = this._selection; _i < _a.length; _i++) {
+                    var data = _a[_i];
+                    this.selectionKeys[String(this.objectUtils.resolveFieldData(data, this.dataKey))] = 1;
+                }
+            }
+            else {
+                this.selectionKeys[String(this.objectUtils.resolveFieldData(this._selection, this.dataKey))] = 1;
+            }
+        }
+    };
     TreeTable.prototype.onPageChange = function (event) {
         this.first = event.first;
         this.rows = event.rows;
@@ -420,6 +462,7 @@ var TreeTable = /** @class */ (function () {
     TreeTable.prototype.onColumnResizeBegin = function (event) {
         var containerLeft = this.domHandler.getOffset(this.containerViewChild.nativeElement).left;
         this.lastResizerHelperX = (event.pageX - containerLeft + this.containerViewChild.nativeElement.scrollLeft);
+        event.preventDefault();
     };
     TreeTable.prototype.onColumnResize = function (event) {
         var containerLeft = this.domHandler.getOffset(this.containerViewChild.nativeElement).left;
@@ -445,9 +488,10 @@ var TreeTable = /** @class */ (function () {
                     var nextColumnMinWidth = nextColumn.style.minWidth || 15;
                     if (newColumnWidth > 15 && nextColumnWidth > parseInt(nextColumnMinWidth)) {
                         if (this.scrollable) {
-                            var scrollableBodyTable = this.domHandler.findSingle(this.el.nativeElement, 'table.ui-treetable-scrollable-body-table');
-                            var scrollableHeaderTable = this.domHandler.findSingle(this.el.nativeElement, 'table.ui-treetable-scrollable-header-table');
-                            var scrollableFooterTable = this.domHandler.findSingle(this.el.nativeElement, 'table.ui-treetable-scrollable-footer-table');
+                            var scrollableView = this.findParentScrollableView(column);
+                            var scrollableBodyTable = this.domHandler.findSingle(scrollableView, 'table.ui-treetable-scrollable-body-table');
+                            var scrollableHeaderTable = this.domHandler.findSingle(scrollableView, 'table.ui-treetable-scrollable-header-table');
+                            var scrollableFooterTable = this.domHandler.findSingle(scrollableView, 'table.ui-treetable-scrollable-footer-table');
                             var resizeColumnIndex = this.domHandler.index(column);
                             this.resizeColGroup(scrollableHeaderTable, resizeColumnIndex, newColumnWidth, nextColumnWidth);
                             this.resizeColGroup(scrollableBodyTable, resizeColumnIndex, newColumnWidth, nextColumnWidth);
@@ -464,9 +508,10 @@ var TreeTable = /** @class */ (function () {
             }
             else if (this.columnResizeMode === 'expand') {
                 if (this.scrollable) {
-                    var scrollableBodyTable = this.domHandler.findSingle(this.el.nativeElement, 'table.ui-treetable-scrollable-body-table');
-                    var scrollableHeaderTable = this.domHandler.findSingle(this.el.nativeElement, 'table.ui-treetable-scrollable-header-table');
-                    var scrollableFooterTable = this.domHandler.findSingle(this.el.nativeElement, 'table.ui-treetable-scrollable-footer-table');
+                    var scrollableView = this.findParentScrollableView(column);
+                    var scrollableBodyTable = this.domHandler.findSingle(scrollableView, 'table.ui-treetable-scrollable-body-table');
+                    var scrollableHeaderTable = this.domHandler.findSingle(scrollableView, 'table.ui-treetable-scrollable-header-table');
+                    var scrollableFooterTable = this.domHandler.findSingle(scrollableView, 'table.ui-treetable-scrollable-footer-table');
                     scrollableBodyTable.style.width = scrollableBodyTable.offsetWidth + delta + 'px';
                     scrollableHeaderTable.style.width = scrollableHeaderTable.offsetWidth + delta + 'px';
                     if (scrollableFooterTable) {
@@ -491,6 +536,18 @@ var TreeTable = /** @class */ (function () {
         }
         this.resizeHelperViewChild.nativeElement.style.display = 'none';
         this.domHandler.removeClass(this.containerViewChild.nativeElement, 'ui-unselectable-text');
+    };
+    TreeTable.prototype.findParentScrollableView = function (column) {
+        if (column) {
+            var parent_1 = column.parentElement;
+            while (parent_1 && !this.domHandler.hasClass(parent_1, 'ui-table-scrollable-view')) {
+                parent_1 = parent_1.parentElement;
+            }
+            return parent_1;
+        }
+        else {
+            return null;
+        }
     };
     TreeTable.prototype.resizeColGroup = function (table, resizeColumnIndex, newColumnWidth, nextColumnWidth) {
         if (table) {
@@ -574,96 +631,401 @@ var TreeTable = /** @class */ (function () {
             this.dropPosition = null;
         }
     };
+    TreeTable.prototype.handleRowClick = function (event) {
+        var targetNode = event.originalEvent.target.nodeName;
+        if (targetNode == 'INPUT' || targetNode == 'BUTTON' || targetNode == 'A' || (this.domHandler.hasClass(event.originalEvent.target, 'ui-clickable'))) {
+            return;
+        }
+        if (this.selectionMode) {
+            this.preventSelectionSetterPropagation = true;
+            var rowNode = event.rowNode;
+            var selected = this.isSelected(rowNode.node);
+            var metaSelection = this.rowTouched ? false : this.metaKeySelection;
+            var dataKeyValue = this.dataKey ? String(this.objectUtils.resolveFieldData(rowNode.node.data, this.dataKey)) : null;
+            if (metaSelection) {
+                var metaKey = event.originalEvent.metaKey || event.originalEvent.ctrlKey;
+                if (selected && metaKey) {
+                    if (this.isSingleSelectionMode()) {
+                        this._selection = null;
+                        this.selectionKeys = {};
+                        this.selectionChange.emit(null);
+                    }
+                    else {
+                        var selectionIndex_1 = this.findIndexInSelection(rowNode.node);
+                        this._selection = this.selection.filter(function (val, i) { return i != selectionIndex_1; });
+                        this.selectionChange.emit(this.selection);
+                        if (dataKeyValue) {
+                            delete this.selectionKeys[dataKeyValue];
+                        }
+                    }
+                    this.onNodeUnselect.emit({ originalEvent: event.originalEvent, node: rowNode.node, type: 'row' });
+                }
+                else {
+                    if (this.isSingleSelectionMode()) {
+                        this._selection = rowNode.node;
+                        this.selectionChange.emit(rowNode.node);
+                        if (dataKeyValue) {
+                            this.selectionKeys = {};
+                            this.selectionKeys[dataKeyValue] = 1;
+                        }
+                    }
+                    else if (this.isMultipleSelectionMode()) {
+                        if (metaKey) {
+                            this._selection = this.selection || [];
+                        }
+                        else {
+                            this._selection = [];
+                            this.selectionKeys = {};
+                        }
+                        this._selection = this.selection.concat([rowNode.node]);
+                        this.selectionChange.emit(this.selection);
+                        if (dataKeyValue) {
+                            this.selectionKeys[dataKeyValue] = 1;
+                        }
+                    }
+                    this.onNodeSelect.emit({ originalEvent: event.originalEvent, node: rowNode.node, type: 'row', index: event.rowIndex });
+                }
+            }
+            else {
+                if (this.selectionMode === 'single') {
+                    if (selected) {
+                        this._selection = null;
+                        this.selectionKeys = {};
+                        this.selectionChange.emit(this.selection);
+                        this.onNodeUnselect.emit({ originalEvent: event.originalEvent, node: rowNode.node, type: 'row' });
+                    }
+                    else {
+                        this._selection = rowNode.node;
+                        this.selectionChange.emit(this.selection);
+                        this.onNodeSelect.emit({ originalEvent: event.originalEvent, node: rowNode.node, type: 'row', index: event.rowIndex });
+                        if (dataKeyValue) {
+                            this.selectionKeys = {};
+                            this.selectionKeys[dataKeyValue] = 1;
+                        }
+                    }
+                }
+                else if (this.selectionMode === 'multiple') {
+                    if (selected) {
+                        var selectionIndex_2 = this.findIndexInSelection(rowNode.node);
+                        this._selection = this.selection.filter(function (val, i) { return i != selectionIndex_2; });
+                        this.selectionChange.emit(this.selection);
+                        this.onNodeUnselect.emit({ originalEvent: event.originalEvent, node: rowNode.node, type: 'row' });
+                        if (dataKeyValue) {
+                            delete this.selectionKeys[dataKeyValue];
+                        }
+                    }
+                    else {
+                        this._selection = this.selection ? this.selection.concat([rowNode.node]) : [rowNode.node];
+                        this.selectionChange.emit(this.selection);
+                        this.onNodeSelect.emit({ originalEvent: event.originalEvent, node: rowNode.node, type: 'row', index: event.rowIndex });
+                        if (dataKeyValue) {
+                            this.selectionKeys[dataKeyValue] = 1;
+                        }
+                    }
+                }
+            }
+            this.tableService.onSelectionChange();
+        }
+        this.rowTouched = false;
+    };
+    TreeTable.prototype.handleRowTouchEnd = function (event) {
+        this.rowTouched = true;
+    };
+    TreeTable.prototype.handleRowRightClick = function (event) {
+        if (this.contextMenu) {
+            var node = event.rowNode.node;
+            if (this.contextMenuSelectionMode === 'separate') {
+                this.contextMenuSelection = node;
+                this.contextMenuSelectionChange.emit(node);
+                this.onContextMenuSelect.emit({ originalEvent: event.originalEvent, node: node });
+                this.contextMenu.show(event.originalEvent);
+                this.tableService.onContextMenu(node);
+            }
+            else if (this.contextMenuSelectionMode === 'joint') {
+                this.preventSelectionSetterPropagation = true;
+                var selected = this.isSelected(node);
+                var dataKeyValue = this.dataKey ? String(this.objectUtils.resolveFieldData(node.data, this.dataKey)) : null;
+                if (!selected) {
+                    if (this.isSingleSelectionMode()) {
+                        this.selection = node;
+                        this.selectionChange.emit(node);
+                    }
+                    else if (this.isMultipleSelectionMode()) {
+                        this.selection = [node];
+                        this.selectionChange.emit(this.selection);
+                    }
+                    if (dataKeyValue) {
+                        this.selectionKeys[dataKeyValue] = 1;
+                    }
+                }
+                this.contextMenu.show(event.originalEvent);
+                this.onContextMenuSelect.emit({ originalEvent: event.originalEvent, node: node });
+            }
+        }
+    };
+    TreeTable.prototype.toggleNodeWithCheckbox = function (event) {
+        this.preventSelectionSetterPropagation = true;
+        var node = event.rowNode.node;
+        var selected = this.isSelected(node);
+        if (selected) {
+            this.propagateSelectionDown(node, false);
+            if (event.rowNode.parent) {
+                this.propagateSelectionUp(node.parent, false);
+            }
+            this.selectionChange.emit(this.selection);
+            this.onNodeUnselect.emit({ originalEvent: event, node: node });
+        }
+        else {
+            this.propagateSelectionDown(node, true);
+            if (event.rowNode.parent) {
+                this.propagateSelectionUp(node.parent, true);
+            }
+            this.selectionChange.emit(this.selection);
+            this.onNodeSelect.emit({ originalEvent: event, node: node });
+        }
+        this.tableService.onSelectionChange();
+    };
+    TreeTable.prototype.toggleNodesWithCheckbox = function (event, check) {
+        if (check) {
+            if (this.value && this.value.length) {
+                for (var _i = 0, _a = this.value; _i < _a.length; _i++) {
+                    var node = _a[_i];
+                    this.propagateSelectionDown(node, true);
+                }
+            }
+        }
+        else {
+            this._selection = [];
+            this.selectionKeys = {};
+        }
+        this.preventSelectionSetterPropagation = true;
+        this.selectionChange.emit(this._selection);
+        this.tableService.onSelectionChange();
+        this.onHeaderCheckboxToggle.emit({ originalEvent: event, checked: check });
+    };
+    TreeTable.prototype.propagateSelectionUp = function (node, select) {
+        if (node.children && node.children.length) {
+            var selectedChildCount = 0;
+            var childPartialSelected = false;
+            var dataKeyValue = this.dataKey ? String(this.objectUtils.resolveFieldData(node.data, this.dataKey)) : null;
+            for (var _i = 0, _a = node.children; _i < _a.length; _i++) {
+                var child = _a[_i];
+                if (this.isSelected(child))
+                    selectedChildCount++;
+                else if (child.partialSelected)
+                    childPartialSelected = true;
+            }
+            if (select && selectedChildCount == node.children.length) {
+                this._selection = (this.selection || []).concat([node]);
+                node.partialSelected = false;
+                if (dataKeyValue) {
+                    this.selectionKeys[dataKeyValue] = 1;
+                }
+            }
+            else {
+                if (!select) {
+                    var index_1 = this.findIndexInSelection(node);
+                    if (index_1 >= 0) {
+                        this._selection = this.selection.filter(function (val, i) { return i != index_1; });
+                        if (dataKeyValue) {
+                            delete this.selectionKeys[dataKeyValue];
+                        }
+                    }
+                }
+                if (childPartialSelected || selectedChildCount > 0 && selectedChildCount != node.children.length)
+                    node.partialSelected = true;
+                else
+                    node.partialSelected = false;
+            }
+        }
+        var parent = node.parent;
+        if (parent) {
+            this.propagateSelectionUp(parent, select);
+        }
+    };
+    TreeTable.prototype.propagateSelectionDown = function (node, select) {
+        var index = this.findIndexInSelection(node);
+        var dataKeyValue = this.dataKey ? String(this.objectUtils.resolveFieldData(node.data, this.dataKey)) : null;
+        if (select && index == -1) {
+            this._selection = (this.selection || []).concat([node]);
+            if (dataKeyValue) {
+                this.selectionKeys[dataKeyValue] = 1;
+            }
+        }
+        else if (!select && index > -1) {
+            this._selection = this.selection.filter(function (val, i) { return i != index; });
+            if (dataKeyValue) {
+                delete this.selectionKeys[dataKeyValue];
+            }
+        }
+        node.partialSelected = false;
+        if (node.children && node.children.length) {
+            for (var _i = 0, _a = node.children; _i < _a.length; _i++) {
+                var child = _a[_i];
+                this.propagateSelectionDown(child, select);
+            }
+        }
+    };
+    TreeTable.prototype.isSelected = function (node) {
+        if (node && this.selection) {
+            if (this.dataKey) {
+                return this.selectionKeys[this.objectUtils.resolveFieldData(node.data, this.dataKey)] !== undefined;
+            }
+            else {
+                if (this.selection instanceof Array)
+                    return this.findIndexInSelection(node) > -1;
+                else
+                    return this.equals(node, this.selection);
+            }
+        }
+        return false;
+    };
+    TreeTable.prototype.findIndexInSelection = function (node) {
+        var index = -1;
+        if (this.selection && this.selection.length) {
+            for (var i = 0; i < this.selection.length; i++) {
+                if (this.equals(node, this.selection[i])) {
+                    index = i;
+                    break;
+                }
+            }
+        }
+        return index;
+    };
+    TreeTable.prototype.isSingleSelectionMode = function () {
+        return this.selectionMode === 'single';
+    };
+    TreeTable.prototype.isMultipleSelectionMode = function () {
+        return this.selectionMode === 'multiple';
+    };
+    TreeTable.prototype.equals = function (node1, node2) {
+        return this.compareSelectionBy === 'equals' ? (node1 === node2) : this.objectUtils.equals(node1.data, node2.data, this.dataKey);
+    };
+    TreeTable.prototype.reset = function () {
+        this._sortField = null;
+        this._sortOrder = 1;
+        this._multiSortMeta = null;
+        this.tableService.onSort(null);
+        this.first = 0;
+        if (this.lazy) {
+            this.onLazyLoad.emit(this.createLazyLoadMetadata());
+        }
+        else {
+            this.totalRecords = (this._value ? this._value.length : 0);
+        }
+    };
+    TreeTable.prototype.ngOnDestroy = function () {
+        this.editingCell = null;
+        this.initialized = null;
+    };
     TreeTable.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-treeTable',
-                    template: "\n        <div #container [ngStyle]=\"style\" [class]=\"styleClass\"\n                [ngClass]=\"{'ui-treetable ui-widget': true, 'ui-treetable-auto-layout': autoLayout,\n                'ui-treetable-resizable': resizableColumns, 'ui-treetable-resizable-fit': (resizableColumns && columnResizeMode === 'fit')}\">\n            <div class=\"ui-treetable-loading ui-widget-overlay\" *ngIf=\"loading\"></div>\n            <div class=\"ui-treetable-loading-content\" *ngIf=\"loading\">\n                <i [class]=\"'fa fa-spin fa-2x ' + loadingIcon\"></i>\n            </div>\n            <div *ngIf=\"captionTemplate\" class=\"ui-treetable-caption ui-widget-header\">\n                <ng-container *ngTemplateOutlet=\"captionTemplate\"></ng-container>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" styleClass=\"ui-paginator-top\" [alwaysShow]=\"alwaysShowPaginator\"\n                (onPageChange)=\"onPageChange($event)\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && (paginatorPosition === 'top' || paginatorPosition =='both')\"\n                [templateLeft]=\"paginatorLeftTemplate\" [templateRight]=\"paginatorRightTemplate\" [dropdownAppendTo]=\"paginatorDropdownAppendTo\"></p-paginator>\n            \n            <div class=\"ui-treetable-wrapper\" *ngIf=\"!scrollable\">\n                <table #table class=\"ui-treetable-table\">\n                    <ng-container *ngTemplateOutlet=\"colGroupTemplate; context {$implicit: columns}\"></ng-container>\n                    <thead class=\"ui-treetable-thead\">\n                        <ng-container *ngTemplateOutlet=\"headerTemplate; context: {$implicit: columns}\"></ng-container>\n                    </thead>\n                    <tfoot class=\"ui-treetable-tfoot\">\n                        <ng-container *ngTemplateOutlet=\"footerTemplate; context {$implicit: columns}\"></ng-container>\n                    </tfoot>\n                    <tbody class=\"ui-treetable-tbody\" [pTreeTableBody]=\"columns\" [pTreeTableBodyTemplate]=\"bodyTemplate\"></tbody>\n                </table>\n            </div>\n\n            <div class=\"ui-treetable-scrollable-wrapper\" *ngIf=\"scrollable\">\n               <div class=\"ui-treetable-frozen-view\" *ngIf=\"frozenColumns||frozenBodyTemplate\" [ttScrollableView]=\"frozenColumns\" [frozen]=\"true\" [ngStyle]=\"{width: frozenWidth}\" [scrollHeight]=\"scrollHeight\"></div>\n               <div [ttScrollableView]=\"columns\" [frozen]=\"false\" [scrollHeight]=\"scrollHeight\"></div>\n            </div>\n\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" styleClass=\"ui-paginator-bottom\" [alwaysShow]=\"alwaysShowPaginator\"\n                (onPageChange)=\"onPageChange($event)\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && (paginatorPosition === 'bottom' || paginatorPosition =='both')\"\n                [templateLeft]=\"paginatorLeftTemplate\" [templateRight]=\"paginatorRightTemplate\" [dropdownAppendTo]=\"paginatorDropdownAppendTo\"></p-paginator>\n            <div *ngIf=\"summaryTemplate\" class=\"ui-treetable-summary ui-widget-header\">\n                <ng-container *ngTemplateOutlet=\"summaryTemplate\"></ng-container>\n            </div>\n\n            <div #resizeHelper class=\"ui-column-resizer-helper ui-state-highlight\" style=\"display:none\" *ngIf=\"resizableColumns\"></div>\n\n            <span #reorderIndicatorUp class=\"fa fa-arrow-down ui-table-reorder-indicator-up\" *ngIf=\"reorderableColumns\"></span>\n            <span #reorderIndicatorDown class=\"fa fa-arrow-up ui-table-reorder-indicator-down\" *ngIf=\"reorderableColumns\"></span>\n        </div>\n    ",
+                    template: "\n        <div #container [ngStyle]=\"style\" [class]=\"styleClass\"\n                [ngClass]=\"{'ui-treetable ui-widget': true, 'ui-treetable-auto-layout': autoLayout, 'ui-treetable-hoverable-rows': (rowHover||(selectionMode === 'single' || selectionMode === 'multiple')),\n                'ui-treetable-resizable': resizableColumns, 'ui-treetable-resizable-fit': (resizableColumns && columnResizeMode === 'fit')}\">\n            <div class=\"ui-treetable-loading ui-widget-overlay\" *ngIf=\"loading\"></div>\n            <div class=\"ui-treetable-loading-content\" *ngIf=\"loading\">\n                <i [class]=\"'ui-treetable-loading-icon pi-spin ' + loadingIcon\"></i>\n            </div>\n            <div *ngIf=\"captionTemplate\" class=\"ui-treetable-caption ui-widget-header\">\n                <ng-container *ngTemplateOutlet=\"captionTemplate\"></ng-container>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" styleClass=\"ui-paginator-top\" [alwaysShow]=\"alwaysShowPaginator\"\n                (onPageChange)=\"onPageChange($event)\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && (paginatorPosition === 'top' || paginatorPosition =='both')\"\n                [templateLeft]=\"paginatorLeftTemplate\" [templateRight]=\"paginatorRightTemplate\" [dropdownAppendTo]=\"paginatorDropdownAppendTo\"></p-paginator>\n            \n            <div class=\"ui-treetable-wrapper\" *ngIf=\"!scrollable\">\n                <table #table class=\"ui-treetable-table\">\n                    <ng-container *ngTemplateOutlet=\"colGroupTemplate; context {$implicit: columns}\"></ng-container>\n                    <thead class=\"ui-treetable-thead\">\n                        <ng-container *ngTemplateOutlet=\"headerTemplate; context: {$implicit: columns}\"></ng-container>\n                    </thead>\n                    <tfoot class=\"ui-treetable-tfoot\">\n                        <ng-container *ngTemplateOutlet=\"footerTemplate; context {$implicit: columns}\"></ng-container>\n                    </tfoot>\n                    <tbody class=\"ui-treetable-tbody\" [pTreeTableBody]=\"columns\" [pTreeTableBodyTemplate]=\"bodyTemplate\"></tbody>\n                </table>\n            </div>\n\n            <div class=\"ui-treetable-scrollable-wrapper\" *ngIf=\"scrollable\">\n               <div class=\"ui-treetable-frozen-view\" *ngIf=\"frozenColumns||frozenBodyTemplate\" [ttScrollableView]=\"frozenColumns\" [frozen]=\"true\" [ngStyle]=\"{width: frozenWidth}\" [scrollHeight]=\"scrollHeight\"></div>\n               <div [ttScrollableView]=\"columns\" [frozen]=\"false\" [scrollHeight]=\"scrollHeight\"></div>\n            </div>\n\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" styleClass=\"ui-paginator-bottom\" [alwaysShow]=\"alwaysShowPaginator\"\n                (onPageChange)=\"onPageChange($event)\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && (paginatorPosition === 'bottom' || paginatorPosition =='both')\"\n                [templateLeft]=\"paginatorLeftTemplate\" [templateRight]=\"paginatorRightTemplate\" [dropdownAppendTo]=\"paginatorDropdownAppendTo\"></p-paginator>\n            <div *ngIf=\"summaryTemplate\" class=\"ui-treetable-summary ui-widget-header\">\n                <ng-container *ngTemplateOutlet=\"summaryTemplate\"></ng-container>\n            </div>\n\n            <div #resizeHelper class=\"ui-column-resizer-helper ui-state-highlight\" style=\"display:none\" *ngIf=\"resizableColumns\"></div>\n\n            <span #reorderIndicatorUp class=\"pi pi-arrow-down ui-table-reorder-indicator-up\" *ngIf=\"reorderableColumns\"></span>\n            <span #reorderIndicatorDown class=\"pi pi-arrow-up ui-table-reorder-indicator-down\" *ngIf=\"reorderableColumns\"></span>\n        </div>\n    ",
                     providers: [domhandler_1.DomHandler, objectutils_1.ObjectUtils, TreeTableService]
                 },] },
     ];
     /** @nocollapse */
     TreeTable.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: domhandler_1.DomHandler, },
-        { type: objectutils_1.ObjectUtils, },
-        { type: core_1.NgZone, },
-        { type: TreeTableService, },
+        { type: core_1.ElementRef },
+        { type: domhandler_1.DomHandler },
+        { type: objectutils_1.ObjectUtils },
+        { type: core_1.NgZone },
+        { type: TreeTableService }
     ]; };
     TreeTable.propDecorators = {
-        "columns": [{ type: core_1.Input },],
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "autoLayout": [{ type: core_1.Input },],
-        "lazy": [{ type: core_1.Input },],
-        "paginator": [{ type: core_1.Input },],
-        "rows": [{ type: core_1.Input },],
-        "first": [{ type: core_1.Input },],
-        "totalRecords": [{ type: core_1.Input },],
-        "pageLinks": [{ type: core_1.Input },],
-        "rowsPerPageOptions": [{ type: core_1.Input },],
-        "alwaysShowPaginator": [{ type: core_1.Input },],
-        "paginatorPosition": [{ type: core_1.Input },],
-        "paginatorDropdownAppendTo": [{ type: core_1.Input },],
-        "defaultSortOrder": [{ type: core_1.Input },],
-        "sortMode": [{ type: core_1.Input },],
-        "resetPageOnSort": [{ type: core_1.Input },],
-        "customSort": [{ type: core_1.Input },],
-        "loading": [{ type: core_1.Input },],
-        "loadingIcon": [{ type: core_1.Input },],
-        "scrollable": [{ type: core_1.Input },],
-        "scrollHeight": [{ type: core_1.Input },],
-        "frozenWidth": [{ type: core_1.Input },],
-        "frozenValue": [{ type: core_1.Input },],
-        "frozenColumns": [{ type: core_1.Input },],
-        "resizableColumns": [{ type: core_1.Input },],
-        "columnResizeMode": [{ type: core_1.Input },],
-        "reorderableColumns": [{ type: core_1.Input },],
-        "rowTrackBy": [{ type: core_1.Input },],
-        "onNodeExpand": [{ type: core_1.Output },],
-        "onNodeCollapse": [{ type: core_1.Output },],
-        "onPage": [{ type: core_1.Output },],
-        "onSort": [{ type: core_1.Output },],
-        "onLazyLoad": [{ type: core_1.Output },],
-        "sortFunction": [{ type: core_1.Output },],
-        "onColResize": [{ type: core_1.Output },],
-        "onColReorder": [{ type: core_1.Output },],
-        "containerViewChild": [{ type: core_1.ViewChild, args: ['container',] },],
-        "resizeHelperViewChild": [{ type: core_1.ViewChild, args: ['resizeHelper',] },],
-        "reorderIndicatorUpViewChild": [{ type: core_1.ViewChild, args: ['reorderIndicatorUp',] },],
-        "reorderIndicatorDownViewChild": [{ type: core_1.ViewChild, args: ['reorderIndicatorDown',] },],
-        "tableViewChild": [{ type: core_1.ViewChild, args: ['table',] },],
-        "templates": [{ type: core_1.ContentChildren, args: [shared_1.PrimeTemplate,] },],
-        "value": [{ type: core_1.Input },],
-        "sortField": [{ type: core_1.Input },],
-        "sortOrder": [{ type: core_1.Input },],
-        "multiSortMeta": [{ type: core_1.Input },],
+        columns: [{ type: core_1.Input }],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        autoLayout: [{ type: core_1.Input }],
+        lazy: [{ type: core_1.Input }],
+        paginator: [{ type: core_1.Input }],
+        rows: [{ type: core_1.Input }],
+        first: [{ type: core_1.Input }],
+        totalRecords: [{ type: core_1.Input }],
+        pageLinks: [{ type: core_1.Input }],
+        rowsPerPageOptions: [{ type: core_1.Input }],
+        alwaysShowPaginator: [{ type: core_1.Input }],
+        paginatorPosition: [{ type: core_1.Input }],
+        paginatorDropdownAppendTo: [{ type: core_1.Input }],
+        defaultSortOrder: [{ type: core_1.Input }],
+        sortMode: [{ type: core_1.Input }],
+        resetPageOnSort: [{ type: core_1.Input }],
+        customSort: [{ type: core_1.Input }],
+        selectionMode: [{ type: core_1.Input }],
+        selectionChange: [{ type: core_1.Output }],
+        contextMenuSelection: [{ type: core_1.Input }],
+        contextMenuSelectionChange: [{ type: core_1.Output }],
+        contextMenuSelectionMode: [{ type: core_1.Input }],
+        dataKey: [{ type: core_1.Input }],
+        metaKeySelection: [{ type: core_1.Input }],
+        compareSelectionBy: [{ type: core_1.Input }],
+        rowHover: [{ type: core_1.Input }],
+        loading: [{ type: core_1.Input }],
+        loadingIcon: [{ type: core_1.Input }],
+        scrollable: [{ type: core_1.Input }],
+        scrollHeight: [{ type: core_1.Input }],
+        frozenWidth: [{ type: core_1.Input }],
+        frozenValue: [{ type: core_1.Input }],
+        frozenColumns: [{ type: core_1.Input }],
+        resizableColumns: [{ type: core_1.Input }],
+        columnResizeMode: [{ type: core_1.Input }],
+        reorderableColumns: [{ type: core_1.Input }],
+        contextMenu: [{ type: core_1.Input }],
+        rowTrackBy: [{ type: core_1.Input }],
+        onNodeExpand: [{ type: core_1.Output }],
+        onNodeCollapse: [{ type: core_1.Output }],
+        onPage: [{ type: core_1.Output }],
+        onSort: [{ type: core_1.Output }],
+        onLazyLoad: [{ type: core_1.Output }],
+        sortFunction: [{ type: core_1.Output }],
+        onColResize: [{ type: core_1.Output }],
+        onColReorder: [{ type: core_1.Output }],
+        onNodeSelect: [{ type: core_1.Output }],
+        onNodeUnselect: [{ type: core_1.Output }],
+        onContextMenuSelect: [{ type: core_1.Output }],
+        onHeaderCheckboxToggle: [{ type: core_1.Output }],
+        onEditInit: [{ type: core_1.Output }],
+        onEditComplete: [{ type: core_1.Output }],
+        onEditCancel: [{ type: core_1.Output }],
+        containerViewChild: [{ type: core_1.ViewChild, args: ['container',] }],
+        resizeHelperViewChild: [{ type: core_1.ViewChild, args: ['resizeHelper',] }],
+        reorderIndicatorUpViewChild: [{ type: core_1.ViewChild, args: ['reorderIndicatorUp',] }],
+        reorderIndicatorDownViewChild: [{ type: core_1.ViewChild, args: ['reorderIndicatorDown',] }],
+        tableViewChild: [{ type: core_1.ViewChild, args: ['table',] }],
+        templates: [{ type: core_1.ContentChildren, args: [shared_1.PrimeTemplate,] }],
+        value: [{ type: core_1.Input }],
+        sortField: [{ type: core_1.Input }],
+        sortOrder: [{ type: core_1.Input }],
+        multiSortMeta: [{ type: core_1.Input }],
+        selection: [{ type: core_1.Input }]
     };
     return TreeTable;
 }());
 exports.TreeTable = TreeTable;
-var TreeTableBody = /** @class */ (function () {
-    function TreeTableBody(tt) {
+var TTBody = /** @class */ (function () {
+    function TTBody(tt) {
         this.tt = tt;
     }
-    TreeTableBody.decorators = [
+    TTBody.decorators = [
         { type: core_1.Component, args: [{
                     selector: '[pTreeTableBody]',
-                    template: "\n        <ng-template ngFor let-serializedNode let-rowIndex=\"index\" [ngForOf]=\"tt.serializedValue\" [ngForTrackBy]=\"tt.rowTrackBy\">\n            <ng-container *ngIf=\"serializedNode.visible\">\n                <ng-container *ngTemplateOutlet=\"template; context: {$implicit: serializedNode, rowData: serializedNode.node.data, columns: columns}\"></ng-container>\n            </ng-container>\n        </ng-template>\n        <ng-container *ngIf=\"tt.isEmpty()\">\n            <ng-container *ngTemplateOutlet=\"tt.emptyMessageTemplate; context: {$implicit: columns}\"></ng-container>\n        </ng-container>\n    "
+                    template: "\n        <ng-template ngFor let-serializedNode let-rowIndex=\"index\" [ngForOf]=\"tt.serializedValue\" [ngForTrackBy]=\"tt.rowTrackBy\">\n            <ng-container *ngIf=\"serializedNode.visible\">\n                <ng-container *ngTemplateOutlet=\"template; context: {$implicit: serializedNode, node: serializedNode.node, rowData: serializedNode.node.data, columns: columns}\"></ng-container>\n            </ng-container>\n        </ng-template>\n        <ng-container *ngIf=\"tt.isEmpty()\">\n            <ng-container *ngTemplateOutlet=\"tt.emptyMessageTemplate; context: {$implicit: columns}\"></ng-container>\n        </ng-container>\n    "
                 },] },
     ];
     /** @nocollapse */
-    TreeTableBody.ctorParameters = function () { return [
-        { type: TreeTable, },
+    TTBody.ctorParameters = function () { return [
+        { type: TreeTable }
     ]; };
-    TreeTableBody.propDecorators = {
-        "columns": [{ type: core_1.Input, args: ["pTreeTableBody",] },],
-        "template": [{ type: core_1.Input, args: ["pTreeTableBodyTemplate",] },],
+    TTBody.propDecorators = {
+        columns: [{ type: core_1.Input, args: ["pTreeTableBody",] }],
+        template: [{ type: core_1.Input, args: ["pTreeTableBodyTemplate",] }]
     };
-    return TreeTableBody;
+    return TTBody;
 }());
-exports.TreeTableBody = TreeTableBody;
-var ScrollableTreeTableView = /** @class */ (function () {
-    function ScrollableTreeTableView(tt, el, domHandler, zone) {
+exports.TTBody = TTBody;
+var TTScrollableView = /** @class */ (function () {
+    function TTScrollableView(tt, el, domHandler, zone) {
         var _this = this;
         this.tt = tt;
         this.el = el;
@@ -678,7 +1040,7 @@ var ScrollableTreeTableView = /** @class */ (function () {
         });
         this.initialized = false;
     }
-    Object.defineProperty(ScrollableTreeTableView.prototype, "scrollHeight", {
+    Object.defineProperty(TTScrollableView.prototype, "scrollHeight", {
         get: function () {
             return this._scrollHeight;
         },
@@ -689,13 +1051,13 @@ var ScrollableTreeTableView = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    ScrollableTreeTableView.prototype.ngAfterViewChecked = function () {
+    TTScrollableView.prototype.ngAfterViewChecked = function () {
         if (!this.initialized && this.el.nativeElement.offsetParent) {
             this.alignScrollBar();
             this.initialized = true;
         }
     };
-    ScrollableTreeTableView.prototype.ngAfterViewInit = function () {
+    TTScrollableView.prototype.ngAfterViewInit = function () {
         this.bindEvents();
         this.setScrollHeight();
         this.alignScrollBar();
@@ -716,7 +1078,7 @@ var ScrollableTreeTableView = /** @class */ (function () {
             this.scrollBodyViewChild.nativeElement.style.paddingBottom = this.domHandler.calculateScrollbarWidth() + 'px';
         }
     };
-    ScrollableTreeTableView.prototype.bindEvents = function () {
+    TTScrollableView.prototype.bindEvents = function () {
         var _this = this;
         this.zone.runOutsideAngular(function () {
             var scrollBarWidth = _this.domHandler.calculateScrollbarWidth();
@@ -734,7 +1096,7 @@ var ScrollableTreeTableView = /** @class */ (function () {
             }
         });
     };
-    ScrollableTreeTableView.prototype.unbindEvents = function () {
+    TTScrollableView.prototype.unbindEvents = function () {
         if (this.scrollHeaderViewChild && this.scrollHeaderViewChild.nativeElement) {
             this.scrollHeaderBoxViewChild.nativeElement.removeEventListener('scroll', this.headerScrollListener);
         }
@@ -743,13 +1105,13 @@ var ScrollableTreeTableView = /** @class */ (function () {
         }
         this.scrollBodyViewChild.nativeElement.addEventListener('scroll', this.bodyScrollListener);
     };
-    ScrollableTreeTableView.prototype.onHeaderScroll = function (event) {
+    TTScrollableView.prototype.onHeaderScroll = function (event) {
         this.scrollHeaderViewChild.nativeElement.scrollLeft = 0;
     };
-    ScrollableTreeTableView.prototype.onFooterScroll = function (event) {
+    TTScrollableView.prototype.onFooterScroll = function (event) {
         this.scrollFooterViewChild.nativeElement.scrollLeft = 0;
     };
-    ScrollableTreeTableView.prototype.onBodyScroll = function (event) {
+    TTScrollableView.prototype.onBodyScroll = function (event) {
         if (this.scrollHeaderViewChild && this.scrollHeaderViewChild.nativeElement) {
             this.scrollHeaderBoxViewChild.nativeElement.style.marginLeft = -1 * this.scrollBodyViewChild.nativeElement.scrollLeft + 'px';
         }
@@ -760,7 +1122,7 @@ var ScrollableTreeTableView = /** @class */ (function () {
             this.frozenSiblingBody.scrollTop = this.scrollBodyViewChild.nativeElement.scrollTop;
         }
     };
-    ScrollableTreeTableView.prototype.setScrollHeight = function () {
+    TTScrollableView.prototype.setScrollHeight = function () {
         if (this.scrollHeight && this.scrollBodyViewChild && this.scrollBodyViewChild.nativeElement) {
             if (this.scrollHeight.indexOf('%') !== -1) {
                 this.scrollBodyViewChild.nativeElement.style.visibility = 'hidden';
@@ -784,10 +1146,10 @@ var ScrollableTreeTableView = /** @class */ (function () {
             }
         }
     };
-    ScrollableTreeTableView.prototype.hasVerticalOverflow = function () {
+    TTScrollableView.prototype.hasVerticalOverflow = function () {
         return this.domHandler.getOuterHeight(this.scrollTableViewChild.nativeElement) > this.domHandler.getOuterHeight(this.scrollBodyViewChild.nativeElement);
     };
-    ScrollableTreeTableView.prototype.alignScrollBar = function () {
+    TTScrollableView.prototype.alignScrollBar = function () {
         if (!this.frozen) {
             var scrollBarWidth = this.hasVerticalOverflow() ? this.domHandler.calculateScrollbarWidth() : 0;
             this.scrollHeaderBoxViewChild.nativeElement.style.marginRight = scrollBarWidth + 'px';
@@ -797,7 +1159,7 @@ var ScrollableTreeTableView = /** @class */ (function () {
         }
         this.initialized = false;
     };
-    ScrollableTreeTableView.prototype.ngOnDestroy = function () {
+    TTScrollableView.prototype.ngOnDestroy = function () {
         this.unbindEvents();
         this.frozenSiblingBody = null;
         if (this.subscription) {
@@ -805,35 +1167,35 @@ var ScrollableTreeTableView = /** @class */ (function () {
         }
         this.initialized = false;
     };
-    ScrollableTreeTableView.decorators = [
+    TTScrollableView.decorators = [
         { type: core_1.Component, args: [{
                     selector: '[ttScrollableView]',
-                    template: "\n        <div #scrollHeader class=\"ui-treetable-scrollable-header ui-widget-header\">\n            <div #scrollHeaderBox class=\"ui-treetable-scrollable-header-box\">\n                <table class=\"ui-treetable-scrollable-header-table\">\n                    <ng-container *ngTemplateOutlet=\"frozen ? tt.frozenColGroupTemplate||tt.colGroupTemplate : tt.colGroupTemplate; context {$implicit: columns}\"></ng-container>\n                    <thead class=\"ui-treetable-thead\">\n                        <ng-container *ngTemplateOutlet=\"frozen ? tt.frozenHeaderTemplate||tt.headerTemplate : tt.headerTemplate; context {$implicit: columns}\"></ng-container>\n                    </thead>\n                    <tbody class=\"ui-treetable-tbody\">\n                        <ng-template ngFor let-rowData let-rowIndex=\"index\" [ngForOf]=\"tt.frozenValue\" [ngForTrackBy]=\"tt.rowTrackBy\">\n                            <ng-container *ngTemplateOutlet=\"tt.frozenRowsTemplate; context: {$implicit: rowData, rowIndex: rowIndex, columns: columns}\"></ng-container>\n                        </ng-template>\n                    </tbody>\n                </table>\n            </div>\n        </div>\n        <div #scrollBody class=\"ui-treetable-scrollable-body\">\n            <table #scrollTable class=\"ui-treetable-scrollable-body-table\">\n                <ng-container *ngTemplateOutlet=\"frozen ? tt.frozenColGroupTemplate||tt.colGroupTemplate : tt.colGroupTemplate; context {$implicit: columns}\"></ng-container>\n                <tbody class=\"ui-treetable-tbody\" [pTreeTableBody]=\"columns\" [pTreeTableBodyTemplate]=\"frozen ? tt.frozenBodyTemplate||tt.bodyTemplate : tt.bodyTemplate\"></tbody>\n            </table>\n        </div>\n        <div #scrollFooter *ngIf=\"tt.footerTemplate\" class=\"ui-treetable-scrollable-footer ui-widget-header\">\n            <div #scrollFooterBox class=\"ui-treetable-scrollable-footer-box\">\n                <table class=\"ui-treetable-scrollable-footer-table\">\n                    <ng-container *ngTemplateOutlet=\"frozen ? tt.frozenColGroupTemplate||tt.colGroupTemplate : tt.colGroupTemplate; context {$implicit: columns}\"></ng-container>\n                    <tfoot class=\"ui-treetable-tfoot\">\n                        <ng-container *ngTemplateOutlet=\"frozen ? tt.frozenFooterTemplate||tt.footerTemplate : tt.footerTemplate; context {$implicit: columns}\"></ng-container>\n                    </tfoot>\n                </table>\n            </div>\n        </div>\n    "
+                    template: "\n        <div #scrollHeader class=\"ui-treetable-scrollable-header ui-widget-header\">\n            <div #scrollHeaderBox class=\"ui-treetable-scrollable-header-box\">\n                <table class=\"ui-treetable-scrollable-header-table\">\n                    <ng-container *ngTemplateOutlet=\"frozen ? tt.frozenColGroupTemplate||tt.colGroupTemplate : tt.colGroupTemplate; context {$implicit: columns}\"></ng-container>\n                    <thead class=\"ui-treetable-thead\">\n                        <ng-container *ngTemplateOutlet=\"frozen ? tt.frozenHeaderTemplate||tt.headerTemplate : tt.headerTemplate; context {$implicit: columns}\"></ng-container>\n                    </thead>\n                </table>\n            </div>\n        </div>\n        <div #scrollBody class=\"ui-treetable-scrollable-body\">\n            <table #scrollTable class=\"ui-treetable-scrollable-body-table\">\n                <ng-container *ngTemplateOutlet=\"frozen ? tt.frozenColGroupTemplate||tt.colGroupTemplate : tt.colGroupTemplate; context {$implicit: columns}\"></ng-container>\n                <tbody class=\"ui-treetable-tbody\" [pTreeTableBody]=\"columns\" [pTreeTableBodyTemplate]=\"frozen ? tt.frozenBodyTemplate||tt.bodyTemplate : tt.bodyTemplate\"></tbody>\n            </table>\n        </div>\n        <div #scrollFooter *ngIf=\"tt.footerTemplate\" class=\"ui-treetable-scrollable-footer ui-widget-header\">\n            <div #scrollFooterBox class=\"ui-treetable-scrollable-footer-box\">\n                <table class=\"ui-treetable-scrollable-footer-table\">\n                    <ng-container *ngTemplateOutlet=\"frozen ? tt.frozenColGroupTemplate||tt.colGroupTemplate : tt.colGroupTemplate; context {$implicit: columns}\"></ng-container>\n                    <tfoot class=\"ui-treetable-tfoot\">\n                        <ng-container *ngTemplateOutlet=\"frozen ? tt.frozenFooterTemplate||tt.footerTemplate : tt.footerTemplate; context {$implicit: columns}\"></ng-container>\n                    </tfoot>\n                </table>\n            </div>\n        </div>\n    "
                 },] },
     ];
     /** @nocollapse */
-    ScrollableTreeTableView.ctorParameters = function () { return [
-        { type: TreeTable, },
-        { type: core_1.ElementRef, },
-        { type: domhandler_1.DomHandler, },
-        { type: core_1.NgZone, },
+    TTScrollableView.ctorParameters = function () { return [
+        { type: TreeTable },
+        { type: core_1.ElementRef },
+        { type: domhandler_1.DomHandler },
+        { type: core_1.NgZone }
     ]; };
-    ScrollableTreeTableView.propDecorators = {
-        "columns": [{ type: core_1.Input, args: ["ttScrollableView",] },],
-        "frozen": [{ type: core_1.Input },],
-        "scrollHeaderViewChild": [{ type: core_1.ViewChild, args: ['scrollHeader',] },],
-        "scrollHeaderBoxViewChild": [{ type: core_1.ViewChild, args: ['scrollHeaderBox',] },],
-        "scrollBodyViewChild": [{ type: core_1.ViewChild, args: ['scrollBody',] },],
-        "scrollTableViewChild": [{ type: core_1.ViewChild, args: ['scrollTable',] },],
-        "scrollFooterViewChild": [{ type: core_1.ViewChild, args: ['scrollFooter',] },],
-        "scrollFooterBoxViewChild": [{ type: core_1.ViewChild, args: ['scrollFooterBox',] },],
-        "scrollHeight": [{ type: core_1.Input },],
+    TTScrollableView.propDecorators = {
+        columns: [{ type: core_1.Input, args: ["ttScrollableView",] }],
+        frozen: [{ type: core_1.Input }],
+        scrollHeaderViewChild: [{ type: core_1.ViewChild, args: ['scrollHeader',] }],
+        scrollHeaderBoxViewChild: [{ type: core_1.ViewChild, args: ['scrollHeaderBox',] }],
+        scrollBodyViewChild: [{ type: core_1.ViewChild, args: ['scrollBody',] }],
+        scrollTableViewChild: [{ type: core_1.ViewChild, args: ['scrollTable',] }],
+        scrollFooterViewChild: [{ type: core_1.ViewChild, args: ['scrollFooter',] }],
+        scrollFooterBoxViewChild: [{ type: core_1.ViewChild, args: ['scrollFooterBox',] }],
+        scrollHeight: [{ type: core_1.Input }]
     };
-    return ScrollableTreeTableView;
+    return TTScrollableView;
 }());
-exports.ScrollableTreeTableView = ScrollableTreeTableView;
-var SortableColumn = /** @class */ (function () {
-    function SortableColumn(tt, domHandler) {
+exports.TTScrollableView = TTScrollableView;
+var TTSortableColumn = /** @class */ (function () {
+    function TTSortableColumn(tt, domHandler) {
         var _this = this;
         this.tt = tt;
         this.domHandler = domHandler;
@@ -843,15 +1205,15 @@ var SortableColumn = /** @class */ (function () {
             });
         }
     }
-    SortableColumn.prototype.ngOnInit = function () {
+    TTSortableColumn.prototype.ngOnInit = function () {
         if (this.isEnabled()) {
             this.updateSortState();
         }
     };
-    SortableColumn.prototype.updateSortState = function () {
+    TTSortableColumn.prototype.updateSortState = function () {
         this.sorted = this.tt.isSorted(this.field);
     };
-    SortableColumn.prototype.onClick = function (event) {
+    TTSortableColumn.prototype.onClick = function (event) {
         if (this.isEnabled()) {
             this.updateSortState();
             this.tt.sort({
@@ -861,91 +1223,91 @@ var SortableColumn = /** @class */ (function () {
             this.domHandler.clearSelection();
         }
     };
-    SortableColumn.prototype.isEnabled = function () {
-        return this.pSortableColumnDisabled !== true;
+    TTSortableColumn.prototype.isEnabled = function () {
+        return this.ttSortableColumnDisabled !== true;
     };
-    SortableColumn.prototype.ngOnDestroy = function () {
+    TTSortableColumn.prototype.ngOnDestroy = function () {
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
     };
-    SortableColumn.decorators = [
+    TTSortableColumn.decorators = [
         { type: core_1.Directive, args: [{
-                    selector: '[pSortableColumn]',
+                    selector: '[ttSortableColumn]',
                     providers: [domhandler_1.DomHandler],
                     host: {
-                        '[class.ui-sortable-column]': 'true',
+                        '[class.ui-sortable-column]': 'isEnabled()',
                         '[class.ui-state-highlight]': 'sorted'
                     }
                 },] },
     ];
     /** @nocollapse */
-    SortableColumn.ctorParameters = function () { return [
-        { type: TreeTable, },
-        { type: domhandler_1.DomHandler, },
+    TTSortableColumn.ctorParameters = function () { return [
+        { type: TreeTable },
+        { type: domhandler_1.DomHandler }
     ]; };
-    SortableColumn.propDecorators = {
-        "field": [{ type: core_1.Input, args: ["pSortableColumn",] },],
-        "pSortableColumnDisabled": [{ type: core_1.Input },],
-        "onClick": [{ type: core_1.HostListener, args: ['click', ['$event'],] },],
+    TTSortableColumn.propDecorators = {
+        field: [{ type: core_1.Input, args: ["ttSortableColumn",] }],
+        ttSortableColumnDisabled: [{ type: core_1.Input }],
+        onClick: [{ type: core_1.HostListener, args: ['click', ['$event'],] }]
     };
-    return SortableColumn;
+    return TTSortableColumn;
 }());
-exports.SortableColumn = SortableColumn;
-var SortIcon = /** @class */ (function () {
-    function SortIcon(dt) {
+exports.TTSortableColumn = TTSortableColumn;
+var TTSortIcon = /** @class */ (function () {
+    function TTSortIcon(tt) {
         var _this = this;
-        this.dt = dt;
-        this.subscription = this.dt.tableService.sortSource$.subscribe(function (sortMeta) {
+        this.tt = tt;
+        this.subscription = this.tt.tableService.sortSource$.subscribe(function (sortMeta) {
             _this.updateSortState();
         });
     }
-    SortIcon.prototype.ngOnInit = function () {
+    TTSortIcon.prototype.ngOnInit = function () {
         this.updateSortState();
     };
-    SortIcon.prototype.onClick = function (event) {
+    TTSortIcon.prototype.onClick = function (event) {
         event.preventDefault();
     };
-    SortIcon.prototype.updateSortState = function () {
-        if (this.dt.sortMode === 'single') {
-            this.sortOrder = this.dt.isSorted(this.field) ? this.dt.sortOrder : 0;
+    TTSortIcon.prototype.updateSortState = function () {
+        if (this.tt.sortMode === 'single') {
+            this.sortOrder = this.tt.isSorted(this.field) ? this.tt.sortOrder : 0;
         }
-        else if (this.dt.sortMode === 'multiple') {
-            var sortMeta = this.dt.getSortMeta(this.field);
+        else if (this.tt.sortMode === 'multiple') {
+            var sortMeta = this.tt.getSortMeta(this.field);
             this.sortOrder = sortMeta ? sortMeta.order : 0;
         }
     };
-    SortIcon.prototype.ngOnDestroy = function () {
+    TTSortIcon.prototype.ngOnDestroy = function () {
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
     };
-    SortIcon.decorators = [
+    TTSortIcon.decorators = [
         { type: core_1.Component, args: [{
-                    selector: 'p-sortIcon',
-                    template: "\n        <a href=\"#\" (click)=\"onClick($event)\" [attr.aria-label]=\" sortOrder === 1 ? ariaLabelAsc : sortOrder === -1 ? ariaLabelDesc : '' \">\n            <i class=\"ui-sortable-column-icon fa fa-fw fa-sort\" [ngClass]=\"{'fa-sort-asc': sortOrder === 1, 'fa-sort-desc': sortOrder === -1}\"></i>\n        </a>\n    "
+                    selector: 'p-treeTableSortIcon',
+                    template: "\n        <a href=\"#\" (click)=\"onClick($event)\" [attr.aria-label]=\" sortOrder === 1 ? ariaLabelAsc : sortOrder === -1 ? ariaLabelDesc : '' \">\n            <i class=\"ui-sortable-column-icon pi pi-fw\" [ngClass]=\"{'pi-sort-up': sortOrder === 1, 'pi-sort-down': sortOrder === -1, 'pi-sort': sortOrder === 0}\"></i>\n        </a>\n    "
                 },] },
     ];
     /** @nocollapse */
-    SortIcon.ctorParameters = function () { return [
-        { type: TreeTable, },
+    TTSortIcon.ctorParameters = function () { return [
+        { type: TreeTable }
     ]; };
-    SortIcon.propDecorators = {
-        "field": [{ type: core_1.Input },],
-        "ariaLabelDesc": [{ type: core_1.Input },],
-        "ariaLabelAsc": [{ type: core_1.Input },],
+    TTSortIcon.propDecorators = {
+        field: [{ type: core_1.Input }],
+        ariaLabelDesc: [{ type: core_1.Input }],
+        ariaLabelAsc: [{ type: core_1.Input }]
     };
-    return SortIcon;
+    return TTSortIcon;
 }());
-exports.SortIcon = SortIcon;
-var ResizableTreeTableColumn = /** @class */ (function () {
-    function ResizableTreeTableColumn(tt, el, domHandler, zone) {
+exports.TTSortIcon = TTSortIcon;
+var TTResizableColumn = /** @class */ (function () {
+    function TTResizableColumn(tt, el, domHandler, zone) {
         this.tt = tt;
         this.el = el;
         this.domHandler = domHandler;
         this.zone = zone;
     }
-    ResizableTreeTableColumn.prototype.ngAfterViewInit = function () {
+    TTResizableColumn.prototype.ngAfterViewInit = function () {
         var _this = this;
         if (this.isEnabled()) {
             this.domHandler.addClass(this.el.nativeElement, 'ui-resizable-column');
@@ -958,7 +1320,7 @@ var ResizableTreeTableColumn = /** @class */ (function () {
             });
         }
     };
-    ResizableTreeTableColumn.prototype.bindDocumentEvents = function () {
+    TTResizableColumn.prototype.bindDocumentEvents = function () {
         var _this = this;
         this.zone.runOutsideAngular(function () {
             _this.documentMouseMoveListener = _this.onDocumentMouseMove.bind(_this);
@@ -967,7 +1329,7 @@ var ResizableTreeTableColumn = /** @class */ (function () {
             document.addEventListener('mouseup', _this.documentMouseUpListener);
         });
     };
-    ResizableTreeTableColumn.prototype.unbindDocumentEvents = function () {
+    TTResizableColumn.prototype.unbindDocumentEvents = function () {
         if (this.documentMouseMoveListener) {
             document.removeEventListener('mousemove', this.documentMouseMoveListener);
             this.documentMouseMoveListener = null;
@@ -977,57 +1339,57 @@ var ResizableTreeTableColumn = /** @class */ (function () {
             this.documentMouseUpListener = null;
         }
     };
-    ResizableTreeTableColumn.prototype.onMouseDown = function (event) {
+    TTResizableColumn.prototype.onMouseDown = function (event) {
         this.tt.onColumnResizeBegin(event);
         this.bindDocumentEvents();
     };
-    ResizableTreeTableColumn.prototype.onDocumentMouseMove = function (event) {
+    TTResizableColumn.prototype.onDocumentMouseMove = function (event) {
         this.tt.onColumnResize(event);
     };
-    ResizableTreeTableColumn.prototype.onDocumentMouseUp = function (event) {
+    TTResizableColumn.prototype.onDocumentMouseUp = function (event) {
         this.tt.onColumnResizeEnd(event, this.el.nativeElement);
         this.unbindDocumentEvents();
     };
-    ResizableTreeTableColumn.prototype.isEnabled = function () {
+    TTResizableColumn.prototype.isEnabled = function () {
         return this.ttResizableColumnDisabled !== true;
     };
-    ResizableTreeTableColumn.prototype.ngOnDestroy = function () {
+    TTResizableColumn.prototype.ngOnDestroy = function () {
         if (this.resizerMouseDownListener) {
             this.resizer.removeEventListener('mousedown', this.resizerMouseDownListener);
         }
         this.unbindDocumentEvents();
     };
-    ResizableTreeTableColumn.decorators = [
+    TTResizableColumn.decorators = [
         { type: core_1.Directive, args: [{
                     selector: '[ttResizableColumn]'
                 },] },
     ];
     /** @nocollapse */
-    ResizableTreeTableColumn.ctorParameters = function () { return [
-        { type: TreeTable, },
-        { type: core_1.ElementRef, },
-        { type: domhandler_1.DomHandler, },
-        { type: core_1.NgZone, },
+    TTResizableColumn.ctorParameters = function () { return [
+        { type: TreeTable },
+        { type: core_1.ElementRef },
+        { type: domhandler_1.DomHandler },
+        { type: core_1.NgZone }
     ]; };
-    ResizableTreeTableColumn.propDecorators = {
-        "ttResizableColumnDisabled": [{ type: core_1.Input },],
+    TTResizableColumn.propDecorators = {
+        ttResizableColumnDisabled: [{ type: core_1.Input }]
     };
-    return ResizableTreeTableColumn;
+    return TTResizableColumn;
 }());
-exports.ResizableTreeTableColumn = ResizableTreeTableColumn;
-var ReorderableTreeTableColumn = /** @class */ (function () {
-    function ReorderableTreeTableColumn(tt, el, domHandler, zone) {
+exports.TTResizableColumn = TTResizableColumn;
+var TTReorderableColumn = /** @class */ (function () {
+    function TTReorderableColumn(tt, el, domHandler, zone) {
         this.tt = tt;
         this.el = el;
         this.domHandler = domHandler;
         this.zone = zone;
     }
-    ReorderableTreeTableColumn.prototype.ngAfterViewInit = function () {
+    TTReorderableColumn.prototype.ngAfterViewInit = function () {
         if (this.isEnabled()) {
             this.bindEvents();
         }
     };
-    ReorderableTreeTableColumn.prototype.bindEvents = function () {
+    TTReorderableColumn.prototype.bindEvents = function () {
         var _this = this;
         this.zone.runOutsideAngular(function () {
             _this.mouseDownListener = _this.onMouseDown.bind(_this);
@@ -1042,7 +1404,7 @@ var ReorderableTreeTableColumn = /** @class */ (function () {
             _this.el.nativeElement.addEventListener('dragleave', _this.dragLeaveListener);
         });
     };
-    ReorderableTreeTableColumn.prototype.unbindEvents = function () {
+    TTReorderableColumn.prototype.unbindEvents = function () {
         if (this.mouseDownListener) {
             document.removeEventListener('mousedown', this.mouseDownListener);
             this.mouseDownListener = null;
@@ -1064,54 +1426,546 @@ var ReorderableTreeTableColumn = /** @class */ (function () {
             this.dragLeaveListener = null;
         }
     };
-    ReorderableTreeTableColumn.prototype.onMouseDown = function (event) {
+    TTReorderableColumn.prototype.onMouseDown = function (event) {
         if (event.target.nodeName === 'INPUT' || this.domHandler.hasClass(event.target, 'ui-column-resizer'))
             this.el.nativeElement.draggable = false;
         else
             this.el.nativeElement.draggable = true;
     };
-    ReorderableTreeTableColumn.prototype.onDragStart = function (event) {
+    TTReorderableColumn.prototype.onDragStart = function (event) {
         this.tt.onColumnDragStart(event, this.el.nativeElement);
     };
-    ReorderableTreeTableColumn.prototype.onDragOver = function (event) {
+    TTReorderableColumn.prototype.onDragOver = function (event) {
         event.preventDefault();
     };
-    ReorderableTreeTableColumn.prototype.onDragEnter = function (event) {
+    TTReorderableColumn.prototype.onDragEnter = function (event) {
         this.tt.onColumnDragEnter(event, this.el.nativeElement);
     };
-    ReorderableTreeTableColumn.prototype.onDragLeave = function (event) {
+    TTReorderableColumn.prototype.onDragLeave = function (event) {
         this.tt.onColumnDragLeave(event);
     };
-    ReorderableTreeTableColumn.prototype.onDrop = function (event) {
+    TTReorderableColumn.prototype.onDrop = function (event) {
         if (this.isEnabled()) {
             this.tt.onColumnDrop(event, this.el.nativeElement);
         }
     };
-    ReorderableTreeTableColumn.prototype.isEnabled = function () {
+    TTReorderableColumn.prototype.isEnabled = function () {
         return this.ttReorderableColumnDisabled !== true;
     };
-    ReorderableTreeTableColumn.prototype.ngOnDestroy = function () {
+    TTReorderableColumn.prototype.ngOnDestroy = function () {
         this.unbindEvents();
     };
-    ReorderableTreeTableColumn.decorators = [
+    TTReorderableColumn.decorators = [
         { type: core_1.Directive, args: [{
                     selector: '[ttReorderableColumn]'
                 },] },
     ];
     /** @nocollapse */
-    ReorderableTreeTableColumn.ctorParameters = function () { return [
-        { type: TreeTable, },
-        { type: core_1.ElementRef, },
-        { type: domhandler_1.DomHandler, },
-        { type: core_1.NgZone, },
+    TTReorderableColumn.ctorParameters = function () { return [
+        { type: TreeTable },
+        { type: core_1.ElementRef },
+        { type: domhandler_1.DomHandler },
+        { type: core_1.NgZone }
     ]; };
-    ReorderableTreeTableColumn.propDecorators = {
-        "ttReorderableColumnDisabled": [{ type: core_1.Input },],
-        "onDrop": [{ type: core_1.HostListener, args: ['drop', ['$event'],] },],
+    TTReorderableColumn.propDecorators = {
+        ttReorderableColumnDisabled: [{ type: core_1.Input }],
+        onDrop: [{ type: core_1.HostListener, args: ['drop', ['$event'],] }]
     };
-    return ReorderableTreeTableColumn;
+    return TTReorderableColumn;
 }());
-exports.ReorderableTreeTableColumn = ReorderableTreeTableColumn;
+exports.TTReorderableColumn = TTReorderableColumn;
+var TTSelectableRow = /** @class */ (function () {
+    function TTSelectableRow(tt, domHandler, tableService) {
+        var _this = this;
+        this.tt = tt;
+        this.domHandler = domHandler;
+        this.tableService = tableService;
+        if (this.isEnabled()) {
+            this.subscription = this.tt.tableService.selectionSource$.subscribe(function () {
+                _this.selected = _this.tt.isSelected(_this.rowNode.node);
+            });
+        }
+    }
+    TTSelectableRow.prototype.ngOnInit = function () {
+        if (this.isEnabled()) {
+            this.selected = this.tt.isSelected(this.rowNode.node);
+        }
+    };
+    TTSelectableRow.prototype.onClick = function (event) {
+        if (this.isEnabled()) {
+            this.tt.handleRowClick({
+                originalEvent: event,
+                rowNode: this.rowNode
+            });
+        }
+    };
+    TTSelectableRow.prototype.onTouchEnd = function (event) {
+        if (this.isEnabled()) {
+            this.tt.handleRowTouchEnd(event);
+        }
+    };
+    TTSelectableRow.prototype.isEnabled = function () {
+        return this.ttSelectableRowDisabled !== true;
+    };
+    TTSelectableRow.prototype.ngOnDestroy = function () {
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
+    };
+    TTSelectableRow.decorators = [
+        { type: core_1.Directive, args: [{
+                    selector: '[ttSelectableRow]',
+                    providers: [domhandler_1.DomHandler],
+                    host: {
+                        '[class.ui-state-highlight]': 'selected'
+                    }
+                },] },
+    ];
+    /** @nocollapse */
+    TTSelectableRow.ctorParameters = function () { return [
+        { type: TreeTable },
+        { type: domhandler_1.DomHandler },
+        { type: TreeTableService }
+    ]; };
+    TTSelectableRow.propDecorators = {
+        rowNode: [{ type: core_1.Input, args: ["ttSelectableRow",] }],
+        ttSelectableRowDisabled: [{ type: core_1.Input }],
+        onClick: [{ type: core_1.HostListener, args: ['click', ['$event'],] }],
+        onTouchEnd: [{ type: core_1.HostListener, args: ['touchend', ['$event'],] }]
+    };
+    return TTSelectableRow;
+}());
+exports.TTSelectableRow = TTSelectableRow;
+var TTSelectableRowDblClick = /** @class */ (function () {
+    function TTSelectableRowDblClick(tt, domHandler, tableService) {
+        var _this = this;
+        this.tt = tt;
+        this.domHandler = domHandler;
+        this.tableService = tableService;
+        if (this.isEnabled()) {
+            this.subscription = this.tt.tableService.selectionSource$.subscribe(function () {
+                _this.selected = _this.tt.isSelected(_this.rowNode.node);
+            });
+        }
+    }
+    TTSelectableRowDblClick.prototype.ngOnInit = function () {
+        if (this.isEnabled()) {
+            this.selected = this.tt.isSelected(this.rowNode.node);
+        }
+    };
+    TTSelectableRowDblClick.prototype.onClick = function (event) {
+        if (this.isEnabled()) {
+            this.tt.handleRowClick({
+                originalEvent: event,
+                rowNode: this.rowNode
+            });
+        }
+    };
+    TTSelectableRowDblClick.prototype.isEnabled = function () {
+        return this.ttSelectableRowDisabled !== true;
+    };
+    TTSelectableRowDblClick.prototype.ngOnDestroy = function () {
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
+    };
+    TTSelectableRowDblClick.decorators = [
+        { type: core_1.Directive, args: [{
+                    selector: '[ttSelectableRowDblClick]',
+                    providers: [domhandler_1.DomHandler],
+                    host: {
+                        '[class.ui-state-highlight]': 'selected'
+                    }
+                },] },
+    ];
+    /** @nocollapse */
+    TTSelectableRowDblClick.ctorParameters = function () { return [
+        { type: TreeTable },
+        { type: domhandler_1.DomHandler },
+        { type: TreeTableService }
+    ]; };
+    TTSelectableRowDblClick.propDecorators = {
+        rowNode: [{ type: core_1.Input, args: ["ttSelectableRowDblClick",] }],
+        ttSelectableRowDisabled: [{ type: core_1.Input }],
+        onClick: [{ type: core_1.HostListener, args: ['dblclick', ['$event'],] }]
+    };
+    return TTSelectableRowDblClick;
+}());
+exports.TTSelectableRowDblClick = TTSelectableRowDblClick;
+var TTContextMenuRow = /** @class */ (function () {
+    function TTContextMenuRow(tt, tableService) {
+        var _this = this;
+        this.tt = tt;
+        this.tableService = tableService;
+        if (this.isEnabled()) {
+            this.subscription = this.tt.tableService.contextMenuSource$.subscribe(function (node) {
+                _this.selected = _this.tt.equals(_this.rowNode.node, node);
+            });
+        }
+    }
+    TTContextMenuRow.prototype.onContextMenu = function (event) {
+        if (this.isEnabled()) {
+            this.tt.handleRowRightClick({
+                originalEvent: event,
+                rowNode: this.rowNode
+            });
+            event.preventDefault();
+        }
+    };
+    TTContextMenuRow.prototype.isEnabled = function () {
+        return this.ttContextMenuRowDisabled !== true;
+    };
+    TTContextMenuRow.prototype.ngOnDestroy = function () {
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
+    };
+    TTContextMenuRow.decorators = [
+        { type: core_1.Directive, args: [{
+                    selector: '[ttContextMenuRow]',
+                    host: {
+                        '[class.ui-contextmenu-selected]': 'selected'
+                    }
+                },] },
+    ];
+    /** @nocollapse */
+    TTContextMenuRow.ctorParameters = function () { return [
+        { type: TreeTable },
+        { type: TreeTableService }
+    ]; };
+    TTContextMenuRow.propDecorators = {
+        rowNode: [{ type: core_1.Input, args: ["ttContextMenuRow",] }],
+        ttContextMenuRowDisabled: [{ type: core_1.Input }],
+        onContextMenu: [{ type: core_1.HostListener, args: ['contextmenu', ['$event'],] }]
+    };
+    return TTContextMenuRow;
+}());
+exports.TTContextMenuRow = TTContextMenuRow;
+var TTCheckbox = /** @class */ (function () {
+    function TTCheckbox(tt, domHandler, tableService) {
+        var _this = this;
+        this.tt = tt;
+        this.domHandler = domHandler;
+        this.tableService = tableService;
+        this.subscription = this.tt.tableService.selectionSource$.subscribe(function () {
+            _this.checked = _this.tt.isSelected(_this.rowNode.node);
+        });
+    }
+    TTCheckbox.prototype.ngOnInit = function () {
+        this.checked = this.tt.isSelected(this.rowNode.node);
+    };
+    TTCheckbox.prototype.onClick = function (event) {
+        if (!this.disabled) {
+            this.tt.toggleNodeWithCheckbox({
+                originalEvent: event,
+                rowNode: this.rowNode
+            });
+        }
+        this.domHandler.clearSelection();
+    };
+    TTCheckbox.prototype.onFocus = function () {
+        this.domHandler.addClass(this.boxViewChild.nativeElement, 'ui-state-focus');
+    };
+    TTCheckbox.prototype.onBlur = function () {
+        this.domHandler.removeClass(this.boxViewChild.nativeElement, 'ui-state-focus');
+    };
+    TTCheckbox.prototype.ngOnDestroy = function () {
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
+    };
+    TTCheckbox.decorators = [
+        { type: core_1.Component, args: [{
+                    selector: 'p-treeTableCheckbox',
+                    template: "\n        <div class=\"ui-chkbox ui-treetable-chkbox ui-widget\" (click)=\"onClick($event)\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input type=\"checkbox\" [checked]=\"checked\" (focus)=\"onFocus()\" (blur)=\"onBlur()\">\n            </div>\n            <div #box [ngClass]=\"{'ui-chkbox-box ui-widget ui-state-default':true,\n                'ui-state-active':checked, 'ui-state-disabled':disabled}\">\n                <span class=\"ui-chkbox-icon ui-clickable pi\" [ngClass]=\"{'pi-check':checked, 'pi-minus': rowNode.node.partialSelected}\"></span>\n            </div>\n        </div>\n    "
+                },] },
+    ];
+    /** @nocollapse */
+    TTCheckbox.ctorParameters = function () { return [
+        { type: TreeTable },
+        { type: domhandler_1.DomHandler },
+        { type: TreeTableService }
+    ]; };
+    TTCheckbox.propDecorators = {
+        disabled: [{ type: core_1.Input }],
+        rowNode: [{ type: core_1.Input, args: ["value",] }],
+        boxViewChild: [{ type: core_1.ViewChild, args: ['box',] }]
+    };
+    return TTCheckbox;
+}());
+exports.TTCheckbox = TTCheckbox;
+var TTHeaderCheckbox = /** @class */ (function () {
+    function TTHeaderCheckbox(tt, domHandler, tableService) {
+        var _this = this;
+        this.tt = tt;
+        this.domHandler = domHandler;
+        this.tableService = tableService;
+        this.valueChangeSubscription = this.tt.tableService.uiUpdateSource$.subscribe(function () {
+            _this.checked = _this.updateCheckedState();
+        });
+        this.selectionChangeSubscription = this.tt.tableService.selectionSource$.subscribe(function () {
+            _this.checked = _this.updateCheckedState();
+        });
+    }
+    TTHeaderCheckbox.prototype.ngOnInit = function () {
+        this.checked = this.updateCheckedState();
+    };
+    TTHeaderCheckbox.prototype.onClick = function (event, checked) {
+        if (this.tt.value && this.tt.value.length > 0) {
+            this.tt.toggleNodesWithCheckbox(event, !checked);
+        }
+        this.domHandler.clearSelection();
+    };
+    TTHeaderCheckbox.prototype.onFocus = function () {
+        this.domHandler.addClass(this.boxViewChild.nativeElement, 'ui-state-focus');
+    };
+    TTHeaderCheckbox.prototype.onBlur = function () {
+        this.domHandler.removeClass(this.boxViewChild.nativeElement, 'ui-state-focus');
+    };
+    TTHeaderCheckbox.prototype.ngOnDestroy = function () {
+        if (this.selectionChangeSubscription) {
+            this.selectionChangeSubscription.unsubscribe();
+        }
+        if (this.valueChangeSubscription) {
+            this.valueChangeSubscription.unsubscribe();
+        }
+    };
+    TTHeaderCheckbox.prototype.updateCheckedState = function () {
+        var checked;
+        if (this.tt.value) {
+            for (var _i = 0, _a = this.tt.value; _i < _a.length; _i++) {
+                var node = _a[_i];
+                if (this.tt.isSelected(node)) {
+                    checked = true;
+                }
+                else {
+                    checked = false;
+                    break;
+                }
+            }
+        }
+        else {
+            checked = false;
+        }
+        return checked;
+    };
+    TTHeaderCheckbox.decorators = [
+        { type: core_1.Component, args: [{
+                    selector: 'p-treeTableHeaderCheckbox',
+                    template: "\n        <div class=\"ui-chkbox ui-treetable-header-chkbox ui-widget\" (click)=\"onClick($event, cb.checked)\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #cb type=\"checkbox\" [checked]=\"checked\" (focus)=\"onFocus()\" (blur)=\"onBlur()\" [disabled]=\"!tt.value||tt.value.length === 0\">\n            </div>\n            <div #box [ngClass]=\"{'ui-chkbox-box ui-widget ui-state-default':true,\n                'ui-state-active':checked, 'ui-state-disabled': (!tt.value || tt.value.length === 0)}\">\n                <span class=\"ui-chkbox-icon ui-clickable\" [ngClass]=\"{'pi pi-check':checked}\"></span>\n            </div>\n        </div>\n    "
+                },] },
+    ];
+    /** @nocollapse */
+    TTHeaderCheckbox.ctorParameters = function () { return [
+        { type: TreeTable },
+        { type: domhandler_1.DomHandler },
+        { type: TreeTableService }
+    ]; };
+    TTHeaderCheckbox.propDecorators = {
+        boxViewChild: [{ type: core_1.ViewChild, args: ['box',] }]
+    };
+    return TTHeaderCheckbox;
+}());
+exports.TTHeaderCheckbox = TTHeaderCheckbox;
+var TTEditableColumn = /** @class */ (function () {
+    function TTEditableColumn(tt, el, domHandler, zone) {
+        this.tt = tt;
+        this.el = el;
+        this.domHandler = domHandler;
+        this.zone = zone;
+    }
+    TTEditableColumn.prototype.ngAfterViewInit = function () {
+        if (this.isEnabled()) {
+            this.domHandler.addClass(this.el.nativeElement, 'ui-editable-column');
+        }
+    };
+    TTEditableColumn.prototype.isValid = function () {
+        return (this.tt.editingCell && this.domHandler.find(this.tt.editingCell, '.ng-invalid.ng-dirty').length === 0);
+    };
+    TTEditableColumn.prototype.onClick = function (event) {
+        if (this.isEnabled()) {
+            if (this.tt.editingCell) {
+                if (this.tt.editingCell !== this.el.nativeElement) {
+                    if (!this.isValid()) {
+                        return;
+                    }
+                    this.domHandler.removeClass(this.tt.editingCell, 'ui-editing-cell');
+                    this.openCell();
+                }
+            }
+            else {
+                this.openCell();
+            }
+        }
+    };
+    TTEditableColumn.prototype.openCell = function () {
+        var _this = this;
+        this.tt.editingCell = this.el.nativeElement;
+        this.domHandler.addClass(this.el.nativeElement, 'ui-editing-cell');
+        this.tt.onEditInit.emit({ field: this.field, data: this.data });
+        this.zone.runOutsideAngular(function () {
+            setTimeout(function () {
+                var focusable = _this.domHandler.findSingle(_this.el.nativeElement, 'input, textarea');
+                if (focusable) {
+                    focusable.focus();
+                }
+            }, 50);
+        });
+    };
+    TTEditableColumn.prototype.onKeyDown = function (event) {
+        if (this.isEnabled()) {
+            //enter
+            if (event.keyCode == 13) {
+                if (this.isValid()) {
+                    this.domHandler.removeClass(this.tt.editingCell, 'ui-editing-cell');
+                    this.tt.editingCell = null;
+                    this.tt.onEditComplete.emit({ field: this.field, data: this.data });
+                }
+                event.preventDefault();
+            }
+            else if (event.keyCode == 27) {
+                if (this.isValid()) {
+                    this.domHandler.removeClass(this.tt.editingCell, 'ui-editing-cell');
+                    this.tt.editingCell = null;
+                    this.tt.onEditCancel.emit({ field: this.field, data: this.data });
+                }
+                event.preventDefault();
+            }
+            else if (event.keyCode == 9) {
+                this.tt.onEditComplete.emit({ field: this.field, data: this.data });
+                if (event.shiftKey)
+                    this.moveToPreviousCell(event);
+                else
+                    this.moveToNextCell(event);
+            }
+        }
+    };
+    TTEditableColumn.prototype.findCell = function (element) {
+        if (element) {
+            var cell = element;
+            while (cell && !this.domHandler.hasClass(cell, 'ui-editing-cell')) {
+                cell = cell.parentElement;
+            }
+            return cell;
+        }
+        else {
+            return null;
+        }
+    };
+    TTEditableColumn.prototype.moveToPreviousCell = function (event) {
+        var currentCell = this.findCell(event.target);
+        var row = currentCell.parentElement;
+        var targetCell = this.findPreviousEditableColumn(currentCell);
+        if (targetCell) {
+            this.domHandler.invokeElementMethod(targetCell, 'click');
+            event.preventDefault();
+        }
+    };
+    TTEditableColumn.prototype.moveToNextCell = function (event) {
+        var currentCell = this.findCell(event.target);
+        var row = currentCell.parentElement;
+        var targetCell = this.findNextEditableColumn(currentCell);
+        if (targetCell) {
+            this.domHandler.invokeElementMethod(targetCell, 'click');
+            event.preventDefault();
+        }
+    };
+    TTEditableColumn.prototype.findPreviousEditableColumn = function (cell) {
+        var prevCell = cell.previousElementSibling;
+        if (!prevCell) {
+            var previousRow = cell.parentElement.previousElementSibling;
+            if (previousRow) {
+                prevCell = previousRow.lastElementChild;
+            }
+        }
+        if (prevCell) {
+            if (this.domHandler.hasClass(prevCell, 'ui-editable-column'))
+                return prevCell;
+            else
+                return this.findPreviousEditableColumn(prevCell);
+        }
+        else {
+            return null;
+        }
+    };
+    TTEditableColumn.prototype.findNextEditableColumn = function (cell) {
+        var nextCell = cell.nextElementSibling;
+        if (!nextCell) {
+            var nextRow = cell.parentElement.nextElementSibling;
+            if (nextRow) {
+                nextCell = nextRow.firstElementChild;
+            }
+        }
+        if (nextCell) {
+            if (this.domHandler.hasClass(nextCell, 'ui-editable-column'))
+                return nextCell;
+            else
+                return this.findNextEditableColumn(nextCell);
+        }
+        else {
+            return null;
+        }
+    };
+    TTEditableColumn.prototype.isEnabled = function () {
+        return this.pEditableColumnDisabled !== true;
+    };
+    TTEditableColumn.decorators = [
+        { type: core_1.Directive, args: [{
+                    selector: '[ttEditableColumn]'
+                },] },
+    ];
+    /** @nocollapse */
+    TTEditableColumn.ctorParameters = function () { return [
+        { type: TreeTable },
+        { type: core_1.ElementRef },
+        { type: domhandler_1.DomHandler },
+        { type: core_1.NgZone }
+    ]; };
+    TTEditableColumn.propDecorators = {
+        data: [{ type: core_1.Input, args: ["pEditableColumn",] }],
+        field: [{ type: core_1.Input, args: ["pEditableColumnField",] }],
+        pEditableColumnDisabled: [{ type: core_1.Input }],
+        onClick: [{ type: core_1.HostListener, args: ['click', ['$event'],] }],
+        onKeyDown: [{ type: core_1.HostListener, args: ['keydown', ['$event'],] }]
+    };
+    return TTEditableColumn;
+}());
+exports.TTEditableColumn = TTEditableColumn;
+var TreeTableCellEditor = /** @class */ (function () {
+    function TreeTableCellEditor(tt, editableColumn) {
+        this.tt = tt;
+        this.editableColumn = editableColumn;
+    }
+    TreeTableCellEditor.prototype.ngAfterContentInit = function () {
+        var _this = this;
+        this.templates.forEach(function (item) {
+            switch (item.getType()) {
+                case 'input':
+                    _this.inputTemplate = item.template;
+                    break;
+                case 'output':
+                    _this.outputTemplate = item.template;
+                    break;
+            }
+        });
+    };
+    TreeTableCellEditor.decorators = [
+        { type: core_1.Component, args: [{
+                    selector: 'p-treeTableCellEditor',
+                    template: "\n        <ng-container *ngIf=\"tt.editingCell === editableColumn.el.nativeElement\">\n            <ng-container *ngTemplateOutlet=\"inputTemplate\"></ng-container>\n        </ng-container>\n        <ng-container *ngIf=\"!tt.editingCell || tt.editingCell !== editableColumn.el.nativeElement\">\n            <ng-container *ngTemplateOutlet=\"outputTemplate\"></ng-container>\n        </ng-container>\n    "
+                },] },
+    ];
+    /** @nocollapse */
+    TreeTableCellEditor.ctorParameters = function () { return [
+        { type: TreeTable },
+        { type: TTEditableColumn }
+    ]; };
+    TreeTableCellEditor.propDecorators = {
+        templates: [{ type: core_1.ContentChildren, args: [shared_1.PrimeTemplate,] }]
+    };
+    return TreeTableCellEditor;
+}());
+exports.TreeTableCellEditor = TreeTableCellEditor;
 var TreeTableToggler = /** @class */ (function () {
     function TreeTableToggler(tt) {
         this.tt = tt;
@@ -1137,15 +1991,15 @@ var TreeTableToggler = /** @class */ (function () {
     TreeTableToggler.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-treeTableToggler',
-                    template: "\n        <a href=\"#\" class=\"ui-treetable-toggler\" *ngIf=\"rowNode.node.leaf === false || rowNode.level !== 0 || rowNode.node.children && rowNode.node.children.length\" (click)=\"onClick($event)\" [style.visibility]=\"rowNode.node.leaf === false || (rowNode.node.children && rowNode.node.children.length) ? 'visible' : 'hidden'\" [style.marginLeft]=\"rowNode.level * 16 + 'px'\">\n            <i [ngClass]=\"rowNode.node.expanded ? 'fa fa-fw fa-chevron-circle-down' : 'fa fa-fw fa-chevron-circle-right'\"></i>\n        </a>\n    "
+                    template: "\n        <a href=\"#\" class=\"ui-treetable-toggler\" *ngIf=\"rowNode.node.leaf === false || rowNode.level !== 0 || rowNode.node.children && rowNode.node.children.length\" (click)=\"onClick($event)\" [style.visibility]=\"rowNode.node.leaf === false || (rowNode.node.children && rowNode.node.children.length) ? 'visible' : 'hidden'\" [style.marginLeft]=\"rowNode.level * 16 + 'px'\">\n            <i [ngClass]=\"rowNode.node.expanded ? 'pi pi-fw pi-chevron-down' : 'pi pi-fw pi-chevron-right'\"></i>\n        </a>\n    "
                 },] },
     ];
     /** @nocollapse */
     TreeTableToggler.ctorParameters = function () { return [
-        { type: TreeTable, },
+        { type: TreeTable }
     ]; };
     TreeTableToggler.propDecorators = {
-        "rowNode": [{ type: core_1.Input },],
+        rowNode: [{ type: core_1.Input }]
     };
     return TreeTableToggler;
 }());
@@ -1156,8 +2010,8 @@ var TreeTableModule = /** @class */ (function () {
     TreeTableModule.decorators = [
         { type: core_1.NgModule, args: [{
                     imports: [common_1.CommonModule, paginator_1.PaginatorModule],
-                    exports: [TreeTable, TreeTableToggler, SortableColumn, SortIcon, ResizableTreeTableColumn, ReorderableTreeTableColumn],
-                    declarations: [TreeTable, TreeTableBody, TreeTableToggler, ScrollableTreeTableView, SortableColumn, SortIcon, ResizableTreeTableColumn, ReorderableTreeTableColumn]
+                    exports: [TreeTable, TreeTableToggler, TTSortableColumn, TTSortIcon, TTResizableColumn, TTReorderableColumn, TTSelectableRow, TTSelectableRowDblClick, TTContextMenuRow, TTCheckbox, TTHeaderCheckbox, TTEditableColumn, TreeTableCellEditor],
+                    declarations: [TreeTable, TreeTableToggler, TTScrollableView, TTBody, TTSortableColumn, TTSortIcon, TTResizableColumn, TTReorderableColumn, TTSelectableRow, TTSelectableRowDblClick, TTContextMenuRow, TTCheckbox, TTHeaderCheckbox, TTEditableColumn, TreeTableCellEditor]
                 },] },
     ];
     return TreeTableModule;

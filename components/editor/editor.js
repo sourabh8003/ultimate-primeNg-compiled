@@ -107,19 +107,19 @@ var Editor = /** @class */ (function () {
     ];
     /** @nocollapse */
     Editor.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: domhandler_1.DomHandler, },
+        { type: core_1.ElementRef },
+        { type: domhandler_1.DomHandler }
     ]; };
     Editor.propDecorators = {
-        "onTextChange": [{ type: core_1.Output },],
-        "onSelectionChange": [{ type: core_1.Output },],
-        "toolbar": [{ type: core_1.ContentChild, args: [shared_1.Header,] },],
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "placeholder": [{ type: core_1.Input },],
-        "formats": [{ type: core_1.Input },],
-        "onInit": [{ type: core_1.Output },],
-        "readonly": [{ type: core_1.Input },],
+        onTextChange: [{ type: core_1.Output }],
+        onSelectionChange: [{ type: core_1.Output }],
+        toolbar: [{ type: core_1.ContentChild, args: [shared_1.Header,] }],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        placeholder: [{ type: core_1.Input }],
+        formats: [{ type: core_1.Input }],
+        onInit: [{ type: core_1.Output }],
+        readonly: [{ type: core_1.Input }]
     };
     return Editor;
 }());

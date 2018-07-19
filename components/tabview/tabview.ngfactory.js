@@ -17,7 +17,7 @@ var RenderType_TabViewNav = i0.ɵcrt({ encapsulation: 2, styles: styles_TabViewN
 exports.RenderType_TabViewNav = RenderType_TabViewNav;
 function View_TabViewNav_3(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, null, 1, "span", [["class", "ui-tabview-left-icon fa"]], null, null, null, null, null)), i0.ɵdid(1, 278528, null, 0, i2.NgClass, [i0.IterableDiffers, i0.KeyValueDiffers, i0.ElementRef, i0.Renderer2], { klass: [0, "klass"], ngClass: [1, "ngClass"] }, null)], function (_ck, _v) { var currVal_0 = "ui-tabview-left-icon fa"; var currVal_1 = _v.parent.parent.context.$implicit.leftIcon; _ck(_v, 1, 0, currVal_0, currVal_1); }, null); }
 function View_TabViewNav_4(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, null, 1, "span", [["class", "ui-tabview-right-icon fa"]], null, null, null, null, null)), i0.ɵdid(1, 278528, null, 0, i2.NgClass, [i0.IterableDiffers, i0.KeyValueDiffers, i0.ElementRef, i0.Renderer2], { klass: [0, "klass"], ngClass: [1, "ngClass"] }, null)], function (_ck, _v) { var currVal_0 = "ui-tabview-right-icon fa"; var currVal_1 = _v.parent.parent.context.$implicit.rightIcon; _ck(_v, 1, 0, currVal_0, currVal_1); }, null); }
-function View_TabViewNav_5(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, null, 0, "span", [["class", "ui-tabview-close fa fa-close"]], null, [[null, "click"]], function (_v, en, $event) { var ad = true; var _co = _v.component; if (("click" === en)) {
+function View_TabViewNav_5(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, null, 0, "span", [["class", "ui-tabview-close pi pi-times"]], null, [[null, "click"]], function (_v, en, $event) { var ad = true; var _co = _v.component; if (("click" === en)) {
         var pd_0 = (_co.clickClose($event, _v.parent.parent.context.$implicit) !== false);
         ad = (pd_0 && ad);
     } return ad; }, null, null))], null, null); }
@@ -65,6 +65,6 @@ function View_TabView_0(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, 
 exports.View_TabView_0 = View_TabView_0;
 function View_TabView_Host_0(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, null, 2, "p-tabView", [], null, null, null, View_TabView_0, RenderType_TabView)), i0.ɵdid(1, 1097728, null, 1, i1.TabView, [i0.ElementRef], null, null), i0.ɵqud(603979776, 1, { tabPanels: 1 })], null, null); }
 exports.View_TabView_Host_0 = View_TabView_Host_0;
-var TabViewNgFactory = i0.ɵccf("p-tabView", i1.TabView, View_TabView_Host_0, { orientation: "orientation", style: "style", styleClass: "styleClass", controlClose: "controlClose", lazy: "lazy", activeIndex: "activeIndex" }, { onChange: "onChange", onClose: "onClose", activeIndexChange: "activeIndexChange" }, ["*"]);
+var TabViewNgFactory = i0.ɵccf("p-tabView", i1.TabView, View_TabView_Host_0, { orientation: "orientation", style: "style", styleClass: "styleClass", controlClose: "controlClose", activeIndex: "activeIndex" }, { onChange: "onChange", onClose: "onClose", activeIndexChange: "activeIndexChange" }, ["*"]);
 exports.TabViewNgFactory = TabViewNgFactory;
 //# sourceMappingURL=tabview.ngfactory.js.map

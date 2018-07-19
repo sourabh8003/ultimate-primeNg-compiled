@@ -12,9 +12,7 @@ var InputText = /** @class */ (function () {
         this.updateFilledState();
     };
     //To trigger change detection to manage ui-state-filled for material labels when there is no value binding
-    InputText.prototype.onInput = 
-    //To trigger change detection to manage ui-state-filled for material labels when there is no value binding
-    function (e) {
+    InputText.prototype.onInput = function (e) {
         this.updateFilledState();
     };
     InputText.prototype.updateFilledState = function () {
@@ -35,11 +33,11 @@ var InputText = /** @class */ (function () {
     ];
     /** @nocollapse */
     InputText.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: forms_1.NgModel, decorators: [{ type: core_1.Optional },] },
+        { type: core_1.ElementRef },
+        { type: forms_1.NgModel, decorators: [{ type: core_1.Optional }] }
     ]; };
     InputText.propDecorators = {
-        "onInput": [{ type: core_1.HostListener, args: ['input', ['$event'],] },],
+        onInput: [{ type: core_1.HostListener, args: ['input', ['$event'],] }]
     };
     return InputText;
 }());

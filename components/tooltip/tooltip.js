@@ -309,23 +309,23 @@ var Tooltip = /** @class */ (function () {
     ];
     /** @nocollapse */
     Tooltip.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: domhandler_1.DomHandler, },
-        { type: core_1.NgZone, },
+        { type: core_1.ElementRef },
+        { type: domhandler_1.DomHandler },
+        { type: core_1.NgZone }
     ]; };
     Tooltip.propDecorators = {
-        "tooltipPosition": [{ type: core_1.Input },],
-        "tooltipEvent": [{ type: core_1.Input },],
-        "appendTo": [{ type: core_1.Input },],
-        "positionStyle": [{ type: core_1.Input },],
-        "tooltipStyleClass": [{ type: core_1.Input },],
-        "tooltipZIndex": [{ type: core_1.Input },],
-        "disabled": [{ type: core_1.Input, args: ["tooltipDisabled",] },],
-        "escape": [{ type: core_1.Input },],
-        "showDelay": [{ type: core_1.Input },],
-        "hideDelay": [{ type: core_1.Input },],
-        "life": [{ type: core_1.Input },],
-        "text": [{ type: core_1.Input, args: ['pTooltip',] },],
+        tooltipPosition: [{ type: core_1.Input }],
+        tooltipEvent: [{ type: core_1.Input }],
+        appendTo: [{ type: core_1.Input }],
+        positionStyle: [{ type: core_1.Input }],
+        tooltipStyleClass: [{ type: core_1.Input }],
+        tooltipZIndex: [{ type: core_1.Input }],
+        disabled: [{ type: core_1.Input, args: ["tooltipDisabled",] }],
+        escape: [{ type: core_1.Input }],
+        showDelay: [{ type: core_1.Input }],
+        hideDelay: [{ type: core_1.Input }],
+        life: [{ type: core_1.Input }],
+        text: [{ type: core_1.Input, args: ['pTooltip',] }]
     };
     return Tooltip;
 }());

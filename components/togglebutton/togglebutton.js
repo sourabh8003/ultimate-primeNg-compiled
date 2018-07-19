@@ -21,10 +21,6 @@ var ToggleButton = /** @class */ (function () {
     ToggleButton.prototype.ngAfterViewInit = function () {
         this.checkbox = this.checkboxViewChild.nativeElement;
     };
-    ToggleButton.prototype.getIconClass = function () {
-        var baseClass = 'ui-button-icon-left ui-togglebutton-icon fa fa-fw';
-        return baseClass + ' ' + (this.checked ? this.onIcon : this.offIcon);
-    };
     ToggleButton.prototype.toggle = function (event) {
         if (!this.disabled) {
             this.checked = !this.checked;
@@ -73,23 +69,22 @@ var ToggleButton = /** @class */ (function () {
     ToggleButton.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-toggleButton',
-                    template: "\n        <div [ngClass]=\"{'ui-button ui-togglebutton ui-widget ui-state-default ui-corner-all': true, 'ui-button-text-only': (!onIcon&&!offIcon), \n                'ui-button-text-icon-left': (onIcon&&offIcon&&hasOnLabel&&hasOffLabel), 'ui-button-icon-only': (onIcon&&offIcon&&!hasOnLabel&&!hasOffLabel),\n                'ui-state-active': checked,'ui-state-focus':focus,'ui-state-disabled':disabled}\" [ngStyle]=\"style\" [class]=\"styleClass\" \n                (click)=\"toggle($event)\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #checkbox type=\"checkbox\" [attr.id]=\"inputId\" [checked]=\"checked\" (focus)=\"onFocus()\" (blur)=\"onBlur()\" [attr.tabindex]=\"tabindex\">\n            </div>\n            <span *ngIf=\"onIcon||offIcon\" [class]=\"getIconClass()\"></span>\n            <span class=\"ui-button-text ui-unselectable-text\">{{checked ? hasOnLabel ? onLabel : 'ui-btn' : hasOffLabel ? offLabel : 'ui-btn'}}</span>\n        </div>\n    ",
+                    template: "\n        <div [ngClass]=\"{'ui-button ui-togglebutton ui-widget ui-state-default ui-corner-all': true, 'ui-button-text-only': (!onIcon && !offIcon), \n                'ui-button-text-icon-left': (onIcon && offIcon && hasOnLabel && hasOffLabel), 'ui-button-icon-only': (onIcon && offIcon && !hasOnLabel && !hasOffLabel),\n                'ui-state-active': checked,'ui-state-focus':focus,'ui-state-disabled':disabled}\" [ngStyle]=\"style\" [class]=\"styleClass\" \n                (click)=\"toggle($event)\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #checkbox type=\"checkbox\" [attr.id]=\"inputId\" [checked]=\"checked\" (focus)=\"onFocus()\" (blur)=\"onBlur()\" [attr.tabindex]=\"tabindex\">\n            </div>\n            <span *ngIf=\"onIcon||offIcon\" class=\"ui-button-icon-left\" [ngClass]=\"checked ? this.onIcon : this.offIcon\"></span>\n            <span class=\"ui-button-text ui-unselectable-text\">{{checked ? hasOnLabel ? onLabel : 'ui-btn' : hasOffLabel ? offLabel : 'ui-btn'}}</span>\n        </div>\n    ",
                     providers: [exports.TOGGLEBUTTON_VALUE_ACCESSOR]
                 },] },
     ];
-    /** @nocollapse */
     ToggleButton.propDecorators = {
-        "onLabel": [{ type: core_1.Input },],
-        "offLabel": [{ type: core_1.Input },],
-        "onIcon": [{ type: core_1.Input },],
-        "offIcon": [{ type: core_1.Input },],
-        "disabled": [{ type: core_1.Input },],
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "inputId": [{ type: core_1.Input },],
-        "tabindex": [{ type: core_1.Input },],
-        "onChange": [{ type: core_1.Output },],
-        "checkboxViewChild": [{ type: core_1.ViewChild, args: ['checkbox',] },],
+        onLabel: [{ type: core_1.Input }],
+        offLabel: [{ type: core_1.Input }],
+        onIcon: [{ type: core_1.Input }],
+        offIcon: [{ type: core_1.Input }],
+        disabled: [{ type: core_1.Input }],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        inputId: [{ type: core_1.Input }],
+        tabindex: [{ type: core_1.Input }],
+        onChange: [{ type: core_1.Output }],
+        checkboxViewChild: [{ type: core_1.ViewChild, args: ['checkbox',] }]
     };
     return ToggleButton;
 }());

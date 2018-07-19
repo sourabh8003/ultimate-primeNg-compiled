@@ -60,15 +60,15 @@ var BlockUI = /** @class */ (function () {
     ];
     /** @nocollapse */
     BlockUI.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: domhandler_1.DomHandler, },
+        { type: core_1.ElementRef },
+        { type: domhandler_1.DomHandler }
     ]; };
     BlockUI.propDecorators = {
-        "target": [{ type: core_1.Input },],
-        "autoZIndex": [{ type: core_1.Input },],
-        "baseZIndex": [{ type: core_1.Input },],
-        "mask": [{ type: core_1.ViewChild, args: ['mask',] },],
-        "blocked": [{ type: core_1.Input },],
+        target: [{ type: core_1.Input }],
+        autoZIndex: [{ type: core_1.Input }],
+        baseZIndex: [{ type: core_1.Input }],
+        mask: [{ type: core_1.ViewChild, args: ['mask',] }],
+        blocked: [{ type: core_1.Input }]
     };
     return BlockUI;
 }());

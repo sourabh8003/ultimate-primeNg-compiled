@@ -42,11 +42,11 @@ var PrimeTemplate = /** @class */ (function () {
     ];
     /** @nocollapse */
     PrimeTemplate.ctorParameters = function () { return [
-        { type: core_1.TemplateRef, },
+        { type: core_1.TemplateRef }
     ]; };
     PrimeTemplate.propDecorators = {
-        "type": [{ type: core_1.Input },],
-        "name": [{ type: core_1.Input, args: ['pTemplate',] },],
+        type: [{ type: core_1.Input }],
+        name: [{ type: core_1.Input, args: ['pTemplate',] }]
     };
     return PrimeTemplate;
 }());
@@ -90,43 +90,42 @@ var Column = /** @class */ (function () {
                     template: ''
                 },] },
     ];
-    /** @nocollapse */
     Column.propDecorators = {
-        "field": [{ type: core_1.Input },],
-        "colId": [{ type: core_1.Input },],
-        "sortField": [{ type: core_1.Input },],
-        "filterField": [{ type: core_1.Input },],
-        "header": [{ type: core_1.Input },],
-        "footer": [{ type: core_1.Input },],
-        "sortable": [{ type: core_1.Input },],
-        "editable": [{ type: core_1.Input },],
-        "isEditableAlways": [{ type: core_1.Input },],
-        "filter": [{ type: core_1.Input },],
-        "filterMatchMode": [{ type: core_1.Input },],
-        "filterType": [{ type: core_1.Input },],
-        "excludeGlobalFilter": [{ type: core_1.Input },],
-        "rowspan": [{ type: core_1.Input },],
-        "colspan": [{ type: core_1.Input },],
-        "scope": [{ type: core_1.Input },],
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "exportable": [{ type: core_1.Input },],
-        "headerStyle": [{ type: core_1.Input },],
-        "headerStyleClass": [{ type: core_1.Input },],
-        "bodyStyle": [{ type: core_1.Input },],
-        "bodyStyleClass": [{ type: core_1.Input },],
-        "footerStyle": [{ type: core_1.Input },],
-        "footerStyleClass": [{ type: core_1.Input },],
-        "hidden": [{ type: core_1.Input },],
-        "expander": [{ type: core_1.Input },],
-        "selectionMode": [{ type: core_1.Input },],
-        "filterPlaceholder": [{ type: core_1.Input },],
-        "filterMaxlength": [{ type: core_1.Input },],
-        "frozen": [{ type: core_1.Input },],
-        "resizable": [{ type: core_1.Input },],
-        "sortFunction": [{ type: core_1.Output },],
-        "templates": [{ type: core_1.ContentChildren, args: [PrimeTemplate,] },],
-        "template": [{ type: core_1.ContentChild, args: [core_1.TemplateRef,] },],
+        field: [{ type: core_1.Input }],
+        colId: [{ type: core_1.Input }],
+        sortField: [{ type: core_1.Input }],
+        filterField: [{ type: core_1.Input }],
+        header: [{ type: core_1.Input }],
+        footer: [{ type: core_1.Input }],
+        sortable: [{ type: core_1.Input }],
+        editable: [{ type: core_1.Input }],
+        isEditableAlways: [{ type: core_1.Input }],
+        filter: [{ type: core_1.Input }],
+        filterMatchMode: [{ type: core_1.Input }],
+        filterType: [{ type: core_1.Input }],
+        excludeGlobalFilter: [{ type: core_1.Input }],
+        rowspan: [{ type: core_1.Input }],
+        colspan: [{ type: core_1.Input }],
+        scope: [{ type: core_1.Input }],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        exportable: [{ type: core_1.Input }],
+        headerStyle: [{ type: core_1.Input }],
+        headerStyleClass: [{ type: core_1.Input }],
+        bodyStyle: [{ type: core_1.Input }],
+        bodyStyleClass: [{ type: core_1.Input }],
+        footerStyle: [{ type: core_1.Input }],
+        footerStyleClass: [{ type: core_1.Input }],
+        hidden: [{ type: core_1.Input }],
+        expander: [{ type: core_1.Input }],
+        selectionMode: [{ type: core_1.Input }],
+        filterPlaceholder: [{ type: core_1.Input }],
+        filterMaxlength: [{ type: core_1.Input }],
+        frozen: [{ type: core_1.Input }],
+        resizable: [{ type: core_1.Input }],
+        sortFunction: [{ type: core_1.Output }],
+        templates: [{ type: core_1.ContentChildren, args: [PrimeTemplate,] }],
+        template: [{ type: core_1.ContentChild, args: [core_1.TemplateRef,] }]
     };
     return Column;
 }());
@@ -141,9 +140,8 @@ var Row = /** @class */ (function () {
                     template: ""
                 },] },
     ];
-    /** @nocollapse */
     Row.propDecorators = {
-        "columns": [{ type: core_1.ContentChildren, args: [Column,] },],
+        columns: [{ type: core_1.ContentChildren, args: [Column,] }]
     };
     return Row;
 }());
@@ -158,10 +156,9 @@ var HeaderColumnGroup = /** @class */ (function () {
                     template: ""
                 },] },
     ];
-    /** @nocollapse */
     HeaderColumnGroup.propDecorators = {
-        "frozen": [{ type: core_1.Input },],
-        "rows": [{ type: core_1.ContentChildren, args: [Row,] },],
+        frozen: [{ type: core_1.Input }],
+        rows: [{ type: core_1.ContentChildren, args: [Row,] }]
     };
     return HeaderColumnGroup;
 }());
@@ -176,10 +173,9 @@ var FooterColumnGroup = /** @class */ (function () {
                     template: ""
                 },] },
     ];
-    /** @nocollapse */
     FooterColumnGroup.propDecorators = {
-        "frozen": [{ type: core_1.Input },],
-        "rows": [{ type: core_1.ContentChildren, args: [Row,] },],
+        frozen: [{ type: core_1.Input }],
+        rows: [{ type: core_1.ContentChildren, args: [Row,] }]
     };
     return FooterColumnGroup;
 }());

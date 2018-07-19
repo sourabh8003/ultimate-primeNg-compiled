@@ -12,15 +12,15 @@ var MenuItemContent = /** @class */ (function () {
     MenuItemContent.decorators = [
         { type: core_1.Component, args: [{
                     selector: '[pMenuItemContent]',
-                    template: "\n        <a *ngIf=\"!item.routerLink\" [href]=\"item.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" [attr.data-automationid]=\"item.automationId\" [attr.target]=\"item.target\" [attr.title]=\"item.title\" [attr.id]=\"item.id\"\n            [ngClass]=\"{'ui-state-disabled':item.disabled}\" (click)=\"menu.itemClick($event, item)\">\n            <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"item.icon\" [ngClass]=\"item.icon\"></span>\n            <span class=\"ui-menuitem-text\">{{item.label}}</span>\n        </a>\n        <a *ngIf=\"item.routerLink\" [routerLink]=\"item.routerLink\" [attr.data-automationid]=\"item.automationId\"  [queryParams]=\"item.queryParams\" [routerLinkActive]=\"'ui-state-active'\"\n            [routerLinkActiveOptions]=\"item.routerLinkActiveOptions||{exact:false}\" class=\"ui-menuitem-link ui-corner-all\" [attr.target]=\"item.target\" [attr.id]=\"item.id\"\n             [attr.title]=\"item.title\" [ngClass]=\"{'ui-state-disabled':item.disabled}\" (click)=\"menu.itemClick($event, item)\">\n            <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"item.icon\" [ngClass]=\"item.icon\"></span>\n            <span class=\"ui-menuitem-text\">{{item.label}}</span>\n        </a>\n    "
+                    template: "\n        <a *ngIf=\"!item.routerLink\" [href]=\"item.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" [attr.data-automationid]=\"item.automationId\" [attr.target]=\"item.target\" [attr.title]=\"item.title\" [attr.id]=\"item.id\"\n            [ngClass]=\"{'ui-state-disabled':item.disabled}\" (click)=\"menu.itemClick($event, item)\">\n            <span class=\"ui-menuitem-icon\" *ngIf=\"item.icon\" [ngClass]=\"item.icon\"></span>\n            <span class=\"ui-menuitem-text\">{{item.label}}</span>\n        </a>\n        <a *ngIf=\"item.routerLink\" [routerLink]=\"item.routerLink\" [attr.data-automationid]=\"item.automationId\"  [queryParams]=\"item.queryParams\" [routerLinkActive]=\"'ui-state-active'\"\n            [routerLinkActiveOptions]=\"item.routerLinkActiveOptions||{exact:false}\" class=\"ui-menuitem-link ui-corner-all\" [attr.target]=\"item.target\" [attr.id]=\"item.id\"\n             [attr.title]=\"item.title\" [ngClass]=\"{'ui-state-disabled':item.disabled}\" (click)=\"menu.itemClick($event, item)\">\n            <span class=\"ui-menuitem-icon\" *ngIf=\"item.icon\" [ngClass]=\"item.icon\"></span>\n            <span class=\"ui-menuitem-text\">{{item.label}}</span>\n        </a>\n    "
                 },] },
     ];
     /** @nocollapse */
     MenuItemContent.ctorParameters = function () { return [
-        { type: Menu, decorators: [{ type: core_1.Inject, args: [core_1.forwardRef(function () { return Menu; }),] },] },
+        { type: Menu, decorators: [{ type: core_1.Inject, args: [core_1.forwardRef(function () { return Menu; }),] }] }
     ]; };
     MenuItemContent.propDecorators = {
-        "item": [{ type: core_1.Input, args: ["pMenuItemContent",] },],
+        item: [{ type: core_1.Input, args: ["pMenuItemContent",] }]
     };
     return MenuItemContent;
 }());
@@ -129,19 +129,19 @@ var Menu = /** @class */ (function () {
     ];
     /** @nocollapse */
     Menu.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: domhandler_1.DomHandler, },
-        { type: core_1.Renderer2, },
+        { type: core_1.ElementRef },
+        { type: domhandler_1.DomHandler },
+        { type: core_1.Renderer2 }
     ]; };
     Menu.propDecorators = {
-        "model": [{ type: core_1.Input },],
-        "popup": [{ type: core_1.Input },],
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "appendTo": [{ type: core_1.Input },],
-        "autoZIndex": [{ type: core_1.Input },],
-        "baseZIndex": [{ type: core_1.Input },],
-        "containerViewChild": [{ type: core_1.ViewChild, args: ['container',] },],
+        model: [{ type: core_1.Input }],
+        popup: [{ type: core_1.Input }],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        appendTo: [{ type: core_1.Input }],
+        autoZIndex: [{ type: core_1.Input }],
+        baseZIndex: [{ type: core_1.Input }],
+        containerViewChild: [{ type: core_1.ViewChild, args: ['container',] }]
     };
     return Menu;
 }());

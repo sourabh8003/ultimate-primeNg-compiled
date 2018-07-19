@@ -47,19 +47,19 @@ var Messages = /** @class */ (function () {
                 var msg = this.value[0];
                 switch (msg.severity) {
                     case 'success':
-                        icon = 'fa-check';
+                        icon = 'pi-check';
                         break;
                     case 'info':
-                        icon = 'fa-info-circle';
+                        icon = 'pi-info-circle';
                         break;
                     case 'error':
-                        icon = 'fa-close';
+                        icon = 'pi-times';
                         break;
                     case 'warn':
-                        icon = 'fa-warning';
+                        icon = 'pi-exclamation-triangle';
                         break;
                     default:
-                        icon = 'fa-info-circle';
+                        icon = 'pi-info-circle';
                         break;
                 }
             }
@@ -76,21 +76,21 @@ var Messages = /** @class */ (function () {
     Messages.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-messages',
-                    template: "\n        <div *ngIf=\"hasMessages()\" class=\"ui-messages ui-widget ui-corner-all\" style=\"display:block\"\n                    [ngClass]=\"{'ui-messages-info':(value[0].severity === 'info'),\n                    'ui-messages-warn':(value[0].severity === 'warn'),\n                    'ui-messages-error':(value[0].severity === 'error'),\n                    'ui-messages-success':(value[0].severity === 'success')}\"\n                    [ngStyle]=\"style\" [class]=\"styleClass\">\n            <a href=\"#\" class=\"ui-messages-close\" (click)=\"clear($event)\" *ngIf=\"closable\">\n                <i class=\"fa fa-close\"></i>\n            </a>\n            <span class=\"ui-messages-icon fa fa-fw fa-2x\" [ngClass]=\"icon\"></span>\n            <ul>\n                <li *ngFor=\"let msg of value\">\n                    <span *ngIf=\"msg.summary\" class=\"ui-messages-summary\" [innerHTML]=\"msg.summary\"></span>\n                    <span *ngIf=\"msg.detail\" class=\"ui-messages-detail\" [innerHTML]=\"msg.detail\"></span>\n                </li>\n            </ul>\n        </div>\n    "
+                    template: "\n        <div *ngIf=\"hasMessages()\" class=\"ui-messages ui-widget ui-corner-all\" style=\"display:block\"\n                    [ngClass]=\"{'ui-messages-info':(value[0].severity === 'info'),\n                    'ui-messages-warn':(value[0].severity === 'warn'),\n                    'ui-messages-error':(value[0].severity === 'error'),\n                    'ui-messages-success':(value[0].severity === 'success')}\"\n                    [ngStyle]=\"style\" [class]=\"styleClass\">\n            <a href=\"#\" class=\"ui-messages-close\" (click)=\"clear($event)\" *ngIf=\"closable\">\n                <i class=\"pi pi-times\"></i>\n            </a>\n            <span class=\"ui-messages-icon pi\" [ngClass]=\"icon\"></span>\n            <ul>\n                <li *ngFor=\"let msg of value\">\n                    <span *ngIf=\"msg.summary\" class=\"ui-messages-summary\" [innerHTML]=\"msg.summary\"></span>\n                    <span *ngIf=\"msg.detail\" class=\"ui-messages-detail\" [innerHTML]=\"msg.detail\"></span>\n                </li>\n            </ul>\n        </div>\n    "
                 },] },
     ];
     /** @nocollapse */
     Messages.ctorParameters = function () { return [
-        { type: messageservice_1.MessageService, decorators: [{ type: core_1.Optional },] },
+        { type: messageservice_1.MessageService, decorators: [{ type: core_1.Optional }] }
     ]; };
     Messages.propDecorators = {
-        "value": [{ type: core_1.Input },],
-        "closable": [{ type: core_1.Input },],
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "enableService": [{ type: core_1.Input },],
-        "key": [{ type: core_1.Input },],
-        "valueChange": [{ type: core_1.Output },],
+        value: [{ type: core_1.Input }],
+        closable: [{ type: core_1.Input }],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        enableService: [{ type: core_1.Input }],
+        key: [{ type: core_1.Input }],
+        valueChange: [{ type: core_1.Output }]
     };
     return Messages;
 }());

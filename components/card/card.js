@@ -18,15 +18,15 @@ var Card = /** @class */ (function () {
     ];
     /** @nocollapse */
     Card.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
+        { type: core_1.ElementRef }
     ]; };
     Card.propDecorators = {
-        "title": [{ type: core_1.Input },],
-        "subtitle": [{ type: core_1.Input },],
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "headerFacet": [{ type: core_1.ContentChild, args: [shared_1.Header,] },],
-        "footerFacet": [{ type: core_1.ContentChild, args: [shared_1.Footer,] },],
+        title: [{ type: core_1.Input }],
+        subtitle: [{ type: core_1.Input }],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        headerFacet: [{ type: core_1.ContentChild, args: [shared_1.Header,] }],
+        footerFacet: [{ type: core_1.ContentChild, args: [shared_1.Footer,] }]
     };
     return Card;
 }());

@@ -25,7 +25,7 @@ var Dropdown = /** @class */ (function () {
         this.filterBy = 'label';
         this.lazy = true;
         this.resetFilterOnHide = false;
-        this.dropdownIcon = 'fa fa-fw fa-caret-down';
+        this.dropdownIcon = 'pi pi-caret-down';
         this.autoDisplayFirst = true;
         this.emptyFilterMessage = 'No results found';
         this.onChange = new core_1.EventEmitter();
@@ -84,7 +84,6 @@ var Dropdown = /** @class */ (function () {
             this.updateEditableLabel();
         }
         this.updateDimensions();
-        this.initialized = true;
         if (this.appendTo) {
             if (this.appendTo === 'body')
                 document.body.appendChild(this.panel);
@@ -125,6 +124,9 @@ var Dropdown = /** @class */ (function () {
     };
     Dropdown.prototype.ngAfterViewChecked = function () {
         var _this = this;
+        if (this.autoWidth && !this.dimensionsUpdated) {
+            this.updateDimensions();
+        }
         if (this.shown) {
             this.onShow();
             this.shown = false;
@@ -180,11 +182,12 @@ var Dropdown = /** @class */ (function () {
         this.disabled = val;
     };
     Dropdown.prototype.updateDimensions = function () {
-        if (this.autoWidth && this.el.nativeElement && this.el.nativeElement.children[0]) {
+        if (this.autoWidth && this.el.nativeElement && this.el.nativeElement.children[0] && this.el.nativeElement.offsetParent) {
             var select = this.domHandler.findSingle(this.el.nativeElement, 'select');
             if (select && !this.style || (this.style && (!this.style['width'] && !this.style['min-width']))) {
                 this.el.nativeElement.children[0].style.width = select.offsetWidth + 30 + 'px';
             }
+            this.dimensionsUpdated = true;
         }
     };
     Dropdown.prototype.onMouseclick = function (event) {
@@ -216,6 +219,7 @@ var Dropdown = /** @class */ (function () {
     Dropdown.prototype.onEditableInputFocus = function (event) {
         this.focused = true;
         this.hide();
+        this.onFocus.emit(event);
     };
     Dropdown.prototype.onEditableInputChange = function (event) {
         this.value = event.target.value;
@@ -457,7 +461,7 @@ var Dropdown = /** @class */ (function () {
         if (!this.documentClickListener) {
             this.documentClickListener = this.renderer.listen('document', 'click', function () {
                 if (!_this.selfClick && !_this.itemClick) {
-                    _this.panelVisible = false;
+                    _this.hide();
                     _this.unbindDocumentClickListener();
                 }
                 _this.selfClick = false;
@@ -488,7 +492,6 @@ var Dropdown = /** @class */ (function () {
         this.updateFilledState();
     };
     Dropdown.prototype.ngOnDestroy = function () {
-        this.initialized = false;
         this.unbindDocumentClickListener();
         if (this.appendTo) {
             this.el.nativeElement.appendChild(this.panel);
@@ -497,7 +500,7 @@ var Dropdown = /** @class */ (function () {
     Dropdown.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-dropdown',
-                    template: "\n         <div #container [ngClass]=\"{'ui-dropdown ui-widget ui-state-default ui-corner-all ui-helper-clearfix':true,\n            'ui-state-disabled':disabled,'ui-dropdown-open':panelVisible,'ui-state-focus':focused, 'ui-dropdown-clearable': showClear && !disabled}\"\n            (click)=\"onMouseclick($event)\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-helper-hidden-accessible\" *ngIf=\"autoWidth\">\n                <select [required]=\"required\" [attr.name]=\"name\" [attr.aria-label]=\"selectedOption ? selectedOption.label : ' '\" tabindex=\"-1\" aria-hidden=\"true\">\n                    <option *ngIf=\"placeholder\">{{placeholder}}</option>\n                    <ng-container *ngIf=\"group\">\n                        <optgroup *ngFor=\"let option of options\" [attr.label]=\"option.label\">\n                            <option *ngFor=\"let option of option.items\" [value]=\"option.value\" [selected]=\"selectedOption == option\">{{option.label}}</option>\n                        <optgroup>\n                    </ng-container>\n                    <ng-container *ngIf=\"!group\">\n                        <option *ngFor=\"let option of options\" [value]=\"option.value\" [selected]=\"selectedOption == option\">{{option.label}}</option>\n                    </ng-container>\n                </select>\n            </div>\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #in [attr.id]=\"inputId\" type=\"text\" [attr.aria-label]=\"selectedOption ? selectedOption.label : ' '\" readonly (focus)=\"onInputFocus($event)\" role=\"listbox\"\n                    (blur)=\"onInputBlur($event)\" (keydown)=\"onKeydown($event)\" [disabled]=\"disabled\" [attr.tabindex]=\"tabindex\" [attr.autofocus]=\"autofocus\">\n            </div>\n            <label [ngClass]=\"{'ui-dropdown-label ui-inputtext ui-corner-all':true,'ui-dropdown-label-empty':(label == null || label.length === 0)}\" *ngIf=\"!editable && (label != null)\">\n                <ng-container *ngIf=\"!selectedItemTemplate\">{{label||'empty'}}</ng-container>\n                <ng-container *ngTemplateOutlet=\"selectedItemTemplate; context: {$implicit: selectedOption}\"></ng-container>\n            </label>\n            <label [ngClass]=\"{'ui-dropdown-label ui-inputtext ui-corner-all ui-placeholder':true,'ui-dropdown-label-empty': (placeholder == null || placeholder.length === 0)}\" *ngIf=\"!editable && (label == null)\">{{placeholder||'empty'}}</label>\n            <input #editableInput type=\"text\" [attr.aria-label]=\"selectedOption ? selectedOption.label : ' '\" class=\"ui-dropdown-label ui-inputtext ui-corner-all\" *ngIf=\"editable\" [disabled]=\"disabled\" [attr.placeholder]=\"placeholder\"\n                        (click)=\"onEditableInputClick($event)\" (input)=\"onEditableInputChange($event)\" (focus)=\"onEditableInputFocus($event)\" (blur)=\"onInputBlur($event)\">\n            <i class=\"ui-dropdown-clear-icon fa fa-close\" (click)=\"clear($event)\" *ngIf=\"value != null && showClear && !disabled\"></i>\n            <div class=\"ui-dropdown-trigger ui-state-default ui-corner-right\">\n                <span class=\"ui-dropdown-trigger-icon ui-clickable\" [ngClass]=\"dropdownIcon\"></span>\n            </div>\n            <div #panel [ngClass]=\"'ui-dropdown-panel ui-widget-content ui-corner-all ui-shadow'\" [@panelState]=\"panelVisible ? 'visible' : 'hidden'\"\n                [style.display]=\"panelVisible ? 'block' : 'none'\" [ngStyle]=\"panelStyle\" [class]=\"panelStyleClass\">\n                <div *ngIf=\"filter\" class=\"ui-dropdown-filter-container\" (input)=\"onFilter($event)\" (click)=\"$event.stopPropagation()\">\n                    <input #filter type=\"text\" autocomplete=\"off\" class=\"ui-dropdown-filter ui-inputtext ui-widget ui-state-default ui-corner-all\" [attr.placeholder]=\"filterPlaceholder\"\n                    (keydown.enter)=\"$event.preventDefault()\" (keydown)=\"onKeydown($event)\">\n                    <span class=\"ui-dropdown-filter-icon fa fa-search\"></span>\n                </div>\n                <div #itemswrapper class=\"ui-dropdown-items-wrapper\" [style.max-height]=\"scrollHeight||'auto'\">\n                    <ul class=\"ui-dropdown-items ui-dropdown-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\" *ngIf=\"lazy ? panelVisible : true\">\n                        <ng-container *ngIf=\"group\">\n                            <ng-template ngFor let-optgroup [ngForOf]=\"optionsToDisplay\">\n                                <li class=\"ui-dropdown-item-group\">\n                                    <span *ngIf=\"!groupTemplate\">{{optgroup.label||'empty'}}</span>\n                                    <ng-container *ngTemplateOutlet=\"groupTemplate; context: {$implicit: optgroup}\"></ng-container>\n                                </li>\n                                <ng-container *ngTemplateOutlet=\"itemslist; context: {$implicit: optgroup.items, selectedOption: selectedOption}\"></ng-container>\n                            </ng-template>\n                        </ng-container>\n                        <ng-container *ngIf=\"!group\">\n                            <ng-container *ngTemplateOutlet=\"itemslist; context: {$implicit: optionsToDisplay, selectedOption: selectedOption}\"></ng-container>\n                        </ng-container>\n                        <ng-template #itemslist let-options let-selectedOption=\"selectedOption\">\n                            <li *ngFor=\"let option of options;let i=index\" [ngClass]=\"{'ui-dropdown-item ui-corner-all':true, 'ui-state-highlight':(selectedOption == option), 'ui-dropdown-item-empty':!option.label||option.label.length === 0}\" \n                                    (click)=\"onItemClick($event, option)\">\n                                <span *ngIf=\"!itemTemplate\">{{option.label||'empty'}}</span>\n                                <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: option}\"></ng-container>\n                            </li>\n                        </ng-template>\n                        <li *ngIf=\"filter && optionsToDisplay && optionsToDisplay.length === 0\">{{emptyFilterMessage}}</li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    ",
+                    template: "\n         <div #container [ngClass]=\"{'ui-dropdown ui-widget ui-state-default ui-corner-all ui-helper-clearfix':true,\n            'ui-state-disabled':disabled,'ui-dropdown-open':panelVisible,'ui-state-focus':focused, 'ui-dropdown-clearable': showClear && !disabled}\"\n            (click)=\"onMouseclick($event)\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-helper-hidden-accessible\" *ngIf=\"autoWidth\">\n                <select [required]=\"required\" [attr.name]=\"name\" [attr.aria-label]=\"selectedOption ? selectedOption.label : ' '\" tabindex=\"-1\" aria-hidden=\"true\">\n                    <option *ngIf=\"placeholder\">{{placeholder}}</option>\n                    <ng-container *ngIf=\"group\">\n                        <optgroup *ngFor=\"let option of options\" [attr.label]=\"option.label\">\n                            <option *ngFor=\"let option of option.items\" [value]=\"option.value\" [selected]=\"selectedOption == option\">{{option.label}}</option>\n                        <optgroup>\n                    </ng-container>\n                    <ng-container *ngIf=\"!group\">\n                        <option *ngFor=\"let option of options\" [value]=\"option.value\" [selected]=\"selectedOption == option\">{{option.label}}</option>\n                    </ng-container>\n                </select>\n            </div>\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #in [attr.id]=\"inputId\" type=\"text\" [attr.aria-label]=\"selectedOption ? selectedOption.label : ' '\" readonly (focus)=\"onInputFocus($event)\" role=\"listbox\"\n                    (blur)=\"onInputBlur($event)\" (keydown)=\"onKeydown($event)\" [disabled]=\"disabled\" [attr.tabindex]=\"tabindex\" [attr.autofocus]=\"autofocus\">\n            </div>\n            <label [ngClass]=\"{'ui-dropdown-label ui-inputtext ui-corner-all':true,'ui-dropdown-label-empty':(label == null || label.length === 0)}\" *ngIf=\"!editable && (label != null)\">\n                <ng-container *ngIf=\"!selectedItemTemplate\">{{label||'empty'}}</ng-container>\n                <ng-container *ngTemplateOutlet=\"selectedItemTemplate; context: {$implicit: selectedOption}\"></ng-container>\n            </label>\n            <label [ngClass]=\"{'ui-dropdown-label ui-inputtext ui-corner-all ui-placeholder':true,'ui-dropdown-label-empty': (placeholder == null || placeholder.length === 0)}\" *ngIf=\"!editable && (label == null)\">{{placeholder||'empty'}}</label>\n            <input #editableInput type=\"text\" [attr.aria-label]=\"selectedOption ? selectedOption.label : ' '\" class=\"ui-dropdown-label ui-inputtext ui-corner-all\" *ngIf=\"editable\" [disabled]=\"disabled\" [attr.placeholder]=\"placeholder\"\n                        (click)=\"onEditableInputClick($event)\" (input)=\"onEditableInputChange($event)\" (focus)=\"onEditableInputFocus($event)\" (blur)=\"onInputBlur($event)\">\n            <i class=\"ui-dropdown-clear-icon pi pi-times\" (click)=\"clear($event)\" *ngIf=\"value != null && showClear && !disabled\"></i>\n            <div class=\"ui-dropdown-trigger ui-state-default ui-corner-right\">\n                <span class=\"ui-dropdown-trigger-icon ui-clickable\" [ngClass]=\"dropdownIcon\"></span>\n            </div>\n            <div #panel [ngClass]=\"'ui-dropdown-panel ui-widget-content ui-corner-all ui-shadow'\" [@panelState]=\"panelVisible ? 'visible' : 'hidden'\"\n                [style.display]=\"panelVisible ? 'block' : 'none'\" [ngStyle]=\"panelStyle\" [class]=\"panelStyleClass\">\n                <div *ngIf=\"filter\" class=\"ui-dropdown-filter-container\" (input)=\"onFilter($event)\" (click)=\"$event.stopPropagation()\">\n                    <input #filter type=\"text\" autocomplete=\"off\" class=\"ui-dropdown-filter ui-inputtext ui-widget ui-state-default ui-corner-all\" [attr.placeholder]=\"filterPlaceholder\"\n                    (keydown.enter)=\"$event.preventDefault()\" (keydown)=\"onKeydown($event)\">\n                    <span class=\"ui-dropdown-filter-icon pi pi-search\"></span>\n                </div>\n                <div #itemswrapper class=\"ui-dropdown-items-wrapper\" [style.max-height]=\"scrollHeight||'auto'\">\n                    <ul class=\"ui-dropdown-items ui-dropdown-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\" *ngIf=\"lazy ? panelVisible : true\">\n                        <ng-container *ngIf=\"group\">\n                            <ng-template ngFor let-optgroup [ngForOf]=\"optionsToDisplay\">\n                                <li class=\"ui-dropdown-item-group\">\n                                    <span *ngIf=\"!groupTemplate\">{{optgroup.label||'empty'}}</span>\n                                    <ng-container *ngTemplateOutlet=\"groupTemplate; context: {$implicit: optgroup}\"></ng-container>\n                                </li>\n                                <ng-container *ngTemplateOutlet=\"itemslist; context: {$implicit: optgroup.items, selectedOption: selectedOption}\"></ng-container>\n                            </ng-template>\n                        </ng-container>\n                        <ng-container *ngIf=\"!group\">\n                            <ng-container *ngTemplateOutlet=\"itemslist; context: {$implicit: optionsToDisplay, selectedOption: selectedOption}\"></ng-container>\n                        </ng-container>\n                        <ng-template #itemslist let-options let-selectedOption=\"selectedOption\">\n                            <li *ngFor=\"let option of options;let i=index\" [ngClass]=\"{'ui-dropdown-item ui-corner-all':true, 'ui-state-highlight':(selectedOption == option), 'ui-dropdown-item-empty':!option.label||option.label.length === 0}\"\n                                    (click)=\"onItemClick($event, option)\">\n                                <span *ngIf=\"!itemTemplate\">{{option.label||'empty'}}</span>\n                                <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: option}\"></ng-container>\n                            </li>\n                        </ng-template>\n                        <li *ngIf=\"filter && optionsToDisplay && optionsToDisplay.length === 0\">{{emptyFilterMessage}}</li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    ",
                     animations: [
                         animations_1.trigger('panelState', [
                             animations_1.state('hidden', animations_1.style({
@@ -519,54 +522,54 @@ var Dropdown = /** @class */ (function () {
     ];
     /** @nocollapse */
     Dropdown.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: domhandler_1.DomHandler, },
-        { type: core_1.Renderer2, },
-        { type: core_1.ChangeDetectorRef, },
-        { type: objectutils_1.ObjectUtils, },
-        { type: core_1.NgZone, },
+        { type: core_1.ElementRef },
+        { type: domhandler_1.DomHandler },
+        { type: core_1.Renderer2 },
+        { type: core_1.ChangeDetectorRef },
+        { type: objectutils_1.ObjectUtils },
+        { type: core_1.NgZone }
     ]; };
     Dropdown.propDecorators = {
-        "scrollHeight": [{ type: core_1.Input },],
-        "filter": [{ type: core_1.Input },],
-        "name": [{ type: core_1.Input },],
-        "style": [{ type: core_1.Input },],
-        "panelStyle": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "panelStyleClass": [{ type: core_1.Input },],
-        "disabled": [{ type: core_1.Input },],
-        "readonly": [{ type: core_1.Input },],
-        "autoWidth": [{ type: core_1.Input },],
-        "required": [{ type: core_1.Input },],
-        "editable": [{ type: core_1.Input },],
-        "appendTo": [{ type: core_1.Input },],
-        "tabindex": [{ type: core_1.Input },],
-        "placeholder": [{ type: core_1.Input },],
-        "filterPlaceholder": [{ type: core_1.Input },],
-        "inputId": [{ type: core_1.Input },],
-        "dataKey": [{ type: core_1.Input },],
-        "filterBy": [{ type: core_1.Input },],
-        "lazy": [{ type: core_1.Input },],
-        "autofocus": [{ type: core_1.Input },],
-        "resetFilterOnHide": [{ type: core_1.Input },],
-        "dropdownIcon": [{ type: core_1.Input },],
-        "optionLabel": [{ type: core_1.Input },],
-        "autoDisplayFirst": [{ type: core_1.Input },],
-        "group": [{ type: core_1.Input },],
-        "showClear": [{ type: core_1.Input },],
-        "emptyFilterMessage": [{ type: core_1.Input },],
-        "onChange": [{ type: core_1.Output },],
-        "onFocus": [{ type: core_1.Output },],
-        "onBlur": [{ type: core_1.Output },],
-        "onClick": [{ type: core_1.Output },],
-        "containerViewChild": [{ type: core_1.ViewChild, args: ['container',] },],
-        "panelViewChild": [{ type: core_1.ViewChild, args: ['panel',] },],
-        "itemsWrapperViewChild": [{ type: core_1.ViewChild, args: ['itemswrapper',] },],
-        "filterViewChild": [{ type: core_1.ViewChild, args: ['filter',] },],
-        "focusViewChild": [{ type: core_1.ViewChild, args: ['in',] },],
-        "editableInputViewChild": [{ type: core_1.ViewChild, args: ['editableInput',] },],
-        "templates": [{ type: core_1.ContentChildren, args: [shared_1.PrimeTemplate,] },],
-        "options": [{ type: core_1.Input },],
+        scrollHeight: [{ type: core_1.Input }],
+        filter: [{ type: core_1.Input }],
+        name: [{ type: core_1.Input }],
+        style: [{ type: core_1.Input }],
+        panelStyle: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        panelStyleClass: [{ type: core_1.Input }],
+        disabled: [{ type: core_1.Input }],
+        readonly: [{ type: core_1.Input }],
+        autoWidth: [{ type: core_1.Input }],
+        required: [{ type: core_1.Input }],
+        editable: [{ type: core_1.Input }],
+        appendTo: [{ type: core_1.Input }],
+        tabindex: [{ type: core_1.Input }],
+        placeholder: [{ type: core_1.Input }],
+        filterPlaceholder: [{ type: core_1.Input }],
+        inputId: [{ type: core_1.Input }],
+        dataKey: [{ type: core_1.Input }],
+        filterBy: [{ type: core_1.Input }],
+        lazy: [{ type: core_1.Input }],
+        autofocus: [{ type: core_1.Input }],
+        resetFilterOnHide: [{ type: core_1.Input }],
+        dropdownIcon: [{ type: core_1.Input }],
+        optionLabel: [{ type: core_1.Input }],
+        autoDisplayFirst: [{ type: core_1.Input }],
+        group: [{ type: core_1.Input }],
+        showClear: [{ type: core_1.Input }],
+        emptyFilterMessage: [{ type: core_1.Input }],
+        onChange: [{ type: core_1.Output }],
+        onFocus: [{ type: core_1.Output }],
+        onBlur: [{ type: core_1.Output }],
+        onClick: [{ type: core_1.Output }],
+        containerViewChild: [{ type: core_1.ViewChild, args: ['container',] }],
+        panelViewChild: [{ type: core_1.ViewChild, args: ['panel',] }],
+        itemsWrapperViewChild: [{ type: core_1.ViewChild, args: ['itemswrapper',] }],
+        filterViewChild: [{ type: core_1.ViewChild, args: ['filter',] }],
+        focusViewChild: [{ type: core_1.ViewChild, args: ['in',] }],
+        editableInputViewChild: [{ type: core_1.ViewChild, args: ['editableInput',] }],
+        templates: [{ type: core_1.ContentChildren, args: [shared_1.PrimeTemplate,] }],
+        options: [{ type: core_1.Input }]
     };
     return Dropdown;
 }());

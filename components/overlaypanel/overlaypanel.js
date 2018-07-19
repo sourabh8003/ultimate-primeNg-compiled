@@ -111,7 +111,7 @@ var OverlayPanel = /** @class */ (function () {
     OverlayPanel.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-overlayPanel',
-                    template: "\n        <div [ngClass]=\"'ui-overlaypanel ui-widget ui-widget-content ui-corner-all ui-shadow'\" [ngStyle]=\"style\" [class]=\"styleClass\"\n            [style.display]=\"visible ? 'block' : 'none'\" (click)=\"onPanelClick($event)\" [@panelState]=\"visible ? 'visible' : 'hidden'\">\n            <div class=\"ui-overlaypanel-content\">\n                <ng-content></ng-content>\n            </div>\n            <a href=\"#\" *ngIf=\"showCloseIcon\" class=\"ui-overlaypanel-close ui-state-default\" (click)=\"onCloseClick($event)\">\n                <span class=\"fa fa-fw fa-close\"></span>\n            </a>\n        </div>\n    ",
+                    template: "\n        <div [ngClass]=\"'ui-overlaypanel ui-widget ui-widget-content ui-corner-all ui-shadow'\" [ngStyle]=\"style\" [class]=\"styleClass\"\n            [style.display]=\"visible ? 'block' : 'none'\" (click)=\"onPanelClick($event)\" [@panelState]=\"visible ? 'visible' : 'hidden'\">\n            <div class=\"ui-overlaypanel-content\">\n                <ng-content></ng-content>\n            </div>\n            <a href=\"#\" *ngIf=\"showCloseIcon\" class=\"ui-overlaypanel-close ui-state-default\" (click)=\"onCloseClick($event)\">\n                <span class=\"pi pi-times\"></span>\n            </a>\n        </div>\n    ",
                     animations: [
                         animations_1.trigger('panelState', [
                             animations_1.state('hidden', animations_1.style({
@@ -129,21 +129,21 @@ var OverlayPanel = /** @class */ (function () {
     ];
     /** @nocollapse */
     OverlayPanel.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: domhandler_1.DomHandler, },
-        { type: core_1.Renderer2, },
-        { type: core_1.ChangeDetectorRef, },
+        { type: core_1.ElementRef },
+        { type: domhandler_1.DomHandler },
+        { type: core_1.Renderer2 },
+        { type: core_1.ChangeDetectorRef }
     ]; };
     OverlayPanel.propDecorators = {
-        "dismissable": [{ type: core_1.Input },],
-        "showCloseIcon": [{ type: core_1.Input },],
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "appendTo": [{ type: core_1.Input },],
-        "onBeforeShow": [{ type: core_1.Output },],
-        "onAfterShow": [{ type: core_1.Output },],
-        "onBeforeHide": [{ type: core_1.Output },],
-        "onAfterHide": [{ type: core_1.Output },],
+        dismissable: [{ type: core_1.Input }],
+        showCloseIcon: [{ type: core_1.Input }],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        appendTo: [{ type: core_1.Input }],
+        onBeforeShow: [{ type: core_1.Output }],
+        onAfterShow: [{ type: core_1.Output }],
+        onBeforeHide: [{ type: core_1.Output }],
+        onAfterHide: [{ type: core_1.Output }]
     };
     return OverlayPanel;
 }());

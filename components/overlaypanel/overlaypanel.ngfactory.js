@@ -18,7 +18,7 @@ exports.RenderType_OverlayPanel = RenderType_OverlayPanel;
 function View_OverlayPanel_1(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, null, 1, "a", [["class", "ui-overlaypanel-close ui-state-default"], ["href", "#"]], null, [[null, "click"]], function (_v, en, $event) { var ad = true; var _co = _v.component; if (("click" === en)) {
         var pd_0 = (_co.onCloseClick($event) !== false);
         ad = (pd_0 && ad);
-    } return ad; }, null, null)), (_l()(), i0.ɵeld(1, 0, null, null, 0, "span", [["class", "fa fa-fw fa-close"]], null, null, null, null, null))], null, null); }
+    } return ad; }, null, null)), (_l()(), i0.ɵeld(1, 0, null, null, 0, "span", [["class", "pi pi-times"]], null, null, null, null, null))], null, null); }
 function View_OverlayPanel_0(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, null, 6, "div", [], [[4, "display", null], [24, "@panelState", 0]], [[null, "click"]], function (_v, en, $event) { var ad = true; var _co = _v.component; if (("click" === en)) {
         var pd_0 = (_co.onPanelClick($event) !== false);
         ad = (pd_0 && ad);

@@ -410,27 +410,27 @@ var ColorPicker = /** @class */ (function () {
     ];
     /** @nocollapse */
     ColorPicker.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: domhandler_1.DomHandler, },
-        { type: core_1.Renderer2, },
-        { type: core_1.ChangeDetectorRef, },
+        { type: core_1.ElementRef },
+        { type: domhandler_1.DomHandler },
+        { type: core_1.Renderer2 },
+        { type: core_1.ChangeDetectorRef }
     ]; };
     ColorPicker.propDecorators = {
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "inline": [{ type: core_1.Input },],
-        "format": [{ type: core_1.Input },],
-        "appendTo": [{ type: core_1.Input },],
-        "disabled": [{ type: core_1.Input },],
-        "tabindex": [{ type: core_1.Input },],
-        "inputId": [{ type: core_1.Input },],
-        "onChange": [{ type: core_1.Output },],
-        "panelViewChild": [{ type: core_1.ViewChild, args: ['panel',] },],
-        "colorSelectorViewChild": [{ type: core_1.ViewChild, args: ['colorSelector',] },],
-        "colorHandleViewChild": [{ type: core_1.ViewChild, args: ['colorHandle',] },],
-        "hueViewChild": [{ type: core_1.ViewChild, args: ['hue',] },],
-        "hueHandleViewChild": [{ type: core_1.ViewChild, args: ['hueHandle',] },],
-        "inputViewChild": [{ type: core_1.ViewChild, args: ['input',] },],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        inline: [{ type: core_1.Input }],
+        format: [{ type: core_1.Input }],
+        appendTo: [{ type: core_1.Input }],
+        disabled: [{ type: core_1.Input }],
+        tabindex: [{ type: core_1.Input }],
+        inputId: [{ type: core_1.Input }],
+        onChange: [{ type: core_1.Output }],
+        panelViewChild: [{ type: core_1.ViewChild, args: ['panel',] }],
+        colorSelectorViewChild: [{ type: core_1.ViewChild, args: ['colorSelector',] }],
+        colorHandleViewChild: [{ type: core_1.ViewChild, args: ['colorHandle',] }],
+        hueViewChild: [{ type: core_1.ViewChild, args: ['hue',] }],
+        hueHandleViewChild: [{ type: core_1.ViewChild, args: ['hueHandle',] }],
+        inputViewChild: [{ type: core_1.ViewChild, args: ['input',] }]
     };
     return ColorPicker;
 }());

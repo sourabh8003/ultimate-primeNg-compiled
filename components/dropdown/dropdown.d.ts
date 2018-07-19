@@ -69,7 +69,7 @@ export declare class Dropdown implements OnInit, AfterViewInit, AfterContentInit
     panel: HTMLDivElement;
     container: HTMLDivElement;
     itemsWrapper: HTMLDivElement;
-    initialized: boolean;
+    dimensionsUpdated: boolean;
     selfClick: boolean;
     itemClick: boolean;
     clearClick: boolean;

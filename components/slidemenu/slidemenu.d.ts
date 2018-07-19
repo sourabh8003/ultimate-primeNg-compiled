@@ -6,9 +6,10 @@ export declare class SlideMenuSub implements OnDestroy {
     item: MenuItem;
     root: boolean;
     backLabel: string;
-    menuWidth: string;
+    menuWidth: number;
     effectDuration: any;
     easing: string;
+    index: number;
     constructor(slideMenu: SlideMenu);
     activeItem: any;
     itemClick(event: any, item: MenuItem, listitem: any): void;

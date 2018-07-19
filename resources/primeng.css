@@ -229,8 +229,8 @@ button {
     right: .5em;
 }
 
-.ui-rtl .ui-accordion .ui-accordion-toggle-icon.fa-caret-right:before {
-    content: '\f0d9';
+.ui-rtl .ui-accordion .ui-accordion-toggle-icon.pi-caret-right:before {
+    content: '\e904';
 }
 .ui-autocomplete {
     width: auto;
@@ -427,7 +427,18 @@ button {
 
 .ui-breadcrumb ul li .ui-menuitem-link {
     text-decoration: none;
+    vertical-align: middle;
 }
+
+.ui-breadcrumb .ui-menuitem-icon {
+    margin-right: .25em;
+    vertical-align: middle;
+}
+
+.ui-breadcrumb .ui-menuitem-text {
+    vertical-align: middle;
+}
+
 /* Button */
 .ui-button {
     display: inline-block;
@@ -473,16 +484,16 @@ p-button {
 }
 
 /*button icon element(s) */
-.ui-button-icon-only .fa,
-.ui-button-text-icon-left .fa,
-.ui-button-text-icon-right .fa {
+.ui-button-icon-only .ui-button-icon-left,
+.ui-button-text-icon-left .ui-button-icon-left,
+.ui-button-text-icon-right .ui-button-icon-right {
     position: absolute;
     top: 50%;
     margin-top: -.5em;
     height: 1em;
 }
 
-.ui-button-icon-only .fa {
+.ui-button-icon-only .ui-button-icon-left {
     top: 50%;
     left: 50%;
     margin-top: -.5em;
@@ -671,10 +682,18 @@ button.ui-button::-moz-focus-inner {
     border-left: 0 none;
 }
 
+.ui-calendar .ui-calendar-button .ui-button-icon-left {
+    font-size: 1.25em;
+}
+
 .ui-calendar .ui-calendar-button:enabled:hover,
 .ui-calendar .ui-calendar-button:focus {
     border-left: 0 none;
-} 
+}
+
+.ui-calendar .ui-datepicker {
+    min-width: 100%;
+}
 
 /* Fluid */
 .ui-fluid .ui-calendar {
@@ -695,7 +714,7 @@ button.ui-button::-moz-focus-inner {
 
 /* Datepicker */
 .ui-datepicker {
-	width: 17em;
+	width: auto;
 	padding: .2em;
 	display: none;
     position: absolute;
@@ -704,14 +723,23 @@ button.ui-button::-moz-focus-inner {
     display: inline-block;
     position: static;
 }
+
+.ui-datepicker .ui-datepicker-group {
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+}
+
+/* Header */
 .ui-datepicker .ui-datepicker-header {
 	position: relative;
-	padding: .2em 0;
+	padding: .5em 0;
 }
 .ui-datepicker .ui-datepicker-prev,
 .ui-datepicker .ui-datepicker-next {
 	position: absolute;
-	top: .125em;
+	top: .5em;
 	width: 1.8em;
 	height: 1.8em;
 }
@@ -728,13 +756,8 @@ button.ui-button::-moz-focus-inner {
 	position: absolute;
 	left: 50%;
 	top: 50%;
-	margin-top: -.5em;
-}
-.ui-datepicker .ui-datepicker-prev span {
-	margin-left: -.25em;
-}
-.ui-datepicker .ui-datepicker-next span {
-	margin-left: -.125em;
+    margin-top: -.5em;
+    margin-left: -.5em;
 }
 .ui-datepicker .ui-datepicker-title {
 	margin: 0 2.3em;
@@ -755,6 +778,20 @@ button.ui-button::-moz-focus-inner {
 .ui-datepicker select.ui-datepicker-month {
     margin-right: .25em;
 }
+.ui-datepicker span.ui-datepicker-year {
+	margin-left: .25em;
+}
+
+/* Multiple Month DatePicker */
+.ui-datepicker-multiple-month .ui-datepicker-group {
+    display: table-cell;
+    border-left-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-right-width: 1px;
+}
+
+/* DatePicker Table */
 .ui-datepicker table {
 	width: 100%;
 	font-size: .9em;
@@ -762,80 +799,28 @@ button.ui-button::-moz-focus-inner {
 	margin: 0 0 .4em;
 }
 .ui-datepicker th {
-	padding: .7em .3em;
+	padding: .5em;
 	text-align: center;
 	font-weight: bold;
 	border: 0;
 }
 .ui-datepicker td {
 	border: 0;
-	padding: .125em;
+	padding: 0;
 }
 .ui-datepicker td span,
 .ui-datepicker td a {
 	display: block;
-	padding: .2em;
+	padding: .5em;
 	text-align: right;
 	text-decoration: none;
-}
-.ui-datepicker .ui-datepicker-buttonpane {
-	background-image: none;
-	margin: .7em 0 0 0;
-	padding: 0 .2em;
-	border-left: 0;
-	border-right: 0;
-	border-bottom: 0;
-}
-.ui-datepicker .ui-datepicker-buttonpane button {
-	float: right;
-	margin: .5em .2em .4em;
-	cursor: pointer;
-	padding: .2em .6em .3em .6em;
-	width: auto;
-	overflow: visible;
-}
-.ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current {
-	float: left;
-}
-
-/* with multiple calendars */
-.ui-datepicker.ui-datepicker-multi {
-	width: auto;
-}
-.ui-datepicker-multi .ui-datepicker-group {
-	float: left;
-}
-.ui-datepicker-multi .ui-datepicker-group table {
-	width: 95%;
-	margin: 0 auto .4em;
-}
-.ui-datepicker-multi-2 .ui-datepicker-group {
-	width: 50%;
-}
-.ui-datepicker-multi-3 .ui-datepicker-group {
-	width: 33.3%;
-}
-.ui-datepicker-multi-4 .ui-datepicker-group {
-	width: 25%;
-}
-.ui-datepicker-multi .ui-datepicker-group-last .ui-datepicker-header,
-.ui-datepicker-multi .ui-datepicker-group-middle .ui-datepicker-header {
-	border-left-width: 0;
-}
-.ui-datepicker-multi .ui-datepicker-buttonpane {
-	clear: left;
-}
-.ui-datepicker-row-break {
-	clear: both;
-	width: 100%;
-	font-size: 0;
 }
 
 .ui-datepicker .ui-datepicker-buttonbar {
     border-left: 0 none;
     border-right: 0 none;
     border-bottom: 0 none;
-	padding: .2em;
+	padding: .5em;
 }
 
 .ui-datepicker .ui-datepicker-buttonbar > .ui-g > div:last-child {
@@ -847,16 +832,25 @@ button.ui-button::-moz-focus-inner {
 }
 
 .ui-calendar.ui-calendar-w-btn input {
-    -moz-border-radius-topright: 0px; 
-    -webkit-border-top-right-radius: 0px; 
-    -khtml-border-top-right-radius: 0px; 
+    -moz-border-radius-topright: 0px;
+    -webkit-border-top-right-radius: 0px;
+    -khtml-border-top-right-radius: 0px;
     border-top-right-radius: 0px;
-    -moz-border-radius-bottomright: 0px; 
-    -webkit-border-bottom-right-radius: 0px; 
-    -khtml-border-bottom-right-radius: 0px; 
+    -moz-border-radius-bottomright: 0px;
+    -webkit-border-bottom-right-radius: 0px;
+    -khtml-border-bottom-right-radius: 0px;
     border-bottom-right-radius: 0px;
 }
 
+/* Month Picker */
+.ui-datepicker-monthpicker .ui-datepicker-month-cell {
+    width: 33.3%;
+    display: inline-block;
+    text-align: center;
+    padding: .5em;
+}
+
+/* Time Picker */
 .ui-timepicker {
     text-align: center;
     padding: .5em 0;
@@ -888,11 +882,70 @@ button.ui-button::-moz-focus-inner {
     filter:Alpha(Opacity=70);
 }
 
+.ui-timepicker > div a:last-child {
+    margin-top: .3em;
+}
+
 .ui-timepicker > div a:hover {
     display: block;
     opacity: 1;
     filter:Alpha(Opacity=100);
 }
+input[type=text]::-ms-clear {
+    display: none;
+}
+
+/* Touch UI */
+.ui-datepicker-touch-ui,
+.ui-calendar .ui-datepicker-touch-ui {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 80vw;
+    transform: translate(-50%, -50%);
+}
+
+.ui-datepicker-touch-ui.ui-datepicker th {
+	padding: 2em 0;
+}
+.ui-datepicker-touch-ui.ui-datepicker td {
+	padding: 0;
+}
+.ui-datepicker-touch-ui.ui-datepicker td span,
+.ui-datepicker-touch-ui.ui-datepicker td a {
+	padding: 2em 0;
+}
+
+.ui-datepicker-touch-ui .ui-timepicker {
+    padding: 1em 0;
+}
+
+.ui-datepicker-touch-ui .ui-timepicker > div a {
+    font-size: 2em;
+}
+
+.ui-datepicker-mask {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+@media screen and (max-width: 40em) {
+    .ui-datepicker-multiple-month {
+        width: 17em;
+        overflow: auto;
+    }
+
+    .ui-datepicker-touch-ui.ui-datepicker th {
+        padding: 1em 0;
+    }
+
+    .ui-datepicker-touch-ui.ui-datepicker td span,
+    .ui-datepicker-touch-ui.ui-datepicker td a {
+        padding: 1em 0;
+    }
+}
+
 .ui-card-header img {
     width: 100%;
 }
@@ -1762,6 +1815,10 @@ button.ui-button::-moz-focus-inner {
     margin-left: -1em;
 }
 
+.ui-dataview-loading-icon {
+    font-size: 2em;
+}
+
 .ui-dialog {
     position: fixed;
     padding: 0;
@@ -1792,19 +1849,18 @@ button.ui-button::-moz-focus-inner {
 }
 
 .ui-dialog .ui-dialog-titlebar-icon {
-    text-decoration: none
-}
-
-.ui-dialog .ui-dialog-titlebar-close {
+    text-decoration: none;
+    float: right;
     float: right;
     padding: .125em;
     cursor: pointer;
     border: 1px solid transparent;
 }
 
-.ui-dialog .ui-dialog-titlebar-close span {
+.ui-dialog .ui-dialog-titlebar-icon span {
     display: block;
     margin: 0;
+    font-size: 1.25em;
 }
 
 .ui-dialog-footer {
@@ -1819,6 +1875,11 @@ button.ui-button::-moz-focus-inner {
     height: 100%;
 }
 
+.ui-dialog-maximized {
+    -webkit-transition: left .3s, top .3s, width .3s,height .3s;
+    transition: left .3s, top .3s, width .3s,height .3s;
+}
+
 /* ConfirmDialog */
 .ui-confirmdialog {
     width: 30em;
@@ -1827,7 +1888,7 @@ button.ui-button::-moz-focus-inner {
 .ui-confirmdialog.ui-dialog .ui-dialog-content {
     padding: 1em 2em;
 }
-.ui-confirmdialog .ui-dialog-content .fa {
+.ui-confirmdialog .ui-dialog-content .ui-confirmdialog-icon {
     font-size: 1.5em;
     vertical-align: middle;
     margin-right: .5em;
@@ -1889,9 +1950,12 @@ button.ui-button::-moz-focus-inner {
     padding: 0 .25em;
 }
 
-.ui-dropdown .ui-dropdown-trigger .fa {
-    margin-top: .3em;
-    margin-left: -.125em;
+.ui-dropdown .ui-dropdown-trigger .ui-dropdown-trigger-icon {
+    top: 50%;
+    left: 50%;
+    margin-top: -.5em;
+    margin-left: -.5em;
+    position: absolute;
 }
 
 .ui-dropdown .ui-dropdown-label  {
@@ -1970,7 +2034,7 @@ button.ui-button::-moz-focus-inner {
     width: 100%;
 }
 
-.ui-dropdown-panel .ui-dropdown-filter-container .fa {
+.ui-dropdown-panel .ui-dropdown-filter-container .ui-dropdown-filter-icon {
     position: absolute;
     top: .8em;
     right: 1em;
@@ -2182,11 +2246,11 @@ button.ui-button::-moz-focus-inner {
 }
 
 .ui-galleria-nav-prev {
-    left: 5px;
+    left: 4px;
 }
 
 .ui-galleria-nav-next {
-    right: 5px;
+    right: 4px;
 }
 
 .ui-galleria-caption {
@@ -3027,6 +3091,7 @@ button.ui-button::-moz-focus-inner {
     left: .5em;
     top: .25em;
     padding: 0;
+    font-size: 2em;
 }
 
 .ui-growl-message {
@@ -3201,15 +3266,22 @@ button.ui-button::-moz-focus-inner {
   color: #898989;
   line-height: 1;
 }
+
+/* breaks firefox so defined separately */
+.ui-float-label > input:-webkit-autofill ~ label {
+    top:-.75em;
+    font-size:12px;
+}
     
 .ui-float-label > input:focus ~ label,
-.ui-float-label > input:-webkit-autofill ~ label,
 .ui-float-label > input.ui-state-filled ~ label,
 .ui-float-label > .ui-inputwrapper-focus ~ label,
 .ui-float-label > .ui-inputwrapper-filled ~ label {
   top:-.75em;
   font-size:12px;
 }
+
+
 
 .ui-inputtextarea-resizable {
     overflow: hidden;
@@ -3345,7 +3417,7 @@ button.ui-button::-moz-focus-inner {
     width: calc(100% - 2em);
 }
 
-.ui-listbox-header .ui-listbox-filter-container .fa {
+.ui-listbox-header .ui-listbox-filter-container .ui-listbox-filter-icon {
     position: absolute;
     top: .25em;
     left: .25em;
@@ -3574,6 +3646,7 @@ button.ui-button::-moz-focus-inner {
     display:inline-block;
     padding: 0;
     vertical-align: middle;
+    font-size: 2em;
 }
 
 .ui-messages-summary {
@@ -3643,6 +3716,16 @@ button.ui-button::-moz-focus-inner {
     top: 5px;
     right: 5px;
 }
+
+/* Message */
+.ui-message .ui-message-icon {
+    font-size: 1.5em;
+    vertical-align: middle;
+}
+
+.ui-message .ui-message-text {
+    vertical-align: middle;
+}
 .ui-multiselect {
     display: inline-block;
     position: relative;
@@ -3663,9 +3746,12 @@ button.ui-button::-moz-focus-inner {
     padding: 0 .25em;
 }
 
-.ui-multiselect .ui-multiselect-trigger  .fa {
-    margin-top: .4em;
-    margin-left: -.125em;
+.ui-multiselect .ui-multiselect-trigger  .ui-multiselect-trigger-icon {
+    top: 50%;
+    left: 50%;
+    margin-top: -.5em;
+    margin-left: -.5em;
+    position: absolute;
 }
 
 .ui-multiselect .ui-multiselect-label-container  {
@@ -3755,7 +3841,7 @@ button.ui-button::-moz-focus-inner {
     width: 85%;
 }
 
-.ui-multiselect-header .ui-multiselect-filter-container .fa {
+.ui-multiselect-header .ui-multiselect-filter-container .ui-multiselect-filter-icon {
     position: absolute;
     top: .25em;
     left: .125em;
@@ -3852,7 +3938,7 @@ button.ui-button::-moz-focus-inner {
     width: 100%;
 }
 
-.ui-orderlist .ui-orderlist-filter-container .fa {
+.ui-orderlist .ui-orderlist-filter-container .ui-orderlist-filter-icon {
     position: absolute;
     top: 50%;
     left: 1em;
@@ -3905,9 +3991,9 @@ button.ui-button::-moz-focus-inner {
     }
     
     .ui-orderlist.ui-orderlist-responsive .ui-orderlist-controls .ui-button {
-        display: inline;
-        width: 20%;
         display: inline-block;
+        width: 20%;
+        margin-right: .25em;
     }
     
     .ui-orderlist.ui-orderlist-responsive .ui-orderlist-list-container {
@@ -4009,13 +4095,33 @@ button.ui-button::-moz-focus-inner {
 .ui-paginator .ui-paginator-first,
 .ui-paginator .ui-paginator-prev,
 .ui-paginator .ui-paginator-current {
-	display: inline-block;
-	padding: .125em .375em;
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    line-height: 1.5em;
 	zoom: 1;
 	margin-left: .063em;
 	margin-right: .063em;
 	text-decoration: none;
     vertical-align: middle;
+    text-align: center;
+    position: relative;
+}
+
+.ui-paginator .ui-paginator-pages {
+    width: auto;
+    line-height: 1;
+}
+
+.ui-paginator .ui-paginator-icon {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 1em;
+    height: 1em;
+    margin-top: -.5em;
+    margin-left: -.5em;
 }
 
 .ui-paginator .ui-paginator-page,
@@ -4222,7 +4328,7 @@ button.ui-button::-moz-focus-inner {
     width: 100%;
 }
 
-.ui-picklist .ui-picklist-filter-container .fa {
+.ui-picklist .ui-picklist-filter-container .ui-picklist-filter-icon {
     position: absolute;
     top: 50%;
     left: 1em;
@@ -4334,9 +4440,10 @@ button.ui-button::-moz-focus-inner {
     }
     
     .ui-picklist.ui-picklist-responsive .ui-picklist-buttons button {
-        display: inline;
+        display: inline-block;
         width: 20%;
         margin-bottom: 0;
+        margin-right: .25em;
     }
     
     .ui-picklist.ui-picklist-responsive .ui-picklist-source-controls.ui-picklist-buttons {
@@ -4347,20 +4454,20 @@ button.ui-button::-moz-focus-inner {
         padding-top: .4em;
     }
     
-    .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .fa-angle-right::before {
-        content: "\f107";
+    .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .pi-angle-right::before {
+        content: "\e930";
     }
     
-    .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .fa-angle-double-right::before {
-        content: "\f103";
+    .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .pi-angle-double-right::before {
+        content: "\e92c";
     }
     
-    .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .fa-angle-left::before {
-        content: "\f106";
+    .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .pi-angle-left::before {
+        content: "\e933";
     }
     
-    .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .fa-angle-double-left::before {
-        content: "\f102";
+    .ui-picklist.ui-picklist-responsive .ui-picklist-buttons .pi-angle-double-left::before {
+        content: "\e92f";
     }
 }
 
@@ -4560,17 +4667,25 @@ button.ui-button::-moz-focus-inner {
     -webkit-border-radius: 100%;
     border-radius: 100%;
     text-align: center;
+    position: relative;
 }
 
 .ui-radiobutton-icon {
     display: block;
-    font-size: .5em;
-    line-height: inherit;
-    margin-top: -1px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 1em;
+    height: 1em;
+    margin-top: -.5em;
+    margin-left: -.5em;
 }
  
 .ui-radiobutton, .ui-radiobutton-label {
     vertical-align: middle;
+}
+.ui-rating {
+    font-size: 1.25em;
 }
 .ui-fluid .fc .ui-button {
     width: auto;
@@ -4847,6 +4962,15 @@ button.ui-button::-moz-focus-inner {
 .ui-slidemenu .ui-menuitem-active > .ui-submenu > .ui-submenu-list {
     display: block;
 }
+
+.ui-slidemenu ul:not(.ui-active-submenu) > .ui-menuitem:not(.ui-menuitem-active),
+.ui-slidemenu .ui-active-submenu > .ui-menuitem-active > .ui-submenu > .ui-submenu-list {
+    display: none;
+}
+
+.ui-slidemenu .ui-active-submenu > .ui-menuitem-active ~ .ui-menuitem {
+    display: block;
+}
 .ui-slider {
 	position: relative;
 	text-align: left;
@@ -4939,7 +5063,7 @@ button.ui-button::-moz-focus-inner {
     width: 1.5em;
 }
 
-.ui-spinner .fa {
+.ui-spinner .ui-spinner-button-icon {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -4970,7 +5094,7 @@ button.ui-button::-moz-focus-inner {
     width: 1.5em;
 }
 
-.ui-fluid .ui-spinner .ui-spinner-button .fa {
+.ui-fluid .ui-spinner .ui-spinner-button .ui-spinner-button-icon {
     left: .7em;
 }
 .ui-splitbutton {
@@ -5145,11 +5269,11 @@ button.ui-button::-moz-focus-inner {
 
 .ui-table-resizable .ui-table-thead > tr > th,
 .ui-table-resizable .ui-table-tfoot > tr > td,
-.ui-table-resizable .ui-table-data > tr > td {
+.ui-table-resizable .ui-table-tbody > tr > td {
     overflow: hidden;
 }
 
-.ui-resizable-column {
+.ui-table-resizable .ui-resizable-column {
     background-clip: padding-box;
     position: relative;
 }
@@ -5244,6 +5368,10 @@ button.ui-button::-moz-focus-inner {
     z-index: 2;
     margin-top: -1em;
     margin-left: -1em;
+}
+
+.ui-table-loading-icon {
+    font-size: 2em;
 }
 
 /** TabMenu **/
@@ -5759,6 +5887,10 @@ button.ui-button::-moz-focus-inner {
     margin-left: -1em;
 }
 
+.ui-tree .ui-tree-loading-content .ui-tree-loading-icon {
+    font-size: 2em;
+} 
+
 .ui-treetable {
     position: relative;
 }
@@ -5775,6 +5907,10 @@ button.ui-button::-moz-focus-inner {
     padding: .25em .5em;
 }
 
+.ui-treetable .ui-treetable-toggler {
+    vertical-align: middle;
+}
+
 .ui-treetable .ui-sortable-column {
     cursor: pointer;
 }
@@ -5785,6 +5921,11 @@ button.ui-button::-moz-focus-inner {
 
 .ui-treetable-auto-layout > .ui-treetable-wrapper > table {
     table-layout: auto;
+}
+
+.ui-treetable .ui-treetable-chkbox {
+    margin: 0 .25em;
+    vertical-align: middle;
 }
 
 /* Sections */
@@ -5856,11 +5997,11 @@ button.ui-button::-moz-focus-inner {
 
 .ui-treetable-resizable .ui-treetable-thead > tr > th,
 .ui-treetable-resizable .ui-treetable-tfoot > tr > td,
-.ui-treetable-resizable .ui-treetable-data > tr > td {
+.ui-treetable-resizable .ui-treetable-tbody > tr > td {
     overflow: hidden;
 }
 
-.ui-resizable-column {
+.ui-treetable-resizable .ui-resizable-column {
     background-clip: padding-box;
     position: relative;
 }
@@ -5895,7 +6036,7 @@ button.ui-button::-moz-focus-inner {
     padding-bottom: 0;
 }
 
-.ui-treetable .ui-treetable-tbody > tr > td.ui-editing-cell p-celleditor >  * {
+.ui-treetable .ui-treetable-tbody > tr > td.ui-editing-cell p-treetablecelleditor >  * {
     width: 100%;
 }
 
@@ -5955,4 +6096,8 @@ button.ui-button::-moz-focus-inner {
     z-index: 2;
     margin-top: -1em;
     margin-left: -1em;
+}
+
+.ui-treetable-loading-icon {
+    font-size: 2em;
 }

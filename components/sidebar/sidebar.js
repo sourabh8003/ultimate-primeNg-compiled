@@ -14,6 +14,8 @@ var Sidebar = /** @class */ (function () {
         this.autoZIndex = true;
         this.baseZIndex = 0;
         this.modal = true;
+        this.dismissible = true;
+        this.showCloseIcon = true;
         this.onShow = new core_1.EventEmitter();
         this.onHide = new core_1.EventEmitter();
         this.visibleChange = new core_1.EventEmitter();
@@ -83,9 +85,11 @@ var Sidebar = /** @class */ (function () {
             this.mask = document.createElement('div');
             this.mask.style.zIndex = String(parseInt(this.containerViewChild.nativeElement.style.zIndex) - 1);
             this.domHandler.addMultipleClasses(this.mask, 'ui-widget-overlay ui-sidebar-mask');
-            this.maskClickListener = this.renderer.listen(this.mask, 'click', function (event) {
-                _this.close(event);
-            });
+            if (this.dismissible) {
+                this.maskClickListener = this.renderer.listen(this.mask, 'click', function (event) {
+                    _this.close(event);
+                });
+            }
             document.body.appendChild(this.mask);
             if (this.blockScroll) {
                 this.domHandler.addClass(document.body, 'ui-overflow-hidden');
@@ -121,7 +125,7 @@ var Sidebar = /** @class */ (function () {
     Sidebar.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-sidebar',
-                    template: "\n        <div #container [ngClass]=\"{'ui-sidebar ui-widget ui-widget-content ui-shadow':true, 'ui-sidebar-active': visible, \n            'ui-sidebar-left': (position === 'left'), 'ui-sidebar-right': (position === 'right'),\n            'ui-sidebar-top': (position === 'top'), 'ui-sidebar-bottom': (position === 'bottom'), \n            'ui-sidebar-full': fullScreen}\"\n            [@panelState]=\"visible ? 'visible' : 'hidden'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <a [ngClass]=\"{'ui-sidebar-close ui-corner-all':true}\" href=\"#\" role=\"button\" (click)=\"close($event)\">\n                <span class=\"fa fa-fw fa-close\"></span>\n            </a>\n            <ng-content></ng-content>\n        </div>\n    ",
+                    template: "\n        <div #container [ngClass]=\"{'ui-sidebar ui-widget ui-widget-content ui-shadow':true, 'ui-sidebar-active': visible, \n            'ui-sidebar-left': (position === 'left'), 'ui-sidebar-right': (position === 'right'),\n            'ui-sidebar-top': (position === 'top'), 'ui-sidebar-bottom': (position === 'bottom'), \n            'ui-sidebar-full': fullScreen}\"\n            [@panelState]=\"visible ? 'visible' : 'hidden'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <a [ngClass]=\"{'ui-sidebar-close ui-corner-all':true}\" *ngIf=\"showCloseIcon\" href=\"#\" role=\"button\" (click)=\"close($event)\">\n                <span class=\"pi pi-times\"></span>\n            </a>\n            <ng-content></ng-content>\n        </div>\n    ",
                     animations: [
                         animations_1.trigger('panelState', [
                             animations_1.state('hidden', animations_1.style({
@@ -139,25 +143,27 @@ var Sidebar = /** @class */ (function () {
     ];
     /** @nocollapse */
     Sidebar.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: domhandler_1.DomHandler, },
-        { type: core_1.Renderer2, },
+        { type: core_1.ElementRef },
+        { type: domhandler_1.DomHandler },
+        { type: core_1.Renderer2 }
     ]; };
     Sidebar.propDecorators = {
-        "position": [{ type: core_1.Input },],
-        "fullScreen": [{ type: core_1.Input },],
-        "appendTo": [{ type: core_1.Input },],
-        "blockScroll": [{ type: core_1.Input },],
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "autoZIndex": [{ type: core_1.Input },],
-        "baseZIndex": [{ type: core_1.Input },],
-        "modal": [{ type: core_1.Input },],
-        "containerViewChild": [{ type: core_1.ViewChild, args: ['container',] },],
-        "onShow": [{ type: core_1.Output },],
-        "onHide": [{ type: core_1.Output },],
-        "visibleChange": [{ type: core_1.Output },],
-        "visible": [{ type: core_1.Input },],
+        position: [{ type: core_1.Input }],
+        fullScreen: [{ type: core_1.Input }],
+        appendTo: [{ type: core_1.Input }],
+        blockScroll: [{ type: core_1.Input }],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        autoZIndex: [{ type: core_1.Input }],
+        baseZIndex: [{ type: core_1.Input }],
+        modal: [{ type: core_1.Input }],
+        dismissible: [{ type: core_1.Input }],
+        showCloseIcon: [{ type: core_1.Input }],
+        containerViewChild: [{ type: core_1.ViewChild, args: ['container',] }],
+        onShow: [{ type: core_1.Output }],
+        onHide: [{ type: core_1.Output }],
+        visibleChange: [{ type: core_1.Output }],
+        visible: [{ type: core_1.Input }]
     };
     return Sidebar;
 }());

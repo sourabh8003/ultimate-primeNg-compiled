@@ -72,19 +72,19 @@ var Captcha = /** @class */ (function () {
     ];
     /** @nocollapse */
     Captcha.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: core_1.NgZone, },
+        { type: core_1.ElementRef },
+        { type: core_1.NgZone }
     ]; };
     Captcha.propDecorators = {
-        "siteKey": [{ type: core_1.Input },],
-        "theme": [{ type: core_1.Input },],
-        "type": [{ type: core_1.Input },],
-        "size": [{ type: core_1.Input },],
-        "tabindex": [{ type: core_1.Input },],
-        "language": [{ type: core_1.Input },],
-        "initCallback": [{ type: core_1.Input },],
-        "onResponse": [{ type: core_1.Output },],
-        "onExpire": [{ type: core_1.Output },],
+        siteKey: [{ type: core_1.Input }],
+        theme: [{ type: core_1.Input }],
+        type: [{ type: core_1.Input }],
+        size: [{ type: core_1.Input }],
+        tabindex: [{ type: core_1.Input }],
+        language: [{ type: core_1.Input }],
+        initCallback: [{ type: core_1.Input }],
+        onResponse: [{ type: core_1.Output }],
+        onExpire: [{ type: core_1.Output }]
     };
     return Captcha;
 }());

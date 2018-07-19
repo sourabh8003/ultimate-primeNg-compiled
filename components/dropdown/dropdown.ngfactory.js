@@ -42,7 +42,7 @@ function View_Dropdown_12(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, [[6,
         var pd_3 = (_co.onInputBlur($event) !== false);
         ad = (pd_3 && ad);
     } return ad; }, null, null))], null, function (_ck, _v) { var _co = _v.component; var currVal_0 = (_co.selectedOption ? _co.selectedOption.label : " "); var currVal_1 = _co.disabled; var currVal_2 = _co.placeholder; _ck(_v, 0, 0, currVal_0, currVal_1, currVal_2); }); }
-function View_Dropdown_13(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, null, 0, "i", [["class", "ui-dropdown-clear-icon fa fa-close"]], null, [[null, "click"]], function (_v, en, $event) { var ad = true; var _co = _v.component; if (("click" === en)) {
+function View_Dropdown_13(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, null, 0, "i", [["class", "ui-dropdown-clear-icon pi pi-times"]], null, [[null, "click"]], function (_v, en, $event) { var ad = true; var _co = _v.component; if (("click" === en)) {
         var pd_0 = (_co.clear($event) !== false);
         ad = (pd_0 && ad);
     } return ad; }, null, null))], null, null); }
@@ -58,7 +58,7 @@ function View_Dropdown_14(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null
     } if (("keydown" === en)) {
         var pd_1 = (_co.onKeydown($event) !== false);
         ad = (pd_1 && ad);
-    } return ad; }, null, null)), (_l()(), i0.ɵeld(2, 0, null, null, 0, "span", [["class", "ui-dropdown-filter-icon fa fa-search"]], null, null, null, null, null))], null, function (_ck, _v) { var _co = _v.component; var currVal_0 = _co.filterPlaceholder; _ck(_v, 1, 0, currVal_0); }); }
+    } return ad; }, null, null)), (_l()(), i0.ɵeld(2, 0, null, null, 0, "span", [["class", "ui-dropdown-filter-icon pi pi-search"]], null, null, null, null, null))], null, function (_ck, _v) { var _co = _v.component; var currVal_0 = _co.filterPlaceholder; _ck(_v, 1, 0, currVal_0); }); }
 function View_Dropdown_18(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, null, 1, "span", [], null, null, null, null, null)), (_l()(), i0.ɵted(1, null, ["", ""]))], null, function (_ck, _v) { var currVal_0 = (_v.parent.context.$implicit.label || "empty"); _ck(_v, 1, 0, currVal_0); }); }
 function View_Dropdown_19(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, null, 0, null, null, null, null, null, null, null))], null, null); }
 function View_Dropdown_20(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, null, 0, null, null, null, null, null, null, null))], null, null); }

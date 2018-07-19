@@ -31,9 +31,7 @@ var Password = /** @class */ (function () {
         this.updateFilledState();
     };
     //To trigger change detection to manage ui-state-filled for material labels when there is no value binding
-    Password.prototype.onInput = 
-    //To trigger change detection to manage ui-state-filled for material labels when there is no value binding
-    function (e) {
+    Password.prototype.onInput = function (e) {
         this.updateFilledState();
     };
     Password.prototype.updateFilledState = function () {
@@ -125,19 +123,19 @@ var Password = /** @class */ (function () {
     ];
     /** @nocollapse */
     Password.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: domhandler_1.DomHandler, },
+        { type: core_1.ElementRef },
+        { type: domhandler_1.DomHandler }
     ]; };
     Password.propDecorators = {
-        "promptLabel": [{ type: core_1.Input },],
-        "weakLabel": [{ type: core_1.Input },],
-        "mediumLabel": [{ type: core_1.Input },],
-        "strongLabel": [{ type: core_1.Input },],
-        "feedback": [{ type: core_1.Input },],
-        "onInput": [{ type: core_1.HostListener, args: ['input', ['$event'],] },],
-        "onFocus": [{ type: core_1.HostListener, args: ['focus', ['$event'],] },],
-        "onBlur": [{ type: core_1.HostListener, args: ['blur', ['$event'],] },],
-        "onKeyup": [{ type: core_1.HostListener, args: ['keyup', ['$event'],] },],
+        promptLabel: [{ type: core_1.Input }],
+        weakLabel: [{ type: core_1.Input }],
+        mediumLabel: [{ type: core_1.Input }],
+        strongLabel: [{ type: core_1.Input }],
+        feedback: [{ type: core_1.Input }],
+        onInput: [{ type: core_1.HostListener, args: ['input', ['$event'],] }],
+        onFocus: [{ type: core_1.HostListener, args: ['focus', ['$event'],] }],
+        onBlur: [{ type: core_1.HostListener, args: ['blur', ['$event'],] }],
+        onKeyup: [{ type: core_1.HostListener, args: ['keyup', ['$event'],] }]
     };
     return Password;
 }());

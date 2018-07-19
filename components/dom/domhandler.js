@@ -43,7 +43,7 @@ var DomHandler = /** @class */ (function () {
         });
     };
     DomHandler.prototype.find = function (element, selector) {
-        return element.querySelectorAll(selector);
+        return Array.from(element.querySelectorAll(selector));
     };
     DomHandler.prototype.findSingle = function (element, selector) {
         return element.querySelector(selector);
@@ -381,6 +381,14 @@ var DomHandler = /** @class */ (function () {
             browser: match[1] || "",
             version: match[2] || "0"
         };
+    };
+    DomHandler.prototype.isInteger = function (value) {
+        if (Number.isInteger) {
+            return Number.isInteger(value);
+        }
+        else {
+            return typeof value === "number" && isFinite(value) && Math.floor(value) === value;
+        }
     };
     DomHandler.zindex = 1000;
     DomHandler.decorators = [

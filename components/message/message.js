@@ -11,19 +11,19 @@ var UIMessage = /** @class */ (function () {
             if (this.severity) {
                 switch (this.severity) {
                     case 'success':
-                        icon = 'fa fa-check';
+                        icon = 'pi pi-check';
                         break;
                     case 'info':
-                        icon = 'fa fa-info-circle';
+                        icon = 'pi pi-info-circle';
                         break;
                     case 'error':
-                        icon = 'fa fa-close';
+                        icon = 'pi pi-times';
                         break;
                     case 'warn':
-                        icon = 'fa fa-warning';
+                        icon = 'pi pi-ex';
                         break;
                     default:
-                        icon = 'fa fa-info-circle';
+                        icon = 'pi pi-info-circle';
                         break;
                 }
             }
@@ -38,10 +38,9 @@ var UIMessage = /** @class */ (function () {
                     template: "\n        <div aria-live=\"polite\" class=\"ui-message ui-widget ui-corner-all\" *ngIf=\"severity\"\n        [ngClass]=\"{'ui-messages-info': (severity === 'info'),\n                'ui-messages-warn': (severity === 'warn'),\n                'ui-messages-error': (severity === 'error'),\n                'ui-messages-success': (severity === 'success')}\">\n            <span class=\"ui-message-icon\" [ngClass]=\"icon\"></span>\n            <span class=\"ui-message-text\">{{text}}</span>\n        </div>\n    "
                 },] },
     ];
-    /** @nocollapse */
     UIMessage.propDecorators = {
-        "severity": [{ type: core_1.Input },],
-        "text": [{ type: core_1.Input },],
+        severity: [{ type: core_1.Input }],
+        text: [{ type: core_1.Input }]
     };
     return UIMessage;
 }());

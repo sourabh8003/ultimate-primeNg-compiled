@@ -132,24 +132,24 @@ var GMap = /** @class */ (function () {
     ];
     /** @nocollapse */
     GMap.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: core_1.IterableDiffers, },
-        { type: core_1.ChangeDetectorRef, },
-        { type: core_1.NgZone, },
+        { type: core_1.ElementRef },
+        { type: core_1.IterableDiffers },
+        { type: core_1.ChangeDetectorRef },
+        { type: core_1.NgZone }
     ]; };
     GMap.propDecorators = {
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "options": [{ type: core_1.Input },],
-        "overlays": [{ type: core_1.Input },],
-        "onMapClick": [{ type: core_1.Output },],
-        "onOverlayClick": [{ type: core_1.Output },],
-        "onOverlayDragStart": [{ type: core_1.Output },],
-        "onOverlayDrag": [{ type: core_1.Output },],
-        "onOverlayDragEnd": [{ type: core_1.Output },],
-        "onMapReady": [{ type: core_1.Output },],
-        "onMapDragEnd": [{ type: core_1.Output },],
-        "onZoomChanged": [{ type: core_1.Output },],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        options: [{ type: core_1.Input }],
+        overlays: [{ type: core_1.Input }],
+        onMapClick: [{ type: core_1.Output }],
+        onOverlayClick: [{ type: core_1.Output }],
+        onOverlayDragStart: [{ type: core_1.Output }],
+        onOverlayDrag: [{ type: core_1.Output }],
+        onOverlayDragEnd: [{ type: core_1.Output }],
+        onMapReady: [{ type: core_1.Output }],
+        onMapDragEnd: [{ type: core_1.Output }],
+        onZoomChanged: [{ type: core_1.Output }]
     };
     return GMap;
 }());

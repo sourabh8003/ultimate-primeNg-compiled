@@ -14,13 +14,12 @@ var ProgressSpinner = /** @class */ (function () {
                     template: "\n        <div class=\"ui-progress-spinner\" [ngStyle]=\"style\" [ngClass]=\"styleClass\">\n            <svg class=\"ui-progress-spinner-svg\" viewBox=\"25 25 50 50\" [style.animation-duration]=\"animationDuration\">\n                <circle class=\"ui-progress-spinner-circle\" cx=\"50\" cy=\"50\" r=\"20\" [attr.fill]=\"fill\" [attr.stroke-width]=\"strokeWidth\" stroke-miterlimit=\"10\"/>\n            </svg>\n        </div>\n    "
                 },] },
     ];
-    /** @nocollapse */
     ProgressSpinner.propDecorators = {
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "strokeWidth": [{ type: core_1.Input },],
-        "fill": [{ type: core_1.Input },],
-        "animationDuration": [{ type: core_1.Input },],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        strokeWidth: [{ type: core_1.Input }],
+        fill: [{ type: core_1.Input }],
+        animationDuration: [{ type: core_1.Input }]
     };
     return ProgressSpinner;
 }());

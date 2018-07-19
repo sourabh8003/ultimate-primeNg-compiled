@@ -102,19 +102,19 @@ var Draggable = /** @class */ (function () {
     ];
     /** @nocollapse */
     Draggable.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: domhandler_1.DomHandler, },
-        { type: core_1.NgZone, },
+        { type: core_1.ElementRef },
+        { type: domhandler_1.DomHandler },
+        { type: core_1.NgZone }
     ]; };
     Draggable.propDecorators = {
-        "scope": [{ type: core_1.Input, args: ['pDraggable',] },],
-        "dragEffect": [{ type: core_1.Input },],
-        "dragHandle": [{ type: core_1.Input },],
-        "onDragStart": [{ type: core_1.Output },],
-        "onDragEnd": [{ type: core_1.Output },],
-        "onDrag": [{ type: core_1.Output },],
-        "dragStart": [{ type: core_1.HostListener, args: ['dragstart', ['$event'],] },],
-        "dragEnd": [{ type: core_1.HostListener, args: ['dragend', ['$event'],] },],
+        scope: [{ type: core_1.Input, args: ['pDraggable',] }],
+        dragEffect: [{ type: core_1.Input }],
+        dragHandle: [{ type: core_1.Input }],
+        onDragStart: [{ type: core_1.Output }],
+        onDragEnd: [{ type: core_1.Output }],
+        onDrag: [{ type: core_1.Output }],
+        dragStart: [{ type: core_1.HostListener, args: ['dragstart', ['$event'],] }],
+        dragEnd: [{ type: core_1.HostListener, args: ['dragend', ['$event'],] }]
     };
     return Draggable;
 }());
@@ -194,19 +194,19 @@ var Droppable = /** @class */ (function () {
     ];
     /** @nocollapse */
     Droppable.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: domhandler_1.DomHandler, },
-        { type: core_1.NgZone, },
+        { type: core_1.ElementRef },
+        { type: domhandler_1.DomHandler },
+        { type: core_1.NgZone }
     ]; };
     Droppable.propDecorators = {
-        "scope": [{ type: core_1.Input, args: ['pDroppable',] },],
-        "dropEffect": [{ type: core_1.Input },],
-        "onDragEnter": [{ type: core_1.Output },],
-        "onDragLeave": [{ type: core_1.Output },],
-        "onDrop": [{ type: core_1.Output },],
-        "drop": [{ type: core_1.HostListener, args: ['drop', ['$event'],] },],
-        "dragEnter": [{ type: core_1.HostListener, args: ['dragenter', ['$event'],] },],
-        "dragLeave": [{ type: core_1.HostListener, args: ['dragleave', ['$event'],] },],
+        scope: [{ type: core_1.Input, args: ['pDroppable',] }],
+        dropEffect: [{ type: core_1.Input }],
+        onDragEnter: [{ type: core_1.Output }],
+        onDragLeave: [{ type: core_1.Output }],
+        onDrop: [{ type: core_1.Output }],
+        drop: [{ type: core_1.HostListener, args: ['drop', ['$event'],] }],
+        dragEnter: [{ type: core_1.HostListener, args: ['dragenter', ['$event'],] }],
+        dragLeave: [{ type: core_1.HostListener, args: ['dragleave', ['$event'],] }]
     };
     return Droppable;
 }());

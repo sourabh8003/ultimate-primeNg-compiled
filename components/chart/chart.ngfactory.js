@@ -17,7 +17,7 @@ exports.RenderType_UIChart = RenderType_UIChart;
 function View_UIChart_0(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, null, 1, "div", [["style", "position:relative"]], [[4, "width", null], [4, "height", null]], null, null, null, null)), (_l()(), i0.ɵeld(1, 0, null, null, 0, "canvas", [], [[1, "width", 0], [1, "height", 0]], [[null, "click"]], function (_v, en, $event) { var ad = true; var _co = _v.component; if (("click" === en)) {
         var pd_0 = (_co.onCanvasClick($event) !== false);
         ad = (pd_0 && ad);
-    } return ad; }, null, null))], null, function (_ck, _v) { var _co = _v.component; var currVal_0 = (_co.responsive ? null : _co.width); var currVal_1 = (_co.responsive ? null : _co.height); _ck(_v, 0, 0, currVal_0, currVal_1); var currVal_2 = (_co.responsive ? null : _co.width); var currVal_3 = (_co.responsive ? null : _co.height); _ck(_v, 1, 0, currVal_2, currVal_3); }); }
+    } return ad; }, null, null))], null, function (_ck, _v) { var _co = _v.component; var currVal_0 = ((_co.responsive && !_co.width) ? null : _co.width); var currVal_1 = ((_co.responsive && !_co.height) ? null : _co.height); _ck(_v, 0, 0, currVal_0, currVal_1); var currVal_2 = ((_co.responsive && !_co.width) ? null : _co.width); var currVal_3 = ((_co.responsive && !_co.height) ? null : _co.height); _ck(_v, 1, 0, currVal_2, currVal_3); }); }
 exports.View_UIChart_0 = View_UIChart_0;
 function View_UIChart_Host_0(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, null, 1, "p-chart", [], null, null, null, View_UIChart_0, RenderType_UIChart)), i0.ɵdid(1, 4374528, null, 0, i1.UIChart, [i0.ElementRef], null, null)], null, null); }
 exports.View_UIChart_Host_0 = View_UIChart_Host_0;

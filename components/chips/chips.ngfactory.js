@@ -18,7 +18,7 @@ exports.ChipsModuleNgFactory = ChipsModuleNgFactory;
 var styles_Chips = [];
 var RenderType_Chips = i0.ɵcrt({ encapsulation: 2, styles: styles_Chips, data: {} });
 exports.RenderType_Chips = RenderType_Chips;
-function View_Chips_2(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, null, 0, "span", [["class", "ui-chips-token-icon fa fa-fw fa-close"]], null, [[null, "click"]], function (_v, en, $event) { var ad = true; var _co = _v.component; if (("click" === en)) {
+function View_Chips_2(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, null, 0, "span", [["class", "ui-chips-token-icon pi pi-fw pi-times"]], null, [[null, "click"]], function (_v, en, $event) { var ad = true; var _co = _v.component; if (("click" === en)) {
         var pd_0 = (_co.removeItem($event, _v.parent.context.index) !== false);
         ad = (pd_0 && ad);
     } return ad; }, null, null))], null, null); }

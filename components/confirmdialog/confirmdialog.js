@@ -15,10 +15,10 @@ var ConfirmDialog = /** @class */ (function () {
         this.renderer = renderer;
         this.confirmationService = confirmationService;
         this.zone = zone;
-        this.acceptIcon = 'fa-check';
+        this.acceptIcon = 'pi pi-check';
         this.acceptLabel = 'Yes';
         this.acceptVisible = true;
-        this.rejectIcon = 'fa-close';
+        this.rejectIcon = 'pi pi-times';
         this.rejectLabel = 'No';
         this.rejectVisible = true;
         this.closeOnEscape = true;
@@ -190,17 +190,24 @@ var ConfirmDialog = /** @class */ (function () {
     ConfirmDialog.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-confirmDialog',
-                    template: "\n        <div [ngClass]=\"{'ui-dialog ui-confirmdialog ui-widget ui-widget-content ui-corner-all ui-shadow':true,'ui-dialog-rtl':rtl}\" \n            [style.display]=\"visible ? 'block' : 'none'\" [style.width.px]=\"width\" [style.height.px]=\"height\" (mousedown)=\"moveOnTop()\" [@dialogState]=\"visible ? 'visible' : 'hidden'\">\n            <div class=\"ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top\">\n                <span class=\"ui-dialog-title\" *ngIf=\"header\">{{header}}</span>\n                <a *ngIf=\"closable\" [ngClass]=\"{'ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all':true}\" href=\"#\" role=\"button\" (click)=\"close($event)\">\n                    <span class=\"fa fa-fw fa-close\"></span>\n                </a>\n            </div>\n            <div class=\"ui-dialog-content ui-widget-content\">\n                <i [ngClass]=\"'fa'\" [class]=\"icon\" *ngIf=\"icon\"></i>\n                <span class=\"ui-confirmdialog-message\" [innerHTML]=\"message\"></span>\n            </div>\n            <div class=\"ui-dialog-footer ui-widget-content\" *ngIf=\"footer\">\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n            <div class=\"ui-dialog-footer ui-widget-content\" *ngIf=\"!footer\">\n                <button type=\"button\" pButton [icon]=\"acceptIcon\" [label]=\"acceptLabel\" (click)=\"accept()\" [class]=\"acceptButtonStyleClass\" *ngIf=\"acceptVisible\"></button>\n                <button type=\"button\" pButton [icon]=\"rejectIcon\" [label]=\"rejectLabel\" (click)=\"reject()\" [class]=\"rejectButtonStyleClass\" *ngIf=\"rejectVisible\"></button>\n            </div>\n        </div>\n    ",
+                    template: "\n        <div [ngClass]=\"{'ui-dialog ui-confirmdialog ui-widget ui-widget-content ui-corner-all ui-shadow':true,'ui-dialog-rtl':rtl}\" \n            [style.display]=\"visible ? 'block' : 'none'\" [style.width.px]=\"width\" [style.height.px]=\"height\" (mousedown)=\"moveOnTop()\" [@dialogState]=\"visible ? 'visible' : 'hidden'\">\n            <div class=\"ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top\">\n                <span class=\"ui-dialog-title\" *ngIf=\"header\">{{header}}</span>\n                <a *ngIf=\"closable\" [ngClass]=\"{'ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all':true}\" href=\"#\" role=\"button\" (click)=\"close($event)\">\n                    <span class=\"pi pi-fw pi-times\"></span>\n                </a>\n            </div>\n            <div class=\"ui-dialog-content ui-widget-content\">\n                <i [ngClass]=\"'ui-confirmdialog-icon'\" [class]=\"icon\" *ngIf=\"icon\"></i>\n                <span class=\"ui-confirmdialog-message\" [innerHTML]=\"message\"></span>\n            </div>\n            <div class=\"ui-dialog-footer ui-widget-content\" *ngIf=\"footer\">\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n            <div class=\"ui-dialog-footer ui-widget-content\" *ngIf=\"!footer\">\n                <button type=\"button\" pButton [icon]=\"acceptIcon\" [label]=\"acceptLabel\" (click)=\"accept()\" [class]=\"acceptButtonStyleClass\" *ngIf=\"acceptVisible\"></button>\n                <button type=\"button\" pButton [icon]=\"rejectIcon\" [label]=\"rejectLabel\" (click)=\"reject()\" [class]=\"rejectButtonStyleClass\" *ngIf=\"rejectVisible\"></button>\n            </div>\n        </div>\n    ",
                     animations: [
                         animations_1.trigger('dialogState', [
                             animations_1.state('hidden', animations_1.style({
-                                opacity: 0
+                                transform: 'translate3d(0, 25%, 0)',
+                                opacity: 0,
+                                display: 'none'
                             })),
                             animations_1.state('visible', animations_1.style({
+                                display: 'block',
+                                transform: 'none',
                                 opacity: 1
                             })),
-                            animations_1.transition('visible => hidden', animations_1.animate('400ms ease-in')),
-                            animations_1.transition('hidden => visible', animations_1.animate('400ms ease-out'))
+                            animations_1.state('void', animations_1.style({
+                                transform: 'translate3d(0, 25%, 0) scale(0.9)',
+                                opacity: 0
+                            })),
+                            animations_1.transition('* => *', animations_1.animate('400ms cubic-bezier(0.25, 0.8, 0.25, 1)'))
                         ])
                     ],
                     providers: [domhandler_1.DomHandler]
@@ -208,34 +215,34 @@ var ConfirmDialog = /** @class */ (function () {
     ];
     /** @nocollapse */
     ConfirmDialog.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: domhandler_1.DomHandler, },
-        { type: core_1.Renderer2, },
-        { type: confirmationservice_1.ConfirmationService, },
-        { type: core_1.NgZone, },
+        { type: core_1.ElementRef },
+        { type: domhandler_1.DomHandler },
+        { type: core_1.Renderer2 },
+        { type: confirmationservice_1.ConfirmationService },
+        { type: core_1.NgZone }
     ]; };
     ConfirmDialog.propDecorators = {
-        "header": [{ type: core_1.Input },],
-        "icon": [{ type: core_1.Input },],
-        "message": [{ type: core_1.Input },],
-        "acceptIcon": [{ type: core_1.Input },],
-        "acceptLabel": [{ type: core_1.Input },],
-        "acceptVisible": [{ type: core_1.Input },],
-        "rejectIcon": [{ type: core_1.Input },],
-        "rejectLabel": [{ type: core_1.Input },],
-        "rejectVisible": [{ type: core_1.Input },],
-        "acceptButtonStyleClass": [{ type: core_1.Input },],
-        "rejectButtonStyleClass": [{ type: core_1.Input },],
-        "width": [{ type: core_1.Input },],
-        "height": [{ type: core_1.Input },],
-        "closeOnEscape": [{ type: core_1.Input },],
-        "rtl": [{ type: core_1.Input },],
-        "closable": [{ type: core_1.Input },],
-        "responsive": [{ type: core_1.Input },],
-        "appendTo": [{ type: core_1.Input },],
-        "key": [{ type: core_1.Input },],
-        "footer": [{ type: core_1.ContentChild, args: [shared_1.Footer,] },],
-        "visible": [{ type: core_1.Input },],
+        header: [{ type: core_1.Input }],
+        icon: [{ type: core_1.Input }],
+        message: [{ type: core_1.Input }],
+        acceptIcon: [{ type: core_1.Input }],
+        acceptLabel: [{ type: core_1.Input }],
+        acceptVisible: [{ type: core_1.Input }],
+        rejectIcon: [{ type: core_1.Input }],
+        rejectLabel: [{ type: core_1.Input }],
+        rejectVisible: [{ type: core_1.Input }],
+        acceptButtonStyleClass: [{ type: core_1.Input }],
+        rejectButtonStyleClass: [{ type: core_1.Input }],
+        width: [{ type: core_1.Input }],
+        height: [{ type: core_1.Input }],
+        closeOnEscape: [{ type: core_1.Input }],
+        rtl: [{ type: core_1.Input }],
+        closable: [{ type: core_1.Input }],
+        responsive: [{ type: core_1.Input }],
+        appendTo: [{ type: core_1.Input }],
+        key: [{ type: core_1.Input }],
+        footer: [{ type: core_1.ContentChild, args: [shared_1.Footer,] }],
+        visible: [{ type: core_1.Input }]
     };
     return ConfirmDialog;
 }());

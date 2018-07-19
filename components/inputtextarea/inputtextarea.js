@@ -19,9 +19,7 @@ var InputTextarea = /** @class */ (function () {
         this.updateFilledState();
     };
     //To trigger change detection to manage ui-state-filled for material labels when there is no value binding
-    InputTextarea.prototype.onInput = 
-    //To trigger change detection to manage ui-state-filled for material labels when there is no value binding
-    function (e) {
+    InputTextarea.prototype.onInput = function (e) {
         this.updateFilledState();
     };
     InputTextarea.prototype.updateFilledState = function () {
@@ -67,18 +65,18 @@ var InputTextarea = /** @class */ (function () {
     ];
     /** @nocollapse */
     InputTextarea.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: forms_1.NgModel, decorators: [{ type: core_1.Optional },] },
+        { type: core_1.ElementRef },
+        { type: forms_1.NgModel, decorators: [{ type: core_1.Optional }] }
     ]; };
     InputTextarea.propDecorators = {
-        "autoResize": [{ type: core_1.Input },],
-        "rows": [{ type: core_1.Input },],
-        "cols": [{ type: core_1.Input },],
-        "onResize": [{ type: core_1.Output },],
-        "onInput": [{ type: core_1.HostListener, args: ['input', ['$event'],] },],
-        "onFocus": [{ type: core_1.HostListener, args: ['focus', ['$event'],] },],
-        "onBlur": [{ type: core_1.HostListener, args: ['blur', ['$event'],] },],
-        "onKeyup": [{ type: core_1.HostListener, args: ['keyup', ['$event'],] },],
+        autoResize: [{ type: core_1.Input }],
+        rows: [{ type: core_1.Input }],
+        cols: [{ type: core_1.Input }],
+        onResize: [{ type: core_1.Output }],
+        onInput: [{ type: core_1.HostListener, args: ['input', ['$event'],] }],
+        onFocus: [{ type: core_1.HostListener, args: ['focus', ['$event'],] }],
+        onBlur: [{ type: core_1.HostListener, args: ['blur', ['$event'],] }],
+        onKeyup: [{ type: core_1.HostListener, args: ['keyup', ['$event'],] }]
     };
     return InputTextarea;
 }());

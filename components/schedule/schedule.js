@@ -200,69 +200,64 @@ var Schedule = /** @class */ (function () {
         }
     };
     Schedule.prototype.ngOnChanges = function (changes) {
-        if (this.schedule) {
-            var options = {};
-            for (var change in changes) {
-                if (change !== 'events') {
-                    options[change] = changes[change].currentValue;
+        if (this.calendar) {
+            for (var propName in changes) {
+                if (propName !== 'events') {
+                    this.calendar.option(propName, changes[propName].currentValue);
                 }
-            }
-            if (Object.keys(options).length) {
-                this.schedule.fullCalendar('option', options);
             }
         }
     };
     Schedule.prototype.initialize = function () {
-        this.schedule = jQuery(this.el.nativeElement.children[0]);
-        this.schedule.fullCalendar(this.config);
-        if (this.events) {
-            this.schedule.fullCalendar('addEventSource', this.events);
-        }
+        this.calendar = new FullCalendar.Calendar(this.el.nativeElement.children[0], this.config);
+        this.calendar.render();
         this.initialized = true;
     };
     Schedule.prototype.ngDoCheck = function () {
         var changes = this.differ.diff(this.events);
-        if (this.schedule && changes) {
-            this.schedule.fullCalendar('removeEventSources');
+        if (this.calendar && changes) {
+            this.calendar.removeEventSources();
             if (this.events) {
-                this.schedule.fullCalendar('addEventSource', this.events);
+                this.calendar.addEventSource(this.events);
             }
         }
     };
     Schedule.prototype.ngOnDestroy = function () {
-        jQuery(this.el.nativeElement.children[0]).fullCalendar('destroy');
-        this.initialized = false;
-        this.schedule = null;
+        if (this.calendar) {
+            this.calendar.destroy;
+            this.initialized = false;
+            this.calendar = null;
+        }
     };
     Schedule.prototype.gotoDate = function (date) {
-        this.schedule.fullCalendar('gotoDate', date);
+        this.calendar.gotoDate(date);
     };
     Schedule.prototype.prev = function () {
-        this.schedule.fullCalendar('prev');
+        this.calendar.prev();
     };
     Schedule.prototype.next = function () {
-        this.schedule.fullCalendar('next');
+        this.calendar.next();
     };
     Schedule.prototype.prevYear = function () {
-        this.schedule.fullCalendar('prevYear');
+        this.calendar.prevYear();
     };
     Schedule.prototype.nextYear = function () {
-        this.schedule.fullCalendar('nextYear');
+        this.calendar.nextYear();
     };
     Schedule.prototype.today = function () {
-        this.schedule.fullCalendar('today');
+        this.calendar.today();
     };
     Schedule.prototype.incrementDate = function (duration) {
-        this.schedule.fullCalendar('incrementDate', duration);
+        this.calendar.incrementDate(duration);
     };
-    Schedule.prototype.changeView = function (viewName) {
-        this.schedule.fullCalendar('changeView', viewName);
+    Schedule.prototype.changeView = function (viewName, dateOrRange) {
+        this.calendar.incrementDate(viewName, dateOrRange);
     };
     Schedule.prototype.getDate = function () {
-        return this.schedule.fullCalendar('getDate');
+        return this.calendar.getDate();
     };
     Schedule.prototype.updateEvent = function (event) {
-        this.schedule.fullCalendar('updateEvent', event);
+        this.calendar.updateEvent(event);
     };
     Schedule.prototype._findEvent = function (id) {
         var event;
@@ -294,67 +289,67 @@ var Schedule = /** @class */ (function () {
     ];
     /** @nocollapse */
     Schedule.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: core_1.IterableDiffers, },
+        { type: core_1.ElementRef },
+        { type: core_1.IterableDiffers }
     ]; };
     Schedule.propDecorators = {
-        "events": [{ type: core_1.Input },],
-        "header": [{ type: core_1.Input },],
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "rtl": [{ type: core_1.Input },],
-        "weekends": [{ type: core_1.Input },],
-        "hiddenDays": [{ type: core_1.Input },],
-        "fixedWeekCount": [{ type: core_1.Input },],
-        "weekNumbers": [{ type: core_1.Input },],
-        "businessHours": [{ type: core_1.Input },],
-        "height": [{ type: core_1.Input },],
-        "contentHeight": [{ type: core_1.Input },],
-        "aspectRatio": [{ type: core_1.Input },],
-        "eventLimit": [{ type: core_1.Input },],
-        "defaultDate": [{ type: core_1.Input },],
-        "editable": [{ type: core_1.Input },],
-        "droppable": [{ type: core_1.Input },],
-        "eventStartEditable": [{ type: core_1.Input },],
-        "eventDurationEditable": [{ type: core_1.Input },],
-        "defaultView": [{ type: core_1.Input },],
-        "allDaySlot": [{ type: core_1.Input },],
-        "allDayText": [{ type: core_1.Input },],
-        "slotDuration": [{ type: core_1.Input },],
-        "slotLabelInterval": [{ type: core_1.Input },],
-        "snapDuration": [{ type: core_1.Input },],
-        "scrollTime": [{ type: core_1.Input },],
-        "minTime": [{ type: core_1.Input },],
-        "maxTime": [{ type: core_1.Input },],
-        "slotEventOverlap": [{ type: core_1.Input },],
-        "nowIndicator": [{ type: core_1.Input },],
-        "dragRevertDuration": [{ type: core_1.Input },],
-        "dragOpacity": [{ type: core_1.Input },],
-        "dragScroll": [{ type: core_1.Input },],
-        "eventOverlap": [{ type: core_1.Input },],
-        "eventConstraint": [{ type: core_1.Input },],
-        "locale": [{ type: core_1.Input },],
-        "timezone": [{ type: core_1.Input },],
-        "timeFormat": [{ type: core_1.Input },],
-        "eventRender": [{ type: core_1.Input },],
-        "dayRender": [{ type: core_1.Input },],
-        "navLinks": [{ type: core_1.Input },],
-        "options": [{ type: core_1.Input },],
-        "onDayClick": [{ type: core_1.Output },],
-        "onDrop": [{ type: core_1.Output },],
-        "onEventClick": [{ type: core_1.Output },],
-        "onEventMouseover": [{ type: core_1.Output },],
-        "onEventMouseout": [{ type: core_1.Output },],
-        "onEventDragStart": [{ type: core_1.Output },],
-        "onEventDragStop": [{ type: core_1.Output },],
-        "onEventDrop": [{ type: core_1.Output },],
-        "onEventResizeStart": [{ type: core_1.Output },],
-        "onEventResizeStop": [{ type: core_1.Output },],
-        "onEventResize": [{ type: core_1.Output },],
-        "onViewRender": [{ type: core_1.Output },],
-        "onViewDestroy": [{ type: core_1.Output },],
-        "onNavLinkDayClick": [{ type: core_1.Output },],
-        "onNavLinkWeekClick": [{ type: core_1.Output },],
+        events: [{ type: core_1.Input }],
+        header: [{ type: core_1.Input }],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        rtl: [{ type: core_1.Input }],
+        weekends: [{ type: core_1.Input }],
+        hiddenDays: [{ type: core_1.Input }],
+        fixedWeekCount: [{ type: core_1.Input }],
+        weekNumbers: [{ type: core_1.Input }],
+        businessHours: [{ type: core_1.Input }],
+        height: [{ type: core_1.Input }],
+        contentHeight: [{ type: core_1.Input }],
+        aspectRatio: [{ type: core_1.Input }],
+        eventLimit: [{ type: core_1.Input }],
+        defaultDate: [{ type: core_1.Input }],
+        editable: [{ type: core_1.Input }],
+        droppable: [{ type: core_1.Input }],
+        eventStartEditable: [{ type: core_1.Input }],
+        eventDurationEditable: [{ type: core_1.Input }],
+        defaultView: [{ type: core_1.Input }],
+        allDaySlot: [{ type: core_1.Input }],
+        allDayText: [{ type: core_1.Input }],
+        slotDuration: [{ type: core_1.Input }],
+        slotLabelInterval: [{ type: core_1.Input }],
+        snapDuration: [{ type: core_1.Input }],
+        scrollTime: [{ type: core_1.Input }],
+        minTime: [{ type: core_1.Input }],
+        maxTime: [{ type: core_1.Input }],
+        slotEventOverlap: [{ type: core_1.Input }],
+        nowIndicator: [{ type: core_1.Input }],
+        dragRevertDuration: [{ type: core_1.Input }],
+        dragOpacity: [{ type: core_1.Input }],
+        dragScroll: [{ type: core_1.Input }],
+        eventOverlap: [{ type: core_1.Input }],
+        eventConstraint: [{ type: core_1.Input }],
+        locale: [{ type: core_1.Input }],
+        timezone: [{ type: core_1.Input }],
+        timeFormat: [{ type: core_1.Input }],
+        eventRender: [{ type: core_1.Input }],
+        dayRender: [{ type: core_1.Input }],
+        navLinks: [{ type: core_1.Input }],
+        options: [{ type: core_1.Input }],
+        onDayClick: [{ type: core_1.Output }],
+        onDrop: [{ type: core_1.Output }],
+        onEventClick: [{ type: core_1.Output }],
+        onEventMouseover: [{ type: core_1.Output }],
+        onEventMouseout: [{ type: core_1.Output }],
+        onEventDragStart: [{ type: core_1.Output }],
+        onEventDragStop: [{ type: core_1.Output }],
+        onEventDrop: [{ type: core_1.Output }],
+        onEventResizeStart: [{ type: core_1.Output }],
+        onEventResizeStop: [{ type: core_1.Output }],
+        onEventResize: [{ type: core_1.Output }],
+        onViewRender: [{ type: core_1.Output }],
+        onViewDestroy: [{ type: core_1.Output }],
+        onNavLinkDayClick: [{ type: core_1.Output }],
+        onNavLinkWeekClick: [{ type: core_1.Output }]
     };
     return Schedule;
 }());

@@ -26,7 +26,6 @@ var Dialog = /** @class */ (function () {
         this.baseZIndex = 0;
         this.minX = 0;
         this.minY = 0;
-        this.autoAlign = true;
         this.focusOnShow = true;
         this.onShow = new core_1.EventEmitter();
         this.onHide = new core_1.EventEmitter();
@@ -54,26 +53,13 @@ var Dialog = /** @class */ (function () {
         configurable: true
     });
     Dialog.prototype.ngAfterViewChecked = function () {
-        var _this = this;
         if (this.executePostDisplayActions) {
             this.onShow.emit({});
             this.positionOverlay();
             if (this.focusOnShow) {
                 this.focus();
             }
-            this.currentHeight = this.domHandler.getOuterHeight(this.containerViewChild.nativeElement);
             this.executePostDisplayActions = false;
-        }
-        else if (this.autoAlign && this.visible) {
-            this.zone.runOutsideAngular(function () {
-                setTimeout(function () {
-                    var height = _this.domHandler.getOuterHeight(_this.containerViewChild.nativeElement);
-                    if (height !== _this.currentHeight) {
-                        _this.currentHeight = height;
-                        _this.positionOverlay();
-                    }
-                }, 50);
-            });
         }
     };
     Dialog.prototype.focus = function () {
@@ -86,6 +72,9 @@ var Dialog = /** @class */ (function () {
         this.executePostDisplayActions = true;
         this.moveOnTop();
         this.bindGlobalListeners();
+        if (this.maximized) {
+            this.domHandler.addClass(document.body, 'ui-overflow-hidden');
+        }
         if (this.modal) {
             this.enableModality();
         }
@@ -112,6 +101,9 @@ var Dialog = /** @class */ (function () {
         this.unbindMaskClickListener();
         this.unbindGlobalListeners();
         this.dragging = false;
+        if (this.maximized) {
+            this.domHandler.removeClass(document.body, 'ui-overflow-hidden');
+        }
         if (this.modal) {
             this.disableModality();
         }
@@ -146,8 +138,8 @@ var Dialog = /** @class */ (function () {
             this.containerViewChild.nativeElement.style.visibility = 'visible';
         }
         var viewport = this.domHandler.getViewport();
-        var x = Math.max((viewport.width - elementWidth) / 2, 0);
-        var y = Math.max((viewport.height - elementHeight) / 2, 0);
+        var x = Math.max(Math.floor((viewport.width - elementWidth) / 2), 0);
+        var y = Math.max(Math.floor((viewport.height - elementHeight) / 2), 0);
         this.containerViewChild.nativeElement.style.left = x + 'px';
         this.containerViewChild.nativeElement.style.top = y + 'px';
     };
@@ -191,6 +183,42 @@ var Dialog = /** @class */ (function () {
             }
             this.mask = null;
         }
+    };
+    Dialog.prototype.toggleMaximize = function (event) {
+        if (this.maximized)
+            this.revertMaximize();
+        else
+            this.maximize();
+        event.preventDefault();
+    };
+    Dialog.prototype.maximize = function () {
+        this.domHandler.addClass(this.containerViewChild.nativeElement, 'ui-dialog-maximized');
+        this.preMaximizePageX = parseFloat(this.containerViewChild.nativeElement.style.top);
+        this.preMaximizePageY = parseFloat(this.containerViewChild.nativeElement.style.left);
+        this.preMaximizeContainerWidth = this.domHandler.getOuterWidth(this.containerViewChild.nativeElement);
+        this.preMaximizeContainerHeight = this.domHandler.getOuterHeight(this.containerViewChild.nativeElement);
+        this.preMaximizeContentHeight = this.domHandler.getOuterHeight(this.contentViewChild.nativeElement);
+        this.containerViewChild.nativeElement.style.top = '0px';
+        this.containerViewChild.nativeElement.style.left = '0px';
+        this.containerViewChild.nativeElement.style.width = '100vw';
+        this.containerViewChild.nativeElement.style.height = '100vh';
+        var diffHeight = this.domHandler.getOuterHeight(this.headerViewChild.nativeElement) + this.domHandler.getOuterHeight(this.footerViewChild.nativeElement) + parseFloat(this.containerViewChild.nativeElement.style.top);
+        this.contentViewChild.nativeElement.style.height = 'calc(100vh - ' + diffHeight + 'px)';
+        this.domHandler.addClass(document.body, 'ui-overflow-hidden');
+        this.maximized = true;
+    };
+    Dialog.prototype.revertMaximize = function () {
+        var _this = this;
+        this.containerViewChild.nativeElement.style.top = this.preMaximizePageX + 'px';
+        this.containerViewChild.nativeElement.style.left = this.preMaximizePageY + 'px';
+        this.containerViewChild.nativeElement.style.width = this.preMaximizeContainerWidth + 'px';
+        this.containerViewChild.nativeElement.style.height = this.preMaximizeContainerHeight + 'px';
+        this.contentViewChild.nativeElement.style.height = this.preMaximizeContentHeight + 'px';
+        this.domHandler.removeClass(document.body, 'ui-overflow-hidden');
+        this.maximized = false;
+        this.zone.runOutsideAngular(function () {
+            setTimeout(function () { return _this.domHandler.removeClass(_this.containerViewChild.nativeElement, 'ui-dialog-maximized'); }, 300);
+        });
     };
     Dialog.prototype.unbindMaskClickListener = function () {
         if (this.maskClickListener) {
@@ -354,6 +382,9 @@ var Dialog = /** @class */ (function () {
         }
     };
     Dialog.prototype.onWindowResize = function (event) {
+        if (this.maximized) {
+            return;
+        }
         var viewport = this.domHandler.getViewport();
         var width = this.domHandler.getOuterWidth(this.containerViewChild.nativeElement);
         if (viewport.width <= this.breakpoint) {
@@ -396,17 +427,24 @@ var Dialog = /** @class */ (function () {
     Dialog.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-dialog',
-                    template: "\n        <div #container [ngClass]=\"{'ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow':true, 'ui-dialog-rtl':rtl,'ui-dialog-draggable':draggable}\" [style.display]=\"visible ? 'block' : 'none'\"\n            [ngStyle]=\"style\" [class]=\"styleClass\" [style.width.px]=\"width\" [style.height.px]=\"height\" [style.minWidth.px]=\"minWidth\" [style.minHeight.px]=\"minHeight\" (mousedown)=\"moveOnTop()\" [@dialogState]=\"visible ? 'visible' : 'hidden'\"\n            role=\"dialog\" [attr.aria-labelledby]=\"id + '-label'\">\n            <div #titlebar class=\"ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top\"\n                (mousedown)=\"initDrag($event)\" *ngIf=\"showHeader\">\n                <span [attr.id]=\"id + '-label'\" class=\"ui-dialog-title\" *ngIf=\"header\">{{header}}</span>\n                <span [attr.id]=\"id + '-label'\" class=\"ui-dialog-title\" *ngIf=\"headerFacet && headerFacet.first\">\n                    <ng-content select=\"p-header\"></ng-content>\n                </span>\n                <a *ngIf=\"closable\" [ngClass]=\"{'ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all':true}\" href=\"#\" role=\"button\" (click)=\"close($event)\" (mousedown)=\"onCloseMouseDown($event)\">\n                    <span class=\"fa fa-fw fa-close\"></span>\n                </a>\n            </div>\n            <div #content class=\"ui-dialog-content ui-widget-content\" [ngStyle]=\"contentStyle\">\n                <ng-content></ng-content>\n            </div>\n            <div class=\"ui-dialog-footer ui-widget-content\" *ngIf=\"footerFacet && footerFacet.first\">\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n            <div *ngIf=\"resizable\" class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"\n                (mousedown)=\"initResize($event)\"></div>\n        </div>\n    ",
+                    template: "\n        <div #container [ngClass]=\"{'ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow':true, 'ui-dialog-rtl':rtl,'ui-dialog-draggable':draggable}\"\n            [ngStyle]=\"style\" [class]=\"styleClass\" [style.width.px]=\"width\" [style.height.px]=\"height\" [style.minWidth.px]=\"minWidth\" [style.minHeight.px]=\"minHeight\" (mousedown)=\"moveOnTop()\" [@dialogState]=\"visible ? 'visible' : 'hidden'\"\n            role=\"dialog\" [attr.aria-labelledby]=\"id + '-label'\">\n            <div #titlebar class=\"ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top\"\n                (mousedown)=\"initDrag($event)\" *ngIf=\"showHeader\">\n                <span [attr.id]=\"id + '-label'\" class=\"ui-dialog-title\" *ngIf=\"header\">{{header}}</span>\n                <span [attr.id]=\"id + '-label'\" class=\"ui-dialog-title\" *ngIf=\"headerFacet && headerFacet.first\">\n                    <ng-content select=\"p-header\"></ng-content>\n                </span>\n                <a *ngIf=\"closable\" [ngClass]=\"{'ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all':true}\" href=\"#\" role=\"button\" (click)=\"close($event)\" (mousedown)=\"onCloseMouseDown($event)\">\n                    <span class=\"pi pi-times\"></span>\n                </a>\n                <a *ngIf=\"maximizable\" [ngClass]=\"{'ui-dialog-titlebar-icon ui-dialog-titlebar-maximize ui-corner-all':true}\" href=\"#\" role=\"button\" (click)=\"toggleMaximize($event)\">\n                    <span [ngClass]=\"maximized ? 'pi pi-window-minimize' : 'pi pi-window-maximize'\"></span>\n                </a>\n            </div>\n            <div #content class=\"ui-dialog-content ui-widget-content\" [ngStyle]=\"contentStyle\">\n                <ng-content></ng-content>\n            </div>\n            <div #footer class=\"ui-dialog-footer ui-widget-content\" *ngIf=\"footerFacet && footerFacet.first\">\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n            <div *ngIf=\"resizable\" class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"\n                (mousedown)=\"initResize($event)\"></div>\n        </div>\n    ",
                     animations: [
                         animations_1.trigger('dialogState', [
                             animations_1.state('hidden', animations_1.style({
-                                opacity: 0
+                                transform: 'translate3d(0, 25%, 0)',
+                                opacity: 0,
+                                display: 'none'
                             })),
                             animations_1.state('visible', animations_1.style({
+                                display: 'block',
+                                transform: 'none',
                                 opacity: 1
                             })),
-                            animations_1.transition('visible => hidden', animations_1.animate('400ms ease-in')),
-                            animations_1.transition('hidden => visible', animations_1.animate('400ms ease-out'))
+                            animations_1.state('void', animations_1.style({
+                                transform: 'translate3d(0, 25%, 0) scale(0.9)',
+                                opacity: 0
+                            })),
+                            animations_1.transition('* => *', animations_1.animate('400ms cubic-bezier(0.25, 0.8, 0.25, 1)'))
                         ])
                     ],
                     providers: [domhandler_1.DomHandler]
@@ -414,49 +452,50 @@ var Dialog = /** @class */ (function () {
     ];
     /** @nocollapse */
     Dialog.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: domhandler_1.DomHandler, },
-        { type: core_1.Renderer2, },
-        { type: core_1.NgZone, },
+        { type: core_1.ElementRef },
+        { type: domhandler_1.DomHandler },
+        { type: core_1.Renderer2 },
+        { type: core_1.NgZone }
     ]; };
     Dialog.propDecorators = {
-        "header": [{ type: core_1.Input },],
-        "draggable": [{ type: core_1.Input },],
-        "resizable": [{ type: core_1.Input },],
-        "minWidth": [{ type: core_1.Input },],
-        "minHeight": [{ type: core_1.Input },],
-        "width": [{ type: core_1.Input },],
-        "height": [{ type: core_1.Input },],
-        "positionLeft": [{ type: core_1.Input },],
-        "positionTop": [{ type: core_1.Input },],
-        "contentStyle": [{ type: core_1.Input },],
-        "modal": [{ type: core_1.Input },],
-        "closeOnEscape": [{ type: core_1.Input },],
-        "dismissableMask": [{ type: core_1.Input },],
-        "rtl": [{ type: core_1.Input },],
-        "closable": [{ type: core_1.Input },],
-        "responsive": [{ type: core_1.Input },],
-        "appendTo": [{ type: core_1.Input },],
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "showHeader": [{ type: core_1.Input },],
-        "breakpoint": [{ type: core_1.Input },],
-        "blockScroll": [{ type: core_1.Input },],
-        "autoZIndex": [{ type: core_1.Input },],
-        "baseZIndex": [{ type: core_1.Input },],
-        "minX": [{ type: core_1.Input },],
-        "minY": [{ type: core_1.Input },],
-        "autoAlign": [{ type: core_1.Input },],
-        "focusOnShow": [{ type: core_1.Input },],
-        "headerFacet": [{ type: core_1.ContentChildren, args: [shared_1.Header, { descendants: false },] },],
-        "footerFacet": [{ type: core_1.ContentChildren, args: [shared_1.Footer, { descendants: false },] },],
-        "containerViewChild": [{ type: core_1.ViewChild, args: ['container',] },],
-        "headerViewChild": [{ type: core_1.ViewChild, args: ['titlebar',] },],
-        "contentViewChild": [{ type: core_1.ViewChild, args: ['content',] },],
-        "onShow": [{ type: core_1.Output },],
-        "onHide": [{ type: core_1.Output },],
-        "visibleChange": [{ type: core_1.Output },],
-        "visible": [{ type: core_1.Input },],
+        header: [{ type: core_1.Input }],
+        draggable: [{ type: core_1.Input }],
+        resizable: [{ type: core_1.Input }],
+        minWidth: [{ type: core_1.Input }],
+        minHeight: [{ type: core_1.Input }],
+        width: [{ type: core_1.Input }],
+        height: [{ type: core_1.Input }],
+        positionLeft: [{ type: core_1.Input }],
+        positionTop: [{ type: core_1.Input }],
+        contentStyle: [{ type: core_1.Input }],
+        modal: [{ type: core_1.Input }],
+        closeOnEscape: [{ type: core_1.Input }],
+        dismissableMask: [{ type: core_1.Input }],
+        rtl: [{ type: core_1.Input }],
+        closable: [{ type: core_1.Input }],
+        responsive: [{ type: core_1.Input }],
+        appendTo: [{ type: core_1.Input }],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        showHeader: [{ type: core_1.Input }],
+        breakpoint: [{ type: core_1.Input }],
+        blockScroll: [{ type: core_1.Input }],
+        autoZIndex: [{ type: core_1.Input }],
+        baseZIndex: [{ type: core_1.Input }],
+        minX: [{ type: core_1.Input }],
+        minY: [{ type: core_1.Input }],
+        focusOnShow: [{ type: core_1.Input }],
+        maximizable: [{ type: core_1.Input }],
+        headerFacet: [{ type: core_1.ContentChildren, args: [shared_1.Header, { descendants: false },] }],
+        footerFacet: [{ type: core_1.ContentChildren, args: [shared_1.Footer, { descendants: false },] }],
+        containerViewChild: [{ type: core_1.ViewChild, args: ['container',] }],
+        headerViewChild: [{ type: core_1.ViewChild, args: ['titlebar',] }],
+        contentViewChild: [{ type: core_1.ViewChild, args: ['content',] }],
+        footerViewChild: [{ type: core_1.ViewChild, args: ['footer',] }],
+        onShow: [{ type: core_1.Output }],
+        onHide: [{ type: core_1.Output }],
+        visibleChange: [{ type: core_1.Output }],
+        visible: [{ type: core_1.Input }]
     };
     return Dialog;
 }());

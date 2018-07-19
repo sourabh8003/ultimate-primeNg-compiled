@@ -62,26 +62,26 @@ var RadioButton = /** @class */ (function () {
     RadioButton.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-radioButton',
-                    template: "\n        <div [ngStyle]=\"style\" [ngClass]=\"'ui-radiobutton ui-widget'\" [class]=\"styleClass\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #rb type=\"radio\" [attr.id]=\"inputId\" [attr.name]=\"name\" [attr.value]=\"value\" [attr.tabindex]=\"tabindex\" \n                    [checked]=\"checked\" (change)=\"onChange($event)\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\" [disabled]=\"disabled\">\n            </div>\n            <div (click)=\"handleClick($event, rb, true)\"\n                [ngClass]=\"{'ui-radiobutton-box ui-widget ui-state-default':true,\n                'ui-state-active':rb.checked,'ui-state-disabled':disabled,'ui-state-focus':focused}\">\n                <span class=\"ui-radiobutton-icon ui-clickable\" [ngClass]=\"{'fa fa-circle':rb.checked}\"></span>\n            </div>\n        </div>\n        <label (click)=\"select()\" [class]=\"labelStyleClass\"\n            [ngClass]=\"{'ui-radiobutton-label':true, 'ui-label-active':rb.checked, 'ui-label-disabled':disabled, 'ui-label-focus':focused}\"\n            *ngIf=\"label\" [attr.for]=\"inputId\">{{label}}</label>\n    ",
+                    template: "\n        <div [ngStyle]=\"style\" [ngClass]=\"'ui-radiobutton ui-widget'\" [class]=\"styleClass\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #rb type=\"radio\" [attr.id]=\"inputId\" [attr.name]=\"name\" [attr.value]=\"value\" [attr.tabindex]=\"tabindex\" \n                    [checked]=\"checked\" (change)=\"onChange($event)\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\" [disabled]=\"disabled\">\n            </div>\n            <div (click)=\"handleClick($event, rb, true)\"\n                [ngClass]=\"{'ui-radiobutton-box ui-widget ui-state-default':true,\n                'ui-state-active':rb.checked,'ui-state-disabled':disabled,'ui-state-focus':focused}\">\n                <span class=\"ui-radiobutton-icon ui-clickable\" [ngClass]=\"{'pi pi-circle-on':rb.checked}\"></span>\n            </div>\n        </div>\n        <label (click)=\"select()\" [class]=\"labelStyleClass\"\n            [ngClass]=\"{'ui-radiobutton-label':true, 'ui-label-active':rb.checked, 'ui-label-disabled':disabled, 'ui-label-focus':focused}\"\n            *ngIf=\"label\" [attr.for]=\"inputId\">{{label}}</label>\n    ",
                     providers: [exports.RADIO_VALUE_ACCESSOR]
                 },] },
     ];
     /** @nocollapse */
     RadioButton.ctorParameters = function () { return [
-        { type: core_1.ChangeDetectorRef, },
+        { type: core_1.ChangeDetectorRef }
     ]; };
     RadioButton.propDecorators = {
-        "value": [{ type: core_1.Input },],
-        "name": [{ type: core_1.Input },],
-        "disabled": [{ type: core_1.Input },],
-        "label": [{ type: core_1.Input },],
-        "tabindex": [{ type: core_1.Input },],
-        "inputId": [{ type: core_1.Input },],
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "labelStyleClass": [{ type: core_1.Input },],
-        "onClick": [{ type: core_1.Output },],
-        "inputViewChild": [{ type: core_1.ViewChild, args: ['rb',] },],
+        value: [{ type: core_1.Input }],
+        name: [{ type: core_1.Input }],
+        disabled: [{ type: core_1.Input }],
+        label: [{ type: core_1.Input }],
+        tabindex: [{ type: core_1.Input }],
+        inputId: [{ type: core_1.Input }],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        labelStyleClass: [{ type: core_1.Input }],
+        onClick: [{ type: core_1.Output }],
+        inputViewChild: [{ type: core_1.ViewChild, args: ['rb',] }]
     };
     return RadioButton;
 }());

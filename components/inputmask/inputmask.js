@@ -267,12 +267,10 @@ var InputMask = /** @class */ (function () {
             e.preventDefault();
         }
         else if (k === 13) {
-            // enter
             this.onInputBlur(e);
             this.updateModel(e);
         }
         else if (k === 27) {
-            // escape
             this.inputViewChild.nativeElement.value = this.focusText;
             this.caret(0, this.checkVal());
             this.updateModel(e);
@@ -286,7 +284,6 @@ var InputMask = /** @class */ (function () {
         }
         var k = e.which || e.keyCode, pos = this.caret(), p, c, next, completed;
         if (e.ctrlKey || e.altKey || e.metaKey || k < 32 || (k > 34 && k < 41)) {
-            //Ignore
             return;
         }
         else if (k && k !== 13) {
@@ -466,32 +463,32 @@ var InputMask = /** @class */ (function () {
     ];
     /** @nocollapse */
     InputMask.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: domhandler_1.DomHandler, },
+        { type: core_1.ElementRef },
+        { type: domhandler_1.DomHandler }
     ]; };
     InputMask.propDecorators = {
-        "type": [{ type: core_1.Input },],
-        "slotChar": [{ type: core_1.Input },],
-        "autoClear": [{ type: core_1.Input },],
-        "style": [{ type: core_1.Input },],
-        "inputId": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "placeholder": [{ type: core_1.Input },],
-        "size": [{ type: core_1.Input },],
-        "maxlength": [{ type: core_1.Input },],
-        "tabindex": [{ type: core_1.Input },],
-        "disabled": [{ type: core_1.Input },],
-        "readonly": [{ type: core_1.Input },],
-        "unmask": [{ type: core_1.Input },],
-        "name": [{ type: core_1.Input },],
-        "required": [{ type: core_1.Input },],
-        "characterPattern": [{ type: core_1.Input },],
-        "autoFocus": [{ type: core_1.Input },],
-        "inputViewChild": [{ type: core_1.ViewChild, args: ['input',] },],
-        "onComplete": [{ type: core_1.Output },],
-        "onFocus": [{ type: core_1.Output },],
-        "onBlur": [{ type: core_1.Output },],
-        "mask": [{ type: core_1.Input },],
+        type: [{ type: core_1.Input }],
+        slotChar: [{ type: core_1.Input }],
+        autoClear: [{ type: core_1.Input }],
+        style: [{ type: core_1.Input }],
+        inputId: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        placeholder: [{ type: core_1.Input }],
+        size: [{ type: core_1.Input }],
+        maxlength: [{ type: core_1.Input }],
+        tabindex: [{ type: core_1.Input }],
+        disabled: [{ type: core_1.Input }],
+        readonly: [{ type: core_1.Input }],
+        unmask: [{ type: core_1.Input }],
+        name: [{ type: core_1.Input }],
+        required: [{ type: core_1.Input }],
+        characterPattern: [{ type: core_1.Input }],
+        autoFocus: [{ type: core_1.Input }],
+        inputViewChild: [{ type: core_1.ViewChild, args: ['input',] }],
+        onComplete: [{ type: core_1.Output }],
+        onFocus: [{ type: core_1.Output }],
+        onBlur: [{ type: core_1.Output }],
+        mask: [{ type: core_1.Input }]
     };
     return InputMask;
 }());

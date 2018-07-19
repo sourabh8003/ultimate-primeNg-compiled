@@ -130,28 +130,28 @@ var DataScroller = /** @class */ (function () {
     ];
     /** @nocollapse */
     DataScroller.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: core_1.Renderer2, },
-        { type: domhandler_1.DomHandler, },
-        { type: core_1.NgZone, },
+        { type: core_1.ElementRef },
+        { type: core_1.Renderer2 },
+        { type: domhandler_1.DomHandler },
+        { type: core_1.NgZone }
     ]; };
     DataScroller.propDecorators = {
-        "value": [{ type: core_1.Input },],
-        "rows": [{ type: core_1.Input },],
-        "lazy": [{ type: core_1.Input },],
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "buffer": [{ type: core_1.Input },],
-        "inline": [{ type: core_1.Input },],
-        "scrollHeight": [{ type: core_1.Input },],
-        "loader": [{ type: core_1.Input },],
-        "totalRecords": [{ type: core_1.Input },],
-        "trackBy": [{ type: core_1.Input },],
-        "header": [{ type: core_1.ContentChild, args: [shared_1.Header,] },],
-        "footer": [{ type: core_1.ContentChild, args: [shared_1.Footer,] },],
-        "templates": [{ type: core_1.ContentChildren, args: [shared_1.PrimeTemplate,] },],
-        "contentViewChild": [{ type: core_1.ViewChild, args: ['content',] },],
-        "onLazyLoad": [{ type: core_1.Output },],
+        value: [{ type: core_1.Input }],
+        rows: [{ type: core_1.Input }],
+        lazy: [{ type: core_1.Input }],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        buffer: [{ type: core_1.Input }],
+        inline: [{ type: core_1.Input }],
+        scrollHeight: [{ type: core_1.Input }],
+        loader: [{ type: core_1.Input }],
+        totalRecords: [{ type: core_1.Input }],
+        trackBy: [{ type: core_1.Input }],
+        header: [{ type: core_1.ContentChild, args: [shared_1.Header,] }],
+        footer: [{ type: core_1.ContentChild, args: [shared_1.Footer,] }],
+        templates: [{ type: core_1.ContentChildren, args: [shared_1.PrimeTemplate,] }],
+        contentViewChild: [{ type: core_1.ViewChild, args: ['content',] }],
+        onLazyLoad: [{ type: core_1.Output }]
     };
     return DataScroller;
 }());

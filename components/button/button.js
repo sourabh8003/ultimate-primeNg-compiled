@@ -16,7 +16,7 @@ var ButtonDirective = /** @class */ (function () {
             var iconElement = document.createElement("span");
             iconElement.setAttribute("aria-hidden", "true");
             var iconPosClass = (this.iconPos == 'right') ? 'ui-button-icon-right' : 'ui-button-icon-left';
-            iconElement.className = iconPosClass + ' ui-clickable fa fa-fw ' + this.icon;
+            iconElement.className = iconPosClass + ' ui-clickable ' + this.icon;
             this.el.nativeElement.appendChild(iconElement);
         }
         var labelElement = document.createElement("span");
@@ -79,8 +79,8 @@ var ButtonDirective = /** @class */ (function () {
             this._icon = val;
             if (this.initialized) {
                 var iconPosClass = (this.iconPos == 'right') ? 'ui-button-icon-right' : 'ui-button-icon-left';
-                this.domHandler.findSingle(this.el.nativeElement, '.fa').className =
-                    iconPosClass + ' ui-clickable fa fa-fw ' + this.icon;
+                this.domHandler.findSingle(this.el.nativeElement, '.ui-clickable').className =
+                    iconPosClass + ' ui-clickable ' + this.icon;
             }
         },
         enumerable: true,
@@ -100,14 +100,14 @@ var ButtonDirective = /** @class */ (function () {
     ];
     /** @nocollapse */
     ButtonDirective.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: domhandler_1.DomHandler, },
+        { type: core_1.ElementRef },
+        { type: domhandler_1.DomHandler }
     ]; };
     ButtonDirective.propDecorators = {
-        "iconPos": [{ type: core_1.Input },],
-        "cornerStyleClass": [{ type: core_1.Input },],
-        "label": [{ type: core_1.Input },],
-        "icon": [{ type: core_1.Input },],
+        iconPos: [{ type: core_1.Input }],
+        cornerStyleClass: [{ type: core_1.Input }],
+        label: [{ type: core_1.Input }],
+        icon: [{ type: core_1.Input }]
     };
     return ButtonDirective;
 }());
@@ -126,18 +126,17 @@ var Button = /** @class */ (function () {
                     template: "\n        <button [attr.type]=\"type\" [class]=\"styleClass\" [style]=\"style\" [disabled]=\"disabled\"\n            [ngClass]=\"{'ui-button ui-widget ui-state-default ui-corner-all':true,\n                        'ui-button-icon-only': (icon && !label),\n                        'ui-button-text-icon-left': (icon && label && iconPos === 'left'),\n                        'ui-button-text-icon-right': (icon && label && iconPos === 'right'),\n                        'ui-button-text-only': (!icon && label),\n                        'ui-button-text-empty': (!icon && !label),\n                        'ui-state-disabled': disabled}\"\n                        (click)=\"onClick.emit($event)\" (focus)=\"onFocus.emit($event)\" (blur)=\"onBlur.emit($event)\">\n            <ng-content></ng-content>\n            <span [ngClass]=\"{'ui-clickable': true,\n                        'ui-button-icon-left': (iconPos === 'left'), \n                        'ui-button-icon-right': (iconPos === 'right')}\"\n                        [class]=\"icon\" *ngIf=\"icon\"></span>\n            <span class=\"ui-button-text ui-clickable\">{{label||'ui-btn'}}</span>\n        </button>\n    "
                 },] },
     ];
-    /** @nocollapse */
     Button.propDecorators = {
-        "type": [{ type: core_1.Input },],
-        "iconPos": [{ type: core_1.Input },],
-        "icon": [{ type: core_1.Input },],
-        "label": [{ type: core_1.Input },],
-        "disabled": [{ type: core_1.Input },],
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "onClick": [{ type: core_1.Output },],
-        "onFocus": [{ type: core_1.Output },],
-        "onBlur": [{ type: core_1.Output },],
+        type: [{ type: core_1.Input }],
+        iconPos: [{ type: core_1.Input }],
+        icon: [{ type: core_1.Input }],
+        label: [{ type: core_1.Input }],
+        disabled: [{ type: core_1.Input }],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        onClick: [{ type: core_1.Output }],
+        onFocus: [{ type: core_1.Output }],
+        onBlur: [{ type: core_1.Output }]
     };
     return Button;
 }());

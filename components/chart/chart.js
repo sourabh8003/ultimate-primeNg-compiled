@@ -36,6 +36,10 @@ var UIChart = /** @class */ (function () {
     UIChart.prototype.initChart = function () {
         var opts = this.options || {};
         opts.responsive = this.responsive;
+        // allows chart to resize in responsive mode
+        if (opts.responsive && (this.height || this.width)) {
+            opts.maintainAspectRatio = false;
+        }
         this.chart = new Chart(this.el.nativeElement.children[0].children[0], {
             type: this.type,
             data: this.data,
@@ -50,7 +54,7 @@ var UIChart = /** @class */ (function () {
     };
     UIChart.prototype.generateLegend = function () {
         if (this.chart) {
-            this.chart.generateLegend();
+            return this.chart.generateLegend();
         }
     };
     UIChart.prototype.refresh = function () {
@@ -74,21 +78,21 @@ var UIChart = /** @class */ (function () {
     UIChart.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-chart',
-                    template: "\n        <div style=\"position:relative\" [style.width]=\"responsive ? null : width\" [style.height]=\"responsive ? null : height\">\n            <canvas [attr.width]=\"responsive ? null : width\" [attr.height]=\"responsive ? null : height\" (click)=\"onCanvasClick($event)\"></canvas>\n        </div>\n    "
+                    template: "\n        <div style=\"position:relative\" [style.width]=\"responsive && !width ? null : width\" [style.height]=\"responsive && !height ? null : height\">\n            <canvas [attr.width]=\"responsive && !width ? null : width\" [attr.height]=\"responsive && !height ? null : height\" (click)=\"onCanvasClick($event)\"></canvas>\n        </div>\n    "
                 },] },
     ];
     /** @nocollapse */
     UIChart.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
+        { type: core_1.ElementRef }
     ]; };
     UIChart.propDecorators = {
-        "type": [{ type: core_1.Input },],
-        "options": [{ type: core_1.Input },],
-        "width": [{ type: core_1.Input },],
-        "height": [{ type: core_1.Input },],
-        "responsive": [{ type: core_1.Input },],
-        "onDataSelect": [{ type: core_1.Output },],
-        "data": [{ type: core_1.Input },],
+        type: [{ type: core_1.Input }],
+        options: [{ type: core_1.Input }],
+        width: [{ type: core_1.Input }],
+        height: [{ type: core_1.Input }],
+        responsive: [{ type: core_1.Input }],
+        onDataSelect: [{ type: core_1.Output }],
+        data: [{ type: core_1.Input }]
     };
     return UIChart;
 }());

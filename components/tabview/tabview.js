@@ -39,15 +39,14 @@ var TabViewNav = /** @class */ (function () {
                         '[class.ui-widget-header]': 'true',
                         '[class.ui-corner-all]': 'true'
                     },
-                    template: "\n        <ng-template ngFor let-tab [ngForOf]=\"tabs\">\n            <li [class]=\"getDefaultHeaderClass(tab)\" [ngStyle]=\"tab.headerStyle\" role=\"presentation\"\n                [ngClass]=\"{'ui-tabview-selected ui-state-active': tab.selected, 'ui-state-disabled': tab.disabled}\"\n                (click)=\"clickTab($event,tab)\" *ngIf=\"!tab.closed\">\n                <a [attr.id]=\"tab.id + '-label'\" href=\"#\" role=\"tab\" [attr.aria-selected]=\"tab.selected\" [attr.aria-controls]=\"tab.id\">\n                    <span class=\"ui-tabview-left-icon fa\" [ngClass]=\"tab.leftIcon\" *ngIf=\"tab.leftIcon\"></span>\n                    <span class=\"ui-tabview-title\">{{tab.header}}</span>\n                    <span class=\"ui-tabview-right-icon fa\" [ngClass]=\"tab.rightIcon\" *ngIf=\"tab.rightIcon\"></span>\n                </a>\n                <span *ngIf=\"tab.closable\" class=\"ui-tabview-close fa fa-close\" (click)=\"clickClose($event,tab)\"></span>\n            </li>\n        </ng-template>\n    ",
+                    template: "\n        <ng-template ngFor let-tab [ngForOf]=\"tabs\">\n            <li [class]=\"getDefaultHeaderClass(tab)\" [ngStyle]=\"tab.headerStyle\" role=\"presentation\"\n                [ngClass]=\"{'ui-tabview-selected ui-state-active': tab.selected, 'ui-state-disabled': tab.disabled}\"\n                (click)=\"clickTab($event,tab)\" *ngIf=\"!tab.closed\">\n                <a [attr.id]=\"tab.id + '-label'\" href=\"#\" role=\"tab\" [attr.aria-selected]=\"tab.selected\" [attr.aria-controls]=\"tab.id\">\n                    <span class=\"ui-tabview-left-icon fa\" [ngClass]=\"tab.leftIcon\" *ngIf=\"tab.leftIcon\"></span>\n                    <span class=\"ui-tabview-title\">{{tab.header}}</span>\n                    <span class=\"ui-tabview-right-icon fa\" [ngClass]=\"tab.rightIcon\" *ngIf=\"tab.rightIcon\"></span>\n                </a>\n                <span *ngIf=\"tab.closable\" class=\"ui-tabview-close pi pi-times\" (click)=\"clickClose($event,tab)\"></span>\n            </li>\n        </ng-template>\n    ",
                 },] },
     ];
-    /** @nocollapse */
     TabViewNav.propDecorators = {
-        "tabs": [{ type: core_1.Input },],
-        "orientation": [{ type: core_1.Input },],
-        "onTabClick": [{ type: core_1.Output },],
-        "onTabCloseClick": [{ type: core_1.Output },],
+        tabs: [{ type: core_1.Input }],
+        orientation: [{ type: core_1.Input }],
+        onTabClick: [{ type: core_1.Output }],
+        onTabCloseClick: [{ type: core_1.Output }]
     };
     return TabViewNav;
 }());
@@ -93,19 +92,19 @@ var TabPanel = /** @class */ (function () {
     ];
     /** @nocollapse */
     TabPanel.ctorParameters = function () { return [
-        { type: core_1.ViewContainerRef, },
+        { type: core_1.ViewContainerRef }
     ]; };
     TabPanel.propDecorators = {
-        "header": [{ type: core_1.Input },],
-        "disabled": [{ type: core_1.Input },],
-        "closable": [{ type: core_1.Input },],
-        "headerStyle": [{ type: core_1.Input },],
-        "headerStyleClass": [{ type: core_1.Input },],
-        "leftIcon": [{ type: core_1.Input },],
-        "rightIcon": [{ type: core_1.Input },],
-        "cache": [{ type: core_1.Input },],
-        "templates": [{ type: core_1.ContentChildren, args: [shared_1.PrimeTemplate,] },],
-        "selected": [{ type: core_1.Input },],
+        header: [{ type: core_1.Input }],
+        disabled: [{ type: core_1.Input }],
+        closable: [{ type: core_1.Input }],
+        headerStyle: [{ type: core_1.Input }],
+        headerStyleClass: [{ type: core_1.Input }],
+        leftIcon: [{ type: core_1.Input }],
+        rightIcon: [{ type: core_1.Input }],
+        cache: [{ type: core_1.Input }],
+        templates: [{ type: core_1.ContentChildren, args: [shared_1.PrimeTemplate,] }],
+        selected: [{ type: core_1.Input }]
     };
     return TabPanel;
 }());
@@ -118,17 +117,6 @@ var TabView = /** @class */ (function () {
         this.onClose = new core_1.EventEmitter();
         this.activeIndexChange = new core_1.EventEmitter();
     }
-    Object.defineProperty(TabView.prototype, "lazy", {
-        get: function () {
-            return this._lazy;
-        },
-        set: function (val) {
-            this._lazy = val;
-            console.log('Lazy property of TabView is deprecated, use an ngTemplate inside a TabPanel instead for Lazy Loading');
-        },
-        enumerable: true,
-        configurable: true
-    });
     TabView.prototype.ngAfterContentInit = function () {
         var _this = this;
         this.initTabs();
@@ -251,19 +239,18 @@ var TabView = /** @class */ (function () {
     ];
     /** @nocollapse */
     TabView.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
+        { type: core_1.ElementRef }
     ]; };
     TabView.propDecorators = {
-        "orientation": [{ type: core_1.Input },],
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "controlClose": [{ type: core_1.Input },],
-        "tabPanels": [{ type: core_1.ContentChildren, args: [TabPanel,] },],
-        "onChange": [{ type: core_1.Output },],
-        "onClose": [{ type: core_1.Output },],
-        "activeIndexChange": [{ type: core_1.Output },],
-        "lazy": [{ type: core_1.Input },],
-        "activeIndex": [{ type: core_1.Input },],
+        orientation: [{ type: core_1.Input }],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        controlClose: [{ type: core_1.Input }],
+        tabPanels: [{ type: core_1.ContentChildren, args: [TabPanel,] }],
+        onChange: [{ type: core_1.Output }],
+        onClose: [{ type: core_1.Output }],
+        activeIndexChange: [{ type: core_1.Output }],
+        activeIndex: [{ type: core_1.Input }]
     };
     return TabView;
 }());

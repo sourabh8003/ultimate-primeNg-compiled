@@ -138,10 +138,10 @@ var Slider = /** @class */ (function () {
         var diff = (newValue - oldValue);
         var val = oldValue;
         if (diff < 0) {
-            val = oldValue + Math.ceil((newValue - oldValue) / this.step) * this.step;
+            val = oldValue + Math.ceil(newValue / this.step - oldValue / this.step) * this.step;
         }
         else if (diff > 0) {
-            val = oldValue + Math.floor((newValue - oldValue) / this.step) * this.step;
+            val = oldValue + Math.floor(newValue / this.step - oldValue / this.step) * this.step;
         }
         this.updateValue(val);
         this.updateHandleValue();
@@ -276,23 +276,23 @@ var Slider = /** @class */ (function () {
     ];
     /** @nocollapse */
     Slider.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: domhandler_1.DomHandler, },
-        { type: core_1.Renderer2, },
-        { type: core_1.NgZone, },
+        { type: core_1.ElementRef },
+        { type: domhandler_1.DomHandler },
+        { type: core_1.Renderer2 },
+        { type: core_1.NgZone }
     ]; };
     Slider.propDecorators = {
-        "animate": [{ type: core_1.Input },],
-        "disabled": [{ type: core_1.Input },],
-        "min": [{ type: core_1.Input },],
-        "max": [{ type: core_1.Input },],
-        "orientation": [{ type: core_1.Input },],
-        "step": [{ type: core_1.Input },],
-        "range": [{ type: core_1.Input },],
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "onChange": [{ type: core_1.Output },],
-        "onSlideEnd": [{ type: core_1.Output },],
+        animate: [{ type: core_1.Input }],
+        disabled: [{ type: core_1.Input }],
+        min: [{ type: core_1.Input }],
+        max: [{ type: core_1.Input }],
+        orientation: [{ type: core_1.Input }],
+        step: [{ type: core_1.Input }],
+        range: [{ type: core_1.Input }],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        onChange: [{ type: core_1.Output }],
+        onSlideEnd: [{ type: core_1.Output }]
     };
     return Slider;
 }());

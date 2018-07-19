@@ -15,7 +15,7 @@ exports.ToggleButtonModuleNgFactory = ToggleButtonModuleNgFactory;
 var styles_ToggleButton = [];
 var RenderType_ToggleButton = i0.ɵcrt({ encapsulation: 2, styles: styles_ToggleButton, data: {} });
 exports.RenderType_ToggleButton = RenderType_ToggleButton;
-function View_ToggleButton_1(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, null, 0, "span", [], [[8, "className", 0]], null, null, null, null))], null, function (_ck, _v) { var _co = _v.component; var currVal_0 = _co.getIconClass(); _ck(_v, 0, 0, currVal_0); }); }
+function View_ToggleButton_1(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, null, 1, "span", [["class", "ui-button-icon-left"]], null, null, null, null, null)), i0.ɵdid(1, 278528, null, 0, i2.NgClass, [i0.IterableDiffers, i0.KeyValueDiffers, i0.ElementRef, i0.Renderer2], { klass: [0, "klass"], ngClass: [1, "ngClass"] }, null)], function (_ck, _v) { var _co = _v.component; var currVal_0 = "ui-button-icon-left"; var currVal_1 = (_co.checked ? _co.onIcon : _co.offIcon); _ck(_v, 1, 0, currVal_0, currVal_1); }, null); }
 function View_ToggleButton_0(_l) { return i0.ɵvid(0, [i0.ɵqud(402653184, 1, { checkboxViewChild: 0 }), (_l()(), i0.ɵeld(1, 0, null, null, 9, "div", [], null, [[null, "click"]], function (_v, en, $event) { var ad = true; var _co = _v.component; if (("click" === en)) {
         var pd_0 = (_co.toggle($event) !== false);
         ad = (pd_0 && ad);

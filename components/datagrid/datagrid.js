@@ -126,30 +126,30 @@ var DataGrid = /** @class */ (function () {
     ];
     /** @nocollapse */
     DataGrid.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: core_1.IterableDiffers, },
+        { type: core_1.ElementRef },
+        { type: core_1.IterableDiffers }
     ]; };
     DataGrid.propDecorators = {
-        "paginator": [{ type: core_1.Input },],
-        "rows": [{ type: core_1.Input },],
-        "totalRecords": [{ type: core_1.Input },],
-        "pageLinks": [{ type: core_1.Input },],
-        "rowsPerPageOptions": [{ type: core_1.Input },],
-        "lazy": [{ type: core_1.Input },],
-        "emptyMessage": [{ type: core_1.Input },],
-        "onLazyLoad": [{ type: core_1.Output },],
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "paginatorPosition": [{ type: core_1.Input },],
-        "alwaysShowPaginator": [{ type: core_1.Input },],
-        "trackBy": [{ type: core_1.Input },],
-        "immutable": [{ type: core_1.Input },],
-        "paginatorDropdownAppendTo": [{ type: core_1.Input },],
-        "onPage": [{ type: core_1.Output },],
-        "header": [{ type: core_1.ContentChild, args: [shared_1.Header,] },],
-        "footer": [{ type: core_1.ContentChild, args: [shared_1.Footer,] },],
-        "templates": [{ type: core_1.ContentChildren, args: [shared_1.PrimeTemplate,] },],
-        "value": [{ type: core_1.Input },],
+        paginator: [{ type: core_1.Input }],
+        rows: [{ type: core_1.Input }],
+        totalRecords: [{ type: core_1.Input }],
+        pageLinks: [{ type: core_1.Input }],
+        rowsPerPageOptions: [{ type: core_1.Input }],
+        lazy: [{ type: core_1.Input }],
+        emptyMessage: [{ type: core_1.Input }],
+        onLazyLoad: [{ type: core_1.Output }],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        paginatorPosition: [{ type: core_1.Input }],
+        alwaysShowPaginator: [{ type: core_1.Input }],
+        trackBy: [{ type: core_1.Input }],
+        immutable: [{ type: core_1.Input }],
+        paginatorDropdownAppendTo: [{ type: core_1.Input }],
+        onPage: [{ type: core_1.Output }],
+        header: [{ type: core_1.ContentChild, args: [shared_1.Header,] }],
+        footer: [{ type: core_1.ContentChild, args: [shared_1.Footer,] }],
+        templates: [{ type: core_1.ContentChildren, args: [shared_1.PrimeTemplate,] }],
+        value: [{ type: core_1.Input }]
     };
     return DataGrid;
 }());

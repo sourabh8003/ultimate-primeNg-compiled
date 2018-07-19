@@ -18,7 +18,7 @@ var CodeHighlighter = /** @class */ (function () {
     ];
     /** @nocollapse */
     CodeHighlighter.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
+        { type: core_1.ElementRef }
     ]; };
     return CodeHighlighter;
 }());

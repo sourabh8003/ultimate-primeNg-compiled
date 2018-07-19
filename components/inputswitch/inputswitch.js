@@ -131,19 +131,19 @@ var InputSwitch = /** @class */ (function () {
     ];
     /** @nocollapse */
     InputSwitch.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: domhandler_1.DomHandler, },
+        { type: core_1.ElementRef },
+        { type: domhandler_1.DomHandler }
     ]; };
     InputSwitch.propDecorators = {
-        "onLabel": [{ type: core_1.Input },],
-        "offLabel": [{ type: core_1.Input },],
-        "disabled": [{ type: core_1.Input },],
-        "style": [{ type: core_1.Input },],
-        "styleClass": [{ type: core_1.Input },],
-        "tabindex": [{ type: core_1.Input },],
-        "inputId": [{ type: core_1.Input },],
-        "ariaLabelTemplate": [{ type: core_1.Input },],
-        "onChange": [{ type: core_1.Output },],
+        onLabel: [{ type: core_1.Input }],
+        offLabel: [{ type: core_1.Input }],
+        disabled: [{ type: core_1.Input }],
+        style: [{ type: core_1.Input }],
+        styleClass: [{ type: core_1.Input }],
+        tabindex: [{ type: core_1.Input }],
+        inputId: [{ type: core_1.Input }],
+        ariaLabelTemplate: [{ type: core_1.Input }],
+        onChange: [{ type: core_1.Output }]
     };
     return InputSwitch;
 }());

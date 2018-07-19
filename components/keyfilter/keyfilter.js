@@ -98,21 +98,13 @@ var KeyFilter = /** @class */ (function () {
     };
     KeyFilter.SAFARI_KEYS = {
         63234: 37,
-        // left
         63235: 39,
-        // right
         63232: 38,
-        // up
         63233: 40,
-        // down
         63276: 33,
-        // page up
         63277: 34,
-        // page down
         63272: 46,
-        // delete
         63273: 36,
-        // home
         63275: 35 // end
     };
     KeyFilter.decorators = [
@@ -123,13 +115,13 @@ var KeyFilter = /** @class */ (function () {
     ];
     /** @nocollapse */
     KeyFilter.ctorParameters = function () { return [
-        { type: core_1.ElementRef, },
-        { type: domhandler_1.DomHandler, },
+        { type: core_1.ElementRef },
+        { type: domhandler_1.DomHandler }
     ]; };
     KeyFilter.propDecorators = {
-        "pValidateOnly": [{ type: core_1.Input },],
-        "pattern": [{ type: core_1.Input, args: ['pKeyFilter',] },],
-        "onKeyPress": [{ type: core_1.HostListener, args: ['keypress', ['$event'],] },],
+        pValidateOnly: [{ type: core_1.Input }],
+        pattern: [{ type: core_1.Input, args: ['pKeyFilter',] }],
+        onKeyPress: [{ type: core_1.HostListener, args: ['keypress', ['$event'],] }]
     };
     return KeyFilter;
 }());

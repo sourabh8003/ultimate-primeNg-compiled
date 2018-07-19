@@ -27,6 +27,7 @@ export declare class MultiSelect implements OnInit, AfterViewInit, AfterContentI
     name: string;
     displaySelectedLabel: boolean;
     maxSelectedLabels: number;
+    selectionLimit: number;
     selectedItemsLabel: string;
     showToggleAll: boolean;
     resetFilterOnHide: boolean;
@@ -58,8 +59,10 @@ export declare class MultiSelect implements OnInit, AfterViewInit, AfterContentI
     visibleOptions: SelectItem[];
     filtered: boolean;
     itemTemplate: TemplateRef<any>;
+    selectedItemsTemplate: TemplateRef<any>;
     focusedItemCheckbox: HTMLInputElement | null;
     _options: any[];
+    disabledOption: boolean;
     constructor(el: ElementRef, domHandler: DomHandler, renderer: Renderer2, objectUtils: ObjectUtils, cd: ChangeDetectorRef);
     options: any[];
     ngOnInit(): void;
