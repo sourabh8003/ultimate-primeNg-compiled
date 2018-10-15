@@ -12,6 +12,8 @@ export declare class PickList implements AfterViewChecked, AfterContentInit {
     responsive: boolean;
     filterBy: string;
     trackBy: Function;
+    sourceTrackBy: Function;
+    targetTrackBy: Function;
     showSourceFilter: boolean;
     showTargetFilter: boolean;
     metaKeySelection: boolean;
@@ -60,6 +62,8 @@ export declare class PickList implements AfterViewChecked, AfterContentInit {
     onListItemDroppoint: boolean;
     listHighlightTarget: boolean;
     listHighlightSource: boolean;
+    readonly SOURCE_LIST: number;
+    readonly TARGET_LIST: number;
     constructor(el: ElementRef, domHandler: DomHandler, objectUtils: ObjectUtils);
     ngAfterContentInit(): void;
     ngAfterViewChecked(): void;

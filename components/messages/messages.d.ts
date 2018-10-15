@@ -10,8 +10,11 @@ export declare class Messages implements OnInit, OnDestroy {
     styleClass: string;
     enableService: boolean;
     key: string;
+    showTransitionOptions: string;
+    hideTransitionOptions: string;
     valueChange: EventEmitter<Message[]>;
-    subscription: Subscription;
+    messageSubscription: Subscription;
+    clearSubscription: Subscription;
     constructor(messageService: MessageService);
     ngOnInit(): void;
     hasMessages(): boolean;

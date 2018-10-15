@@ -15,11 +15,12 @@ var Chips = /** @class */ (function () {
     function Chips(el, domHandler) {
         this.el = el;
         this.domHandler = domHandler;
+        this.allowDuplicate = true;
         this.onAdd = new core_1.EventEmitter();
         this.onRemove = new core_1.EventEmitter();
-        this.allowDuplicate = true;
         this.onFocus = new core_1.EventEmitter();
         this.onBlur = new core_1.EventEmitter();
+        this.onChipClick = new core_1.EventEmitter();
         this.onModelChange = function () { };
         this.onModelTouched = function () { };
     }
@@ -38,6 +39,12 @@ var Chips = /** @class */ (function () {
     };
     Chips.prototype.onClick = function (event) {
         this.inputViewChild.nativeElement.focus();
+    };
+    Chips.prototype.onItemClick = function (event, item) {
+        this.onChipClick.emit({
+            originalEvent: event,
+            value: item
+        });
     };
     Chips.prototype.writeValue = function (value) {
         this.value = value;
@@ -149,13 +156,13 @@ var Chips = /** @class */ (function () {
             if (this.max && this.value && this.max === this.value.length)
                 this.inputViewChild.nativeElement.disabled = true;
             else
-                this.inputViewChild.nativeElement.disabled = false;
+                this.inputViewChild.nativeElement.disabled = this.disabled || false;
         }
     };
     Chips.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-chips',
-                    template: "\n        <div [ngClass]=\"'ui-chips ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\" (click)=\"onClick($event)\">\n            <ul [ngClass]=\"{'ui-inputtext ui-state-default ui-corner-all':true,'ui-state-focus':focus,'ui-state-disabled':disabled}\">\n                <li #token *ngFor=\"let item of value; let i = index;\" class=\"ui-chips-token ui-state-highlight ui-corner-all\">\n                    <span *ngIf=\"!disabled\" class=\"ui-chips-token-icon pi pi-fw pi-times\" (click)=\"removeItem($event,i)\"></span>\n                    <span *ngIf=\"!itemTemplate\" class=\"ui-chips-token-label\">{{field ? resolveFieldData(item,field) : item}}</span>\n                    <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: item}\"></ng-container>\n                </li>\n                <li class=\"ui-chips-input-token\">\n                    <input #inputtext type=\"text\" [attr.id]=\"inputId\" [attr.placeholder]=\"(value && value.length ? null : placeholder)\" [attr.tabindex]=\"tabindex\" (keydown)=\"onKeydown($event)\" \n                        (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\" [disabled]=\"disabled\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\">\n                </li>\n            </ul>\n        </div>\n    ",
+                    template: "\n        <div [ngClass]=\"'ui-chips ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\" (click)=\"onClick($event)\">\n            <ul [ngClass]=\"{'ui-inputtext ui-state-default ui-corner-all':true,'ui-state-focus':focus,'ui-state-disabled':disabled}\">\n                <li #token *ngFor=\"let item of value; let i = index;\" class=\"ui-chips-token ui-state-highlight ui-corner-all\" (click)=\"onItemClick($event, item)\">\n                    <span *ngIf=\"!disabled\" class=\"ui-chips-token-icon pi pi-fw pi-times\" (click)=\"removeItem($event,i)\"></span>\n                    <span *ngIf=\"!itemTemplate\" class=\"ui-chips-token-label\">{{field ? resolveFieldData(item,field) : item}}</span>\n                    <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: item}\"></ng-container>\n                </li>\n                <li class=\"ui-chips-input-token\">\n                    <input #inputtext type=\"text\" [attr.id]=\"inputId\" [attr.placeholder]=\"(value && value.length ? null : placeholder)\" [attr.tabindex]=\"tabindex\" (keydown)=\"onKeydown($event)\" \n                        (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\" [disabled]=\"disabled\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\">\n                </li>\n            </ul>\n        </div>\n    ",
                     providers: [domhandler_1.DomHandler, exports.CHIPS_VALUE_ACCESSOR]
                 },] },
     ];
@@ -168,8 +175,6 @@ var Chips = /** @class */ (function () {
         style: [{ type: core_1.Input }],
         styleClass: [{ type: core_1.Input }],
         disabled: [{ type: core_1.Input }],
-        onAdd: [{ type: core_1.Output }],
-        onRemove: [{ type: core_1.Output }],
         field: [{ type: core_1.Input }],
         placeholder: [{ type: core_1.Input }],
         max: [{ type: core_1.Input }],
@@ -180,8 +185,11 @@ var Chips = /** @class */ (function () {
         inputStyleClass: [{ type: core_1.Input }],
         addOnTab: [{ type: core_1.Input }],
         addOnBlur: [{ type: core_1.Input }],
+        onAdd: [{ type: core_1.Output }],
+        onRemove: [{ type: core_1.Output }],
         onFocus: [{ type: core_1.Output }],
         onBlur: [{ type: core_1.Output }],
+        onChipClick: [{ type: core_1.Output }],
         inputViewChild: [{ type: core_1.ViewChild, args: ['inputtext',] }],
         templates: [{ type: core_1.ContentChildren, args: [shared_1.PrimeTemplate,] }]
     };

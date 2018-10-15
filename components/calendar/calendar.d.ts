@@ -1,4 +1,5 @@
-import { ElementRef, AfterViewInit, AfterViewChecked, OnDestroy, OnInit, EventEmitter, Renderer2, ChangeDetectorRef, TemplateRef, QueryList } from '@angular/core';
+import { ElementRef, OnDestroy, OnInit, EventEmitter, Renderer2, ChangeDetectorRef, TemplateRef, QueryList } from '@angular/core';
+import { AnimationEvent } from '@angular/animations';
 import { DomHandler } from '../dom/domhandler';
 import { ControlValueAccessor } from '@angular/forms';
 export declare const CALENDAR_VALUE_ACCESSOR: any;
@@ -12,15 +13,15 @@ export interface LocaleSettings {
     today: string;
     clear: string;
 }
-export declare class Calendar implements AfterViewInit, AfterViewChecked, OnInit, OnDestroy, ControlValueAccessor {
+export declare class Calendar implements OnInit, OnDestroy, ControlValueAccessor {
     el: ElementRef;
     domHandler: DomHandler;
     renderer: Renderer2;
     cd: ChangeDetectorRef;
     defaultDate: Date;
-    style: string;
+    style: any;
     styleClass: string;
-    inputStyle: string;
+    inputStyle: any;
     inputId: string;
     name: string;
     inputStyleClass: string;
@@ -55,11 +56,14 @@ export declare class Calendar implements AfterViewInit, AfterViewChecked, OnInit
     autoZIndex: boolean;
     baseZIndex: number;
     panelStyleClass: string;
+    panelStyle: any;
     keepInvalid: boolean;
     hideOnDateTimeSelect: boolean;
     numberOfMonths: number;
     view: string;
     touchUI: boolean;
+    showTransitionOptions: string;
+    hideTransitionOptions: string;
     onFocus: EventEmitter<any>;
     onBlur: EventEmitter<any>;
     onClose: EventEmitter<any>;
@@ -72,10 +76,9 @@ export declare class Calendar implements AfterViewInit, AfterViewChecked, OnInit
     templates: QueryList<any>;
     _locale: LocaleSettings;
     tabindex: number;
+    inputfieldViewChild: ElementRef;
     private _utc;
     utc: boolean;
-    overlayViewChild: ElementRef;
-    inputfieldViewChild: ElementRef;
     value: any;
     dates: any[];
     months: any[];
@@ -91,7 +94,6 @@ export declare class Calendar implements AfterViewInit, AfterViewChecked, OnInit
     maskClickListener: Function;
     overlay: HTMLDivElement;
     overlayVisible: boolean;
-    overlayShown: boolean;
     datepickerClick: boolean;
     onModelChange: Function;
     onModelTouched: Function;
@@ -121,10 +123,10 @@ export declare class Calendar implements AfterViewInit, AfterViewChecked, OnInit
     locale: LocaleSettings;
     constructor(el: ElementRef, domHandler: DomHandler, renderer: Renderer2, cd: ChangeDetectorRef);
     ngOnInit(): void;
-    ngAfterViewInit(): void;
-    ngAfterViewChecked(): void;
     ngAfterContentInit(): void;
+    populateYearOptions(start: any, end: any): void;
     createWeekDays(): void;
+    createMonthPickerValues(): void;
     createMonths(month: number, year: number): void;
     createMonth(month: number, year: number): {
         month: number;
@@ -163,7 +165,7 @@ export declare class Calendar implements AfterViewInit, AfterViewChecked, OnInit
     isRangeSelection(): boolean;
     isMultipleSelection(): boolean;
     isToday(today: any, day: any, month: any, year: any): boolean;
-    isSelectable(day: any, month: any, year: any): boolean;
+    isSelectable(day: any, month: any, year: any, otherMonth: any): boolean;
     isDateDisabled(day: number, month: number, year: number): boolean;
     isDayDisabled(day: number, month: number, year: number): boolean;
     onInputFocus(event: Event): void;
@@ -191,8 +193,11 @@ export declare class Calendar implements AfterViewInit, AfterViewChecked, OnInit
     updateUI(): void;
     onDatePickerClick(event: any): void;
     showOverlay(): void;
+    onOverlayAnimationStart(event: AnimationEvent): void;
+    appendOverlay(): void;
+    restoreOverlayAppend(): void;
     alignOverlay(): void;
-    enableModality(): void;
+    enableModality(element: any): void;
     disableModality(): void;
     unbindMaskClickListener(): void;
     writeValue(value: any): void;
@@ -213,6 +218,7 @@ export declare class Calendar implements AfterViewInit, AfterViewChecked, OnInit
     onClearButtonClick(event: any): void;
     bindDocumentClickListener(): void;
     unbindDocumentClickListener(): void;
+    onOverlayHide(): void;
     ngOnDestroy(): void;
 }
 export declare class CalendarModule {

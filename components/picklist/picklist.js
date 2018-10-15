@@ -28,6 +28,8 @@ var PickList = /** @class */ (function () {
         this.onTargetSelect = new core_1.EventEmitter();
         this.selectedItemsSource = [];
         this.selectedItemsTarget = [];
+        this.SOURCE_LIST = -1;
+        this.TARGET_LIST = 1;
     }
     PickList.prototype.ngAfterContentInit = function () {
         var _this = this;
@@ -98,7 +100,7 @@ var PickList = /** @class */ (function () {
     };
     PickList.prototype.onFilter = function (event, data, listType) {
         var query = event.target.value.trim().toLowerCase();
-        if (listType === -1)
+        if (listType === this.SOURCE_LIST)
             this.filterValueSource = query;
         else
             this.filterValueTarget = query;
@@ -106,13 +108,13 @@ var PickList = /** @class */ (function () {
     };
     PickList.prototype.activateFilter = function (data, listType) {
         var searchFields = this.filterBy.split(',');
-        if (listType === -1)
+        if (listType === this.SOURCE_LIST)
             this.visibleOptionsSource = this.objectUtils.filter(data, searchFields, this.filterValueSource);
         else
             this.visibleOptionsTarget = this.objectUtils.filter(data, searchFields, this.filterValueTarget);
     };
     PickList.prototype.isItemVisible = function (item, listType) {
-        if (listType == -1)
+        if (listType == this.SOURCE_LIST)
             return this.isVisibleInList(this.visibleOptionsSource, item, this.filterValueSource);
         else
             return this.isVisibleInList(this.visibleOptionsTarget, item, this.filterValueTarget);
@@ -237,7 +239,7 @@ var PickList = /** @class */ (function () {
         if (this.source) {
             var movedItems = [];
             for (var i = 0; i < this.source.length; i++) {
-                if (this.isItemVisible(this.source[i], -1)) {
+                if (this.isItemVisible(this.source[i], this.SOURCE_LIST)) {
                     var removedItem = this.source.splice(i, 1)[0];
                     this.target.push(removedItem);
                     movedItems.push(removedItem);
@@ -271,7 +273,7 @@ var PickList = /** @class */ (function () {
         if (this.target) {
             var movedItems = [];
             for (var i = 0; i < this.target.length; i++) {
-                if (this.isItemVisible(this.target[i], 1)) {
+                if (this.isItemVisible(this.target[i], this.TARGET_LIST)) {
                     var removedItem = this.target.splice(i, 1)[0];
                     this.source.push(removedItem);
                     movedItems.push(removedItem);
@@ -308,7 +310,7 @@ var PickList = /** @class */ (function () {
     PickList.prototype.onDragStart = function (event, index, listType) {
         this.dragging = true;
         this.fromListType = listType;
-        if (listType === -1)
+        if (listType === this.SOURCE_LIST)
             this.draggedItemIndexSource = index;
         else
             this.draggedItemIndexTarget = index;
@@ -317,14 +319,14 @@ var PickList = /** @class */ (function () {
         }
     };
     PickList.prototype.onDragOver = function (event, index, listType) {
-        if (listType == -1) {
-            if (this.draggedItemIndexSource !== index && this.draggedItemIndexSource + 1 !== index || (this.fromListType === 1)) {
+        if (listType == this.SOURCE_LIST) {
+            if (this.draggedItemIndexSource !== index && this.draggedItemIndexSource + 1 !== index || (this.fromListType === this.TARGET_LIST)) {
                 this.dragOverItemIndexSource = index;
                 event.preventDefault();
             }
         }
         else {
-            if (this.draggedItemIndexTarget !== index && this.draggedItemIndexTarget + 1 !== index || (this.fromListType === -1)) {
+            if (this.draggedItemIndexTarget !== index && this.draggedItemIndexTarget + 1 !== index || (this.fromListType === this.SOURCE_LIST)) {
                 this.dragOverItemIndexTarget = index;
                 event.preventDefault();
             }
@@ -338,18 +340,24 @@ var PickList = /** @class */ (function () {
     };
     PickList.prototype.onDrop = function (event, index, listType) {
         if (this.onListItemDroppoint) {
-            if (listType === -1) {
-                if (this.fromListType === 1)
+            if (listType === this.SOURCE_LIST) {
+                if (this.fromListType === this.TARGET_LIST) {
                     this.insert(this.draggedItemIndexTarget, this.target, index, this.source, this.onMoveToSource);
-                else
+                }
+                else {
                     this.objectUtils.reorderArray(this.source, this.draggedItemIndexSource, (this.draggedItemIndexSource > index) ? index : (index === 0) ? 0 : index - 1);
+                    this.onSourceReorder.emit({ items: this.source[this.draggedItemIndexSource] });
+                }
                 this.dragOverItemIndexSource = null;
             }
             else {
-                if (this.fromListType === -1)
+                if (this.fromListType === this.SOURCE_LIST) {
                     this.insert(this.draggedItemIndexSource, this.source, index, this.target, this.onMoveToTarget);
-                else
+                }
+                else {
                     this.objectUtils.reorderArray(this.target, this.draggedItemIndexTarget, (this.draggedItemIndexTarget > index) ? index : (index === 0) ? 0 : index - 1);
+                    this.onTargetReorder.emit({ items: this.target[this.draggedItemIndexTarget] });
+                }
                 this.dragOverItemIndexTarget = null;
             }
             this.listHighlightTarget = false;
@@ -362,13 +370,15 @@ var PickList = /** @class */ (function () {
     };
     PickList.prototype.onListDrop = function (event, listType) {
         if (!this.onListItemDroppoint) {
-            if (listType === -1) {
-                if (this.fromListType === 1)
+            if (listType === this.SOURCE_LIST) {
+                if (this.fromListType === this.TARGET_LIST) {
                     this.insert(this.draggedItemIndexTarget, this.target, null, this.source, this.onMoveToSource);
+                }
             }
             else {
-                if (this.fromListType === -1)
+                if (this.fromListType === this.SOURCE_LIST) {
                     this.insert(this.draggedItemIndexSource, this.source, null, this.target, this.onMoveToTarget);
+                }
             }
             this.listHighlightTarget = false;
             this.listHighlightSource = false;
@@ -396,12 +406,12 @@ var PickList = /** @class */ (function () {
             else if (topDiff < 25 && topDiff > 0)
                 moveListType.nativeElement.scrollTop -= 15;
         }
-        if (listType === -1) {
-            if (this.fromListType === 1)
+        if (listType === this.SOURCE_LIST) {
+            if (this.fromListType === this.TARGET_LIST)
                 this.listHighlightSource = true;
         }
         else {
-            if (this.fromListType === -1)
+            if (this.fromListType === this.SOURCE_LIST)
                 this.listHighlightTarget = true;
         }
         event.preventDefault();
@@ -421,7 +431,7 @@ var PickList = /** @class */ (function () {
     PickList.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-pickList',
-                    template: "\n        <div [class]=\"styleClass\" [ngStyle]=\"style\" [ngClass]=\"{'ui-picklist ui-widget ui-helper-clearfix': true,'ui-picklist-responsive': responsive}\">\n            <div class=\"ui-picklist-source-controls ui-picklist-buttons\" *ngIf=\"showSourceControls\">\n                <div class=\"ui-picklist-buttons-cell\">\n                    <button type=\"button\" pButton icon=\"pi pi-angle-up\" [disabled]=\"disabled\" (click)=\"moveUp(sourcelist,source,selectedItemsSource,onSourceReorder)\"></button>\n                    <button type=\"button\" pButton icon=\"pi pi-angle-double-up\" [disabled]=\"disabled\" (click)=\"moveTop(sourcelist,source,selectedItemsSource,onSourceReorder)\"></button>\n                    <button type=\"button\" pButton icon=\"pi pi-angle-down\" [disabled]=\"disabled\" (click)=\"moveDown(sourcelist,source,selectedItemsSource,onSourceReorder)\"></button>\n                    <button type=\"button\" pButton icon=\"pi pi-angle-double-down\" [disabled]=\"disabled\" (click)=\"moveBottom(sourcelist,source,selectedItemsSource,onSourceReorder)\"></button>\n                </div>\n            </div>\n            <div class=\"ui-picklist-listwrapper ui-picklist-source-wrapper\" [ngClass]=\"{'ui-picklist-listwrapper-nocontrols':!showSourceControls}\">\n                <div class=\"ui-picklist-caption ui-widget-header ui-corner-tl ui-corner-tr\" *ngIf=\"sourceHeader\">{{sourceHeader}}</div>\n                <div class=\"ui-picklist-filter-container ui-widget-content\" *ngIf=\"filterBy && showSourceFilter !== false\">\n                    <input #sourceFilter type=\"text\" role=\"textbox\" (keyup)=\"onFilter($event,source,-1)\" class=\"ui-picklist-filter ui-inputtext ui-widget ui-state-default ui-corner-all\" [disabled]=\"disabled\" [attr.placeholder]=\"sourceFilterPlaceholder\">\n                    <span class=\"ui-picklist-filter-icon pi pi-search\"></span>\n                </div>\n                <ul #sourcelist class=\"ui-widget-content ui-picklist-list ui-picklist-source ui-corner-bottom\" [ngClass]=\"{'ui-picklist-highlight': listHighlightSource}\" [ngStyle]=\"sourceStyle\" (dragover)=\"onListMouseMove($event,-1)\" (dragleave)=\"onListDragLeave()\" (drop)=\"onListDrop($event, -1)\">\n                    <ng-template ngFor let-item [ngForOf]=\"source\" [ngForTrackBy]=\"trackBy\" let-i=\"index\" let-l=\"last\">\n                        <li class=\"ui-picklist-droppoint\" *ngIf=\"dragdrop\" (dragover)=\"onDragOver($event, i, -1)\" (drop)=\"onDrop($event, i, -1)\" (dragleave)=\"onDragLeave($event, -1)\" \n                        [ngClass]=\"{'ui-picklist-droppoint-highlight': (i === dragOverItemIndexSource)}\" [style.display]=\"isItemVisible(item, -1) ? 'block' : 'none'\"></li>\n                        <li [ngClass]=\"{'ui-picklist-item':true,'ui-state-highlight':isSelected(item,selectedItemsSource), 'ui-state-disabled': disabled}\"\n                            (click)=\"onItemClick($event,item,selectedItemsSource,onSourceSelect)\" (dblclick)=\"onSourceItemDblClick()\" (touchend)=\"onItemTouchEnd($event)\"\n                            [style.display]=\"isItemVisible(item, -1) ? 'block' : 'none'\"\n                            [draggable]=\"dragdrop\" (dragstart)=\"onDragStart($event, i, -1)\" (dragend)=\"onDragEnd($event)\">\n                            <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: item, index: i}\"></ng-container>\n                        </li>\n                        <li class=\"ui-picklist-droppoint\" *ngIf=\"dragdrop&&l\" (dragover)=\"onDragOver($event, i + 1, -1)\" (drop)=\"onDrop($event, i + 1, -1)\" (dragleave)=\"onDragLeave($event, -1)\" \n                        [ngClass]=\"{'ui-picklist-droppoint-highlight': (i + 1 === dragOverItemIndexSource)}\"></li>\n                    </ng-template>\n                </ul>\n            </div>\n            <div class=\"ui-picklist-buttons\">\n                <div class=\"ui-picklist-buttons-cell\">\n                    <button type=\"button\" pButton icon=\"pi pi-angle-right\" [disabled]=\"disabled\" (click)=\"moveRight()\"></button>\n                    <button type=\"button\" pButton icon=\"pi pi-angle-double-right\" [disabled]=\"disabled\" (click)=\"moveAllRight()\"></button>\n                    <button type=\"button\" pButton icon=\"pi pi-angle-left\" [disabled]=\"disabled\" (click)=\"moveLeft()\"></button>\n                    <button type=\"button\" pButton icon=\"pi pi-angle-double-left\" [disabled]=\"disabled\" (click)=\"moveAllLeft()\"></button>\n                </div>\n            </div>\n            <div class=\"ui-picklist-listwrapper ui-picklist-target-wrapper\" [ngClass]=\"{'ui-picklist-listwrapper-nocontrols':!showTargetControls}\">\n                <div class=\"ui-picklist-caption ui-widget-header ui-corner-tl ui-corner-tr\" *ngIf=\"targetHeader\">{{targetHeader}}</div>\n                <div class=\"ui-picklist-filter-container ui-widget-content\" *ngIf=\"filterBy && showTargetFilter !== false\">\n                    <input #targetFilter type=\"text\" role=\"textbox\" (keyup)=\"onFilter($event,target,1)\" class=\"ui-picklist-filter ui-inputtext ui-widget ui-state-default ui-corner-all\" [disabled]=\"disabled\" [attr.placeholder]=\"targetFilterPlaceholder\">\n                    <span class=\"ui-picklist-filter-icon pi pi-search\"></span>\n                </div>\n                <ul #targetlist class=\"ui-widget-content ui-picklist-list ui-picklist-target ui-corner-bottom\" [ngClass]=\"{'ui-picklist-highlight': listHighlightTarget}\" [ngStyle]=\"targetStyle\" (dragover)=\"onListMouseMove($event,1)\" (dragleave)=\"onListDragLeave()\" (drop)=\"onListDrop($event,1)\">\n                    <ng-template ngFor let-item [ngForOf]=\"target\" [ngForTrackBy]=\"trackBy\" let-i=\"index\" let-l=\"last\">\n                        <li class=\"ui-picklist-droppoint\" *ngIf=\"dragdrop\" (dragover)=\"onDragOver($event, i, 1)\" (drop)=\"onDrop($event, i, 1)\" (dragleave)=\"onDragLeave($event, 1)\" \n                        [ngClass]=\"{'ui-picklist-droppoint-highlight': (i === dragOverItemIndexTarget)}\" [style.display]=\"isItemVisible(item, 1) ? 'block' : 'none'\"></li>\n                        <li [ngClass]=\"{'ui-picklist-item':true,'ui-state-highlight':isSelected(item,selectedItemsTarget), 'ui-state-disabled': disabled}\"\n                            (click)=\"onItemClick($event,item,selectedItemsTarget,onTargetSelect)\" (dblclick)=\"onTargetItemDblClick()\" (touchend)=\"onItemTouchEnd($event)\"\n                            [style.display]=\"isItemVisible(item, 1) ? 'block' : 'none'\"\n                            [draggable]=\"dragdrop\" (dragstart)=\"onDragStart($event, i, 1)\" (dragend)=\"onDragEnd($event)\">\n                            <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: item, index: i}\"></ng-container>\n                        </li>\n                        <li class=\"ui-picklist-droppoint\" *ngIf=\"dragdrop&&l\" (dragover)=\"onDragOver($event, i + 1, 1)\" (drop)=\"onDrop($event, i + 1, 1)\" (dragleave)=\"onDragLeave($event, 1)\" \n                        [ngClass]=\"{'ui-picklist-droppoint-highlight': (i + 1 === dragOverItemIndexTarget)}\"></li>\n                    </ng-template>\n                </ul>\n            </div>\n            <div class=\"ui-picklist-target-controls ui-picklist-buttons\" *ngIf=\"showTargetControls\">\n                <div class=\"ui-picklist-buttons-cell\">\n                    <button type=\"button\" pButton icon=\"pi pi-angle-up\" [disabled]=\"disabled\" (click)=\"moveUp(targetlist,target,selectedItemsTarget,onTargetReorder)\"></button>\n                    <button type=\"button\" pButton icon=\"pi pi-angle-double-up\" [disabled]=\"disabled\" (click)=\"moveTop(targetlist,target,selectedItemsTarget,onTargetReorder)\"></button>\n                    <button type=\"button\" pButton icon=\"pi pi-angle-down\" [disabled]=\"disabled\" (click)=\"moveDown(targetlist,target,selectedItemsTarget,onTargetReorder)\"></button>\n                    <button type=\"button\" pButton icon=\"pi pi-angle-double-down\" [disabled]=\"disabled\" (click)=\"moveBottom(targetlist,target,selectedItemsTarget,onTargetReorder)\"></button>\n                </div>\n            </div>\n        </div>\n    ",
+                    template: "\n        <div [class]=\"styleClass\" [ngStyle]=\"style\" [ngClass]=\"{'ui-picklist ui-widget ui-helper-clearfix': true,'ui-picklist-responsive': responsive}\">\n            <div class=\"ui-picklist-source-controls ui-picklist-buttons\" *ngIf=\"showSourceControls\">\n                <div class=\"ui-picklist-buttons-cell\">\n                    <button type=\"button\" pButton icon=\"pi pi-angle-up\" [disabled]=\"disabled\" (click)=\"moveUp(sourcelist,source,selectedItemsSource,onSourceReorder)\"></button>\n                    <button type=\"button\" pButton icon=\"pi pi-angle-double-up\" [disabled]=\"disabled\" (click)=\"moveTop(sourcelist,source,selectedItemsSource,onSourceReorder)\"></button>\n                    <button type=\"button\" pButton icon=\"pi pi-angle-down\" [disabled]=\"disabled\" (click)=\"moveDown(sourcelist,source,selectedItemsSource,onSourceReorder)\"></button>\n                    <button type=\"button\" pButton icon=\"pi pi-angle-double-down\" [disabled]=\"disabled\" (click)=\"moveBottom(sourcelist,source,selectedItemsSource,onSourceReorder)\"></button>\n                </div>\n            </div>\n            <div class=\"ui-picklist-listwrapper ui-picklist-source-wrapper\" [ngClass]=\"{'ui-picklist-listwrapper-nocontrols':!showSourceControls}\">\n                <div class=\"ui-picklist-caption ui-widget-header ui-corner-tl ui-corner-tr\" *ngIf=\"sourceHeader\">{{sourceHeader}}</div>\n                <div class=\"ui-picklist-filter-container ui-widget-content\" *ngIf=\"filterBy && showSourceFilter !== false\">\n                    <input #sourceFilter type=\"text\" role=\"textbox\" (keyup)=\"onFilter($event,source,SOURCE_LIST)\" class=\"ui-picklist-filter ui-inputtext ui-widget ui-state-default ui-corner-all\" [disabled]=\"disabled\" [attr.placeholder]=\"sourceFilterPlaceholder\">\n                    <span class=\"ui-picklist-filter-icon pi pi-search\"></span>\n                </div>\n                <ul #sourcelist class=\"ui-widget-content ui-picklist-list ui-picklist-source ui-corner-bottom\" [ngClass]=\"{'ui-picklist-highlight': listHighlightSource}\" [ngStyle]=\"sourceStyle\" (dragover)=\"onListMouseMove($event,SOURCE_LIST)\" (dragleave)=\"onListDragLeave()\" (drop)=\"onListDrop($event, SOURCE_LIST)\">\n                    <ng-template ngFor let-item [ngForOf]=\"source\" [ngForTrackBy]=\"sourceTrackBy || trackBy\" let-i=\"index\" let-l=\"last\">\n                        <li class=\"ui-picklist-droppoint\" *ngIf=\"dragdrop\" (dragover)=\"onDragOver($event, i, SOURCE_LIST)\" (drop)=\"onDrop($event, i, SOURCE_LIST)\" (dragleave)=\"onDragLeave($event, SOURCE_LIST)\"\n                        [ngClass]=\"{'ui-picklist-droppoint-highlight': (i === dragOverItemIndexSource)}\" [style.display]=\"isItemVisible(item, SOURCE_LIST) ? 'block' : 'none'\"></li>\n                        <li [ngClass]=\"{'ui-picklist-item':true,'ui-state-highlight':isSelected(item,selectedItemsSource), 'ui-state-disabled': disabled}\"\n                            (click)=\"onItemClick($event,item,selectedItemsSource,onSourceSelect)\" (dblclick)=\"onSourceItemDblClick()\" (touchend)=\"onItemTouchEnd($event)\"\n                            [style.display]=\"isItemVisible(item, SOURCE_LIST) ? 'block' : 'none'\"\n                            [draggable]=\"dragdrop\" (dragstart)=\"onDragStart($event, i, SOURCE_LIST)\" (dragend)=\"onDragEnd($event)\">\n                            <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: item, index: i}\"></ng-container>\n                        </li>\n                        <li class=\"ui-picklist-droppoint\" *ngIf=\"dragdrop&&l\" (dragover)=\"onDragOver($event, i + 1, SOURCE_LIST)\" (drop)=\"onDrop($event, i + 1, SOURCE_LIST)\" (dragleave)=\"onDragLeave($event, SOURCE_LIST)\"\n                        [ngClass]=\"{'ui-picklist-droppoint-highlight': (i + 1 === dragOverItemIndexSource)}\"></li>\n                    </ng-template>\n                </ul>\n            </div>\n            <div class=\"ui-picklist-buttons\">\n                <div class=\"ui-picklist-buttons-cell\">\n                    <button type=\"button\" pButton icon=\"pi pi-angle-right\" [disabled]=\"disabled\" (click)=\"moveRight()\"></button>\n                    <button type=\"button\" pButton icon=\"pi pi-angle-double-right\" [disabled]=\"disabled\" (click)=\"moveAllRight()\"></button>\n                    <button type=\"button\" pButton icon=\"pi pi-angle-left\" [disabled]=\"disabled\" (click)=\"moveLeft()\"></button>\n                    <button type=\"button\" pButton icon=\"pi pi-angle-double-left\" [disabled]=\"disabled\" (click)=\"moveAllLeft()\"></button>\n                </div>\n            </div>\n            <div class=\"ui-picklist-listwrapper ui-picklist-target-wrapper\" [ngClass]=\"{'ui-picklist-listwrapper-nocontrols':!showTargetControls}\">\n                <div class=\"ui-picklist-caption ui-widget-header ui-corner-tl ui-corner-tr\" *ngIf=\"targetHeader\">{{targetHeader}}</div>\n                <div class=\"ui-picklist-filter-container ui-widget-content\" *ngIf=\"filterBy && showTargetFilter !== false\">\n                    <input #targetFilter type=\"text\" role=\"textbox\" (keyup)=\"onFilter($event,target,TARGET_LIST)\" class=\"ui-picklist-filter ui-inputtext ui-widget ui-state-default ui-corner-all\" [disabled]=\"disabled\" [attr.placeholder]=\"targetFilterPlaceholder\">\n                    <span class=\"ui-picklist-filter-icon pi pi-search\"></span>\n                </div>\n                <ul #targetlist class=\"ui-widget-content ui-picklist-list ui-picklist-target ui-corner-bottom\" [ngClass]=\"{'ui-picklist-highlight': listHighlightTarget}\" [ngStyle]=\"targetStyle\" (dragover)=\"onListMouseMove($event,TARGET_LIST)\" (dragleave)=\"onListDragLeave()\" (drop)=\"onListDrop($event,TARGET_LIST)\">\n                    <ng-template ngFor let-item [ngForOf]=\"target\" [ngForTrackBy]=\"targetTrackBy || trackBy\" let-i=\"index\" let-l=\"last\">\n                        <li class=\"ui-picklist-droppoint\" *ngIf=\"dragdrop\" (dragover)=\"onDragOver($event, i, TARGET_LIST)\" (drop)=\"onDrop($event, i, TARGET_LIST)\" (dragleave)=\"onDragLeave($event, TARGET_LIST)\"\n                        [ngClass]=\"{'ui-picklist-droppoint-highlight': (i === dragOverItemIndexTarget)}\" [style.display]=\"isItemVisible(item, TARGET_LIST) ? 'block' : 'none'\"></li>\n                        <li [ngClass]=\"{'ui-picklist-item':true,'ui-state-highlight':isSelected(item,selectedItemsTarget), 'ui-state-disabled': disabled}\"\n                            (click)=\"onItemClick($event,item,selectedItemsTarget,onTargetSelect)\" (dblclick)=\"onTargetItemDblClick()\" (touchend)=\"onItemTouchEnd($event)\"\n                            [style.display]=\"isItemVisible(item, TARGET_LIST) ? 'block' : 'none'\"\n                            [draggable]=\"dragdrop\" (dragstart)=\"onDragStart($event, i, TARGET_LIST)\" (dragend)=\"onDragEnd($event)\">\n                            <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: item, index: i}\"></ng-container>\n                        </li>\n                        <li class=\"ui-picklist-droppoint\" *ngIf=\"dragdrop&&l\" (dragover)=\"onDragOver($event, i + 1, TARGET_LIST)\" (drop)=\"onDrop($event, i + 1, TARGET_LIST)\" (dragleave)=\"onDragLeave($event, TARGET_LIST)\"\n                        [ngClass]=\"{'ui-picklist-droppoint-highlight': (i + 1 === dragOverItemIndexTarget)}\"></li>\n                    </ng-template>\n                </ul>\n            </div>\n            <div class=\"ui-picklist-target-controls ui-picklist-buttons\" *ngIf=\"showTargetControls\">\n                <div class=\"ui-picklist-buttons-cell\">\n                    <button type=\"button\" pButton icon=\"pi pi-angle-up\" [disabled]=\"disabled\" (click)=\"moveUp(targetlist,target,selectedItemsTarget,onTargetReorder)\"></button>\n                    <button type=\"button\" pButton icon=\"pi pi-angle-double-up\" [disabled]=\"disabled\" (click)=\"moveTop(targetlist,target,selectedItemsTarget,onTargetReorder)\"></button>\n                    <button type=\"button\" pButton icon=\"pi pi-angle-down\" [disabled]=\"disabled\" (click)=\"moveDown(targetlist,target,selectedItemsTarget,onTargetReorder)\"></button>\n                    <button type=\"button\" pButton icon=\"pi pi-angle-double-down\" [disabled]=\"disabled\" (click)=\"moveBottom(targetlist,target,selectedItemsTarget,onTargetReorder)\"></button>\n                </div>\n            </div>\n        </div>\n    ",
                     providers: [domhandler_1.DomHandler, objectutils_1.ObjectUtils]
                 },] },
     ];
@@ -439,6 +449,8 @@ var PickList = /** @class */ (function () {
         responsive: [{ type: core_1.Input }],
         filterBy: [{ type: core_1.Input }],
         trackBy: [{ type: core_1.Input }],
+        sourceTrackBy: [{ type: core_1.Input }],
+        targetTrackBy: [{ type: core_1.Input }],
         showSourceFilter: [{ type: core_1.Input }],
         showTargetFilter: [{ type: core_1.Input }],
         metaKeySelection: [{ type: core_1.Input }],

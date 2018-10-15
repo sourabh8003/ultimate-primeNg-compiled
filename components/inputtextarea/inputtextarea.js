@@ -7,24 +7,23 @@ var InputTextarea = /** @class */ (function () {
     function InputTextarea(el, ngModel) {
         this.el = el;
         this.ngModel = ngModel;
-        this.rows = 2;
-        this.cols = 20;
         this.onResize = new core_1.EventEmitter();
     }
-    InputTextarea.prototype.ngOnInit = function () {
-        this.rowsDefault = this.rows;
-        this.colsDefault = this.cols;
-    };
     InputTextarea.prototype.ngDoCheck = function () {
         this.updateFilledState();
+        if (this.autoResize) {
+            this.resize();
+        }
     };
     //To trigger change detection to manage ui-state-filled for material labels when there is no value binding
     InputTextarea.prototype.onInput = function (e) {
         this.updateFilledState();
+        if (this.autoResize) {
+            this.resize(e);
+        }
     };
     InputTextarea.prototype.updateFilledState = function () {
-        this.filled = (this.el.nativeElement.value && this.el.nativeElement.value.length) ||
-            (this.ngModel && this.ngModel.model);
+        this.filled = (this.el.nativeElement.value && this.el.nativeElement.value.length) || (this.ngModel && this.ngModel.model);
     };
     InputTextarea.prototype.onFocus = function (e) {
         if (this.autoResize) {
@@ -36,17 +35,23 @@ var InputTextarea = /** @class */ (function () {
             this.resize(e);
         }
     };
-    InputTextarea.prototype.onKeyup = function (e) {
-        if (this.autoResize) {
-            this.resize(e);
-        }
-    };
     InputTextarea.prototype.resize = function (event) {
-        var linesCount = 0, lines = this.el.nativeElement.value.split('\n');
-        for (var i = lines.length - 1; i >= 0; --i) {
-            linesCount += Math.floor((lines[i].length / this.colsDefault) + 1);
+        if (!this.cachedScrollHeight) {
+            this.cachedScrollHeight = this.el.nativeElement.scrollHeight;
+            this.el.nativeElement.style.overflow = "hidden";
         }
-        this.rows = (linesCount >= this.rowsDefault) ? (linesCount + 1) : this.rowsDefault;
+        if (this.cachedScrollHeight != this.el.nativeElement.scrollHeight) {
+            this.el.nativeElement.style.height = '';
+            this.el.nativeElement.style.height = this.el.nativeElement.scrollHeight + 'px';
+            if (parseFloat(this.el.nativeElement.style.height) >= parseFloat(this.el.nativeElement.style.maxHeight)) {
+                this.el.nativeElement.style.overflowY = "scroll";
+                this.el.nativeElement.style.height = this.el.nativeElement.style.maxHeight;
+            }
+            else {
+                this.el.nativeElement.style.overflow = "hidden";
+            }
+            this.cachedScrollHeight = this.el.nativeElement.scrollHeight;
+        }
         this.onResize.emit(event || {});
     };
     InputTextarea.decorators = [
@@ -55,11 +60,10 @@ var InputTextarea = /** @class */ (function () {
                     host: {
                         '[class.ui-inputtext]': 'true',
                         '[class.ui-corner-all]': 'true',
+                        '[class.ui-inputtextarea-resizable]': 'autoResize',
                         '[class.ui-state-default]': 'true',
                         '[class.ui-widget]': 'true',
-                        '[class.ui-state-filled]': 'filled',
-                        '[attr.rows]': 'rows',
-                        '[attr.cols]': 'cols'
+                        '[class.ui-state-filled]': 'filled'
                     }
                 },] },
     ];
@@ -70,13 +74,10 @@ var InputTextarea = /** @class */ (function () {
     ]; };
     InputTextarea.propDecorators = {
         autoResize: [{ type: core_1.Input }],
-        rows: [{ type: core_1.Input }],
-        cols: [{ type: core_1.Input }],
         onResize: [{ type: core_1.Output }],
         onInput: [{ type: core_1.HostListener, args: ['input', ['$event'],] }],
         onFocus: [{ type: core_1.HostListener, args: ['focus', ['$event'],] }],
-        onBlur: [{ type: core_1.HostListener, args: ['blur', ['$event'],] }],
-        onKeyup: [{ type: core_1.HostListener, args: ['keyup', ['$event'],] }]
+        onBlur: [{ type: core_1.HostListener, args: ['blur', ['$event'],] }]
     };
     return InputTextarea;
 }());

@@ -1,11 +1,13 @@
-import { ElementRef, AfterViewInit, AfterViewChecked, OnDestroy, EventEmitter, Renderer2, QueryList, NgZone } from '@angular/core';
+import { ElementRef, OnDestroy, EventEmitter, Renderer2, QueryList, NgZone } from '@angular/core';
+import { AnimationEvent } from '@angular/animations';
 import { DomHandler } from '../dom/domhandler';
 import { Header } from '../common/shared';
-export declare class Dialog implements AfterViewInit, AfterViewChecked, OnDestroy {
+export declare class Dialog implements OnDestroy {
     el: ElementRef;
     domHandler: DomHandler;
     renderer: Renderer2;
     zone: NgZone;
+    visible: boolean;
     header: string;
     draggable: boolean;
     resizable: boolean;
@@ -34,15 +36,16 @@ export declare class Dialog implements AfterViewInit, AfterViewChecked, OnDestro
     minY: number;
     focusOnShow: boolean;
     maximizable: boolean;
+    transitionOptions: string;
     headerFacet: QueryList<Header>;
     footerFacet: QueryList<Header>;
-    containerViewChild: ElementRef;
     headerViewChild: ElementRef;
     contentViewChild: ElementRef;
     footerViewChild: ElementRef;
     onShow: EventEmitter<any>;
     onHide: EventEmitter<any>;
     visibleChange: EventEmitter<any>;
+    container: HTMLDivElement;
     _visible: boolean;
     dragging: boolean;
     documentDragListener: any;
@@ -59,8 +62,6 @@ export declare class Dialog implements AfterViewInit, AfterViewChecked, OnDestro
     closeIconMouseDown: boolean;
     preWidth: number;
     preventVisibleChangePropagation: boolean;
-    executePostDisplayActions: boolean;
-    initialized: boolean;
     maximized: boolean;
     preMaximizeContentHeight: number;
     preMaximizeContainerWidth: number;
@@ -69,14 +70,9 @@ export declare class Dialog implements AfterViewInit, AfterViewChecked, OnDestro
     preMaximizePageY: number;
     id: string;
     constructor(el: ElementRef, domHandler: DomHandler, renderer: Renderer2, zone: NgZone);
-    visible: boolean;
-    ngAfterViewChecked(): void;
     focus(): void;
-    show(): void;
     positionOverlay(): void;
-    hide(): void;
     close(event: Event): void;
-    ngAfterViewInit(): void;
     center(): void;
     enableModality(): void;
     disableModality(): void;
@@ -105,6 +101,10 @@ export declare class Dialog implements AfterViewInit, AfterViewChecked, OnDestro
     onWindowResize(event: any): void;
     bindDocumentEscapeListener(): void;
     unbindDocumentEscapeListener(): void;
+    appendContainer(): void;
+    restoreAppend(): void;
+    onAnimationStart(event: AnimationEvent): void;
+    onContainerDestroy(): void;
     ngOnDestroy(): void;
 }
 export declare class DialogModule {

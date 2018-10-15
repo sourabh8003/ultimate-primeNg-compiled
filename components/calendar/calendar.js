@@ -39,6 +39,8 @@ var Calendar = /** @class */ (function () {
         this.hideOnDateTimeSelect = false;
         this.numberOfMonths = 1;
         this.view = 'date';
+        this.showTransitionOptions = '225ms ease-out';
+        this.hideTransitionOptions = '195ms ease-in';
         this.onFocus = new core_1.EventEmitter();
         this.onBlur = new core_1.EventEmitter();
         this.onClose = new core_1.EventEmitter();
@@ -145,8 +147,13 @@ var Calendar = /** @class */ (function () {
         },
         set: function (newLocale) {
             this._locale = newLocale;
-            this.createWeekDays();
-            this.createMonths(this.currentMonth, this.currentYear);
+            if (this.view === 'date') {
+                this.createWeekDays();
+                this.createMonths(this.currentMonth, this.currentYear);
+            }
+            else if (this.view === 'month') {
+                this.createMonthPickerValues();
+            }
         },
         enumerable: true,
         configurable: true
@@ -156,11 +163,10 @@ var Calendar = /** @class */ (function () {
         this.currentMonth = date.getMonth();
         this.currentYear = date.getFullYear();
         if (this.yearNavigator && this.yearRange) {
-            this.yearOptions = [];
-            var years = this.yearRange.split(':'), yearStart = parseInt(years[0]), yearEnd = parseInt(years[1]);
-            for (var i = yearStart; i <= yearEnd; i++) {
-                this.yearOptions.push(i);
-            }
+            var years = this.yearRange.split(':');
+            var yearStart = parseInt(years[0]);
+            var yearEnd = parseInt(years[1]);
+            this.populateYearOptions(yearStart, yearEnd);
         }
         if (this.view === 'date') {
             this.createWeekDays();
@@ -169,24 +175,7 @@ var Calendar = /** @class */ (function () {
             this.ticksTo1970 = (((1970 - 1) * 365 + Math.floor(1970 / 4) - Math.floor(1970 / 100) + Math.floor(1970 / 400)) * 24 * 60 * 60 * 10000000);
         }
         else if (this.view === 'month') {
-            this.monthPickerValues = [];
-            for (var i = 0; i <= 11; i++) {
-                this.monthPickerValues.push(this.locale.monthNamesShort[i]);
-            }
-        }
-    };
-    Calendar.prototype.ngAfterViewInit = function () {
-        if (!this.inline && this.appendTo) {
-            if (this.appendTo === 'body')
-                document.body.appendChild(this.overlayViewChild.nativeElement);
-            else
-                this.domHandler.appendChild(this.overlayViewChild.nativeElement, this.appendTo);
-        }
-    };
-    Calendar.prototype.ngAfterViewChecked = function () {
-        if (this.overlayShown) {
-            this.alignOverlay();
-            this.overlayShown = false;
+            this.createMonthPickerValues();
         }
     };
     Calendar.prototype.ngAfterContentInit = function () {
@@ -202,12 +191,24 @@ var Calendar = /** @class */ (function () {
             }
         });
     };
+    Calendar.prototype.populateYearOptions = function (start, end) {
+        this.yearOptions = [];
+        for (var i = start; i <= end; i++) {
+            this.yearOptions.push(i);
+        }
+    };
     Calendar.prototype.createWeekDays = function () {
         this.weekDays = [];
         var dayIndex = this.locale.firstDayOfWeek;
         for (var i = 0; i < 7; i++) {
             this.weekDays.push(this.locale.dayNamesMin[dayIndex]);
             dayIndex = (dayIndex == 6) ? 0 : ++dayIndex;
+        }
+    };
+    Calendar.prototype.createMonthPickerValues = function () {
+        this.monthPickerValues = [];
+        for (var i = 0; i <= 11; i++) {
+            this.monthPickerValues.push(this.locale.monthNamesShort[i]);
         }
     };
     Calendar.prototype.createMonths = function (month, year) {
@@ -236,12 +237,12 @@ var Calendar = /** @class */ (function () {
                 for (var j = (prevMonthDaysLength - firstDay + 1); j <= prevMonthDaysLength; j++) {
                     var prev = this.getPreviousMonthAndYear(month, year);
                     week.push({ day: j, month: prev.month, year: prev.year, otherMonth: true,
-                        today: this.isToday(today, j, prev.month, prev.year), selectable: this.isSelectable(j, prev.month, prev.year) });
+                        today: this.isToday(today, j, prev.month, prev.year), selectable: this.isSelectable(j, prev.month, prev.year, true) });
                 }
                 var remainingDaysLength = 7 - week.length;
                 for (var j = 0; j < remainingDaysLength; j++) {
                     week.push({ day: dayNo, month: month, year: year, today: this.isToday(today, dayNo, month, year),
-                        selectable: this.isSelectable(dayNo, month, year) });
+                        selectable: this.isSelectable(dayNo, month, year, false) });
                     dayNo++;
                 }
             }
@@ -251,11 +252,11 @@ var Calendar = /** @class */ (function () {
                         var next = this.getNextMonthAndYear(month, year);
                         week.push({ day: dayNo - daysLength, month: next.month, year: next.year, otherMonth: true,
                             today: this.isToday(today, dayNo - daysLength, next.month, next.year),
-                            selectable: this.isSelectable((dayNo - daysLength), next.month, next.year) });
+                            selectable: this.isSelectable((dayNo - daysLength), next.month, next.year, true) });
                     }
                     else {
                         week.push({ day: dayNo, month: month, year: year, today: this.isToday(today, dayNo, month, year),
-                            selectable: this.isSelectable(dayNo, month, year) });
+                            selectable: this.isSelectable(dayNo, month, year, false) });
                     }
                     dayNo++;
                 }
@@ -329,13 +330,15 @@ var Calendar = /** @class */ (function () {
     Calendar.prototype.decrementYear = function () {
         this.currentYear--;
         if (this.yearNavigator && this.currentYear < this.yearOptions[0]) {
-            this.currentYear = this.yearOptions[this.yearOptions.length - 1];
+            var difference = this.yearOptions[this.yearOptions.length - 1] - this.yearOptions[0];
+            this.populateYearOptions(this.yearOptions[0] - difference, this.yearOptions[this.yearOptions.length - 1] - difference);
         }
     };
     Calendar.prototype.incrementYear = function () {
         this.currentYear++;
         if (this.yearNavigator && this.currentYear > this.yearOptions[this.yearOptions.length - 1]) {
-            this.currentYear = this.yearOptions[0];
+            var difference = this.yearOptions[this.yearOptions.length - 1] - this.yearOptions[0];
+            this.populateYearOptions(this.yearOptions[0] + difference, this.yearOptions[this.yearOptions.length - 1] + difference);
         }
     };
     Calendar.prototype.onDateSelect = function (event, dateMeta) {
@@ -353,12 +356,10 @@ var Calendar = /** @class */ (function () {
         else {
             if (this.shouldSelectDate(dateMeta)) {
                 if (dateMeta.otherMonth) {
-                    if (this.selectOtherMonths) {
-                        this.currentMonth = dateMeta.month;
-                        this.currentYear = dateMeta.year;
-                        this.createMonths(this.currentMonth, this.currentYear);
-                        this.selectDate(dateMeta);
-                    }
+                    this.currentMonth = dateMeta.month;
+                    this.currentYear = dateMeta.year;
+                    this.createMonths(this.currentMonth, this.currentYear);
+                    this.selectDate(dateMeta);
                 }
                 else {
                     this.selectDate(dateMeta);
@@ -366,10 +367,14 @@ var Calendar = /** @class */ (function () {
             }
         }
         if (this.isSingleSelection() && (!this.showTime || this.hideOnDateTimeSelect)) {
-            this.overlayVisible = false;
-            if (this.mask) {
-                this.disableModality();
-            }
+            setTimeout(function () {
+                event.preventDefault();
+                _this.overlayVisible = false;
+                if (_this.mask) {
+                    _this.disableModality();
+                }
+                _this.cd.markForCheck();
+            }, 150);
         }
         this.updateInputfield();
         event.preventDefault();
@@ -566,12 +571,7 @@ var Calendar = /** @class */ (function () {
         }
     };
     Calendar.prototype.isMonthSelected = function (month) {
-        if (this.value) {
-            return this.value.getDate() === 1 && this.value.getMonth() === month && this.value.getFullYear() === this.currentYear;
-        }
-        else {
-            return false;
-        }
+        return this.value ? (this.value.getMonth() === month && this.value.getFullYear() === this.currentYear) : false;
     };
     Calendar.prototype.isDateEquals = function (value, dateMeta) {
         if (value)
@@ -599,11 +599,14 @@ var Calendar = /** @class */ (function () {
     Calendar.prototype.isToday = function (today, day, month, year) {
         return today.getDate() === day && today.getMonth() === month && today.getFullYear() === year;
     };
-    Calendar.prototype.isSelectable = function (day, month, year) {
+    Calendar.prototype.isSelectable = function (day, month, year, otherMonth) {
         var validMin = true;
         var validMax = true;
         var validDate = true;
         var validDay = true;
+        if (otherMonth && !this.selectOtherMonths) {
+            return false;
+        }
         if (this.minDate) {
             if (this.minDate.getFullYear() > year) {
                 validMin = false;
@@ -670,8 +673,8 @@ var Calendar = /** @class */ (function () {
     };
     Calendar.prototype.onInputClick = function (event) {
         this.datepickerClick = true;
-        if (this.autoZIndex) {
-            this.overlayViewChild.nativeElement.style.zIndex = String(this.baseZIndex + (++domhandler_1.DomHandler.zindex));
+        if (this.overlay && this.autoZIndex) {
+            this.overlay.style.zIndex = String(this.baseZIndex + (++domhandler_1.DomHandler.zindex));
         }
     };
     Calendar.prototype.onInputBlur = function (event) {
@@ -683,22 +686,13 @@ var Calendar = /** @class */ (function () {
         this.onModelTouched();
     };
     Calendar.prototype.onButtonClick = function (event, inputfield) {
-        var _this = this;
-        if (!this.overlayViewChild.nativeElement.offsetParent || this.overlayViewChild.nativeElement.style.display === 'none') {
+        if (!this.overlayVisible) {
             inputfield.focus();
             this.showOverlay();
-            if (this.overlayViewChild != undefined) {
-                setTimeout(function () {
-                    _this.overlay = _this.overlayViewChild.nativeElement;
-                    _this.selectElement = _this.domHandler.findSingle(_this.overlay, 'a.ui-state-active');
-                    _this.todayElement = _this.domHandler.findSingle(_this.overlay, 'a.ui-state-highlight');
-                    _this.focusElement = _this.selectElement ? _this.selectElement : _this.todayElement;
-                    _this.focusElement.focus();
-                }, 200);
-            }
         }
-        else
+        else {
             this.overlayVisible = false;
+        }
         this.datepickerClick = true;
     };
     Calendar.prototype.onInputKeydown = function (event) {
@@ -899,8 +893,10 @@ var Calendar = /** @class */ (function () {
         var val = event.target.value;
         try {
             var value = this.parseValueFromString(val);
-            this.updateModel(value);
-            this.updateUI();
+            if (this.isSelectable(value.getDate(), value.getMonth(), value.getFullYear(), false)) {
+                this.updateModel(value);
+                this.updateUI();
+            }
         }
         catch (err) {
             //invalid date
@@ -967,7 +963,9 @@ var Calendar = /** @class */ (function () {
         if (Array.isArray(val)) {
             val = val[0];
         }
-        this.createMonths(val.getMonth(), val.getFullYear());
+        this.currentMonth = val.getMonth();
+        this.currentYear = val.getFullYear();
+        this.createMonths(this.currentMonth, this.currentYear);
         if (this.showTime || this.timeOnly) {
             var hours = val.getHours();
             if (this.hourFormat == '12') {
@@ -991,28 +989,55 @@ var Calendar = /** @class */ (function () {
     };
     Calendar.prototype.showOverlay = function () {
         this.overlayVisible = true;
-        this.overlayShown = true;
-        if (this.autoZIndex) {
-            this.overlayViewChild.nativeElement.style.zIndex = String(this.baseZIndex + (++domhandler_1.DomHandler.zindex));
+    };
+    Calendar.prototype.onOverlayAnimationStart = function (event) {
+        switch (event.toState) {
+            case 'visible':
+            case 'visibleTouchUI':
+                if (!this.inline) {
+                    this.overlay = event.element;
+                    this.appendOverlay();
+                    if (this.autoZIndex) {
+                        this.overlay.style.zIndex = String(this.baseZIndex + (++domhandler_1.DomHandler.zindex));
+                    }
+                    this.alignOverlay();
+                    this.bindDocumentClickListener();
+                }
+                break;
+            case 'void':
+                this.onOverlayHide();
+                break;
         }
-        this.bindDocumentClickListener();
+    };
+    Calendar.prototype.appendOverlay = function () {
+        if (this.appendTo) {
+            if (this.appendTo === 'body')
+                document.body.appendChild(this.overlay);
+            else
+                this.domHandler.appendChild(this.overlay, this.appendTo);
+        }
+    };
+    Calendar.prototype.restoreOverlayAppend = function () {
+        if (this.overlay && this.appendTo) {
+            this.el.nativeElement.appendChild(this.overlay);
+        }
     };
     Calendar.prototype.alignOverlay = function () {
         if (this.touchUI) {
-            this.enableModality();
+            this.enableModality(this.overlay);
         }
         else {
             if (this.appendTo)
-                this.domHandler.absolutePosition(this.overlayViewChild.nativeElement, this.inputfieldViewChild.nativeElement);
+                this.domHandler.absolutePosition(this.overlay, this.inputfieldViewChild.nativeElement);
             else
-                this.domHandler.relativePosition(this.overlayViewChild.nativeElement, this.inputfieldViewChild.nativeElement);
+                this.domHandler.relativePosition(this.overlay, this.inputfieldViewChild.nativeElement);
         }
     };
-    Calendar.prototype.enableModality = function () {
+    Calendar.prototype.enableModality = function (element) {
         var _this = this;
         if (!this.mask) {
             this.mask = document.createElement('div');
-            this.mask.style.zIndex = String(parseInt(this.overlayViewChild.nativeElement.style.zIndex) - 1);
+            this.mask.style.zIndex = String(parseInt(element.style.zIndex) - 1);
             var maskStyleClass = 'ui-widget-overlay ui-datepicker-mask ui-datepicker-mask-scrollblocker';
             this.domHandler.addMultipleClasses(this.mask, maskStyleClass);
             this.maskClickListener = this.renderer.listen(this.mask, 'click', function (event) {
@@ -1243,6 +1268,9 @@ var Calendar = /** @class */ (function () {
             }
             iValue++;
         };
+        if (this.view === 'month') {
+            day = 1;
+        }
         for (iFormat = 0; iFormat < format.length; iFormat++) {
             if (literal) {
                 if (format.charAt(iFormat) === "'" && !lookAhead("'")) {
@@ -1340,8 +1368,7 @@ var Calendar = /** @class */ (function () {
     };
     Calendar.prototype.onTodayButtonClick = function (event) {
         var date = new Date();
-        var dateMeta = { day: date.getDate(), month: date.getMonth(), year: date.getFullYear(), today: true, selectable: true };
-        this.createMonths(dateMeta.month, dateMeta.year);
+        var dateMeta = { day: date.getDate(), month: date.getMonth(), year: date.getFullYear(), otherMonth: date.getMonth() !== this.currentMonth || date.getFullYear() !== this.currentYear, today: true, selectable: true };
         this.onDateSelect(event, dateMeta);
         this.onTodayClick.emit(event);
     };
@@ -1370,27 +1397,49 @@ var Calendar = /** @class */ (function () {
             this.documentClickListener = null;
         }
     };
-    Calendar.prototype.ngOnDestroy = function () {
+    Calendar.prototype.onOverlayHide = function () {
         this.unbindDocumentClickListener();
         this.unbindMaskClickListener();
-        if (!this.inline && this.appendTo) {
-            this.el.nativeElement.appendChild(this.overlayViewChild.nativeElement);
-        }
+        this.overlay = null;
+    };
+    Calendar.prototype.ngOnDestroy = function () {
+        this.restoreOverlayAppend();
+        this.onOverlayHide();
     };
     Calendar.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-calendar',
-                    template: "\n        <span [ngClass]=\"{'ui-calendar':true, 'ui-calendar-w-btn': showIcon, 'ui-calendar-timeonly': timeOnly}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ng-template [ngIf]=\"!inline\">\n                <input #inputfield type=\"text\" [attr.id]=\"inputId\" [attr.name]=\"name\" [attr.required]=\"required\" [value]=\"inputFieldValue\" (focus)=\"onInputFocus($event)\" (keydown)=\"onInputKeydown($event)\" (click)=\"onInputClick($event)\" (blur)=\"onInputBlur($event)\"\n                    [readonly]=\"readonlyInput\" (input)=\"onUserInput($event)\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\" [placeholder]=\"placeholder||''\" [disabled]=\"disabled\" [attr.tabindex]=\"tabindex\"\n                    [ngClass]=\"'ui-inputtext ui-widget ui-state-default ui-corner-all'\" autocomplete=\"off\"\n                    ><button type=\"button\" [icon]=\"icon\" pButton *ngIf=\"showIcon\" (click)=\"onButtonClick($event,inputfield)\" class=\"ui-datepicker-trigger ui-calendar-button\"\n                    [ngClass]=\"{'ui-state-disabled':disabled}\" [disabled]=\"disabled\" tabindex=\"-1\"></button>\n            </ng-template>\n            <div #datepicker [class]=\"panelStyleClass\" [ngClass]=\"{'ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all': true, 'ui-datepicker-inline':inline,'ui-shadow':!inline,\n                'ui-state-disabled':disabled,'ui-datepicker-timeonly':timeOnly,'ui-datepicker-multiple-month': this.numberOfMonths > 1, 'ui-datepicker-monthpicker': (view === 'month'), 'ui-datepicker-touch-ui': touchUI}\"\n                [ngStyle]=\"{'display': inline ? 'inline-block' : (overlayVisible ? 'block' : 'none')}\" (click)=\"onDatePickerClick($event)\" [@overlayState]=\"inline ? 'visible' : (overlayVisible ? 'visible' : 'hidden')\">\n                \n                <ng-container *ngIf=\"!timeOnly && (overlayVisible || inline)\">\n                    <div class=\"ui-datepicker-group ui-widget-content\" *ngFor=\"let month of months; let i = index;\">\n                        <div class=\"ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all\">\n                            <ng-content select=\"p-header\"></ng-content>\n                            <a class=\"ui-datepicker-prev ui-corner-all\" href=\"#\" (click)=\"navBackward($event)\" *ngIf=\"i === 0\">\n                                <span class=\"pi pi-chevron-left\"></span>\n                            </a>\n                            <a class=\"ui-datepicker-next ui-corner-all\" href=\"#\" (click)=\"navForward($event)\" *ngIf=\"this.numberOfMonths === 1 ? true : (i === this.numberOfMonths -1)\">\n                                <span class=\"pi pi-chevron-right\"></span>\n                            </a>\n                            <div class=\"ui-datepicker-title\">\n                                <span class=\"ui-datepicker-month\" *ngIf=\"!monthNavigator && (view !== 'month')\">{{locale.monthNames[month.month]}}</span>\n                                <select class=\"ui-datepicker-month\" *ngIf=\"monthNavigator && (view !== 'month')\" (change)=\"onMonthDropdownChange($event.target.value)\">\n                                    <option [value]=\"i\" *ngFor=\"let month of locale.monthNames;let i = index\" [selected]=\"i == currentMonth\">{{month}}</option>\n                                </select>\n                                <select class=\"ui-datepicker-year\" *ngIf=\"yearNavigator\" (change)=\"onYearDropdownChange($event.target.value)\">\n                                    <option [value]=\"year\" *ngFor=\"let year of yearOptions\" [selected]=\"year == currentYear\">{{year}}</option>\n                                </select>\n                                <span class=\"ui-datepicker-year\" *ngIf=\"!yearNavigator\">{{month.year}}</span>\n                            </div>\n                        </div>\n                        <div class=\"ui-datepicker-calendar-container\" *ngIf=\"view ==='date'\">\n                            <table class=\"ui-datepicker-calendar\">\n                                <thead>\n                                    <tr>\n                                        <th scope=\"col\" *ngFor=\"let weekDay of weekDays;let begin = first; let end = last\">\n                                            <span>{{weekDay}}</span>\n                                        </th>\n                                    </tr>\n                                </thead>\n                                <tbody>\n                                    <tr *ngFor=\"let week of month.dates\">\n                                        <td *ngFor=\"let date of week\" [ngClass]=\"{'ui-datepicker-other-month ui-state-disabled':date.otherMonth,\n                                            'ui-datepicker-current-day':isSelected(date),'ui-datepicker-today':date.today}\">\n                                            <a class=\"ui-state-default\" href=\"#\" *ngIf=\"date.otherMonth ? showOtherMonths : true\"\n                                                [ngClass]=\"{'ui-state-active':isSelected(date), 'ui-state-highlight':date.today, 'ui-state-disabled':!date.selectable}\"\n                                                (click)=\"onDateSelect($event,date)\" draggable=\"false\">\n                                                <ng-container *ngIf=\"!dateTemplate\">{{date.day}}</ng-container>\n                                                <ng-container *ngTemplateOutlet=\"dateTemplate; context: {$implicit: date}\"></ng-container>\n                                            </a>\n                                        </td>\n                                    </tr>\n                                </tbody>\n                            </table>\n                        </div>\n                        <div class=\"ui-datepicker-monthpicker-container\" *ngIf=\"view === 'month'\">\n                            <a href=\"#\" *ngFor=\"let m of monthPickerValues; let i = index\" (click)=\"onMonthSelect($event, i)\" class=\"ui-datepicker-month-cell\" [ngClass]=\"{'ui-state-active': isMonthSelected(i)}\">\n                                {{m}}\n                            </a>\n                        </div>\n                    </div>\n                </ng-container>\n                <div class=\"ui-timepicker ui-widget-header ui-corner-all\" *ngIf=\"showTime||timeOnly\">\n                    <div class=\"ui-hour-picker\">\n                        <a href=\"#\" (click)=\"incrementHour($event)\">\n                            <span class=\"pi pi-chevron-up\"></span>\n                        </a>\n                        <span [ngStyle]=\"{'display': currentHour < 10 ? 'inline': 'none'}\">0</span><span>{{currentHour}}</span>\n                        <a href=\"#\" (click)=\"decrementHour($event)\">\n                            <span class=\"pi pi-chevron-down\"></span>\n                        </a>\n                    </div>\n                    <div class=\"ui-separator\">\n                        <a href=\"#\">\n                            <span class=\"pi pi-chevron-up\"></span>\n                        </a>\n                        <span>:</span>\n                        <a href=\"#\">\n                            <span class=\"pi pi-chevron-down\"></span>\n                        </a>\n                    </div>\n                    <div class=\"ui-minute-picker\">\n                        <a href=\"#\" (click)=\"incrementMinute($event)\">\n                            <span class=\"pi pi-chevron-up\"></span>\n                        </a>\n                        <span [ngStyle]=\"{'display': currentMinute < 10 ? 'inline': 'none'}\">0</span><span>{{currentMinute}}</span>\n                        <a href=\"#\" (click)=\"decrementMinute($event)\">\n                            <span class=\"pi pi-chevron-down\"></span>\n                        </a>\n                    </div>\n                    <div class=\"ui-separator\" *ngIf=\"showSeconds\">\n                        <a href=\"#\">\n                            <span class=\"pi pi-chevron-up\"></span>\n                        </a>\n                        <span>:</span>\n                        <a href=\"#\">\n                            <span class=\"pi pi-chevron-down\"></span>\n                        </a>\n                    </div>\n                    <div class=\"ui-second-picker\" *ngIf=\"showSeconds\">\n                        <a href=\"#\" (click)=\"incrementSecond($event)\">\n                            <span class=\"pi pi-chevron-up\"></span>\n                        </a>\n                        <span [ngStyle]=\"{'display': currentSecond < 10 ? 'inline': 'none'}\">0</span><span>{{currentSecond}}</span>\n                        <a href=\"#\" (click)=\"decrementSecond($event)\">\n                            <span class=\"pi pi-chevron-down\"></span>\n                        </a>\n                    </div>\n                    <div class=\"ui-ampm-picker\" *ngIf=\"hourFormat=='12'\">\n                        <a href=\"#\" (click)=\"toggleAMPM($event)\">\n                            <span class=\"pi pi-chevron-up\"></span>\n                        </a>\n                        <span>{{pm ? 'PM' : 'AM'}}</span>\n                        <a href=\"#\" (click)=\"toggleAMPM($event)\">\n                            <span class=\"pi pi-chevron-down\"></span>\n                        </a>\n                    </div>\n                </div>\n                <div class=\"ui-datepicker-buttonbar ui-widget-header\" *ngIf=\"showButtonBar\">\n                    <div class=\"ui-g\">\n                        <div class=\"ui-g-6\">\n                            <button type=\"button\" [label]=\"_locale.today\" (click)=\"onTodayButtonClick($event)\" pButton [ngClass]=\"[todayButtonStyleClass]\"></button>\n                        </div>\n                        <div class=\"ui-g-6\">\n                            <button type=\"button\" [label]=\"_locale.clear\" (click)=\"onClearButtonClick($event)\" pButton [ngClass]=\"[clearButtonStyleClass]\"></button>\n                        </div>\n                    </div>\n                </div>\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n        </span>\n    ",
+                    template: "\n        <span [ngClass]=\"{'ui-calendar':true, 'ui-calendar-w-btn': showIcon, 'ui-calendar-timeonly': timeOnly}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ng-template [ngIf]=\"!inline\">\n                <input #inputfield type=\"text\" [attr.id]=\"inputId\" [attr.name]=\"name\" [attr.required]=\"required\" [value]=\"inputFieldValue\" (focus)=\"onInputFocus($event)\" (keydown)=\"onInputKeydown($event)\" (click)=\"onInputClick($event)\" (blur)=\"onInputBlur($event)\"\n                    [readonly]=\"readonlyInput\" (input)=\"onUserInput($event)\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\" [placeholder]=\"placeholder||''\" [disabled]=\"disabled\" [attr.tabindex]=\"tabindex\"\n                    [ngClass]=\"'ui-inputtext ui-widget ui-state-default ui-corner-all'\" autocomplete=\"off\"\n                    ><button type=\"button\" [icon]=\"icon\" pButton *ngIf=\"showIcon\" (click)=\"onButtonClick($event,inputfield)\" class=\"ui-datepicker-trigger ui-calendar-button\"\n                    [ngClass]=\"{'ui-state-disabled':disabled}\" [disabled]=\"disabled\" tabindex=\"-1\"></button>\n            </ng-template>\n            <div [class]=\"panelStyleClass\" [ngStyle]=\"panelStyle\" [ngClass]=\"{'ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all': true, 'ui-datepicker-inline':inline,'ui-shadow':!inline,\n                'ui-state-disabled':disabled,'ui-datepicker-timeonly':timeOnly,'ui-datepicker-multiple-month': this.numberOfMonths > 1, 'ui-datepicker-monthpicker': (view === 'month'), 'ui-datepicker-touch-ui': touchUI}\"\n                (click)=\"onDatePickerClick($event)\" [@overlayAnimation]=\"touchUI ? {value: 'visibleTouchUI', params: {showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions}}: \n                                            {value: 'visible', params: {showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions}}\" \n                                            [@.disabled]=\"inline === true\" (@overlayAnimation.start)=\"onOverlayAnimationStart($event)\" *ngIf=\"inline || overlayVisible\">\n                <ng-container *ngIf=\"!timeOnly\">\n                    <div class=\"ui-datepicker-group ui-widget-content\" *ngFor=\"let month of months; let i = index;\">\n                        <div class=\"ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all\">\n                            <ng-content select=\"p-header\"></ng-content>\n                            <a class=\"ui-datepicker-prev ui-corner-all\" href=\"#\" (click)=\"navBackward($event)\" *ngIf=\"i === 0\">\n                                <span class=\"pi pi-chevron-left\"></span>\n                            </a>\n                            <a class=\"ui-datepicker-next ui-corner-all\" href=\"#\" (click)=\"navForward($event)\" *ngIf=\"numberOfMonths === 1 ? true : (i === numberOfMonths -1)\">\n                                <span class=\"pi pi-chevron-right\"></span>\n                            </a>\n                            <div class=\"ui-datepicker-title\">\n                                <span class=\"ui-datepicker-month\" *ngIf=\"!monthNavigator && (view !== 'month')\">{{locale.monthNames[month.month]}}</span>\n                                <select class=\"ui-datepicker-month\" *ngIf=\"monthNavigator && (view !== 'month') && numberOfMonths === 1\" (change)=\"onMonthDropdownChange($event.target.value)\">\n                                    <option [value]=\"i\" *ngFor=\"let monthName of locale.monthNames;let i = index\" [selected]=\"i === month.month\">{{monthName}}</option>\n                                </select>\n                                <select class=\"ui-datepicker-year\" *ngIf=\"yearNavigator && numberOfMonths === 1\" (change)=\"onYearDropdownChange($event.target.value)\">\n                                    <option [value]=\"year\" *ngFor=\"let year of yearOptions\" [selected]=\"year === currentYear\">{{year}}</option>\n                                </select>\n                                <span class=\"ui-datepicker-year\" *ngIf=\"!yearNavigator\">{{view === 'month' ? currentYear : month.year}}</span>\n                            </div>\n                        </div>\n                        <div class=\"ui-datepicker-calendar-container\" *ngIf=\"view ==='date'\">\n                            <table class=\"ui-datepicker-calendar\">\n                                <thead>\n                                    <tr>\n                                        <th scope=\"col\" *ngFor=\"let weekDay of weekDays;let begin = first; let end = last\">\n                                            <span>{{weekDay}}</span>\n                                        </th>\n                                    </tr>\n                                </thead>\n                                <tbody>\n                                    <tr *ngFor=\"let week of month.dates\">\n                                        <td *ngFor=\"let date of week\" [ngClass]=\"{'ui-datepicker-other-month': date.otherMonth,\n                                            'ui-datepicker-current-day':isSelected(date),'ui-datepicker-today':date.today}\">\n                                            <ng-container *ngIf=\"date.otherMonth ? showOtherMonths : true\">\n                                                <a class=\"ui-state-default\" *ngIf=\"date.selectable\" [ngClass]=\"{'ui-state-active':isSelected(date), 'ui-state-highlight':date.today}\"\n                                                    (click)=\"onDateSelect($event,date)\" draggable=\"false\">\n                                                    <ng-container *ngIf=\"!dateTemplate\">{{date.day}}</ng-container>\n                                                    <ng-container *ngTemplateOutlet=\"dateTemplate; context: {$implicit: date}\"></ng-container>\n                                                </a>\n                                                <span class=\"ui-state-default ui-state-disabled\" *ngIf=\"!date.selectable\">\n                                                    {{date.day}}\n                                                </span>\n                                            </ng-container>\n                                        </td>\n                                    </tr>\n                                </tbody>\n                            </table>\n                        </div>\n                    </div>\n                    <div class=\"ui-monthpicker\" *ngIf=\"view === 'month'\">\n                        <a href=\"#\" *ngFor=\"let m of monthPickerValues; let i = index\" (click)=\"onMonthSelect($event, i)\" class=\"ui-monthpicker-month\" [ngClass]=\"{'ui-state-active': isMonthSelected(i)}\">\n                            {{m}}\n                        </a>\n                    </div>\n                </ng-container>\n                <div class=\"ui-timepicker ui-widget-header ui-corner-all\" *ngIf=\"showTime||timeOnly\">\n                    <div class=\"ui-hour-picker\">\n                        <a href=\"#\" (click)=\"incrementHour($event)\">\n                            <span class=\"pi pi-chevron-up\"></span>\n                        </a>\n                        <span [ngStyle]=\"{'display': currentHour < 10 ? 'inline': 'none'}\">0</span><span>{{currentHour}}</span>\n                        <a href=\"#\" (click)=\"decrementHour($event)\">\n                            <span class=\"pi pi-chevron-down\"></span>\n                        </a>\n                    </div>\n                    <div class=\"ui-separator\">\n                        <a href=\"#\">\n                            <span class=\"pi pi-chevron-up\"></span>\n                        </a>\n                        <span>:</span>\n                        <a href=\"#\">\n                            <span class=\"pi pi-chevron-down\"></span>\n                        </a>\n                    </div>\n                    <div class=\"ui-minute-picker\">\n                        <a href=\"#\" (click)=\"incrementMinute($event)\">\n                            <span class=\"pi pi-chevron-up\"></span>\n                        </a>\n                        <span [ngStyle]=\"{'display': currentMinute < 10 ? 'inline': 'none'}\">0</span><span>{{currentMinute}}</span>\n                        <a href=\"#\" (click)=\"decrementMinute($event)\">\n                            <span class=\"pi pi-chevron-down\"></span>\n                        </a>\n                    </div>\n                    <div class=\"ui-separator\" *ngIf=\"showSeconds\">\n                        <a href=\"#\">\n                            <span class=\"pi pi-chevron-up\"></span>\n                        </a>\n                        <span>:</span>\n                        <a href=\"#\">\n                            <span class=\"pi pi-chevron-down\"></span>\n                        </a>\n                    </div>\n                    <div class=\"ui-second-picker\" *ngIf=\"showSeconds\">\n                        <a href=\"#\" (click)=\"incrementSecond($event)\">\n                            <span class=\"pi pi-chevron-up\"></span>\n                        </a>\n                        <span [ngStyle]=\"{'display': currentSecond < 10 ? 'inline': 'none'}\">0</span><span>{{currentSecond}}</span>\n                        <a href=\"#\" (click)=\"decrementSecond($event)\">\n                            <span class=\"pi pi-chevron-down\"></span>\n                        </a>\n                    </div>\n                    <div class=\"ui-ampm-picker\" *ngIf=\"hourFormat=='12'\">\n                        <a href=\"#\" (click)=\"toggleAMPM($event)\">\n                            <span class=\"pi pi-chevron-up\"></span>\n                        </a>\n                        <span>{{pm ? 'PM' : 'AM'}}</span>\n                        <a href=\"#\" (click)=\"toggleAMPM($event)\">\n                            <span class=\"pi pi-chevron-down\"></span>\n                        </a>\n                    </div>\n                </div>\n                <div class=\"ui-datepicker-buttonbar ui-widget-header\" *ngIf=\"showButtonBar\">\n                    <div class=\"ui-g\">\n                        <div class=\"ui-g-6\">\n                            <button type=\"button\" [label]=\"_locale.today\" (click)=\"onTodayButtonClick($event)\" pButton [ngClass]=\"[todayButtonStyleClass]\"></button>\n                        </div>\n                        <div class=\"ui-g-6\">\n                            <button type=\"button\" [label]=\"_locale.clear\" (click)=\"onClearButtonClick($event)\" pButton [ngClass]=\"[clearButtonStyleClass]\"></button>\n                        </div>\n                    </div>\n                </div>\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n        </span>\n    ",
                     animations: [
-                        animations_1.trigger('overlayState', [
-                            animations_1.state('hidden', animations_1.style({
-                                opacity: 0
-                            })),
+                        animations_1.trigger('overlayAnimation', [
                             animations_1.state('visible', animations_1.style({
+                                transform: 'translateY(0)',
                                 opacity: 1
                             })),
-                            animations_1.transition('visible => hidden', animations_1.animate('400ms ease-in')),
-                            animations_1.transition('hidden => visible', animations_1.animate('400ms ease-out'))
+                            animations_1.state('visibleTouchUI', animations_1.style({
+                                transform: 'translate(-50%,-50%)',
+                                opacity: 1
+                            })),
+                            animations_1.transition('void => visible', [
+                                animations_1.style({ transform: 'translateY(5%)', opacity: 0 }),
+                                animations_1.animate('{{showTransitionParams}}')
+                            ]),
+                            animations_1.transition('visible => void', [
+                                animations_1.animate(('{{hideTransitionParams}}'), animations_1.style({
+                                    opacity: 0,
+                                    transform: 'translateY(5%)'
+                                }))
+                            ]),
+                            animations_1.transition('void => visibleTouchUI', [
+                                animations_1.style({ opacity: 0, transform: 'translate3d(-50%, -40%, 0) scale(0.9)' }),
+                                animations_1.animate('{{showTransitionParams}}')
+                            ]),
+                            animations_1.transition('visibleTouchUI => void', [
+                                animations_1.animate(('{{hideTransitionParams}}'), animations_1.style({
+                                    opacity: 0,
+                                    transform: 'translate3d(-50%, -40%, 0) scale(0.9)'
+                                }))
+                            ])
                         ])
                     ],
                     host: {
@@ -1446,11 +1495,14 @@ var Calendar = /** @class */ (function () {
         autoZIndex: [{ type: core_1.Input }],
         baseZIndex: [{ type: core_1.Input }],
         panelStyleClass: [{ type: core_1.Input }],
+        panelStyle: [{ type: core_1.Input }],
         keepInvalid: [{ type: core_1.Input }],
         hideOnDateTimeSelect: [{ type: core_1.Input }],
         numberOfMonths: [{ type: core_1.Input }],
         view: [{ type: core_1.Input }],
         touchUI: [{ type: core_1.Input }],
+        showTransitionOptions: [{ type: core_1.Input }],
+        hideTransitionOptions: [{ type: core_1.Input }],
         onFocus: [{ type: core_1.Output }],
         onBlur: [{ type: core_1.Output }],
         onClose: [{ type: core_1.Output }],
@@ -1462,9 +1514,8 @@ var Calendar = /** @class */ (function () {
         onYearChange: [{ type: core_1.Output }],
         templates: [{ type: core_1.ContentChildren, args: [shared_1.PrimeTemplate,] }],
         tabindex: [{ type: core_1.Input }],
-        utc: [{ type: core_1.Input }],
-        overlayViewChild: [{ type: core_1.ViewChild, args: ['datepicker',] }],
         inputfieldViewChild: [{ type: core_1.ViewChild, args: ['inputfield',] }],
+        utc: [{ type: core_1.Input }],
         minDate: [{ type: core_1.Input }],
         maxDate: [{ type: core_1.Input }],
         disabledDates: [{ type: core_1.Input }],

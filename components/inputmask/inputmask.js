@@ -453,7 +453,7 @@ var InputMask = /** @class */ (function () {
     InputMask.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-inputMask',
-                    template: "<input #input pInputText [attr.id]=\"inputId\" [attr.type]=\"type\" [attr.name]=\"name\" [ngStyle]=\"style\" [ngClass]=\"styleClass\" [attr.placeholder]=\"placeholder\"\n        [attr.size]=\"size\" [attr.maxlength]=\"maxlength\" [attr.tabindex]=\"tabindex\" [disabled]=\"disabled\" [readonly]=\"readonly\" [attr.required]=\"required\"\n        (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\" (keydown)=\"onKeyDown($event)\" (keypress)=\"onKeyPress($event)\" [attr.autofocus]=\"autoFocus\"\n        (input)=\"onInput($event)\" (paste)=\"handleInputChange($event)\">",
+                    template: "<input #input pInputText [attr.id]=\"inputId\" [attr.type]=\"type\" [attr.name]=\"name\" [ngStyle]=\"style\" [ngClass]=\"styleClass\" [attr.placeholder]=\"placeholder\"\n        [attr.size]=\"size\" [attr.maxlength]=\"maxlength\" [attr.tabindex]=\"tabindex\" [attr.aria-label]=\"ariaLabel\" [attr.aria-required]=\"ariaRequired\" [disabled]=\"disabled\" [readonly]=\"readonly\" [attr.required]=\"required\"\n        (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\" (keydown)=\"onKeyDown($event)\" (keypress)=\"onKeyPress($event)\" [attr.autofocus]=\"autoFocus\"\n        (input)=\"onInput($event)\" (paste)=\"handleInputChange($event)\">",
                     host: {
                         '[class.ui-inputwrapper-filled]': 'filled',
                         '[class.ui-inputwrapper-focus]': 'focus'
@@ -477,6 +477,8 @@ var InputMask = /** @class */ (function () {
         size: [{ type: core_1.Input }],
         maxlength: [{ type: core_1.Input }],
         tabindex: [{ type: core_1.Input }],
+        ariaLabel: [{ type: core_1.Input }],
+        ariaRequired: [{ type: core_1.Input }],
         disabled: [{ type: core_1.Input }],
         readonly: [{ type: core_1.Input }],
         unmask: [{ type: core_1.Input }],

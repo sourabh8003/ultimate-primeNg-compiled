@@ -1,9 +1,10 @@
-import { ElementRef, AfterViewInit, DoCheck, AfterViewChecked, EventEmitter, QueryList, TemplateRef, Renderer2, ChangeDetectorRef, IterableDiffers } from '@angular/core';
+import { ElementRef, AfterViewChecked, AfterContentInit, DoCheck, EventEmitter, QueryList, TemplateRef, Renderer2, ChangeDetectorRef, IterableDiffers } from '@angular/core';
+import { AnimationEvent } from '@angular/animations';
 import { DomHandler } from '../dom/domhandler';
 import { ObjectUtils } from '../utils/objectutils';
 import { ControlValueAccessor } from '@angular/forms';
 export declare const AUTOCOMPLETE_VALUE_ACCESSOR: any;
-export declare class AutoComplete implements AfterViewInit, AfterViewChecked, DoCheck, ControlValueAccessor {
+export declare class AutoComplete implements AfterViewChecked, AfterContentInit, DoCheck, ControlValueAccessor {
     el: ElementRef;
     domHandler: DomHandler;
     renderer: Renderer2;
@@ -27,6 +28,10 @@ export declare class AutoComplete implements AfterViewInit, AfterViewChecked, Do
     autoHighlight: boolean;
     forceSelection: boolean;
     type: string;
+    autoZIndex: boolean;
+    baseZIndex: number;
+    ariaLabel: string;
+    ariaLabelledBy: string;
     completeMethod: EventEmitter<any>;
     onSelect: EventEmitter<any>;
     onUnselect: EventEmitter<any>;
@@ -44,12 +49,14 @@ export declare class AutoComplete implements AfterViewInit, AfterViewChecked, Do
     dataKey: string;
     emptyMessage: string;
     immutable: boolean;
+    showTransitionOptions: string;
+    hideTransitionOptions: string;
     inputEL: ElementRef;
     multiInputEL: ElementRef;
-    panelEL: ElementRef;
     multiContainerEL: ElementRef;
     dropdownButton: ElementRef;
     templates: QueryList<any>;
+    overlay: HTMLDivElement;
     itemTemplate: TemplateRef<any>;
     selectedItemTemplate: TemplateRef<any>;
     value: any;
@@ -57,7 +64,7 @@ export declare class AutoComplete implements AfterViewInit, AfterViewChecked, Do
     onModelChange: Function;
     onModelTouched: Function;
     timeout: any;
-    panelVisible: boolean;
+    overlayVisible: boolean;
     documentClickListener: any;
     suggestionsUpdated: boolean;
     highlightOption: any;
@@ -73,20 +80,23 @@ export declare class AutoComplete implements AfterViewInit, AfterViewChecked, Do
     constructor(el: ElementRef, domHandler: DomHandler, renderer: Renderer2, objectUtils: ObjectUtils, cd: ChangeDetectorRef, differs: IterableDiffers);
     suggestions: any[];
     ngDoCheck(): void;
+    ngAfterViewChecked(): void;
     handleSuggestionsChange(): void;
     ngAfterContentInit(): void;
-    ngAfterViewInit(): void;
-    ngAfterViewChecked(): void;
     writeValue(value: any): void;
     registerOnChange(fn: Function): void;
     registerOnTouched(fn: Function): void;
     setDisabledState(val: boolean): void;
-    onInput(event: KeyboardEvent): void;
+    onInput(event: Event): void;
     onInputClick(event: MouseEvent): void;
     search(event: any, query: string): void;
     selectItem(option: any, focus?: boolean): void;
     show(): void;
-    align(): void;
+    onOverlayAnimationStart(event: AnimationEvent): void;
+    onOverlayAnimationDone(event: AnimationEvent): void;
+    appendOverlay(): void;
+    restoreOverlayAppend(): void;
+    alignOverlay(): void;
     hide(): void;
     handleDropdownClick(event: any): void;
     focusInput(): void;
@@ -96,6 +106,7 @@ export declare class AutoComplete implements AfterViewInit, AfterViewChecked, Do
     onInputFocus(event: any): void;
     onInputBlur(event: any): void;
     onInputChange(event: any): void;
+    onInputPaste(event: ClipboardEvent): void;
     isSelected(val: any): boolean;
     findOptionIndex(option: any): number;
     updateFilledState(): void;
@@ -103,6 +114,7 @@ export declare class AutoComplete implements AfterViewInit, AfterViewChecked, Do
     bindDocumentClickListener(): void;
     isDropdownClick(event: any): boolean;
     unbindDocumentClickListener(): void;
+    onOverlayHide(): void;
     ngOnDestroy(): void;
 }
 export declare class AutoCompleteModule {

@@ -21,6 +21,7 @@ var Carousel = /** @class */ (function () {
         this.pageLinks = 3;
         this.onPage = new core_1.EventEmitter();
         this.left = 0;
+        this.columns = 0;
     }
     Carousel.prototype.ngAfterContentInit = function () {
         var _this = this;

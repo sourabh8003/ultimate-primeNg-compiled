@@ -24,7 +24,10 @@ var ConfirmDialog = /** @class */ (function () {
         this.closeOnEscape = true;
         this.closable = true;
         this.responsive = true;
-        this.subscription = confirmationService.requireConfirmation$.subscribe(function (confirmation) {
+        this.autoZIndex = true;
+        this.baseZIndex = 0;
+        this.transitionOptions = '400ms cubic-bezier(0.25, 0.8, 0.25, 1)';
+        this.subscription = this.confirmationService.requireConfirmation$.subscribe(function (confirmation) {
             if (confirmation.key === _this.key) {
                 _this.confirmation = confirmation;
                 _this.message = _this.confirmation.message || _this.message;
@@ -46,66 +49,57 @@ var ConfirmDialog = /** @class */ (function () {
             }
         });
     }
-    Object.defineProperty(ConfirmDialog.prototype, "visible", {
-        get: function () {
-            return this._visible;
-        },
-        set: function (val) {
-            this._visible = val;
-            if (this._visible) {
-                if (!this.positionInitialized) {
-                    this.center();
-                    this.positionInitialized = true;
-                }
-                this.el.nativeElement.children[0].style.zIndex = ++domhandler_1.DomHandler.zindex;
+    ConfirmDialog.prototype.onAnimationStart = function (event) {
+        switch (event.toState) {
+            case 'visible':
+                this.container = event.element;
+                this.contentContainer = this.domHandler.findSingle(this.container, '.ui-dialog-content');
+                this.domHandler.findSingle(this.container, 'button').focus();
+                this.appendContainer();
+                this.moveOnTop();
+                this.center();
                 this.bindGlobalListeners();
-                this.executePostShowActions = true;
-            }
-            if (this._visible)
                 this.enableModality();
-            else
-                this.disableModality();
-        },
-        enumerable: true,
-        configurable: true
-    });
-    ConfirmDialog.prototype.ngAfterViewInit = function () {
-        this.contentContainer = this.domHandler.findSingle(this.el.nativeElement, '.ui-dialog-content');
-        if (this.appendTo) {
-            if (this.appendTo === 'body')
-                document.body.appendChild(this.el.nativeElement);
-            else
-                this.domHandler.appendChild(this.el.nativeElement, this.appendTo);
+                break;
+            case 'void':
+                this.onOverlayHide();
+                break;
         }
     };
-    ConfirmDialog.prototype.ngAfterViewChecked = function () {
-        if (this.executePostShowActions) {
-            this.domHandler.findSingle(this.el.nativeElement.children[0], 'button').focus();
-            this.executePostShowActions = false;
+    ConfirmDialog.prototype.appendContainer = function () {
+        if (this.appendTo) {
+            if (this.appendTo === 'body')
+                document.body.appendChild(this.container);
+            else
+                this.domHandler.appendChild(this.container, this.appendTo);
+        }
+    };
+    ConfirmDialog.prototype.restoreAppend = function () {
+        if (this.container && this.appendTo) {
+            this.el.nativeElement.appendChild(this.container);
         }
     };
     ConfirmDialog.prototype.center = function () {
-        var container = this.el.nativeElement.children[0];
-        var elementWidth = this.domHandler.getOuterWidth(container);
-        var elementHeight = this.domHandler.getOuterHeight(container);
+        var elementWidth = this.domHandler.getOuterWidth(this.container);
+        var elementHeight = this.domHandler.getOuterHeight(this.container);
         if (elementWidth == 0 && elementHeight == 0) {
-            container.style.visibility = 'hidden';
-            container.style.display = 'block';
-            elementWidth = this.domHandler.getOuterWidth(container);
-            elementHeight = this.domHandler.getOuterHeight(container);
-            container.style.display = 'none';
-            container.style.visibility = 'visible';
+            this.container.style.visibility = 'hidden';
+            this.container.style.display = 'block';
+            elementWidth = this.domHandler.getOuterWidth(this.container);
+            elementHeight = this.domHandler.getOuterHeight(this.container);
+            this.container.style.display = 'none';
+            this.container.style.visibility = 'visible';
         }
         var viewport = this.domHandler.getViewport();
         var x = (viewport.width - elementWidth) / 2;
         var y = (viewport.height - elementHeight) / 2;
-        container.style.left = x + 'px';
-        container.style.top = y + 'px';
+        this.container.style.left = x + 'px';
+        this.container.style.top = y + 'px';
     };
     ConfirmDialog.prototype.enableModality = function () {
         if (!this.mask) {
             this.mask = document.createElement('div');
-            this.mask.style.zIndex = this.el.nativeElement.children[0].style.zIndex - 1;
+            this.mask.style.zIndex = String(parseInt(this.container.style.zIndex) - 1);
             this.domHandler.addMultipleClasses(this.mask, 'ui-widget-overlay ui-dialog-mask');
             document.body.appendChild(this.mask);
             this.domHandler.addClass(document.body, 'ui-overflow-hidden');
@@ -127,17 +121,18 @@ var ConfirmDialog = /** @class */ (function () {
     };
     ConfirmDialog.prototype.hide = function () {
         this.visible = false;
-        this.unbindGlobalListeners();
     };
     ConfirmDialog.prototype.moveOnTop = function () {
-        this.el.nativeElement.children[0].style.zIndex = ++domhandler_1.DomHandler.zindex;
+        if (this.autoZIndex) {
+            this.container.style.zIndex = String(this.baseZIndex + (++domhandler_1.DomHandler.zindex));
+        }
     };
     ConfirmDialog.prototype.bindGlobalListeners = function () {
         var _this = this;
         if (this.closeOnEscape && this.closable && !this.documentEscapeListener) {
             this.documentEscapeListener = this.renderer.listen('document', 'keydown', function (event) {
                 if (event.which == 27) {
-                    if (_this.el.nativeElement.children[0].style.zIndex == domhandler_1.DomHandler.zindex && _this.visible) {
+                    if (parseInt(_this.container.style.zIndex) === domhandler_1.DomHandler.zindex && _this.visible) {
                         _this.close(event);
                     }
                 }
@@ -160,17 +155,14 @@ var ConfirmDialog = /** @class */ (function () {
             this.documentResponsiveListener = null;
         }
     };
-    ConfirmDialog.prototype.ngOnDestroy = function () {
+    ConfirmDialog.prototype.onOverlayHide = function () {
         this.disableModality();
-        if (this.documentResponsiveListener) {
-            this.documentResponsiveListener();
-        }
-        if (this.documentEscapeListener) {
-            this.documentEscapeListener();
-        }
-        if (this.appendTo && this.appendTo === 'body') {
-            document.body.removeChild(this.el.nativeElement);
-        }
+        this.unbindGlobalListeners();
+        this.container = null;
+    };
+    ConfirmDialog.prototype.ngOnDestroy = function () {
+        this.restoreAppend();
+        this.onOverlayHide();
         this.subscription.unsubscribe();
     };
     ConfirmDialog.prototype.accept = function () {
@@ -190,24 +182,18 @@ var ConfirmDialog = /** @class */ (function () {
     ConfirmDialog.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-confirmDialog',
-                    template: "\n        <div [ngClass]=\"{'ui-dialog ui-confirmdialog ui-widget ui-widget-content ui-corner-all ui-shadow':true,'ui-dialog-rtl':rtl}\" \n            [style.display]=\"visible ? 'block' : 'none'\" [style.width.px]=\"width\" [style.height.px]=\"height\" (mousedown)=\"moveOnTop()\" [@dialogState]=\"visible ? 'visible' : 'hidden'\">\n            <div class=\"ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top\">\n                <span class=\"ui-dialog-title\" *ngIf=\"header\">{{header}}</span>\n                <a *ngIf=\"closable\" [ngClass]=\"{'ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all':true}\" href=\"#\" role=\"button\" (click)=\"close($event)\">\n                    <span class=\"pi pi-fw pi-times\"></span>\n                </a>\n            </div>\n            <div class=\"ui-dialog-content ui-widget-content\">\n                <i [ngClass]=\"'ui-confirmdialog-icon'\" [class]=\"icon\" *ngIf=\"icon\"></i>\n                <span class=\"ui-confirmdialog-message\" [innerHTML]=\"message\"></span>\n            </div>\n            <div class=\"ui-dialog-footer ui-widget-content\" *ngIf=\"footer\">\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n            <div class=\"ui-dialog-footer ui-widget-content\" *ngIf=\"!footer\">\n                <button type=\"button\" pButton [icon]=\"acceptIcon\" [label]=\"acceptLabel\" (click)=\"accept()\" [class]=\"acceptButtonStyleClass\" *ngIf=\"acceptVisible\"></button>\n                <button type=\"button\" pButton [icon]=\"rejectIcon\" [label]=\"rejectLabel\" (click)=\"reject()\" [class]=\"rejectButtonStyleClass\" *ngIf=\"rejectVisible\"></button>\n            </div>\n        </div>\n    ",
+                    template: "\n        <div [ngClass]=\"{'ui-dialog ui-confirmdialog ui-widget ui-widget-content ui-corner-all ui-shadow':true,'ui-dialog-rtl':rtl}\" \n            [style.width.px]=\"width\" [style.height.px]=\"height\" (mousedown)=\"moveOnTop()\"\n            [@animation]=\"{value: 'visible', params: {transitionParams: transitionOptions}}\" (@animation.start)=\"onAnimationStart($event)\" *ngIf=\"visible\">\n            <div class=\"ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top\">\n                <span class=\"ui-dialog-title\" *ngIf=\"header\">{{header}}</span>\n                <a *ngIf=\"closable\" [ngClass]=\"{'ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all':true}\" href=\"#\" role=\"button\" (click)=\"close($event)\">\n                    <span class=\"pi pi-fw pi-times\"></span>\n                </a>\n            </div>\n            <div class=\"ui-dialog-content ui-widget-content\">\n                <i [ngClass]=\"'ui-confirmdialog-icon'\" [class]=\"icon\" *ngIf=\"icon\"></i>\n                <span class=\"ui-confirmdialog-message\" [innerHTML]=\"message\"></span>\n            </div>\n            <div class=\"ui-dialog-footer ui-widget-content\" *ngIf=\"footer\">\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n            <div class=\"ui-dialog-footer ui-widget-content\" *ngIf=\"!footer\">\n                <button type=\"button\" pButton [icon]=\"acceptIcon\" [label]=\"acceptLabel\" (click)=\"accept()\" [class]=\"acceptButtonStyleClass\" *ngIf=\"acceptVisible\"></button>\n                <button type=\"button\" pButton [icon]=\"rejectIcon\" [label]=\"rejectLabel\" (click)=\"reject()\" [class]=\"rejectButtonStyleClass\" *ngIf=\"rejectVisible\"></button>\n            </div>\n        </div>\n    ",
                     animations: [
-                        animations_1.trigger('dialogState', [
-                            animations_1.state('hidden', animations_1.style({
-                                transform: 'translate3d(0, 25%, 0)',
-                                opacity: 0,
-                                display: 'none'
-                            })),
-                            animations_1.state('visible', animations_1.style({
-                                display: 'block',
-                                transform: 'none',
-                                opacity: 1
-                            })),
+                        animations_1.trigger('animation', [
                             animations_1.state('void', animations_1.style({
                                 transform: 'translate3d(0, 25%, 0) scale(0.9)',
                                 opacity: 0
                             })),
-                            animations_1.transition('* => *', animations_1.animate('400ms cubic-bezier(0.25, 0.8, 0.25, 1)'))
+                            animations_1.state('visible', animations_1.style({
+                                transform: 'none',
+                                opacity: 1
+                            })),
+                            animations_1.transition('* => *', animations_1.animate('{{transitionParams}}'))
                         ])
                     ],
                     providers: [domhandler_1.DomHandler]
@@ -222,6 +208,7 @@ var ConfirmDialog = /** @class */ (function () {
         { type: core_1.NgZone }
     ]; };
     ConfirmDialog.propDecorators = {
+        visible: [{ type: core_1.Input }],
         header: [{ type: core_1.Input }],
         icon: [{ type: core_1.Input }],
         message: [{ type: core_1.Input }],
@@ -241,8 +228,10 @@ var ConfirmDialog = /** @class */ (function () {
         responsive: [{ type: core_1.Input }],
         appendTo: [{ type: core_1.Input }],
         key: [{ type: core_1.Input }],
-        footer: [{ type: core_1.ContentChild, args: [shared_1.Footer,] }],
-        visible: [{ type: core_1.Input }]
+        autoZIndex: [{ type: core_1.Input }],
+        baseZIndex: [{ type: core_1.Input }],
+        transitionOptions: [{ type: core_1.Input }],
+        footer: [{ type: core_1.ContentChild, args: [shared_1.Footer,] }]
     };
     return ConfirmDialog;
 }());

@@ -15,11 +15,13 @@ var TableService = /** @class */ (function () {
         this.contextMenuSource = new rxjs_1.Subject();
         this.valueSource = new rxjs_1.Subject();
         this.totalRecordsSource = new rxjs_1.Subject();
+        this.columnsSource = new rxjs_1.Subject();
         this.sortSource$ = this.sortSource.asObservable();
         this.selectionSource$ = this.selectionSource.asObservable();
         this.contextMenuSource$ = this.contextMenuSource.asObservable();
         this.valueSource$ = this.valueSource.asObservable();
         this.totalRecordsSource$ = this.totalRecordsSource.asObservable();
+        this.columnsSource$ = this.columnsSource.asObservable();
     }
     TableService.prototype.onSort = function (sortMeta) {
         this.sortSource.next(sortMeta);
@@ -35,6 +37,9 @@ var TableService = /** @class */ (function () {
     };
     TableService.prototype.onTotalRecordsChange = function (value) {
         this.totalRecordsSource.next(value);
+    };
+    TableService.prototype.onColumnsChange = function (columns) {
+        this.columnsSource.next(columns);
     };
     TableService.decorators = [
         { type: core_2.Injectable },
@@ -61,6 +66,7 @@ var Table = /** @class */ (function () {
         this.contextMenuSelectionMode = "separate";
         this.rowTrackBy = function (index, item) { return item; };
         this.lazy = false;
+        this.lazyLoadOnInit = true;
         this.compareSelectionBy = 'deepEquals';
         this.csvSeparator = ',';
         this.exportFilename = 'download';
@@ -130,7 +136,10 @@ var Table = /** @class */ (function () {
                 if (value === undefined || value === null) {
                     return false;
                 }
-                return value.toString().toLowerCase() == filter.toString().toLowerCase();
+                if (value.getTime && filter.getTime)
+                    return value.getTime() === filter.getTime();
+                else
+                    return value.toString().toLowerCase() == filter.toString().toLowerCase();
             },
             notEquals: function (value, filter) {
                 if (filter === undefined || filter === null || (typeof filter === 'string' && filter.trim() === '')) {
@@ -139,7 +148,10 @@ var Table = /** @class */ (function () {
                 if (value === undefined || value === null) {
                     return true;
                 }
-                return value.toString().toLowerCase() != filter.toString().toLowerCase();
+                if (value.getTime && filter.getTime)
+                    return value.getTime() !== filter.getTime();
+                else
+                    return value.toString().toLowerCase() != filter.toString().toLowerCase();
             },
             in: function (value, filter) {
                 if (filter === undefined || filter === null || filter.length === 0) {
@@ -149,8 +161,9 @@ var Table = /** @class */ (function () {
                     return false;
                 }
                 for (var i = 0; i < filter.length; i++) {
-                    if (filter[i] === value)
+                    if (filter[i] === value || (value.getTime && filter[i].getTime && value.getTime() === filter[i].getTime())) {
                         return true;
+                    }
                 }
                 return false;
             },
@@ -161,7 +174,10 @@ var Table = /** @class */ (function () {
                 if (value === undefined || value === null) {
                     return false;
                 }
-                return value < filter;
+                if (value.getTime && filter.getTime)
+                    return value.getTime() < filter.getTime();
+                else
+                    return value < filter;
             },
             lte: function (value, filter) {
                 if (filter === undefined || filter === null) {
@@ -170,7 +186,10 @@ var Table = /** @class */ (function () {
                 if (value === undefined || value === null) {
                     return false;
                 }
-                return value <= filter;
+                if (value.getTime && filter.getTime)
+                    return value.getTime() <= filter.getTime();
+                else
+                    return value <= filter;
             },
             gt: function (value, filter) {
                 if (filter === undefined || filter === null) {
@@ -179,7 +198,10 @@ var Table = /** @class */ (function () {
                 if (value === undefined || value === null) {
                     return false;
                 }
-                return value > filter;
+                if (value.getTime && filter.getTime)
+                    return value.getTime() > filter.getTime();
+                else
+                    return value > filter;
             },
             gte: function (value, filter) {
                 if (filter === undefined || filter === null) {
@@ -188,12 +210,15 @@ var Table = /** @class */ (function () {
                 if (value === undefined || value === null) {
                     return false;
                 }
-                return value >= filter;
+                if (value.getTime && filter.getTime)
+                    return value.getTime() >= filter.getTime();
+                else
+                    return value >= filter;
             }
         };
     }
     Table.prototype.ngOnInit = function () {
-        if (this.lazy) {
+        if (this.lazy && this.lazyLoadOnInit) {
             this.onLazyLoad.emit(this.createLazyLoadMetadata());
         }
         this.initialized = true;
@@ -269,6 +294,17 @@ var Table = /** @class */ (function () {
                 this.virtualScrollCallback();
             }
             this.tableService.onValueChange(val);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Table.prototype, "columns", {
+        get: function () {
+            return this._columns;
+        },
+        set: function (cols) {
+            this._columns = cols;
+            this.tableService.onColumnsChange(cols);
         },
         enumerable: true,
         configurable: true
@@ -755,7 +791,7 @@ var Table = /** @class */ (function () {
         if (this.selection != rowData) {
             this._selection = rowData;
             this.selectionChange.emit(this.selection);
-            this.onRowSelect.emit({ originalEvent: event, data: rowData, type: 'radiobutton' });
+            this.onRowSelect.emit({ originalEvent: event.originalEvent, index: event.rowIndex, data: rowData, type: 'radiobutton' });
             if (this.dataKey) {
                 this.selectionKeys = {};
                 this.selectionKeys[String(this.objectUtils.resolveFieldData(rowData, this.dataKey))] = 1;
@@ -764,7 +800,7 @@ var Table = /** @class */ (function () {
         else {
             this._selection = null;
             this.selectionChange.emit(this.selection);
-            this.onRowUnselect.emit({ originalEvent: event, data: rowData, type: 'radiobutton' });
+            this.onRowUnselect.emit({ originalEvent: event.originalEvent, index: event.rowIndex, data: rowData, type: 'radiobutton' });
         }
         this.tableService.onSelectionChange();
     };
@@ -777,7 +813,7 @@ var Table = /** @class */ (function () {
             var selectionIndex_3 = this.findIndexInSelection(rowData);
             this._selection = this.selection.filter(function (val, i) { return i != selectionIndex_3; });
             this.selectionChange.emit(this.selection);
-            this.onRowUnselect.emit({ originalEvent: event.originalEvent, data: rowData, type: 'checkbox' });
+            this.onRowUnselect.emit({ originalEvent: event.originalEvent, index: event.rowIndex, data: rowData, type: 'checkbox' });
             if (dataKeyValue) {
                 delete this.selectionKeys[dataKeyValue];
             }
@@ -785,7 +821,7 @@ var Table = /** @class */ (function () {
         else {
             this._selection = this.selection ? this.selection.concat([rowData]) : [rowData];
             this.selectionChange.emit(this.selection);
-            this.onRowSelect.emit({ originalEvent: event.originalEvent, data: rowData, type: 'checkbox' });
+            this.onRowSelect.emit({ originalEvent: event.originalEvent, index: event.rowIndex, data: rowData, type: 'checkbox' });
             if (dataKeyValue) {
                 this.selectionKeys[dataKeyValue] = 1;
             }
@@ -1066,9 +1102,12 @@ var Table = /** @class */ (function () {
     Table.prototype.onColumnResizeEnd = function (event, column) {
         var delta = this.resizeHelperViewChild.nativeElement.offsetLeft - this.lastResizerHelperX;
         var columnWidth = column.offsetWidth;
+        var minWidth = parseInt(column.style.minWidth || 15);
+        if (columnWidth + delta < minWidth) {
+            delta = minWidth - columnWidth;
+        }
         var newColumnWidth = columnWidth + delta;
-        var minWidth = column.style.minWidth || 15;
-        if (columnWidth + delta > parseInt(minWidth)) {
+        if (newColumnWidth >= minWidth) {
             if (this.columnResizeMode === 'fit') {
                 var nextColumn = column.nextElementSibling;
                 while (!nextColumn.offsetParent) {
@@ -1294,6 +1333,9 @@ var Table = /** @class */ (function () {
         var data = this.filteredValue || this.value;
         return data == null || data.length == 0;
     };
+    Table.prototype.getBlockableElement = function () {
+        return this.el.nativeElement.children[0];
+    };
     Table.prototype.ngOnDestroy = function () {
         this.editingCell = null;
         this.initialized = null;
@@ -1314,7 +1356,6 @@ var Table = /** @class */ (function () {
         { type: TableService }
     ]; };
     Table.propDecorators = {
-        columns: [{ type: core_1.Input }],
         frozenColumns: [{ type: core_1.Input }],
         frozenValue: [{ type: core_1.Input }],
         style: [{ type: core_1.Input }],
@@ -1341,6 +1382,7 @@ var Table = /** @class */ (function () {
         metaKeySelection: [{ type: core_1.Input }],
         rowTrackBy: [{ type: core_1.Input }],
         lazy: [{ type: core_1.Input }],
+        lazyLoadOnInit: [{ type: core_1.Input }],
         compareSelectionBy: [{ type: core_1.Input }],
         csvSeparator: [{ type: core_1.Input }],
         exportFilename: [{ type: core_1.Input }],
@@ -1390,6 +1432,7 @@ var Table = /** @class */ (function () {
         tableViewChild: [{ type: core_1.ViewChild, args: ['table',] }],
         templates: [{ type: core_1.ContentChildren, args: [shared_1.PrimeTemplate,] }],
         value: [{ type: core_1.Input }],
+        columns: [{ type: core_1.Input }],
         totalRecords: [{ type: core_1.Input }],
         sortField: [{ type: core_1.Input }],
         sortOrder: [{ type: core_1.Input }],
@@ -1406,7 +1449,7 @@ var TableBody = /** @class */ (function () {
     TableBody.decorators = [
         { type: core_1.Component, args: [{
                     selector: '[pTableBody]',
-                    template: "\n        <ng-container *ngIf=\"!dt.expandedRowTemplate\">\n            <ng-template ngFor let-rowData let-rowIndex=\"index\" [ngForOf]=\"dt.paginator ? ((dt.filteredValue||dt.value) | slice:(dt.lazy ? 0 : dt.first):((dt.lazy ? 0 : dt.first) + dt.rows)) : (dt.filteredValue||dt.value)\" [ngForTrackBy]=\"dt.rowTrackBy\">\n                <ng-container *ngTemplateOutlet=\"template; context: {$implicit: rowData, rowIndex: dt.paginator ? (dt.first + rowIndex) : rowIndex, columns: columns}\"></ng-container>\n            </ng-template>\n        </ng-container>\n        <ng-container *ngIf=\"dt.expandedRowTemplate\">\n            <ng-template ngFor let-rowData let-rowIndex=\"index\" [ngForOf]=\"dt.paginator ? ((dt.filteredValue||dt.value) | slice:(dt.lazy ? 0 : dt.first):((dt.lazy ? 0 : dt.first) + dt.rows)) : (dt.filteredValue||dt.value)\" [ngForTrackBy]=\"dt.rowTrackBy\">\n                <ng-container *ngTemplateOutlet=\"template; context: {$implicit: rowData, rowIndex: dt.paginator ? (dt.first + rowIndex) : rowIndex, columns: columns, expanded: dt.isRowExpanded(rowData)}\"></ng-container>\n                <ng-container *ngIf=\"dt.isRowExpanded(rowData)\">\n                    <ng-container *ngTemplateOutlet=\"dt.expandedRowTemplate; context: {$implicit: rowData, rowIndex: dt.paginator ? (dt.first + rowIndex) : rowIndex, columns: columns}\"></ng-container>\n                </ng-container>\n            </ng-template>\n        </ng-container>\n        <ng-container *ngIf=\"dt.isEmpty()\">\n            <ng-container *ngTemplateOutlet=\"dt.emptyMessageTemplate; context: {$implicit: columns}\"></ng-container>\n        </ng-container>\n    "
+                    template: "\n        <ng-container *ngIf=\"!dt.expandedRowTemplate\">\n            <ng-template ngFor let-rowData let-rowIndex=\"index\" [ngForOf]=\"(dt.paginator && !dt.lazy) ? ((dt.filteredValue||dt.value) | slice:dt.first:(dt.first + dt.rows)) : (dt.filteredValue||dt.value)\" [ngForTrackBy]=\"dt.rowTrackBy\">\n                <ng-container *ngTemplateOutlet=\"template; context: {$implicit: rowData, rowIndex: dt.paginator ? (dt.first + rowIndex) : rowIndex, columns: columns}\"></ng-container>\n            </ng-template>\n        </ng-container>\n        <ng-container *ngIf=\"dt.expandedRowTemplate\">\n            <ng-template ngFor let-rowData let-rowIndex=\"index\" [ngForOf]=\"(dt.paginator && !dt.lazy) ? ((dt.filteredValue||dt.value) | slice:dt.first:(dt.first + dt.rows)) : (dt.filteredValue||dt.value)\" [ngForTrackBy]=\"dt.rowTrackBy\">\n                <ng-container *ngTemplateOutlet=\"template; context: {$implicit: rowData, rowIndex: dt.paginator ? (dt.first + rowIndex) : rowIndex, columns: columns, expanded: dt.isRowExpanded(rowData)}\"></ng-container>\n                <ng-container *ngIf=\"dt.isRowExpanded(rowData)\">\n                    <ng-container *ngTemplateOutlet=\"dt.expandedRowTemplate; context: {$implicit: rowData, rowIndex: dt.paginator ? (dt.first + rowIndex) : rowIndex, columns: columns}\"></ng-container>\n                </ng-container>\n            </ng-template>\n        </ng-container>\n        <ng-container *ngIf=\"dt.isEmpty()\">\n            <ng-container *ngTemplateOutlet=\"dt.emptyMessageTemplate; context: {$implicit: columns}\"></ng-container>\n        </ng-container>\n    "
                 },] },
     ];
     /** @nocollapse */
@@ -1459,13 +1502,12 @@ var ScrollableView = /** @class */ (function () {
     ScrollableView.prototype.ngAfterViewChecked = function () {
         if (!this.initialized && this.el.nativeElement.offsetParent) {
             this.alignScrollBar();
+            this.setScrollHeight();
             this.initialized = true;
         }
     };
     ScrollableView.prototype.ngAfterViewInit = function () {
-        this.bindEvents();
-        this.setScrollHeight();
-        this.alignScrollBar();
+        var _this = this;
         if (!this.frozen) {
             if (this.dt.frozenColumns || this.dt.frozenBodyTemplate) {
                 this.domHandler.addClass(this.el.nativeElement, 'ui-table-unfrozen-view');
@@ -1481,6 +1523,22 @@ var ScrollableView = /** @class */ (function () {
         }
         else {
             this.scrollBodyViewChild.nativeElement.style.marginBottom = this.domHandler.calculateScrollbarWidth() + 'px';
+            var scrollableView = this.el.nativeElement.nextElementSibling;
+            if (scrollableView) {
+                this.scrollableSiblingBody = this.domHandler.findSingle(scrollableView, '.ui-table-scrollable-body');
+            }
+        }
+        this.bindEvents();
+        this.setScrollHeight();
+        this.alignScrollBar();
+        if (this.frozen) {
+            this.columnsSubscription = this.dt.tableService.columnsSource$.subscribe(function () {
+                _this.zone.runOutsideAngular(function () {
+                    setTimeout(function () {
+                        _this.setScrollHeight();
+                    }, 50);
+                });
+            });
         }
         if (this.dt.virtualScroll) {
             this.setVirtualScrollerHeight();
@@ -1568,7 +1626,7 @@ var ScrollableView = /** @class */ (function () {
                 this.scrollBodyViewChild.nativeElement.style.visibility = 'visible';
             }
             else {
-                if (this.frozen)
+                if (this.frozen && this.scrollableSiblingBody && this.domHandler.getOuterWidth(this.scrollableSiblingBody) < this.domHandler.getOuterWidth(this.scrollableSiblingBody.children[0]))
                     this.scrollBodyViewChild.nativeElement.style.maxHeight = (parseInt(this.scrollHeight) - this.domHandler.calculateScrollbarWidth()) + 'px';
                 else
                     this.scrollBodyViewChild.nativeElement.style.maxHeight = this.scrollHeight;
@@ -1602,12 +1660,15 @@ var ScrollableView = /** @class */ (function () {
         if (this.totalRecordsSubscription) {
             this.totalRecordsSubscription.unsubscribe();
         }
+        if (this.columnsSubscription) {
+            this.columnsSubscription.unsubscribe();
+        }
         this.initialized = false;
     };
     ScrollableView.decorators = [
         { type: core_1.Component, args: [{
                     selector: '[pScrollableView]',
-                    template: "\n        <div #scrollHeader class=\"ui-table-scrollable-header ui-widget-header\">\n            <div #scrollHeaderBox class=\"ui-table-scrollable-header-box\">\n                <table class=\"ui-table-scrollable-header-table\" [ngClass]=\"dt.tableStyleClass\" [ngStyle]=\"dt.tableStyle\">\n                    <ng-container *ngTemplateOutlet=\"frozen ? dt.frozenColGroupTemplate||dt.colGroupTemplate : dt.colGroupTemplate; context {$implicit: columns}\"></ng-container>\n                    <thead class=\"ui-table-thead\">\n                        <ng-container *ngTemplateOutlet=\"frozen ? dt.frozenHeaderTemplate||dt.headerTemplate : dt.headerTemplate; context {$implicit: columns}\"></ng-container>\n                    </thead>\n                    <tbody class=\"ui-table-tbody\">\n                        <ng-template ngFor let-rowData let-rowIndex=\"index\" [ngForOf]=\"dt.frozenValue\" [ngForTrackBy]=\"dt.rowTrackBy\">\n                            <ng-container *ngTemplateOutlet=\"dt.frozenRowsTemplate; context: {$implicit: rowData, rowIndex: rowIndex, columns: columns}\"></ng-container>\n                        </ng-template>\n                    </tbody>\n                </table>\n            </div>\n        </div>\n        <div #scrollBody class=\"ui-table-scrollable-body\">\n            <table #scrollTable [ngClass]=\"dt.tableStyleClass\" [ngClass]=\"{'ui-table-virtual-table': dt.virtualScroll}\" class=\"ui-table-scrollable-body-table\" [ngStyle]=\"dt.tableStyle\">\n                <ng-container *ngTemplateOutlet=\"frozen ? dt.frozenColGroupTemplate||dt.colGroupTemplate : dt.colGroupTemplate; context {$implicit: columns}\"></ng-container>\n                <tbody class=\"ui-table-tbody\" [pTableBody]=\"columns\" [pTableBodyTemplate]=\"frozen ? dt.frozenBodyTemplate||dt.bodyTemplate : dt.bodyTemplate\"></tbody>\n            </table>\n            <div #virtualScroller class=\"ui-table-virtual-scroller\"></div>\n        </div>\n        <div #scrollFooter *ngIf=\"dt.footerTemplate\" class=\"ui-table-scrollable-footer ui-widget-header\">\n            <div #scrollFooterBox class=\"ui-table-scrollable-footer-box\">\n                <table class=\"ui-table-scrollable-footer-table\" [ngClass]=\"dt.tableStyleClass\" [ngStyle]=\"dt.tableStyle\">\n                    <ng-container *ngTemplateOutlet=\"frozen ? dt.frozenColGroupTemplate||dt.colGroupTemplate : dt.colGroupTemplate; context {$implicit: columns}\"></ng-container>\n                    <tfoot class=\"ui-table-tfoot\">\n                        <ng-container *ngTemplateOutlet=\"frozen ? dt.frozenFooterTemplate||dt.footerTemplate : dt.footerTemplate; context {$implicit: columns}\"></ng-container>\n                    </tfoot>\n                </table>\n            </div>\n        </div>\n    "
+                    template: "\n        <div #scrollHeader class=\"ui-table-scrollable-header ui-widget-header\">\n            <div #scrollHeaderBox class=\"ui-table-scrollable-header-box\">\n                <table class=\"ui-table-scrollable-header-table\" [ngClass]=\"dt.tableStyleClass\" [ngStyle]=\"dt.tableStyle\">\n                    <ng-container *ngTemplateOutlet=\"frozen ? dt.frozenColGroupTemplate||dt.colGroupTemplate : dt.colGroupTemplate; context {$implicit: columns}\"></ng-container>\n                    <thead class=\"ui-table-thead\">\n                        <ng-container *ngTemplateOutlet=\"frozen ? dt.frozenHeaderTemplate||dt.headerTemplate : dt.headerTemplate; context {$implicit: columns}\"></ng-container>\n                    </thead>\n                    <tbody class=\"ui-table-tbody\">\n                        <ng-template ngFor let-rowData let-rowIndex=\"index\" [ngForOf]=\"dt.frozenValue\" [ngForTrackBy]=\"dt.rowTrackBy\">\n                            <ng-container *ngTemplateOutlet=\"dt.frozenRowsTemplate; context: {$implicit: rowData, rowIndex: rowIndex, columns: columns}\"></ng-container>\n                        </ng-template>\n                    </tbody>\n                </table>\n            </div>\n        </div>\n        <div #scrollBody class=\"ui-table-scrollable-body\">\n            <table #scrollTable [ngClass]=\"{'ui-table-scrollable-body-table': true, 'ui-table-virtual-table': dt.virtualScroll}\" [class]=\"dt.tableStyleClass\" [ngStyle]=\"dt.tableStyle\">\n                <ng-container *ngTemplateOutlet=\"frozen ? dt.frozenColGroupTemplate||dt.colGroupTemplate : dt.colGroupTemplate; context {$implicit: columns}\"></ng-container>\n                <tbody class=\"ui-table-tbody\" [pTableBody]=\"columns\" [pTableBodyTemplate]=\"frozen ? dt.frozenBodyTemplate||dt.bodyTemplate : dt.bodyTemplate\"></tbody>\n            </table>\n            <div #virtualScroller class=\"ui-table-virtual-scroller\"></div>\n        </div>\n        <div #scrollFooter *ngIf=\"dt.footerTemplate\" class=\"ui-table-scrollable-footer ui-widget-header\">\n            <div #scrollFooterBox class=\"ui-table-scrollable-footer-box\">\n                <table class=\"ui-table-scrollable-footer-table\" [ngClass]=\"dt.tableStyleClass\" [ngStyle]=\"dt.tableStyle\">\n                    <ng-container *ngTemplateOutlet=\"frozen ? dt.frozenColGroupTemplate||dt.colGroupTemplate : dt.colGroupTemplate; context {$implicit: columns}\"></ng-container>\n                    <tfoot class=\"ui-table-tfoot\">\n                        <ng-container *ngTemplateOutlet=\"frozen ? dt.frozenFooterTemplate||dt.footerTemplate : dt.footerTemplate; context {$implicit: columns}\"></ng-container>\n                    </tfoot>\n                </table>\n            </div>\n        </div>\n    "
                 },] },
     ];
     /** @nocollapse */
@@ -1742,7 +1803,7 @@ var SortIcon = /** @class */ (function () {
     SortIcon.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-sortIcon',
-                    template: "\n        <a href=\"#\" (click)=\"onClick($event)\" [attr.aria-label]=\"ariaText\">\n            <i class=\"ui-sortable-column-icon pi pi-fw\" [ngClass]=\"{'pi-sort-up': sortOrder === 1, 'pi-sort-down': sortOrder === -1, 'pi-sort': sortOrder === 0}\"></i>\n        </a>\n    "
+                    template: "\n        <a href=\"#\" (click)=\"onClick($event)\" [attr.aria-label]=\"ariaText\" class=\"ui-table-sort-icon\">\n            <i class=\"ui-sortable-column-icon pi pi-fw\" [ngClass]=\"{'pi-sort-up': sortOrder === 1, 'pi-sort-down': sortOrder === -1, 'pi-sort': sortOrder === 0}\"></i>\n        </a>\n    "
                 },] },
     ];
     /** @nocollapse */
@@ -2086,7 +2147,7 @@ var ReorderableColumn = /** @class */ (function () {
         }
     };
     ReorderableColumn.prototype.onMouseDown = function (event) {
-        if (event.target.nodeName === 'INPUT' || this.domHandler.hasClass(event.target, 'ui-column-resizer'))
+        if (event.target.nodeName === 'INPUT' || event.target.nodeName === 'TEXTAREA' || this.domHandler.hasClass(event.target, 'ui-column-resizer'))
             this.el.nativeElement.draggable = false;
         else
             this.el.nativeElement.draggable = true;
@@ -2349,7 +2410,10 @@ var TableRadioButton = /** @class */ (function () {
     };
     TableRadioButton.prototype.onClick = function (event) {
         if (!this.disabled) {
-            this.dt.toggleRowWithRadio(event, this.value);
+            this.dt.toggleRowWithRadio({
+                originalEvent: event,
+                rowIndex: this.index
+            }, this.value);
         }
         this.domHandler.clearSelection();
     };
@@ -2379,6 +2443,7 @@ var TableRadioButton = /** @class */ (function () {
     TableRadioButton.propDecorators = {
         disabled: [{ type: core_1.Input }],
         value: [{ type: core_1.Input }],
+        index: [{ type: core_1.Input }],
         boxViewChild: [{ type: core_1.ViewChild, args: ['box',] }]
     };
     return TableRadioButton;
@@ -2399,7 +2464,10 @@ var TableCheckbox = /** @class */ (function () {
     };
     TableCheckbox.prototype.onClick = function (event) {
         if (!this.disabled) {
-            this.dt.toggleRowWithCheckbox(event, this.value);
+            this.dt.toggleRowWithCheckbox({
+                originalEvent: event,
+                rowIndex: this.index
+            }, this.value);
         }
         this.domHandler.clearSelection();
     };
@@ -2429,6 +2497,7 @@ var TableCheckbox = /** @class */ (function () {
     TableCheckbox.propDecorators = {
         disabled: [{ type: core_1.Input }],
         value: [{ type: core_1.Input }],
+        index: [{ type: core_1.Input }],
         boxViewChild: [{ type: core_1.ViewChild, args: ['box',] }]
     };
     return TableCheckbox;
@@ -2451,8 +2520,10 @@ var TableHeaderCheckbox = /** @class */ (function () {
         this.checked = this.updateCheckedState();
     };
     TableHeaderCheckbox.prototype.onClick = function (event, checked) {
-        if (this.dt.value && this.dt.value.length > 0) {
-            this.dt.toggleRowsWithCheckbox(event, !checked);
+        if (!this.disabled) {
+            if (this.dt.value && this.dt.value.length > 0) {
+                this.dt.toggleRowsWithCheckbox(event, !checked);
+            }
         }
         this.domHandler.clearSelection();
     };

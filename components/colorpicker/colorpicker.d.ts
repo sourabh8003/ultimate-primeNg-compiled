@@ -1,8 +1,9 @@
-import { ElementRef, AfterViewInit, AfterViewChecked, OnDestroy, EventEmitter, Renderer2, ChangeDetectorRef } from '@angular/core';
+import { ElementRef, OnDestroy, EventEmitter, Renderer2, ChangeDetectorRef } from '@angular/core';
+import { AnimationEvent } from '@angular/animations';
 import { DomHandler } from '../dom/domhandler';
 import { ControlValueAccessor } from '@angular/forms';
 export declare const COLORPICKER_VALUE_ACCESSOR: any;
-export declare class ColorPicker implements ControlValueAccessor, AfterViewInit, AfterViewChecked, OnDestroy {
+export declare class ColorPicker implements ControlValueAccessor, OnDestroy {
     el: ElementRef;
     domHandler: DomHandler;
     renderer: Renderer2;
@@ -15,17 +16,16 @@ export declare class ColorPicker implements ControlValueAccessor, AfterViewInit,
     disabled: boolean;
     tabindex: string;
     inputId: string;
+    autoZIndex: boolean;
+    baseZIndex: number;
+    showTransitionOptions: string;
+    hideTransitionOptions: string;
     onChange: EventEmitter<any>;
-    panelViewChild: ElementRef;
-    colorSelectorViewChild: ElementRef;
-    colorHandleViewChild: ElementRef;
-    hueViewChild: ElementRef;
-    hueHandleViewChild: ElementRef;
     inputViewChild: ElementRef;
     value: any;
     inputBgColor: string;
     shown: boolean;
-    panelVisible: boolean;
+    overlayVisible: boolean;
     defaultColor: string;
     onModelChange: Function;
     onModelTouched: Function;
@@ -36,9 +36,16 @@ export declare class ColorPicker implements ControlValueAccessor, AfterViewInit,
     selfClick: boolean;
     colorDragging: boolean;
     hueDragging: boolean;
+    overlay: HTMLDivElement;
+    colorSelectorViewChild: ElementRef;
+    colorHandleViewChild: ElementRef;
+    hueViewChild: ElementRef;
+    hueHandleViewChild: ElementRef;
     constructor(el: ElementRef, domHandler: DomHandler, renderer: Renderer2, cd: ChangeDetectorRef);
-    ngAfterViewInit(): void;
-    ngAfterViewChecked(): void;
+    colorSelector: ElementRef;
+    colorHandle: ElementRef;
+    hue: ElementRef;
+    hueHandle: ElementRef;
     onHueMousedown(event: MouseEvent): void;
     pickHue(event: MouseEvent): void;
     onColorMousedown(event: MouseEvent): void;
@@ -50,9 +57,11 @@ export declare class ColorPicker implements ControlValueAccessor, AfterViewInit,
     updateUI(): void;
     onInputFocus(): void;
     show(): void;
+    onOverlayAnimationStart(event: AnimationEvent): void;
+    appendOverlay(): void;
+    restoreOverlayAppend(): void;
+    alignOverlay(): void;
     hide(): void;
-    onShow(): void;
-    alignPanel(): void;
     onInputClick(): void;
     togglePanel(): void;
     onInputKeydown(event: KeyboardEvent): void;
@@ -99,6 +108,7 @@ export declare class ColorPicker implements ControlValueAccessor, AfterViewInit,
     };
     RGBtoHEX(rgb: any): string;
     HSBtoHEX(hsb: any): string;
+    onOverlayHide(): void;
     ngOnDestroy(): void;
 }
 export declare class ColorPickerModule {

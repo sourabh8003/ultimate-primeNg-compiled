@@ -202,16 +202,36 @@ var Schedule = /** @class */ (function () {
     Schedule.prototype.ngOnChanges = function (changes) {
         if (this.calendar) {
             for (var propName in changes) {
-                if (propName !== 'events') {
+                if (propName !== 'options' && propName !== 'events') {
                     this.calendar.option(propName, changes[propName].currentValue);
                 }
             }
         }
     };
+    Object.defineProperty(Schedule.prototype, "options", {
+        get: function () {
+            return this._options;
+        },
+        set: function (value) {
+            this._options = value;
+            if (this._options && this.calendar) {
+                for (var prop in this._options) {
+                    var optionValue = this._options[prop];
+                    this.config[prop] = optionValue;
+                    this.calendar.option(prop, optionValue);
+                }
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     Schedule.prototype.initialize = function () {
         this.calendar = new FullCalendar.Calendar(this.el.nativeElement.children[0], this.config);
         this.calendar.render();
         this.initialized = true;
+        if (this.events) {
+            this.calendar.addEventSource(this.events);
+        }
     };
     Schedule.prototype.ngDoCheck = function () {
         var changes = this.differ.diff(this.events);
@@ -251,7 +271,7 @@ var Schedule = /** @class */ (function () {
         this.calendar.incrementDate(duration);
     };
     Schedule.prototype.changeView = function (viewName, dateOrRange) {
-        this.calendar.incrementDate(viewName, dateOrRange);
+        this.calendar.changeView(viewName, dateOrRange);
     };
     Schedule.prototype.getDate = function () {
         return this.calendar.getDate();
@@ -334,7 +354,6 @@ var Schedule = /** @class */ (function () {
         eventRender: [{ type: core_1.Input }],
         dayRender: [{ type: core_1.Input }],
         navLinks: [{ type: core_1.Input }],
-        options: [{ type: core_1.Input }],
         onDayClick: [{ type: core_1.Output }],
         onDrop: [{ type: core_1.Output }],
         onEventClick: [{ type: core_1.Output }],
@@ -349,7 +368,8 @@ var Schedule = /** @class */ (function () {
         onViewRender: [{ type: core_1.Output }],
         onViewDestroy: [{ type: core_1.Output }],
         onNavLinkDayClick: [{ type: core_1.Output }],
-        onNavLinkWeekClick: [{ type: core_1.Output }]
+        onNavLinkWeekClick: [{ type: core_1.Output }],
+        options: [{ type: core_1.Input }]
     };
     return Schedule;
 }());

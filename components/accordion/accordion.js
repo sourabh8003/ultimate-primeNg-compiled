@@ -9,6 +9,7 @@ var AccordionTab = /** @class */ (function () {
     function AccordionTab(accordion) {
         this.accordion = accordion;
         this.selectedChange = new core_1.EventEmitter();
+        this.transitionOptions = '400ms cubic-bezier(0.86, 0, 0.07, 1)';
         this.id = "ui-accordiontab-" + idx++;
     }
     AccordionTab.prototype.toggle = function (event) {
@@ -67,7 +68,7 @@ var AccordionTab = /** @class */ (function () {
     AccordionTab.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-accordionTab',
-                    template: "\n        <div class=\"ui-accordion-header ui-state-default ui-corner-all\" [ngClass]=\"{'ui-state-active': selected,'ui-state-disabled':disabled}\">\n            <a href=\"#\" [attr.id]=\"id\" [attr.aria-controls]=\"id + '-content'\" role=\"tab\" [attr.aria-expanded]=\"selected\" (click)=\"toggle($event)\" (keydown.space)=\"toggle($event)\">\n                <span class=\"ui-accordion-toggle-icon\" [ngClass]=\"selected ? accordion.collapseIcon : accordion.expandIcon\"></span>\n                <span class=\"ui-accordion-header-text\" *ngIf=\"!hasHeaderFacet\">\n                    {{header}}\n                </span>\n                <ng-content select=\"p-header\" *ngIf=\"hasHeaderFacet\"></ng-content>\n            </a>\n        </div>\n        <div [attr.id]=\"id + '-content'\" class=\"ui-accordion-content-wrapper\" [@tabContent]=\"selected ? 'visible' : 'hidden'\" (@tabContent.done)=\"onToggleDone($event)\"\n            [ngClass]=\"{'ui-accordion-content-wrapper-overflown': !selected||animating}\" \n            role=\"tabpanel\" [attr.aria-hidden]=\"!selected\" [attr.aria-labelledby]=\"id\">\n            <div class=\"ui-accordion-content ui-widget-content\" *ngIf=\"lazy ? selected : true\">\n                <ng-content></ng-content>\n            </div>\n        </div>\n    ",
+                    template: "\n        <div class=\"ui-accordion-header ui-state-default ui-corner-all\" [ngClass]=\"{'ui-state-active': selected,'ui-state-disabled':disabled}\">\n            <a tabindex=\"0\" [attr.id]=\"id\" [attr.aria-controls]=\"id + '-content'\" role=\"tab\" [attr.aria-expanded]=\"selected\" (click)=\"toggle($event)\" \n                (keydown.space)=\"toggle($event)\" (keydown.enter)=\"toggle($event)\">\n                <span class=\"ui-accordion-toggle-icon\" [ngClass]=\"selected ? accordion.collapseIcon : accordion.expandIcon\"></span>\n                <span class=\"ui-accordion-header-text\" *ngIf=\"!hasHeaderFacet\">\n                    {{header}}\n                </span>\n                <ng-content select=\"p-header\" *ngIf=\"hasHeaderFacet\"></ng-content>\n            </a>\n        </div>\n        <div [attr.id]=\"id + '-content'\" class=\"ui-accordion-content-wrapper\" [@tabContent]=\"selected ? {value: 'visible', params: {transitionParams: transitionOptions}} : {value: 'hidden', params: {transitionParams: transitionOptions}}\" (@tabContent.done)=\"onToggleDone($event)\"\n            [ngClass]=\"{'ui-accordion-content-wrapper-overflown': !selected||animating}\" \n            role=\"tabpanel\" [attr.aria-hidden]=\"!selected\" [attr.aria-labelledby]=\"id\">\n            <div class=\"ui-accordion-content ui-widget-content\" *ngIf=\"lazy ? selected : true\">\n                <ng-content></ng-content>\n            </div>\n        </div>\n    ",
                     animations: [
                         animations_1.trigger('tabContent', [
                             animations_1.state('hidden', animations_1.style({
@@ -76,7 +77,7 @@ var AccordionTab = /** @class */ (function () {
                             animations_1.state('visible', animations_1.style({
                                 height: '*'
                             })),
-                            animations_1.transition('visible <=> hidden', animations_1.animate('400ms cubic-bezier(0.86, 0, 0.07, 1)'))
+                            animations_1.transition('visible <=> hidden', animations_1.animate('{{transitionParams}}'))
                         ])
                     ]
                 },] },
@@ -90,6 +91,7 @@ var AccordionTab = /** @class */ (function () {
         selected: [{ type: core_1.Input }],
         disabled: [{ type: core_1.Input }],
         selectedChange: [{ type: core_1.Output }],
+        transitionOptions: [{ type: core_1.Input }],
         headerFacet: [{ type: core_1.ContentChildren, args: [shared_1.Header,] }]
     };
     return AccordionTab;

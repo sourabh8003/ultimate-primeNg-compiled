@@ -4,12 +4,15 @@ var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var domhandler_1 = require("../dom/domhandler");
 var Lightbox = /** @class */ (function () {
-    function Lightbox(el, domHandler, renderer) {
+    function Lightbox(el, domHandler, renderer, cd) {
         this.el = el;
         this.domHandler = domHandler;
         this.renderer = renderer;
+        this.cd = cd;
         this.type = 'image';
         this.effectDuration = '500ms';
+        this.autoZIndex = true;
+        this.baseZIndex = 0;
     }
     Lightbox.prototype.onImageClick = function (event, image, i, content) {
         this.index = i;
@@ -35,6 +38,7 @@ var Lightbox = /** @class */ (function () {
                 _this.hide(event);
             }
             _this.preventDocumentClickListener = false;
+            _this.cd.markForCheck();
         });
     };
     Lightbox.prototype.onLinkClick = function (event, content) {
@@ -45,6 +49,7 @@ var Lightbox = /** @class */ (function () {
     Lightbox.prototype.displayImage = function (image) {
         var _this = this;
         setTimeout(function () {
+            _this.cd.markForCheck();
             _this.currentImage = image;
             _this.captionText = image.title;
             _this.center();
@@ -52,10 +57,12 @@ var Lightbox = /** @class */ (function () {
     };
     Lightbox.prototype.show = function () {
         this.mask = document.createElement('div');
-        this.mask.style.zIndex = ++domhandler_1.DomHandler.zindex;
         this.domHandler.addMultipleClasses(this.mask, 'ui-widget-overlay ui-dialog-mask');
         document.body.appendChild(this.mask);
-        this.zindex = ++domhandler_1.DomHandler.zindex;
+        if (this.autoZIndex) {
+            this.zindex = this.baseZIndex + (++domhandler_1.DomHandler.zindex);
+        }
+        this.mask.style.zIndex = this.zindex - 1;
         this.center();
         this.visible = true;
     };
@@ -103,6 +110,7 @@ var Lightbox = /** @class */ (function () {
         this.panel.style.left = parseInt(this.panel.style.left) + (this.domHandler.getOuterWidth(this.panel) - imageWidth) / 2 + 'px';
         this.panel.style.top = parseInt(this.panel.style.top) + (this.domHandler.getOuterHeight(this.panel) - imageHeight) / 2 + 'px';
         setTimeout(function () {
+            _this.cd.markForCheck();
             _this.domHandler.fadeIn(image, 500);
             image.style.display = 'block';
             //this.captionText = this.currentImage.title;
@@ -158,7 +166,8 @@ var Lightbox = /** @class */ (function () {
     Lightbox.ctorParameters = function () { return [
         { type: core_1.ElementRef },
         { type: domhandler_1.DomHandler },
-        { type: core_1.Renderer2 }
+        { type: core_1.Renderer2 },
+        { type: core_1.ChangeDetectorRef }
     ]; };
     Lightbox.propDecorators = {
         images: [{ type: core_1.Input }],
@@ -167,7 +176,9 @@ var Lightbox = /** @class */ (function () {
         styleClass: [{ type: core_1.Input }],
         appendTo: [{ type: core_1.Input }],
         easing: [{ type: core_1.Input }],
-        effectDuration: [{ type: core_1.Input }]
+        effectDuration: [{ type: core_1.Input }],
+        autoZIndex: [{ type: core_1.Input }],
+        baseZIndex: [{ type: core_1.Input }]
     };
     return Lightbox;
 }());

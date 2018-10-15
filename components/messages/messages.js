@@ -2,18 +2,21 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
+var animations_1 = require("@angular/animations");
 var messageservice_1 = require("../common/messageservice");
 var Messages = /** @class */ (function () {
     function Messages(messageService) {
         this.messageService = messageService;
         this.closable = true;
         this.enableService = true;
+        this.showTransitionOptions = '300ms ease-out';
+        this.hideTransitionOptions = '250ms ease-in';
         this.valueChange = new core_1.EventEmitter();
     }
     Messages.prototype.ngOnInit = function () {
         var _this = this;
         if (this.messageService && this.enableService) {
-            this.subscription = this.messageService.messageObserver.subscribe(function (messages) {
+            this.messageSubscription = this.messageService.messageObserver.subscribe(function (messages) {
                 if (messages) {
                     if (messages instanceof Array) {
                         var filteredMessages = messages.filter(function (m) { return _this.key === m.key; });
@@ -21,6 +24,13 @@ var Messages = /** @class */ (function () {
                     }
                     else if (_this.key === messages.key) {
                         _this.value = _this.value ? _this.value.concat([messages]) : [messages];
+                    }
+                }
+            });
+            this.clearSubscription = this.messageService.clearObserver.subscribe(function (key) {
+                if (key) {
+                    if (_this.key === key) {
+                        _this.value = null;
                     }
                 }
                 else {
@@ -69,14 +79,35 @@ var Messages = /** @class */ (function () {
         configurable: true
     });
     Messages.prototype.ngOnDestroy = function () {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
+        if (this.messageSubscription) {
+            this.messageSubscription.unsubscribe();
+        }
+        if (this.clearSubscription) {
+            this.clearSubscription.unsubscribe();
         }
     };
     Messages.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-messages',
-                    template: "\n        <div *ngIf=\"hasMessages()\" class=\"ui-messages ui-widget ui-corner-all\" style=\"display:block\"\n                    [ngClass]=\"{'ui-messages-info':(value[0].severity === 'info'),\n                    'ui-messages-warn':(value[0].severity === 'warn'),\n                    'ui-messages-error':(value[0].severity === 'error'),\n                    'ui-messages-success':(value[0].severity === 'success')}\"\n                    [ngStyle]=\"style\" [class]=\"styleClass\">\n            <a href=\"#\" class=\"ui-messages-close\" (click)=\"clear($event)\" *ngIf=\"closable\">\n                <i class=\"pi pi-times\"></i>\n            </a>\n            <span class=\"ui-messages-icon pi\" [ngClass]=\"icon\"></span>\n            <ul>\n                <li *ngFor=\"let msg of value\">\n                    <span *ngIf=\"msg.summary\" class=\"ui-messages-summary\" [innerHTML]=\"msg.summary\"></span>\n                    <span *ngIf=\"msg.detail\" class=\"ui-messages-detail\" [innerHTML]=\"msg.detail\"></span>\n                </li>\n            </ul>\n        </div>\n    "
+                    template: "\n        <div *ngIf=\"hasMessages()\" class=\"ui-messages ui-widget ui-corner-all\" style=\"display:block\"\n                    [ngClass]=\"{'ui-messages-info':(value[0].severity === 'info'),\n                    'ui-messages-warn':(value[0].severity === 'warn'),\n                    'ui-messages-error':(value[0].severity === 'error'),\n                    'ui-messages-success':(value[0].severity === 'success')}\"\n                    [ngStyle]=\"style\" [class]=\"styleClass\" [@messageAnimation]=\"{value: 'visible', params: {showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions}}\">\n            <a href=\"#\" class=\"ui-messages-close\" (click)=\"clear($event)\" *ngIf=\"closable\">\n                <i class=\"pi pi-times\"></i>\n            </a>\n            <span class=\"ui-messages-icon pi\" [ngClass]=\"icon\"></span>\n            <ul>\n                <li *ngFor=\"let msg of value\">\n                    <span *ngIf=\"msg.summary\" class=\"ui-messages-summary\" [innerHTML]=\"msg.summary\"></span>\n                    <span *ngIf=\"msg.detail\" class=\"ui-messages-detail\" [innerHTML]=\"msg.detail\"></span>\n                </li>\n            </ul>\n        </div>\n    ",
+                    animations: [
+                        animations_1.trigger('messageAnimation', [
+                            animations_1.state('visible', animations_1.style({
+                                transform: 'translateY(0)',
+                                opacity: 1
+                            })),
+                            animations_1.transition('void => *', [
+                                animations_1.style({ transform: 'translateY(-25%)', opacity: 0 }),
+                                animations_1.animate('{{showTransitionParams}}')
+                            ]),
+                            animations_1.transition('* => void', [
+                                animations_1.animate(('{{hideTransitionParams}}'), animations_1.style({
+                                    opacity: 0,
+                                    transform: 'translateY(-25%)'
+                                }))
+                            ])
+                        ])
+                    ]
                 },] },
     ];
     /** @nocollapse */
@@ -90,6 +121,8 @@ var Messages = /** @class */ (function () {
         styleClass: [{ type: core_1.Input }],
         enableService: [{ type: core_1.Input }],
         key: [{ type: core_1.Input }],
+        showTransitionOptions: [{ type: core_1.Input }],
+        hideTransitionOptions: [{ type: core_1.Input }],
         valueChange: [{ type: core_1.Output }]
     };
     return Messages;

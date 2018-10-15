@@ -13,7 +13,10 @@ var Draggable = /** @class */ (function () {
         this.onDrag = new core_1.EventEmitter();
     }
     Draggable.prototype.ngAfterViewInit = function () {
-        this.bindMouseListeners();
+        if (!this.pDraggableDisabled) {
+            this.el.nativeElement.draggable = true;
+            this.bindMouseListeners();
+        }
     };
     Draggable.prototype.bindDragListener = function () {
         var _this = this;
@@ -94,9 +97,6 @@ var Draggable = /** @class */ (function () {
     Draggable.decorators = [
         { type: core_1.Directive, args: [{
                     selector: '[pDraggable]',
-                    host: {
-                        '[draggable]': 'true'
-                    },
                     providers: [domhandler_1.DomHandler]
                 },] },
     ];
@@ -108,6 +108,7 @@ var Draggable = /** @class */ (function () {
     ]; };
     Draggable.propDecorators = {
         scope: [{ type: core_1.Input, args: ['pDraggable',] }],
+        pDraggableDisabled: [{ type: core_1.Input }],
         dragEffect: [{ type: core_1.Input }],
         dragHandle: [{ type: core_1.Input }],
         onDragStart: [{ type: core_1.Output }],
@@ -129,7 +130,9 @@ var Droppable = /** @class */ (function () {
         this.onDrop = new core_1.EventEmitter();
     }
     Droppable.prototype.ngAfterViewInit = function () {
-        this.bindDragOverListener();
+        if (!this.pDroppableDisabled) {
+            this.bindDragOverListener();
+        }
     };
     Droppable.prototype.bindDragOverListener = function () {
         var _this = this;
@@ -200,6 +203,7 @@ var Droppable = /** @class */ (function () {
     ]; };
     Droppable.propDecorators = {
         scope: [{ type: core_1.Input, args: ['pDroppable',] }],
+        pDroppableDisabled: [{ type: core_1.Input }],
         dropEffect: [{ type: core_1.Input }],
         onDragEnter: [{ type: core_1.Output }],
         onDragLeave: [{ type: core_1.Output }],

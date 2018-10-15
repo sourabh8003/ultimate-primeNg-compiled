@@ -4,6 +4,7 @@ import { Subscription, Observable } from 'rxjs';
 import { DomHandler } from '../dom/domhandler';
 import { PrimeTemplate } from '../common/shared';
 import { SortMeta } from '../common/sortmeta';
+import { BlockableUI } from '../common/blockableui';
 import { ObjectUtils } from '../utils/objectutils';
 export declare class TreeTableService {
     private sortSource;
@@ -19,7 +20,7 @@ export declare class TreeTableService {
     onContextMenu(node: any): void;
     onUIUpdate(value: any): void;
 }
-export declare class TreeTable implements AfterContentInit, OnInit, OnDestroy {
+export declare class TreeTable implements AfterContentInit, OnInit, OnDestroy, BlockableUI {
     el: ElementRef;
     domHandler: DomHandler;
     objectUtils: ObjectUtils;
@@ -57,7 +58,6 @@ export declare class TreeTable implements AfterContentInit, OnInit, OnDestroy {
     scrollable: boolean;
     scrollHeight: string;
     frozenWidth: string;
-    frozenValue: any[];
     frozenColumns: any[];
     resizableColumns: boolean;
     columnResizeMode: string;
@@ -137,6 +137,7 @@ export declare class TreeTable implements AfterContentInit, OnInit, OnDestroy {
     isSorted(field: string): boolean;
     createLazyLoadMetadata(): any;
     isEmpty(): boolean;
+    getBlockableElement(): HTMLElement;
     onColumnResizeBegin(event: any): void;
     onColumnResize(event: any): void;
     onColumnResizeEnd(event: any, column: any): void;
@@ -353,7 +354,7 @@ export declare class TTEditableColumn implements AfterViewInit {
     zone: NgZone;
     data: any;
     field: any;
-    pEditableColumnDisabled: boolean;
+    ttEditableColumnDisabled: boolean;
     constructor(tt: TreeTable, el: ElementRef, domHandler: DomHandler, zone: NgZone);
     ngAfterViewInit(): void;
     isValid(): boolean;

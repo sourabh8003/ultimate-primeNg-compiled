@@ -19,6 +19,7 @@ export declare class TabPanel implements AfterContentInit, OnDestroy {
     leftIcon: string;
     rightIcon: string;
     cache: boolean;
+    tooltip: any;
     templates: QueryList<any>;
     constructor(viewContainer: ViewContainerRef);
     closed: boolean;
@@ -27,6 +28,7 @@ export declare class TabPanel implements AfterContentInit, OnDestroy {
     loaded: boolean;
     id: string;
     contentTemplate: TemplateRef<any>;
+    headerTemplate: TemplateRef<any>;
     ngAfterContentInit(): void;
     selected: boolean;
     ngOnDestroy(): void;

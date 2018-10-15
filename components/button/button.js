@@ -114,7 +114,6 @@ var ButtonDirective = /** @class */ (function () {
 exports.ButtonDirective = ButtonDirective;
 var Button = /** @class */ (function () {
     function Button() {
-        this.type = 'button';
         this.iconPos = 'left';
         this.onClick = new core_1.EventEmitter();
         this.onFocus = new core_1.EventEmitter();

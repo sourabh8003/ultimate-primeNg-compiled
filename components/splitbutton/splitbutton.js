@@ -17,22 +17,10 @@ var SplitButton = /** @class */ (function () {
         this.iconPos = 'left';
         this.onClick = new core_1.EventEmitter();
         this.onDropdownClick = new core_1.EventEmitter();
-        this.menuVisible = false;
+        this.showTransitionOptions = '225ms ease-out';
+        this.hideTransitionOptions = '195ms ease-in';
+        this.overlayVisible = false;
     }
-    SplitButton.prototype.ngAfterViewInit = function () {
-        if (this.appendTo) {
-            if (this.appendTo === 'body')
-                document.body.appendChild(this.overlayViewChild.nativeElement);
-            else
-                this.domHandler.appendChild(this.overlayViewChild.nativeElement, this.appendTo);
-        }
-    };
-    SplitButton.prototype.ngAfterViewChecked = function () {
-        if (this.shown) {
-            this.onShow();
-            this.shown = false;
-        }
-    };
     SplitButton.prototype.onDefaultButtonClick = function (event) {
         this.onClick.emit(event);
     };
@@ -50,28 +38,49 @@ var SplitButton = /** @class */ (function () {
                 item: item
             });
         }
-        this.menuVisible = false;
+        this.overlayVisible = false;
     };
     SplitButton.prototype.show = function () {
-        this.shown = true;
-        this.menuVisible = !this.menuVisible;
-        this.alignPanel();
-        this.overlayViewChild.nativeElement.style.zIndex = String(++domhandler_1.DomHandler.zindex);
+        this.overlayVisible = !this.overlayVisible;
     };
-    SplitButton.prototype.onShow = function () {
-        this.alignPanel();
-        this.bindDocumentClickListener();
+    SplitButton.prototype.onOverlayAnimationStart = function (event) {
+        switch (event.toState) {
+            case 'visible':
+                this.overlay = event.element;
+                this.appendOverlay();
+                this.overlay.style.zIndex = String(++domhandler_1.DomHandler.zindex);
+                this.alignOverlay();
+                this.bindDocumentClickListener();
+                break;
+            case 'void':
+                this.onOverlayHide();
+                break;
+        }
     };
     SplitButton.prototype.onDropdownButtonClick = function (event) {
         this.onDropdownClick.emit(event);
         this.dropdownClick = true;
         this.show();
     };
-    SplitButton.prototype.alignPanel = function () {
+    SplitButton.prototype.alignOverlay = function () {
         if (this.appendTo)
-            this.domHandler.absolutePosition(this.overlayViewChild.nativeElement, this.containerViewChild.nativeElement);
+            this.domHandler.absolutePosition(this.overlay, this.containerViewChild.nativeElement);
         else
-            this.domHandler.relativePosition(this.overlayViewChild.nativeElement, this.containerViewChild.nativeElement);
+            this.domHandler.relativePosition(this.overlay, this.containerViewChild.nativeElement);
+    };
+    SplitButton.prototype.appendOverlay = function () {
+        if (this.appendTo) {
+            if (this.appendTo === 'body')
+                document.body.appendChild(this.overlay);
+            else
+                this.domHandler.appendChild(this.overlay, this.appendTo);
+            this.overlay.style.minWidth = this.domHandler.getWidth(this.el.nativeElement.children[0]) + 'px';
+        }
+    };
+    SplitButton.prototype.restoreOverlayAppend = function () {
+        if (this.overlay && this.appendTo) {
+            this.el.nativeElement.appendChild(this.overlay);
+        }
     };
     SplitButton.prototype.bindDocumentClickListener = function () {
         var _this = this;
@@ -81,7 +90,7 @@ var SplitButton = /** @class */ (function () {
                     _this.dropdownClick = false;
                 }
                 else {
-                    _this.menuVisible = false;
+                    _this.overlayVisible = false;
                     _this.unbindDocumentClickListener();
                     _this.cd.markForCheck();
                 }
@@ -94,26 +103,30 @@ var SplitButton = /** @class */ (function () {
             this.documentClickListener = null;
         }
     };
-    SplitButton.prototype.ngOnDestroy = function () {
+    SplitButton.prototype.onOverlayHide = function () {
         this.unbindDocumentClickListener();
-        if (this.appendTo) {
-            this.el.nativeElement.appendChild(this.overlayViewChild.nativeElement);
-        }
+        this.overlay = null;
+    };
+    SplitButton.prototype.ngOnDestroy = function () {
+        this.restoreOverlayAppend();
+        this.onOverlayHide();
     };
     SplitButton.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-splitButton',
-                    template: "\n        <div #container [ngClass]=\"{'ui-splitbutton ui-buttonset ui-widget':true,'ui-state-disabled':disabled}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <button #defaultbtn type=\"button\" pButton [icon]=\"icon\" [iconPos]=\"iconPos\" [label]=\"label\" [cornerStyleClass]=\"dir === 'rtl' ? 'ui-corner-right': 'ui-corner-left'\" (click)=\"onDefaultButtonClick($event)\" [disabled]=\"disabled\" [attr.tabindex]=\"tabindex\">\n            </button><button type=\"button\" pButton class=\"ui-splitbutton-menubutton\" icon=\"pi pi-caret-down\" [cornerStyleClass]=\"dir === 'rtl' ? 'ui-corner-left': 'ui-corner-right'\" (click)=\"onDropdownButtonClick($event)\" [disabled]=\"disabled\"></button>\n            <div #overlay [ngClass]=\"'ui-menu ui-menu-dynamic ui-widget ui-widget-content ui-corner-all ui-helper-clearfix ui-shadow'\" [style.display]=\"menuVisible ? 'block' : 'none'\"\n                    [ngStyle]=\"menuStyle\" [class]=\"menuStyleClass\" [@overlayState]=\"menuVisible ? 'visible' : 'hidden'\">\n                <ul class=\"ui-menu-list ui-helper-reset\">\n                    <ng-template ngFor let-item [ngForOf]=\"model\">\n                        <li class=\"ui-menuitem ui-widget ui-corner-all\" role=\"menuitem\" *ngIf=\"item.visible !== false\">\n                            <a *ngIf=\"!item.routerLink\" [href]=\"item.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" [attr.target]=\"item.target\"\n                                [ngClass]=\"{'ui-state-disabled':item.disabled}\" (click)=\"itemClick($event, item)\">\n                                <span [ngClass]=\"'ui-menuitem-icon'\" [class]=\"item.icon\" *ngIf=\"item.icon\"></span>\n                                <span class=\"ui-menuitem-text\">{{item.label}}</span>\n                            </a>\n                            <a *ngIf=\"item.routerLink\" [routerLink]=\"item.routerLink\" [queryParams]=\"item.queryParams\"\n                                class=\"ui-menuitem-link ui-corner-all\" [attr.target]=\"item.target\" [ngClass]=\"{'ui-state-disabled':item.disabled}\" (click)=\"itemClick($event, item)\">\n                                <span [ngClass]=\"'ui-menuitem-icon'\" [class]=\"item.icon\" *ngIf=\"item.icon\"></span>\n                                <span class=\"ui-menuitem-text\">{{item.label}}</span>\n                            </a>\n                        </li>\n                    </ng-template>\n                </ul>\n            </div>\n        </div>\n    ",
+                    template: "\n        <div #container [ngClass]=\"{'ui-splitbutton ui-buttonset ui-widget':true,'ui-state-disabled':disabled}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <button #defaultbtn type=\"button\" pButton [icon]=\"icon\" [iconPos]=\"iconPos\" [label]=\"label\" [cornerStyleClass]=\"dir === 'rtl' ? 'ui-corner-right': 'ui-corner-left'\" (click)=\"onDefaultButtonClick($event)\" [disabled]=\"disabled\" [attr.tabindex]=\"tabindex\">\n            </button><button type=\"button\" pButton class=\"ui-splitbutton-menubutton\" icon=\"pi pi-caret-down\" [cornerStyleClass]=\"dir === 'rtl' ? 'ui-corner-left': 'ui-corner-right'\" (click)=\"onDropdownButtonClick($event)\" [disabled]=\"disabled\"></button>\n            <div #overlay [ngClass]=\"'ui-menu ui-menu-dynamic ui-widget ui-widget-content ui-corner-all ui-helper-clearfix ui-shadow'\" *ngIf=\"overlayVisible\"\n                    [ngStyle]=\"menuStyle\" [class]=\"menuStyleClass\"\n                    [@overlayAnimation]=\"{value: 'visible', params: {showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions}}\" (@overlayAnimation.start)=\"onOverlayAnimationStart($event)\">\n                <ul class=\"ui-menu-list ui-helper-reset\">\n                    <ng-template ngFor let-item [ngForOf]=\"model\">\n                        <li class=\"ui-menuitem ui-widget ui-corner-all\" role=\"menuitem\" *ngIf=\"item.visible !== false\">\n                            <a *ngIf=\"!item.routerLink\" [href]=\"item.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" [attr.target]=\"item.target\"\n                                [ngClass]=\"{'ui-state-disabled':item.disabled}\" (click)=\"itemClick($event, item)\">\n                                <span [ngClass]=\"'ui-menuitem-icon'\" [class]=\"item.icon\" *ngIf=\"item.icon\"></span>\n                                <span class=\"ui-menuitem-text\">{{item.label}}</span>\n                            </a>\n                            <a *ngIf=\"item.routerLink\" [routerLink]=\"item.routerLink\" [queryParams]=\"item.queryParams\"\n                                class=\"ui-menuitem-link ui-corner-all\" [attr.target]=\"item.target\" [ngClass]=\"{'ui-state-disabled':item.disabled}\" (click)=\"itemClick($event, item)\">\n                                <span [ngClass]=\"'ui-menuitem-icon'\" [class]=\"item.icon\" *ngIf=\"item.icon\"></span>\n                                <span class=\"ui-menuitem-text\">{{item.label}}</span>\n                            </a>\n                        </li>\n                    </ng-template>\n                </ul>\n            </div>\n        </div>\n    ",
                     animations: [
-                        animations_1.trigger('overlayState', [
-                            animations_1.state('hidden', animations_1.style({
+                        animations_1.trigger('overlayAnimation', [
+                            animations_1.state('void', animations_1.style({
+                                transform: 'translateY(5%)',
                                 opacity: 0
                             })),
                             animations_1.state('visible', animations_1.style({
+                                transform: 'translateY(0)',
                                 opacity: 1
                             })),
-                            animations_1.transition('visible => hidden', animations_1.animate('400ms ease-in')),
-                            animations_1.transition('hidden => visible', animations_1.animate('400ms ease-out'))
+                            animations_1.transition('void => visible', animations_1.animate('{{showTransitionParams}}')),
+                            animations_1.transition('visible => void', animations_1.animate('{{hideTransitionParams}}'))
                         ])
                     ],
                     providers: [domhandler_1.DomHandler]
@@ -142,9 +155,10 @@ var SplitButton = /** @class */ (function () {
         tabindex: [{ type: core_1.Input }],
         appendTo: [{ type: core_1.Input }],
         dir: [{ type: core_1.Input }],
+        showTransitionOptions: [{ type: core_1.Input }],
+        hideTransitionOptions: [{ type: core_1.Input }],
         containerViewChild: [{ type: core_1.ViewChild, args: ['container',] }],
-        buttonViewChild: [{ type: core_1.ViewChild, args: ['defaultbtn',] }],
-        overlayViewChild: [{ type: core_1.ViewChild, args: ['overlay',] }]
+        buttonViewChild: [{ type: core_1.ViewChild, args: ['defaultbtn',] }]
     };
     return SplitButton;
 }());

@@ -17,9 +17,9 @@ var DataView = /** @class */ (function () {
         this.onLazyLoad = new core_1.EventEmitter();
         this.trackBy = function (index, item) { return item; };
         this.loadingIcon = 'pi pi-spinner';
+        this.first = 0;
         this.onPage = new core_1.EventEmitter();
         this.onSort = new core_1.EventEmitter();
-        this.first = 0;
         this._sortOrder = 1;
     }
     DataView.prototype.ngOnInit = function () {
@@ -66,6 +66,12 @@ var DataView = /** @class */ (function () {
                 case 'gridItem':
                     _this.gridItemTemplate = item.template;
                     break;
+                case 'paginatorleft':
+                    _this.paginatorLeftTemplate = item.template;
+                    break;
+                case 'paginatorright':
+                    _this.paginatorRightTemplate = item.template;
+                    break;
             }
         });
         this.updateItemTemplate();
@@ -87,6 +93,11 @@ var DataView = /** @class */ (function () {
         set: function (val) {
             this._value = val;
             this.updateTotalRecords();
+            if (!this.lazy) {
+                if (this.hasFilter()) {
+                    this.filter(this.filterValue);
+                }
+            }
         },
         enumerable: true,
         configurable: true
@@ -132,6 +143,9 @@ var DataView = /** @class */ (function () {
                     result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
                 return (_this.sortOrder * result);
             });
+            if (this.hasFilter()) {
+                this.filter(this.filterValue);
+            }
         }
         this.onSort.emit({
             sortField: this.sortField,
@@ -151,10 +165,11 @@ var DataView = /** @class */ (function () {
     DataView.prototype.getBlockableElement = function () {
         return this.el.nativeElement.children[0];
     };
-    DataView.prototype.filter = function (value) {
+    DataView.prototype.filter = function (filter) {
+        this.filterValue = filter;
         if (this.value && this.value.length) {
             var searchFields = this.filterBy.split(',');
-            this.filteredValue = this.objectUtils.filter(this.value, searchFields, value);
+            this.filteredValue = this.objectUtils.filter(this.value, searchFields, filter);
             if (this.filteredValue.length === this.value.length) {
                 this.filteredValue = null;
             }
@@ -163,10 +178,13 @@ var DataView = /** @class */ (function () {
             }
         }
     };
+    DataView.prototype.hasFilter = function () {
+        return this.filterValue && this.filterValue.trim().length > 0;
+    };
     DataView.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-dataView',
-                    template: "\n        <div [ngClass]=\"{'ui-dataview ui-widget': true, 'ui-dataview-list': (layout === 'list'), 'ui-dataview-grid': (layout === 'grid')}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-dataview-loading ui-widget-overlay\" *ngIf=\"loading\"></div>\n            <div class=\"ui-dataview-loading-content\" *ngIf=\"loading\">\n                <i [class]=\"'ui-dataview-loading-icon pi-spin ' + loadingIcon\"></i>\n            </div>\n            <div class=\"ui-dataview-header ui-widget-header ui-corner-top\">\n                <ng-content select=\"p-header\"></ng-content>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" [alwaysShow]=\"alwaysShowPaginator\"\n                (onPageChange)=\"paginate($event)\" styleClass=\"ui-paginator-top\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && (paginatorPosition === 'top' || paginatorPosition =='both')\"\n                [dropdownAppendTo]=\"paginatorDropdownAppendTo\"></p-paginator>\n            <div class=\"ui-dataview-content ui-widget-content\">\n                <div class=\"ui-g\">\n                    <ng-template ngFor let-rowData let-rowIndex=\"index\" [ngForOf]=\"paginator ? ((filteredValue||value) | slice:(lazy ? 0 : first):((lazy ? 0 : first) + rows)) : (filteredValue||value)\" [ngForTrackBy]=\"trackBy\">\n                        <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: rowData, rowIndex: rowIndex}\"></ng-container>\n                    </ng-template>\n                    <div *ngIf=\"isEmpty()\" class=\"ui-widget-content ui-g-12\">{{emptyMessage}}</div>\n                </div>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" [alwaysShow]=\"alwaysShowPaginator\"\n                (onPageChange)=\"paginate($event)\" styleClass=\"ui-paginator-bottom\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && (paginatorPosition === 'bottom' || paginatorPosition =='both')\"\n                [dropdownAppendTo]=\"paginatorDropdownAppendTo\"></p-paginator>\n            <div class=\"ui-dataview-footer ui-widget-header ui-corner-bottom\" *ngIf=\"footer\">\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n        </div>\n    ",
+                    template: "\n        <div [ngClass]=\"{'ui-dataview ui-widget': true, 'ui-dataview-list': (layout === 'list'), 'ui-dataview-grid': (layout === 'grid')}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-dataview-loading ui-widget-overlay\" *ngIf=\"loading\"></div>\n            <div class=\"ui-dataview-loading-content\" *ngIf=\"loading\">\n                <i [class]=\"'ui-dataview-loading-icon pi-spin ' + loadingIcon\"></i>\n            </div>\n            <div class=\"ui-dataview-header ui-widget-header ui-corner-top\">\n                <ng-content select=\"p-header\"></ng-content>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" [alwaysShow]=\"alwaysShowPaginator\"\n                (onPageChange)=\"paginate($event)\" styleClass=\"ui-paginator-top\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && (paginatorPosition === 'top' || paginatorPosition =='both')\"\n                [dropdownAppendTo]=\"paginatorDropdownAppendTo\" [templateLeft]=\"paginatorLeftTemplate\" [templateRight]=\"paginatorRightTemplate\"></p-paginator>\n            <div class=\"ui-dataview-content ui-widget-content\">\n                <div class=\"ui-g\">\n                    <ng-template ngFor let-rowData let-rowIndex=\"index\" [ngForOf]=\"paginator ? ((filteredValue||value) | slice:(lazy ? 0 : first):((lazy ? 0 : first) + rows)) : (filteredValue||value)\" [ngForTrackBy]=\"trackBy\">\n                        <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: rowData, rowIndex: rowIndex}\"></ng-container>\n                    </ng-template>\n                    <div *ngIf=\"isEmpty()\" class=\"ui-g-12 ui-dataview-emptymessage\">{{emptyMessage}}</div>\n                </div>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" [alwaysShow]=\"alwaysShowPaginator\"\n                (onPageChange)=\"paginate($event)\" styleClass=\"ui-paginator-bottom\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && (paginatorPosition === 'bottom' || paginatorPosition =='both')\"\n                [dropdownAppendTo]=\"paginatorDropdownAppendTo\" [templateLeft]=\"paginatorLeftTemplate\" [templateRight]=\"paginatorRightTemplate\"></p-paginator>\n            <div class=\"ui-dataview-footer ui-widget-header ui-corner-bottom\" *ngIf=\"footer\">\n                <ng-content select=\"p-footer\"></ng-content>\n            </div>\n        </div>\n    ",
                     providers: [objectutils_1.ObjectUtils]
                 },] },
     ];
@@ -194,6 +212,7 @@ var DataView = /** @class */ (function () {
         filterBy: [{ type: core_1.Input }],
         loading: [{ type: core_1.Input }],
         loadingIcon: [{ type: core_1.Input }],
+        first: [{ type: core_1.Input }],
         onPage: [{ type: core_1.Output }],
         onSort: [{ type: core_1.Output }],
         header: [{ type: core_1.ContentChild, args: [shared_1.Header,] }],

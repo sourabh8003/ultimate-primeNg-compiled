@@ -23,18 +23,22 @@ var Dropdown = /** @class */ (function () {
         this.scrollHeight = '200px';
         this.autoWidth = true;
         this.filterBy = 'label';
-        this.lazy = true;
         this.resetFilterOnHide = false;
         this.dropdownIcon = 'pi pi-caret-down';
         this.autoDisplayFirst = true;
         this.emptyFilterMessage = 'No results found';
+        this.autoZIndex = true;
+        this.baseZIndex = 0;
+        this.showTransitionOptions = '225ms ease-out';
+        this.hideTransitionOptions = '195ms ease-in';
         this.onChange = new core_1.EventEmitter();
         this.onFocus = new core_1.EventEmitter();
         this.onBlur = new core_1.EventEmitter();
         this.onClick = new core_1.EventEmitter();
+        this.onShow = new core_1.EventEmitter();
+        this.onHide = new core_1.EventEmitter();
         this.onModelChange = function () { };
         this.onModelTouched = function () { };
-        this.panelVisible = false;
     }
     Dropdown.prototype.ngAfterContentInit = function () {
         var _this = this;
@@ -77,19 +81,10 @@ var Dropdown = /** @class */ (function () {
         configurable: true
     });
     Dropdown.prototype.ngAfterViewInit = function () {
-        this.container = this.containerViewChild.nativeElement;
-        this.panel = this.panelViewChild.nativeElement;
-        this.itemsWrapper = this.itemsWrapperViewChild.nativeElement;
         if (this.editable) {
             this.updateEditableLabel();
         }
         this.updateDimensions();
-        if (this.appendTo) {
-            if (this.appendTo === 'body')
-                document.body.appendChild(this.panel);
-            else
-                this.domHandler.appendChild(this.panel, this.appendTo);
-        }
     };
     Object.defineProperty(Dropdown.prototype, "label", {
         get: function () {
@@ -104,11 +99,16 @@ var Dropdown = /** @class */ (function () {
         }
     };
     Dropdown.prototype.onItemClick = function (event, option) {
+        var _this = this;
         this.itemClick = true;
-        this.selectItem(event, option);
-        this.focusViewChild.nativeElement.focus();
-        this.filled = true;
-        this.hide();
+        if (!option.disabled) {
+            this.selectItem(event, option);
+            this.focusViewChild.nativeElement.focus();
+            this.filled = true;
+        }
+        setTimeout(function () {
+            _this.hide();
+        }, 150);
     };
     Dropdown.prototype.selectItem = function (event, option) {
         if (this.selectedOption != option) {
@@ -127,24 +127,20 @@ var Dropdown = /** @class */ (function () {
         if (this.autoWidth && !this.dimensionsUpdated) {
             this.updateDimensions();
         }
-        if (this.shown) {
-            this.onShow();
-            this.shown = false;
-        }
-        if (this.optionsChanged && this.panelVisible) {
+        if (this.optionsChanged && this.overlayVisible) {
             this.optionsChanged = false;
             this.zone.runOutsideAngular(function () {
                 setTimeout(function () {
                     _this.updateDimensions();
-                    _this.alignPanel();
+                    _this.alignOverlay();
                 }, 1);
             });
         }
         if (this.selectedOptionUpdated && this.itemsWrapper) {
             this.updateDimensions();
-            var selectedItem = this.domHandler.findSingle(this.panel, 'li.ui-state-highlight');
+            var selectedItem = this.domHandler.findSingle(this.overlay, 'li.ui-state-highlight');
             if (selectedItem) {
-                this.domHandler.scrollInView(this.itemsWrapper, this.domHandler.findSingle(this.panel, 'li.ui-state-highlight'));
+                this.domHandler.scrollInView(this.itemsWrapper, this.domHandler.findSingle(this.overlay, 'li.ui-state-highlight'));
             }
             this.selectedOptionUpdated = false;
         }
@@ -161,6 +157,7 @@ var Dropdown = /** @class */ (function () {
     };
     Dropdown.prototype.resetFilter = function () {
         if (this.filterViewChild && this.filterViewChild.nativeElement) {
+            this.filterValue = null;
             this.filterViewChild.nativeElement.value = '';
         }
         this.optionsToDisplay = this.options;
@@ -200,15 +197,16 @@ var Dropdown = /** @class */ (function () {
         this.clearClick = this.domHandler.hasClass(event.target, 'ui-dropdown-clear-icon');
         if (!this.itemClick && !this.clearClick) {
             this.focusViewChild.nativeElement.focus();
-            if (this.panelVisible)
+            if (this.overlayVisible) {
                 this.hide();
+            }
             else {
                 this.show();
-                if (this.filterViewChild != undefined) {
-                    setTimeout(function () {
+                setTimeout(function () {
+                    if (_this.filterViewChild != undefined) {
                         _this.filterViewChild.nativeElement.focus();
-                    }, 200);
-                }
+                    }
+                }, 200);
             }
         }
     };
@@ -230,35 +228,62 @@ var Dropdown = /** @class */ (function () {
             value: this.value
         });
     };
-    Dropdown.prototype.onShow = function () {
-        this.bindDocumentClickListener();
-        if (this.options && this.options.length) {
-            this.alignPanel();
-            var selectedListItem = this.domHandler.findSingle(this.itemsWrapper, '.ui-dropdown-item.ui-state-highlight');
-            if (selectedListItem) {
-                this.domHandler.scrollInView(this.itemsWrapper, selectedListItem);
-            }
+    Dropdown.prototype.show = function () {
+        this.overlayVisible = true;
+    };
+    Dropdown.prototype.onOverlayAnimationStart = function (event) {
+        switch (event.toState) {
+            case 'visible':
+                this.overlay = event.element;
+                this.itemsWrapper = this.domHandler.findSingle(this.overlay, '.ui-dropdown-items-wrapper');
+                this.appendOverlay();
+                if (this.autoZIndex) {
+                    this.overlay.style.zIndex = String(this.baseZIndex + (++domhandler_1.DomHandler.zindex));
+                }
+                this.alignOverlay();
+                this.bindDocumentClickListener();
+                if (this.options && this.options.length) {
+                    var selectedListItem = this.domHandler.findSingle(this.itemsWrapper, '.ui-dropdown-item.ui-state-highlight');
+                    if (selectedListItem) {
+                        this.domHandler.scrollInView(this.itemsWrapper, selectedListItem);
+                    }
+                }
+                this.onShow.emit(event);
+                break;
+            case 'void':
+                this.onHide.emit(event);
+                this.onOverlayHide();
+                break;
         }
     };
-    Dropdown.prototype.show = function () {
+    Dropdown.prototype.appendOverlay = function () {
         if (this.appendTo) {
-            this.panel.style.minWidth = this.domHandler.getWidth(this.container) + 'px';
+            if (this.appendTo === 'body')
+                document.body.appendChild(this.overlay);
+            else
+                this.domHandler.appendChild(this.overlay, this.appendTo);
+            this.overlay.style.minWidth = this.domHandler.getWidth(this.containerViewChild.nativeElement) + 'px';
         }
-        this.panel.style.zIndex = String(++domhandler_1.DomHandler.zindex);
-        this.panelVisible = true;
-        this.shown = true;
+    };
+    Dropdown.prototype.restoreOverlayAppend = function () {
+        if (this.overlay && this.appendTo) {
+            this.el.nativeElement.appendChild(this.overlay);
+        }
     };
     Dropdown.prototype.hide = function () {
-        this.panelVisible = false;
+        this.overlayVisible = false;
         if (this.filter && this.resetFilterOnHide) {
             this.resetFilter();
         }
+        this.cd.markForCheck();
     };
-    Dropdown.prototype.alignPanel = function () {
-        if (this.appendTo)
-            this.domHandler.absolutePosition(this.panel, this.container);
-        else
-            this.domHandler.relativePosition(this.panel, this.container);
+    Dropdown.prototype.alignOverlay = function () {
+        if (this.overlay) {
+            if (this.appendTo)
+                this.domHandler.absolutePosition(this.overlay, this.containerViewChild.nativeElement);
+            else
+                this.domHandler.relativePosition(this.overlay, this.containerViewChild.nativeElement);
+        }
     };
     Dropdown.prototype.onInputFocus = function (event) {
         this.focused = true;
@@ -269,14 +294,70 @@ var Dropdown = /** @class */ (function () {
         this.onModelTouched();
         this.onBlur.emit(event);
     };
-    Dropdown.prototype.onKeydown = function (event) {
+    Dropdown.prototype.findPrevEnabledOption = function (index) {
+        var prevEnabledOption;
+        if (this.optionsToDisplay && this.optionsToDisplay.length) {
+            for (var i = (index - 1); 0 <= i; i--) {
+                var option = this.optionsToDisplay[i];
+                if (option.disabled) {
+                    continue;
+                }
+                else {
+                    prevEnabledOption = option;
+                    break;
+                }
+            }
+            if (!prevEnabledOption) {
+                for (var i = this.optionsToDisplay.length - 1; i >= index; i--) {
+                    var option = this.optionsToDisplay[i];
+                    if (option.disabled) {
+                        continue;
+                    }
+                    else {
+                        prevEnabledOption = option;
+                        break;
+                    }
+                }
+            }
+        }
+        return prevEnabledOption;
+    };
+    Dropdown.prototype.findNextEnabledOption = function (index) {
+        var nextEnabledOption;
+        if (this.optionsToDisplay && this.optionsToDisplay.length) {
+            for (var i = (index + 1); index < (this.optionsToDisplay.length - 1); i++) {
+                var option = this.optionsToDisplay[i];
+                if (option.disabled) {
+                    continue;
+                }
+                else {
+                    nextEnabledOption = option;
+                    break;
+                }
+            }
+            if (!nextEnabledOption) {
+                for (var i = 0; i < index; i++) {
+                    var option = this.optionsToDisplay[i];
+                    if (option.disabled) {
+                        continue;
+                    }
+                    else {
+                        nextEnabledOption = option;
+                        break;
+                    }
+                }
+            }
+        }
+        return nextEnabledOption;
+    };
+    Dropdown.prototype.onKeydown = function (event, search) {
         if (this.readonly || !this.optionsToDisplay || this.optionsToDisplay.length === null) {
             return;
         }
         switch (event.which) {
             //down
             case 40:
-                if (!this.panelVisible && event.altKey) {
+                if (!this.overlayVisible && event.altKey) {
                     this.show();
                 }
                 else {
@@ -299,13 +380,10 @@ var Dropdown = /** @class */ (function () {
                     }
                     else {
                         var selectedItemIndex = this.selectedOption ? this.findOptionIndex(this.selectedOption.value, this.optionsToDisplay) : -1;
-                        var nextItemIndex = selectedItemIndex + 1;
-                        if (nextItemIndex != (this.optionsToDisplay.length)) {
-                            this.selectItem(event, this.optionsToDisplay[nextItemIndex]);
+                        var nextEnabledOption = this.findNextEnabledOption(selectedItemIndex);
+                        if (nextEnabledOption) {
+                            this.selectItem(event, nextEnabledOption);
                             this.selectedOptionUpdated = true;
-                        }
-                        else {
-                            this.selectItem(event, this.optionsToDisplay[0]);
                         }
                     }
                 }
@@ -332,9 +410,9 @@ var Dropdown = /** @class */ (function () {
                 }
                 else {
                     var selectedItemIndex = this.selectedOption ? this.findOptionIndex(this.selectedOption.value, this.optionsToDisplay) : -1;
-                    if (selectedItemIndex > 0) {
-                        var prevItemIndex = selectedItemIndex - 1;
-                        this.selectItem(event, this.optionsToDisplay[prevItemIndex]);
+                    var prevEnabledOption = this.findPrevEnabledOption(selectedItemIndex);
+                    if (prevEnabledOption) {
+                        this.selectItem(event, prevEnabledOption);
                         this.selectedOptionUpdated = true;
                     }
                 }
@@ -343,7 +421,7 @@ var Dropdown = /** @class */ (function () {
             //space
             case 32:
             case 32:
-                if (!this.panelVisible) {
+                if (!this.overlayVisible) {
                     this.show();
                     event.preventDefault();
                 }
@@ -360,7 +438,85 @@ var Dropdown = /** @class */ (function () {
             case 9:
                 this.hide();
                 break;
+            //search item based on keyboard input
+            default:
+                if (search) {
+                    this.search(event);
+                }
+                break;
         }
+    };
+    Dropdown.prototype.search = function (event) {
+        var _this = this;
+        if (this.searchTimeout) {
+            clearTimeout(this.searchTimeout);
+        }
+        var char = String.fromCharCode(event.keyCode);
+        this.previousSearchChar = this.currentSearchChar;
+        this.currentSearchChar = char;
+        if (this.previousSearchChar === this.currentSearchChar)
+            this.searchValue = this.currentSearchChar;
+        else
+            this.searchValue = this.searchValue ? this.searchValue + char : char;
+        var newOption;
+        if (this.group) {
+            var searchIndex = this.selectedOption ? this.findOptionGroupIndex(this.selectedOption.value, this.optionsToDisplay) : { groupIndex: 0, itemIndex: 0 };
+            newOption = this.searchOptionWithinGroup(searchIndex);
+        }
+        else {
+            var searchIndex = this.selectedOption ? this.findOptionIndex(this.selectedOption.value, this.optionsToDisplay) : -1;
+            newOption = this.searchOption(++searchIndex);
+        }
+        if (newOption) {
+            this.selectItem(event, newOption);
+            this.selectedOptionUpdated = true;
+        }
+        this.searchTimeout = setTimeout(function () {
+            _this.searchValue = null;
+        }, 250);
+    };
+    Dropdown.prototype.searchOption = function (index) {
+        var option;
+        if (this.searchValue) {
+            option = this.searchOptionInRange(index, this.optionsToDisplay.length);
+            if (!option) {
+                option = this.searchOptionInRange(0, index);
+            }
+        }
+        return option;
+    };
+    Dropdown.prototype.searchOptionInRange = function (start, end) {
+        for (var i = start; i < end; i++) {
+            var opt = this.optionsToDisplay[i];
+            if (opt.label.toLowerCase().startsWith(this.searchValue.toLowerCase())) {
+                return opt;
+            }
+        }
+        return null;
+    };
+    Dropdown.prototype.searchOptionWithinGroup = function (index) {
+        var option;
+        if (this.searchValue) {
+            for (var i = index.groupIndex; i < this.optionsToDisplay.length; i++) {
+                for (var j = (index.groupIndex === i) ? (index.itemIndex + 1) : 0; j < this.optionsToDisplay[i].items.length; j++) {
+                    var opt = this.optionsToDisplay[i].items[j];
+                    if (opt.label.toLowerCase().startsWith(this.searchValue.toLowerCase())) {
+                        return opt;
+                    }
+                }
+            }
+            if (!option) {
+                for (var i = 0; i <= index.groupIndex; i++) {
+                    for (var j = 0; j < ((index.groupIndex === i) ? index.itemIndex : this.optionsToDisplay[i].items.length); j++) {
+                        var opt = this.optionsToDisplay[i].items[j];
+                        if (opt.label.toLowerCase().startsWith(this.searchValue.toLowerCase())) {
+                            return opt;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     };
     Dropdown.prototype.findOptionIndex = function (val, opts) {
         var index = -1;
@@ -464,11 +620,14 @@ var Dropdown = /** @class */ (function () {
                     _this.hide();
                     _this.unbindDocumentClickListener();
                 }
-                _this.selfClick = false;
-                _this.itemClick = false;
+                _this.clearClickState();
                 _this.cd.markForCheck();
             });
         }
+    };
+    Dropdown.prototype.clearClickState = function () {
+        this.selfClick = false;
+        this.itemClick = false;
     };
     Dropdown.prototype.unbindDocumentClickListener = function () {
         if (this.documentClickListener) {
@@ -491,26 +650,31 @@ var Dropdown = /** @class */ (function () {
         this.updateEditableLabel();
         this.updateFilledState();
     };
-    Dropdown.prototype.ngOnDestroy = function () {
+    Dropdown.prototype.onOverlayHide = function () {
         this.unbindDocumentClickListener();
-        if (this.appendTo) {
-            this.el.nativeElement.appendChild(this.panel);
-        }
+        this.overlay = null;
+        this.itemsWrapper = null;
+    };
+    Dropdown.prototype.ngOnDestroy = function () {
+        this.restoreOverlayAppend();
+        this.onOverlayHide();
     };
     Dropdown.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-dropdown',
-                    template: "\n         <div #container [ngClass]=\"{'ui-dropdown ui-widget ui-state-default ui-corner-all ui-helper-clearfix':true,\n            'ui-state-disabled':disabled,'ui-dropdown-open':panelVisible,'ui-state-focus':focused, 'ui-dropdown-clearable': showClear && !disabled}\"\n            (click)=\"onMouseclick($event)\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-helper-hidden-accessible\" *ngIf=\"autoWidth\">\n                <select [required]=\"required\" [attr.name]=\"name\" [attr.aria-label]=\"selectedOption ? selectedOption.label : ' '\" tabindex=\"-1\" aria-hidden=\"true\">\n                    <option *ngIf=\"placeholder\">{{placeholder}}</option>\n                    <ng-container *ngIf=\"group\">\n                        <optgroup *ngFor=\"let option of options\" [attr.label]=\"option.label\">\n                            <option *ngFor=\"let option of option.items\" [value]=\"option.value\" [selected]=\"selectedOption == option\">{{option.label}}</option>\n                        <optgroup>\n                    </ng-container>\n                    <ng-container *ngIf=\"!group\">\n                        <option *ngFor=\"let option of options\" [value]=\"option.value\" [selected]=\"selectedOption == option\">{{option.label}}</option>\n                    </ng-container>\n                </select>\n            </div>\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #in [attr.id]=\"inputId\" type=\"text\" [attr.aria-label]=\"selectedOption ? selectedOption.label : ' '\" readonly (focus)=\"onInputFocus($event)\" role=\"listbox\"\n                    (blur)=\"onInputBlur($event)\" (keydown)=\"onKeydown($event)\" [disabled]=\"disabled\" [attr.tabindex]=\"tabindex\" [attr.autofocus]=\"autofocus\">\n            </div>\n            <label [ngClass]=\"{'ui-dropdown-label ui-inputtext ui-corner-all':true,'ui-dropdown-label-empty':(label == null || label.length === 0)}\" *ngIf=\"!editable && (label != null)\">\n                <ng-container *ngIf=\"!selectedItemTemplate\">{{label||'empty'}}</ng-container>\n                <ng-container *ngTemplateOutlet=\"selectedItemTemplate; context: {$implicit: selectedOption}\"></ng-container>\n            </label>\n            <label [ngClass]=\"{'ui-dropdown-label ui-inputtext ui-corner-all ui-placeholder':true,'ui-dropdown-label-empty': (placeholder == null || placeholder.length === 0)}\" *ngIf=\"!editable && (label == null)\">{{placeholder||'empty'}}</label>\n            <input #editableInput type=\"text\" [attr.aria-label]=\"selectedOption ? selectedOption.label : ' '\" class=\"ui-dropdown-label ui-inputtext ui-corner-all\" *ngIf=\"editable\" [disabled]=\"disabled\" [attr.placeholder]=\"placeholder\"\n                        (click)=\"onEditableInputClick($event)\" (input)=\"onEditableInputChange($event)\" (focus)=\"onEditableInputFocus($event)\" (blur)=\"onInputBlur($event)\">\n            <i class=\"ui-dropdown-clear-icon pi pi-times\" (click)=\"clear($event)\" *ngIf=\"value != null && showClear && !disabled\"></i>\n            <div class=\"ui-dropdown-trigger ui-state-default ui-corner-right\">\n                <span class=\"ui-dropdown-trigger-icon ui-clickable\" [ngClass]=\"dropdownIcon\"></span>\n            </div>\n            <div #panel [ngClass]=\"'ui-dropdown-panel ui-widget-content ui-corner-all ui-shadow'\" [@panelState]=\"panelVisible ? 'visible' : 'hidden'\"\n                [style.display]=\"panelVisible ? 'block' : 'none'\" [ngStyle]=\"panelStyle\" [class]=\"panelStyleClass\">\n                <div *ngIf=\"filter\" class=\"ui-dropdown-filter-container\" (input)=\"onFilter($event)\" (click)=\"$event.stopPropagation()\">\n                    <input #filter type=\"text\" autocomplete=\"off\" class=\"ui-dropdown-filter ui-inputtext ui-widget ui-state-default ui-corner-all\" [attr.placeholder]=\"filterPlaceholder\"\n                    (keydown.enter)=\"$event.preventDefault()\" (keydown)=\"onKeydown($event)\">\n                    <span class=\"ui-dropdown-filter-icon pi pi-search\"></span>\n                </div>\n                <div #itemswrapper class=\"ui-dropdown-items-wrapper\" [style.max-height]=\"scrollHeight||'auto'\">\n                    <ul class=\"ui-dropdown-items ui-dropdown-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\" *ngIf=\"lazy ? panelVisible : true\">\n                        <ng-container *ngIf=\"group\">\n                            <ng-template ngFor let-optgroup [ngForOf]=\"optionsToDisplay\">\n                                <li class=\"ui-dropdown-item-group\">\n                                    <span *ngIf=\"!groupTemplate\">{{optgroup.label||'empty'}}</span>\n                                    <ng-container *ngTemplateOutlet=\"groupTemplate; context: {$implicit: optgroup}\"></ng-container>\n                                </li>\n                                <ng-container *ngTemplateOutlet=\"itemslist; context: {$implicit: optgroup.items, selectedOption: selectedOption}\"></ng-container>\n                            </ng-template>\n                        </ng-container>\n                        <ng-container *ngIf=\"!group\">\n                            <ng-container *ngTemplateOutlet=\"itemslist; context: {$implicit: optionsToDisplay, selectedOption: selectedOption}\"></ng-container>\n                        </ng-container>\n                        <ng-template #itemslist let-options let-selectedOption=\"selectedOption\">\n                            <li *ngFor=\"let option of options;let i=index\" [ngClass]=\"{'ui-dropdown-item ui-corner-all':true, 'ui-state-highlight':(selectedOption == option), 'ui-dropdown-item-empty':!option.label||option.label.length === 0}\"\n                                    (click)=\"onItemClick($event, option)\">\n                                <span *ngIf=\"!itemTemplate\">{{option.label||'empty'}}</span>\n                                <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: option}\"></ng-container>\n                            </li>\n                        </ng-template>\n                        <li *ngIf=\"filter && optionsToDisplay && optionsToDisplay.length === 0\">{{emptyFilterMessage}}</li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    ",
+                    template: "\n         <div #container [ngClass]=\"{'ui-dropdown ui-widget ui-state-default ui-corner-all ui-helper-clearfix':true,\n            'ui-state-disabled':disabled, 'ui-dropdown-open':overlayVisible, 'ui-state-focus':focused, 'ui-dropdown-clearable': showClear && !disabled}\"\n            (click)=\"onMouseclick($event)\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-helper-hidden-accessible\" *ngIf=\"autoWidth\">\n                <select [attr.id]=\"selectId\" [required]=\"required\" [attr.name]=\"name\" [attr.aria-label]=\"selectedOption ? selectedOption.label : ' '\" tabindex=\"-1\" aria-hidden=\"true\">\n                    <option *ngIf=\"placeholder\">{{placeholder}}</option>\n                    <ng-container *ngIf=\"group\">\n                        <optgroup *ngFor=\"let option of options\" [attr.label]=\"option.label\">\n                            <option *ngFor=\"let option of option.items\" [value]=\"option.value\" [selected]=\"selectedOption == option\">{{option.label}}</option>\n                        <optgroup>\n                    </ng-container>\n                    <ng-container *ngIf=\"!group\">\n                        <option *ngFor=\"let option of options\" [value]=\"option.value\" [selected]=\"selectedOption == option\">{{option.label}}</option>\n                    </ng-container>\n                </select>\n            </div>\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #in [attr.id]=\"inputId\" type=\"text\" [attr.aria-label]=\"selectedOption ? selectedOption.label : ' '\" readonly (focus)=\"onInputFocus($event)\" role=\"listbox\"\n                    (blur)=\"onInputBlur($event)\" (keydown)=\"onKeydown($event, true)\" [disabled]=\"disabled\" [attr.tabindex]=\"tabindex\" [attr.autofocus]=\"autofocus\">\n            </div>\n            <label [ngClass]=\"{'ui-dropdown-label ui-inputtext ui-corner-all':true,'ui-dropdown-label-empty':(label == null || label.length === 0)}\" *ngIf=\"!editable && (label != null)\">\n                <ng-container *ngIf=\"!selectedItemTemplate\">{{label||'empty'}}</ng-container>\n                <ng-container *ngTemplateOutlet=\"selectedItemTemplate; context: {$implicit: selectedOption}\"></ng-container>\n            </label>\n            <label [ngClass]=\"{'ui-dropdown-label ui-inputtext ui-corner-all ui-placeholder':true,'ui-dropdown-label-empty': (placeholder == null || placeholder.length === 0)}\" *ngIf=\"!editable && (label == null)\">{{placeholder||'empty'}}</label>\n            <input #editableInput type=\"text\" [attr.aria-label]=\"selectedOption ? selectedOption.label : ' '\" class=\"ui-dropdown-label ui-inputtext ui-corner-all\" *ngIf=\"editable\" [disabled]=\"disabled\" [attr.placeholder]=\"placeholder\"\n                        (click)=\"onEditableInputClick($event)\" (input)=\"onEditableInputChange($event)\" (focus)=\"onEditableInputFocus($event)\" (blur)=\"onInputBlur($event)\">\n            <i class=\"ui-dropdown-clear-icon pi pi-times\" (click)=\"clear($event)\" *ngIf=\"value != null && showClear && !disabled\"></i>\n            <div class=\"ui-dropdown-trigger ui-state-default ui-corner-right\">\n                <span class=\"ui-dropdown-trigger-icon ui-clickable\" [ngClass]=\"dropdownIcon\"></span>\n            </div>\n            <div *ngIf=\"overlayVisible\" [ngClass]=\"'ui-dropdown-panel  ui-widget ui-widget-content ui-corner-all ui-shadow'\" [@overlayAnimation]=\"{value: 'visible', params: {showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions}}\" (@overlayAnimation.start)=\"onOverlayAnimationStart($event)\" [ngStyle]=\"panelStyle\" [class]=\"panelStyleClass\">\n                <div *ngIf=\"filter\" class=\"ui-dropdown-filter-container\" (input)=\"onFilter($event)\" (click)=\"$event.stopPropagation()\">\n                    <input #filter type=\"text\" autocomplete=\"off\" [value]=\"filterValue||''\" class=\"ui-dropdown-filter ui-inputtext ui-widget ui-state-default ui-corner-all\" [attr.placeholder]=\"filterPlaceholder\"\n                    (keydown.enter)=\"$event.preventDefault()\" (keydown)=\"onKeydown($event, false)\">\n                    <span class=\"ui-dropdown-filter-icon pi pi-search\"></span>\n                </div>\n                <div class=\"ui-dropdown-items-wrapper\" [style.max-height]=\"scrollHeight||'auto'\">\n                    <ul class=\"ui-dropdown-items ui-dropdown-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\">\n                        <ng-container *ngIf=\"group\">\n                            <ng-template ngFor let-optgroup [ngForOf]=\"optionsToDisplay\">\n                                <li class=\"ui-dropdown-item-group\">\n                                    <span *ngIf=\"!groupTemplate\">{{optgroup.label||'empty'}}</span>\n                                    <ng-container *ngTemplateOutlet=\"groupTemplate; context: {$implicit: optgroup}\"></ng-container>\n                                </li>\n                                <ng-container *ngTemplateOutlet=\"itemslist; context: {$implicit: optgroup.items, selectedOption: selectedOption}\"></ng-container>\n                            </ng-template>\n                        </ng-container>\n                        <ng-container *ngIf=\"!group\">\n                            <ng-container *ngTemplateOutlet=\"itemslist; context: {$implicit: optionsToDisplay, selectedOption: selectedOption}\"></ng-container>\n                        </ng-container>\n                        <ng-template #itemslist let-options let-selectedOption=\"selectedOption\">\n                            <li *ngFor=\"let option of options;let i=index\"  (click)=\"onItemClick($event, option)\"\n                                    [ngClass]=\"{'ui-dropdown-item ui-corner-all':true,\n                                                'ui-state-highlight':(selectedOption == option),\n                                                'ui-state-disabled':(option.disabled),\n                                                'ui-dropdown-item-empty':!option.label||option.label.length === 0}\">\n                                <span *ngIf=\"!itemTemplate\">{{option.label||'empty'}}</span>\n                                <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: option}\"></ng-container>\n                            </li>\n                        </ng-template>\n                        <li *ngIf=\"filter && optionsToDisplay && optionsToDisplay.length === 0\">{{emptyFilterMessage}}</li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    ",
                     animations: [
-                        animations_1.trigger('panelState', [
-                            animations_1.state('hidden', animations_1.style({
+                        animations_1.trigger('overlayAnimation', [
+                            animations_1.state('void', animations_1.style({
+                                transform: 'translateY(5%)',
                                 opacity: 0
                             })),
                             animations_1.state('visible', animations_1.style({
+                                transform: 'translateY(0)',
                                 opacity: 1
                             })),
-                            animations_1.transition('visible => hidden', animations_1.animate('400ms ease-in')),
-                            animations_1.transition('hidden => visible', animations_1.animate('400ms ease-out'))
+                            animations_1.transition('void => visible', animations_1.animate('{{showTransitionParams}}')),
+                            animations_1.transition('visible => void', animations_1.animate('{{hideTransitionParams}}'))
                         ])
                     ],
                     host: {
@@ -547,9 +711,9 @@ var Dropdown = /** @class */ (function () {
         placeholder: [{ type: core_1.Input }],
         filterPlaceholder: [{ type: core_1.Input }],
         inputId: [{ type: core_1.Input }],
+        selectId: [{ type: core_1.Input }],
         dataKey: [{ type: core_1.Input }],
         filterBy: [{ type: core_1.Input }],
-        lazy: [{ type: core_1.Input }],
         autofocus: [{ type: core_1.Input }],
         resetFilterOnHide: [{ type: core_1.Input }],
         dropdownIcon: [{ type: core_1.Input }],
@@ -558,13 +722,17 @@ var Dropdown = /** @class */ (function () {
         group: [{ type: core_1.Input }],
         showClear: [{ type: core_1.Input }],
         emptyFilterMessage: [{ type: core_1.Input }],
+        autoZIndex: [{ type: core_1.Input }],
+        baseZIndex: [{ type: core_1.Input }],
+        showTransitionOptions: [{ type: core_1.Input }],
+        hideTransitionOptions: [{ type: core_1.Input }],
         onChange: [{ type: core_1.Output }],
         onFocus: [{ type: core_1.Output }],
         onBlur: [{ type: core_1.Output }],
         onClick: [{ type: core_1.Output }],
+        onShow: [{ type: core_1.Output }],
+        onHide: [{ type: core_1.Output }],
         containerViewChild: [{ type: core_1.ViewChild, args: ['container',] }],
-        panelViewChild: [{ type: core_1.ViewChild, args: ['panel',] }],
-        itemsWrapperViewChild: [{ type: core_1.ViewChild, args: ['itemswrapper',] }],
         filterViewChild: [{ type: core_1.ViewChild, args: ['filter',] }],
         focusViewChild: [{ type: core_1.ViewChild, args: ['in',] }],
         editableInputViewChild: [{ type: core_1.ViewChild, args: ['editableInput',] }],

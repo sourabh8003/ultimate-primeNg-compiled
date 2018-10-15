@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
+var tooltip_1 = require("../tooltip/tooltip");
 var shared_1 = require("../common/shared");
 var idx = 0;
 var TabViewNav = /** @class */ (function () {
@@ -39,7 +40,7 @@ var TabViewNav = /** @class */ (function () {
                         '[class.ui-widget-header]': 'true',
                         '[class.ui-corner-all]': 'true'
                     },
-                    template: "\n        <ng-template ngFor let-tab [ngForOf]=\"tabs\">\n            <li [class]=\"getDefaultHeaderClass(tab)\" [ngStyle]=\"tab.headerStyle\" role=\"presentation\"\n                [ngClass]=\"{'ui-tabview-selected ui-state-active': tab.selected, 'ui-state-disabled': tab.disabled}\"\n                (click)=\"clickTab($event,tab)\" *ngIf=\"!tab.closed\">\n                <a [attr.id]=\"tab.id + '-label'\" href=\"#\" role=\"tab\" [attr.aria-selected]=\"tab.selected\" [attr.aria-controls]=\"tab.id\">\n                    <span class=\"ui-tabview-left-icon fa\" [ngClass]=\"tab.leftIcon\" *ngIf=\"tab.leftIcon\"></span>\n                    <span class=\"ui-tabview-title\">{{tab.header}}</span>\n                    <span class=\"ui-tabview-right-icon fa\" [ngClass]=\"tab.rightIcon\" *ngIf=\"tab.rightIcon\"></span>\n                </a>\n                <span *ngIf=\"tab.closable\" class=\"ui-tabview-close pi pi-times\" (click)=\"clickClose($event,tab)\"></span>\n            </li>\n        </ng-template>\n    ",
+                    template: "\n        <ng-template ngFor let-tab [ngForOf]=\"tabs\">\n            <li [class]=\"getDefaultHeaderClass(tab)\" [ngStyle]=\"tab.headerStyle\" role=\"presentation\"\n                [ngClass]=\"{'ui-tabview-selected ui-state-active': tab.selected, 'ui-state-disabled': tab.disabled}\"\n                (click)=\"clickTab($event,tab)\" *ngIf=\"!tab.closed\" tabindex=\"0\" (keydown.enter)=\"clickTab($event,tab)\">\n                <a [attr.id]=\"tab.id + '-label'\" role=\"tab\" [attr.aria-selected]=\"tab.selected\" [attr.aria-controls]=\"tab.id\" [pTooltip]=\"tab.tooltip\" [tooltipPosition]=\"orientation\">\n                    <ng-container *ngIf=\"!tab.headerTemplate\" >\n                        <span class=\"ui-tabview-left-icon\" [ngClass]=\"tab.leftIcon\" *ngIf=\"tab.leftIcon\"></span>\n                        <span class=\"ui-tabview-title\">{{tab.header}}</span>\n                        <span class=\"ui-tabview-right-icon\" [ngClass]=\"tab.rightIcon\" *ngIf=\"tab.rightIcon\"></span>\n                    </ng-container>\n                    <ng-container *ngIf=\"tab.headerTemplate\">\n                        <ng-container *ngTemplateOutlet=\"tab.headerTemplate\"></ng-container>\n                    </ng-container>\n                </a>\n                <span *ngIf=\"tab.closable\" class=\"ui-tabview-close pi pi-times\" (click)=\"clickClose($event,tab)\"></span>\n            </li>\n        </ng-template>\n    ",
                 },] },
     ];
     TabViewNav.propDecorators = {
@@ -61,6 +62,9 @@ var TabPanel = /** @class */ (function () {
         var _this = this;
         this.templates.forEach(function (item) {
             switch (item.getType()) {
+                case 'header':
+                    _this.headerTemplate = item.template;
+                    break;
                 case 'content':
                     _this.contentTemplate = item.template;
                     break;
@@ -103,6 +107,7 @@ var TabPanel = /** @class */ (function () {
         leftIcon: [{ type: core_1.Input }],
         rightIcon: [{ type: core_1.Input }],
         cache: [{ type: core_1.Input }],
+        tooltip: [{ type: core_1.Input }],
         templates: [{ type: core_1.ContentChildren, args: [shared_1.PrimeTemplate,] }],
         selected: [{ type: core_1.Input }]
     };
@@ -260,7 +265,7 @@ var TabViewModule = /** @class */ (function () {
     }
     TabViewModule.decorators = [
         { type: core_1.NgModule, args: [{
-                    imports: [common_1.CommonModule, shared_1.SharedModule],
+                    imports: [common_1.CommonModule, shared_1.SharedModule, tooltip_1.TooltipModule],
                     exports: [TabView, TabPanel, TabViewNav, shared_1.SharedModule],
                     declarations: [TabView, TabPanel, TabViewNav]
                 },] },

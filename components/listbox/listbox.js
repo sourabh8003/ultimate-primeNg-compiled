@@ -38,6 +38,16 @@ var Listbox = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(Listbox.prototype, "filterValue", {
+        get: function () {
+            return this._filterValue;
+        },
+        set: function (val) {
+            this._filterValue = val;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Listbox.prototype.ngAfterContentInit = function () {
         var _this = this;
         this.templates.forEach(function (item) {
@@ -65,7 +75,7 @@ var Listbox = /** @class */ (function () {
         this.disabled = val;
     };
     Listbox.prototype.onOptionClick = function (event, option) {
-        if (this.disabled || this.readonly) {
+        if (this.disabled || option.disabled || this.readonly) {
             return;
         }
         if (this.multiple) {
@@ -80,10 +90,19 @@ var Listbox = /** @class */ (function () {
         this.optionTouched = false;
     };
     Listbox.prototype.onOptionTouchEnd = function (event, option) {
-        if (this.disabled || this.readonly) {
+        if (this.disabled || option.disabled || this.readonly) {
             return;
         }
         this.optionTouched = true;
+    };
+    Listbox.prototype.onOptionDoubleClick = function (event, option) {
+        if (this.disabled || option.disabled || this.readonly) {
+            return;
+        }
+        this.onDblClick.emit({
+            originalEvent: event,
+            value: this.value
+        });
     };
     Listbox.prototype.onOptionClickSingle = function (event, option) {
         var selected = this.isSelected(option);
@@ -197,11 +216,26 @@ var Listbox = /** @class */ (function () {
             if (this.filterValue)
                 return this.allFilteredSelected();
             else
-                return this.value && this.options && (this.value.length === this.options.length);
+                return this.value && this.options && (this.value.length > 0 && this.value.length === this.getEnabledOptionCount());
         },
         enumerable: true,
         configurable: true
     });
+    Listbox.prototype.getEnabledOptionCount = function () {
+        if (this.options) {
+            var count = 0;
+            for (var _i = 0, _a = this.options; _i < _a.length; _i++) {
+                var opt = _a[_i];
+                if (!opt.disabled) {
+                    count++;
+                }
+            }
+            return count;
+        }
+        else {
+            return 0;
+        }
+    };
     Listbox.prototype.allFilteredSelected = function () {
         var allSelected;
         if (this.value && this.options && this.options.length) {
@@ -220,7 +254,7 @@ var Listbox = /** @class */ (function () {
     };
     Listbox.prototype.onFilter = function (event) {
         var query = event.target.value.trim().toLowerCase();
-        this.filterValue = query.length ? query : null;
+        this._filterValue = query.length ? query : null;
     };
     Listbox.prototype.toggleAll = function (event, checkbox) {
         if (this.disabled || this.readonly || !this.options || this.options.length === 0) {
@@ -234,7 +268,7 @@ var Listbox = /** @class */ (function () {
                 this.value = [];
                 for (var i = 0; i < this.options.length; i++) {
                     var opt = this.options[i];
-                    if (this.isItemVisible(opt)) {
+                    if (this.isItemVisible(opt) && !opt.disabled) {
                         this.value.push(opt.value);
                     }
                 }
@@ -263,15 +297,6 @@ var Listbox = /** @class */ (function () {
             return true;
         }
     };
-    Listbox.prototype.onDoubleClick = function (event, option) {
-        if (this.disabled || this.readonly) {
-            return;
-        }
-        this.onDblClick.emit({
-            originalEvent: event,
-            value: this.value
-        });
-    };
     Listbox.prototype.onInputFocus = function (event) {
         this.focus = true;
     };
@@ -281,7 +306,7 @@ var Listbox = /** @class */ (function () {
     Listbox.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-listbox',
-                    template: "\n    <div [ngClass]=\"{'ui-listbox ui-inputtext ui-widget ui-widget-content ui-corner-all':true,'ui-state-disabled':disabled,'ui-state-focus':focus}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n      <div class=\"ui-helper-hidden-accessible\">\n        <input type=\"text\" readonly=\"readonly\" (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\">\n      </div>\n      <div class=\"ui-widget-header ui-corner-all ui-listbox-header ui-helper-clearfix\" *ngIf=\"headerFacet\">\n        <ng-content select=\"p-header\"></ng-content>\n      </div>\n      <div class=\"ui-widget-header ui-corner-all ui-listbox-header ui-helper-clearfix\" *ngIf=\"(checkbox && multiple) || filter\" [ngClass]=\"{'ui-listbox-header-w-checkbox': checkbox}\">\n        <div class=\"ui-chkbox ui-widget\" *ngIf=\"checkbox && multiple && showToggleAll\">\n          <div class=\"ui-helper-hidden-accessible\">\n            <input #cb type=\"checkbox\" readonly=\"readonly\" [checked]=\"allChecked\">\n          </div>\n          <div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\" [ngClass]=\"{'ui-state-active':allChecked}\" (click)=\"toggleAll($event,cb)\">\n            <span class=\"ui-chkbox-icon ui-clickable\" [ngClass]=\"{'pi pi-check':allChecked}\"></span>\n          </div>\n        </div>\n        <div class=\"ui-listbox-filter-container\" *ngIf=\"filter\">\n          <input type=\"text\" role=\"textbox\" (input)=\"onFilter($event)\" class=\"ui-inputtext ui-widget ui-state-default ui-corner-all\" [disabled]=\"disabled\">\n          <span class=\"ui-listbox-filter-icon pi pi-search\"></span>\n        </div>\n      </div>\n      <div class=\"ui-listbox-list-wrapper\" [ngStyle]=\"listStyle\">\n        <ul class=\"ui-listbox-list\">\n          <li *ngFor=\"let option of options; let i = index;\" [style.display]=\"isItemVisible(option) ? 'block' : 'none'\"\n              [ngClass]=\"{'ui-listbox-item ui-corner-all':true,'ui-state-highlight':isSelected(option)}\"\n              (click)=\"onOptionClick($event,option)\" (dblclick)=\"onDoubleClick($event,option)\" (touchend)=\"onOptionTouchEnd($event,option)\">\n            <div class=\"ui-chkbox ui-widget\" *ngIf=\"checkbox && multiple\">\n              <div class=\"ui-helper-hidden-accessible\">\n                <input type=\"checkbox\" [checked]=\"isSelected(option)\" [disabled]=\"disabled\">\n              </div>\n              <div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\" [ngClass]=\"{'ui-state-active':isSelected(option)}\">\n                <span class=\"ui-chkbox-icon ui-clickable\" [ngClass]=\"{'pi pi-check':isSelected(option)}\"></span>\n              </div>\n            </div>\n            <span *ngIf=\"!itemTemplate\">{{option.label}}</span>\n            <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: option, index: i}\"></ng-container>\n          </li>\n        </ul>\n      </div>\n      <div class=\"ui-listbox-footer ui-widget-header ui-corner-all\" *ngIf=\"footerFacet\">\n        <ng-content select=\"p-footer\"></ng-content>\n      </div>\n    </div>\n  ",
+                    template: "\n    <div [ngClass]=\"{'ui-listbox ui-inputtext ui-widget ui-widget-content ui-corner-all':true,'ui-state-disabled':disabled,'ui-state-focus':focus}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n      <div class=\"ui-helper-hidden-accessible\">\n        <input type=\"text\" readonly=\"readonly\" (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\">\n      </div>\n      <div class=\"ui-widget-header ui-corner-all ui-listbox-header ui-helper-clearfix\" *ngIf=\"headerFacet\">\n        <ng-content select=\"p-header\"></ng-content>\n      </div>\n      <div class=\"ui-widget-header ui-corner-all ui-listbox-header ui-helper-clearfix\" *ngIf=\"(checkbox && multiple && showToggleAll) || filter\" [ngClass]=\"{'ui-listbox-header-w-checkbox': checkbox}\">\n        <div class=\"ui-chkbox ui-widget\" *ngIf=\"checkbox && multiple && showToggleAll\">\n          <div class=\"ui-helper-hidden-accessible\">\n            <input #cb type=\"checkbox\" readonly=\"readonly\" [checked]=\"allChecked\">\n          </div>\n          <div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\" [ngClass]=\"{'ui-state-active':allChecked}\" (click)=\"toggleAll($event,cb)\">\n            <span class=\"ui-chkbox-icon ui-clickable\" [ngClass]=\"{'pi pi-check':allChecked}\"></span>\n          </div>\n        </div>\n        <div class=\"ui-listbox-filter-container\" *ngIf=\"filter\">\n          <input type=\"text\" role=\"textbox\" [value]=\"filterValue||''\" (input)=\"onFilter($event)\" class=\"ui-inputtext ui-widget ui-state-default ui-corner-all\" [disabled]=\"disabled\">\n          <span class=\"ui-listbox-filter-icon pi pi-search\"></span>\n        </div>\n      </div>\n      <div class=\"ui-listbox-list-wrapper\" [ngStyle]=\"listStyle\">\n        <ul class=\"ui-listbox-list\">\n          <li *ngFor=\"let option of options; let i = index;\" [style.display]=\"isItemVisible(option) ? 'block' : 'none'\"\n              [ngClass]=\"{'ui-listbox-item ui-corner-all':true,'ui-state-highlight':isSelected(option), 'ui-state-disabled': option.disabled}\"\n              (click)=\"onOptionClick($event,option)\" (dblclick)=\"onOptionDoubleClick($event,option)\" (touchend)=\"onOptionTouchEnd($event,option)\">\n            <div class=\"ui-chkbox ui-widget\" *ngIf=\"checkbox && multiple\">\n              <div class=\"ui-helper-hidden-accessible\">\n                <input type=\"checkbox\" [checked]=\"isSelected(option)\" [disabled]=\"disabled\">\n              </div>\n              <div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\" [ngClass]=\"{'ui-state-active':isSelected(option)}\">\n                <span class=\"ui-chkbox-icon ui-clickable\" [ngClass]=\"{'pi pi-check':isSelected(option)}\"></span>\n              </div>\n            </div>\n            <span *ngIf=\"!itemTemplate\">{{option.label}}</span>\n            <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: option, index: i}\"></ng-container>\n          </li>\n        </ul>\n      </div>\n      <div class=\"ui-listbox-footer ui-widget-header ui-corner-all\" *ngIf=\"footerFacet\">\n        <ng-content select=\"p-footer\"></ng-content>\n      </div>\n    </div>\n  ",
                     providers: [domhandler_1.DomHandler, objectutils_1.ObjectUtils, exports.LISTBOX_VALUE_ACCESSOR]
                 },] },
     ];
@@ -311,7 +336,8 @@ var Listbox = /** @class */ (function () {
         headerFacet: [{ type: core_1.ContentChild, args: [shared_1.Header,] }],
         footerFacet: [{ type: core_1.ContentChild, args: [shared_1.Footer,] }],
         templates: [{ type: core_1.ContentChildren, args: [shared_1.PrimeTemplate,] }],
-        options: [{ type: core_1.Input }]
+        options: [{ type: core_1.Input }],
+        filterValue: [{ type: core_1.Input }]
     };
     return Listbox;
 }());

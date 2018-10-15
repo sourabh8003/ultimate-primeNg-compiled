@@ -5,6 +5,7 @@ import { ObjectUtils } from '../utils/objectutils';
 import { SortMeta } from '../common/sortmeta';
 import { FilterMetadata } from '../common/filtermetadata';
 import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
+import { BlockableUI } from '../common/blockableui';
 import { Subscription, Observable } from 'rxjs';
 export declare class TableService {
     private sortSource;
@@ -12,24 +13,26 @@ export declare class TableService {
     private contextMenuSource;
     private valueSource;
     private totalRecordsSource;
+    private columnsSource;
     sortSource$: Observable<SortMeta | SortMeta[]>;
     selectionSource$: Observable<{}>;
     contextMenuSource$: Observable<any>;
     valueSource$: Observable<any>;
     totalRecordsSource$: Observable<any>;
+    columnsSource$: Observable<{}>;
     onSort(sortMeta: SortMeta | SortMeta[]): void;
     onSelectionChange(): void;
     onContextMenu(data: any): void;
     onValueChange(value: any): void;
     onTotalRecordsChange(value: number): void;
+    onColumnsChange(columns: any[]): void;
 }
-export declare class Table implements OnInit, AfterContentInit {
+export declare class Table implements OnInit, AfterContentInit, BlockableUI {
     el: ElementRef;
     domHandler: DomHandler;
     objectUtils: ObjectUtils;
     zone: NgZone;
     tableService: TableService;
-    columns: any[];
     frozenColumns: any[];
     frozenValue: any[];
     style: any;
@@ -56,6 +59,7 @@ export declare class Table implements OnInit, AfterContentInit {
     metaKeySelection: boolean;
     rowTrackBy: Function;
     lazy: boolean;
+    lazyLoadOnInit: boolean;
     compareSelectionBy: string;
     csvSeparator: string;
     exportFilename: string;
@@ -109,6 +113,7 @@ export declare class Table implements OnInit, AfterContentInit {
     tableViewChild: ElementRef;
     templates: QueryList<PrimeTemplate>;
     _value: any[];
+    _columns: any[];
     _totalRecords: number;
     filteredValue: any[];
     headerTemplate: TemplateRef<any>;
@@ -152,6 +157,7 @@ export declare class Table implements OnInit, AfterContentInit {
     ngOnInit(): void;
     ngAfterContentInit(): void;
     value: any[];
+    columns: any[];
     totalRecords: number;
     sortField: string;
     sortOrder: number;
@@ -172,7 +178,7 @@ export declare class Table implements OnInit, AfterContentInit {
     clearSelectionRange(event: MouseEvent): void;
     isSelected(rowData: any): boolean;
     findIndexInSelection(rowData: any): number;
-    toggleRowWithRadio(event: Event, rowData: any): void;
+    toggleRowWithRadio(event: any, rowData: any): void;
     toggleRowWithCheckbox(event: any, rowData: any): void;
     toggleRowsWithCheckbox(event: Event, check: boolean): void;
     equals(data1: any, data2: any): boolean;
@@ -217,6 +223,7 @@ export declare class Table implements OnInit, AfterContentInit {
     onRowDrop(event: any, rowElement: any): void;
     handleVirtualScroll(event: any): void;
     isEmpty(): boolean;
+    getBlockableElement(): HTMLElement;
     ngOnDestroy(): void;
 }
 export declare class TableBody {
@@ -243,9 +250,11 @@ export declare class ScrollableView implements AfterViewInit, OnDestroy, AfterVi
     bodyScrollListener: Function;
     footerScrollListener: Function;
     frozenSiblingBody: Element;
+    scrollableSiblingBody: Element;
     _scrollHeight: string;
     subscription: Subscription;
     totalRecordsSubscription: Subscription;
+    columnsSubscription: Subscription;
     initialized: boolean;
     constructor(dt: Table, el: ElementRef, domHandler: DomHandler, zone: NgZone);
     scrollHeight: string;
@@ -423,6 +432,7 @@ export declare class TableRadioButton {
     tableService: TableService;
     disabled: boolean;
     value: any;
+    index: number;
     boxViewChild: ElementRef;
     checked: boolean;
     subscription: Subscription;
@@ -439,6 +449,7 @@ export declare class TableCheckbox {
     tableService: TableService;
     disabled: boolean;
     value: any;
+    index: number;
     boxViewChild: ElementRef;
     checked: boolean;
     subscription: Subscription;

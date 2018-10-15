@@ -6,6 +6,7 @@ var UIChart = /** @class */ (function () {
     function UIChart(el) {
         this.el = el;
         this.options = {};
+        this.plugins = [];
         this.responsive = true;
         this.onDataSelect = new core_1.EventEmitter();
     }
@@ -43,7 +44,8 @@ var UIChart = /** @class */ (function () {
         this.chart = new Chart(this.el.nativeElement.children[0].children[0], {
             type: this.type,
             data: this.data,
-            options: this.options
+            options: this.options,
+            plugins: this.plugins
         });
     };
     UIChart.prototype.getCanvas = function () {
@@ -88,6 +90,7 @@ var UIChart = /** @class */ (function () {
     UIChart.propDecorators = {
         type: [{ type: core_1.Input }],
         options: [{ type: core_1.Input }],
+        plugins: [{ type: core_1.Input }],
         width: [{ type: core_1.Input }],
         height: [{ type: core_1.Input }],
         responsive: [{ type: core_1.Input }],

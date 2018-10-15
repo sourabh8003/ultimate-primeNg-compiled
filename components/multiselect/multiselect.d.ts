@@ -1,4 +1,5 @@
 import { ElementRef, OnInit, AfterViewInit, AfterContentInit, AfterViewChecked, OnDestroy, Renderer2, EventEmitter, ChangeDetectorRef, TemplateRef, QueryList } from '@angular/core';
+import { AnimationEvent } from '@angular/animations';
 import { SelectItem } from '../common/selectitem';
 import { DomHandler } from '../dom/domhandler';
 import { ObjectUtils } from '../utils/objectutils';
@@ -11,6 +12,7 @@ export declare class MultiSelect implements OnInit, AfterViewInit, AfterContentI
     objectUtils: ObjectUtils;
     private cd;
     scrollHeight: string;
+    _defaultLabel: string;
     defaultLabel: string;
     style: any;
     styleClass: string;
@@ -34,8 +36,11 @@ export declare class MultiSelect implements OnInit, AfterViewInit, AfterContentI
     dropdownIcon: string;
     optionLabel: string;
     showHeader: boolean;
+    autoZIndex: boolean;
+    baseZIndex: number;
+    showTransitionOptions: string;
+    hideTransitionOptions: string;
     containerViewChild: ElementRef;
-    panelViewChild: ElementRef;
     filterInputChild: ElementRef;
     footerFacet: any;
     templates: QueryList<any>;
@@ -47,12 +52,11 @@ export declare class MultiSelect implements OnInit, AfterViewInit, AfterContentI
     value: any[];
     onModelChange: Function;
     onModelTouched: Function;
+    overlay: HTMLDivElement;
     valuesAsString: string;
     focus: boolean;
     filled: boolean;
     documentClickListener: any;
-    container: HTMLDivElement;
-    panel: HTMLDivElement;
     selfClick: boolean;
     panelClick: boolean;
     filterValue: string;
@@ -62,7 +66,7 @@ export declare class MultiSelect implements OnInit, AfterViewInit, AfterContentI
     selectedItemsTemplate: TemplateRef<any>;
     focusedItemCheckbox: HTMLInputElement | null;
     _options: any[];
-    disabledOption: boolean;
+    maxSelectionLimitReached: boolean;
     constructor(el: ElementRef, domHandler: DomHandler, renderer: Renderer2, objectUtils: ObjectUtils, cd: ChangeDetectorRef);
     options: any[];
     ngOnInit(): void;
@@ -74,12 +78,17 @@ export declare class MultiSelect implements OnInit, AfterViewInit, AfterContentI
     registerOnChange(fn: Function): void;
     registerOnTouched(fn: Function): void;
     setDisabledState(val: boolean): void;
-    onItemClick(event: any, value: any): void;
+    onItemClick(event: any, option: any): void;
     isSelected(value: any): boolean;
     findSelectionIndex(val: any): number;
     toggleAll(event: any, checkbox: any): void;
     isAllChecked(): boolean;
+    getEnabledOptionCount(): number;
     show(): void;
+    onOverlayAnimationStart(event: AnimationEvent): void;
+    appendOverlay(): void;
+    restoreOverlayAppend(): void;
+    alignOverlay(): void;
     hide(): void;
     close(event: any): void;
     onMouseclick(event: any, input: any): void;
@@ -93,6 +102,7 @@ export declare class MultiSelect implements OnInit, AfterViewInit, AfterContentI
     getVisibleOptions(): SelectItem[];
     bindDocumentClickListener(): void;
     unbindDocumentClickListener(): void;
+    onOverlayHide(): void;
     ngOnDestroy(): void;
 }
 export declare class MultiSelectModule {

@@ -95,5 +95,12 @@ describe('ObjectUtils Suite', function () {
         Object.preventExtensions(obj2);
         expect(objectUtils.equals(obj1, obj2)).toBe(true);
     });
+    it('Should be able to compare dates', function () {
+        var obj1 = new Date(2018, 0, 1);
+        var obj2 = new Date(2018, 0, 1);
+        var obj3 = new Date(2020, 0, 1);
+        expect(objectUtils.equals(obj1, obj2)).toBe(true);
+        expect(objectUtils.equals(obj1, obj3)).toBe(false);
+    });
 });
 //# sourceMappingURL=objectutils.spec.js.map

@@ -28,7 +28,7 @@ export declare class Listbox implements AfterContentInit, ControlValueAccessor {
     footerFacet: any;
     templates: QueryList<any>;
     itemTemplate: TemplateRef<any>;
-    filterValue: string;
+    _filterValue: string;
     filtered: boolean;
     value: any;
     onModelChange: Function;
@@ -38,6 +38,7 @@ export declare class Listbox implements AfterContentInit, ControlValueAccessor {
     _options: any[];
     constructor(el: ElementRef, domHandler: DomHandler, objectUtils: ObjectUtils, cd: ChangeDetectorRef);
     options: any[];
+    filterValue: string;
     ngAfterContentInit(): void;
     writeValue(value: any): void;
     registerOnChange(fn: Function): void;
@@ -45,17 +46,18 @@ export declare class Listbox implements AfterContentInit, ControlValueAccessor {
     setDisabledState(val: boolean): void;
     onOptionClick(event: any, option: any): void;
     onOptionTouchEnd(event: any, option: any): void;
+    onOptionDoubleClick(event: Event, option: SelectItem): any;
     onOptionClickSingle(event: any, option: any): void;
     onOptionClickMultiple(event: any, option: any): void;
     onOptionClickCheckbox(event: any, option: any): void;
     removeOption(option: any): void;
     isSelected(option: SelectItem): boolean;
     readonly allChecked: boolean;
+    getEnabledOptionCount(): number;
     allFilteredSelected(): boolean;
     onFilter(event: any): void;
     toggleAll(event: any, checkbox: any): void;
     isItemVisible(option: SelectItem): boolean;
-    onDoubleClick(event: Event, option: SelectItem): any;
     onInputFocus(event: any): void;
     onInputBlur(event: any): void;
 }

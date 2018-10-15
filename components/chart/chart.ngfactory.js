@@ -21,6 +21,6 @@ function View_UIChart_0(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, 
 exports.View_UIChart_0 = View_UIChart_0;
 function View_UIChart_Host_0(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, null, 1, "p-chart", [], null, null, null, View_UIChart_0, RenderType_UIChart)), i0.ɵdid(1, 4374528, null, 0, i1.UIChart, [i0.ElementRef], null, null)], null, null); }
 exports.View_UIChart_Host_0 = View_UIChart_Host_0;
-var UIChartNgFactory = i0.ɵccf("p-chart", i1.UIChart, View_UIChart_Host_0, { type: "type", options: "options", width: "width", height: "height", responsive: "responsive", data: "data" }, { onDataSelect: "onDataSelect" }, []);
+var UIChartNgFactory = i0.ɵccf("p-chart", i1.UIChart, View_UIChart_Host_0, { type: "type", options: "options", plugins: "plugins", width: "width", height: "height", responsive: "responsive", data: "data" }, { onDataSelect: "onDataSelect" }, []);
 exports.UIChartNgFactory = UIChartNgFactory;
 //# sourceMappingURL=chart.ngfactory.js.map

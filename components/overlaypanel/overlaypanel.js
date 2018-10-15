@@ -11,33 +11,14 @@ var OverlayPanel = /** @class */ (function () {
         this.renderer = renderer;
         this.cd = cd;
         this.dismissable = true;
-        this.onBeforeShow = new core_1.EventEmitter();
-        this.onAfterShow = new core_1.EventEmitter();
-        this.onBeforeHide = new core_1.EventEmitter();
-        this.onAfterHide = new core_1.EventEmitter();
+        this.autoZIndex = true;
+        this.baseZIndex = 0;
+        this.showTransitionOptions = '225ms ease-out';
+        this.hideTransitionOptions = '195ms ease-in';
+        this.onShow = new core_1.EventEmitter();
+        this.onHide = new core_1.EventEmitter();
         this.visible = false;
     }
-    OverlayPanel.prototype.ngAfterViewInit = function () {
-        this.container = this.el.nativeElement.children[0];
-        if (this.appendTo) {
-            if (this.appendTo === 'body')
-                document.body.appendChild(this.container);
-            else
-                this.domHandler.appendChild(this.container, this.appendTo);
-        }
-    };
-    OverlayPanel.prototype.ngAfterViewChecked = function () {
-        if (this.willShow) {
-            this.domHandler.absolutePosition(this.container, this.target);
-            this.bindDocumentClickListener();
-            this.onAfterShow.emit(null);
-            this.willShow = false;
-        }
-        if (this.willHide) {
-            this.onAfterHide.emit(null);
-            this.willHide = false;
-        }
-    };
     OverlayPanel.prototype.bindDocumentClickListener = function () {
         var _this = this;
         if (!this.documentClickListener && this.dismissable) {
@@ -58,35 +39,67 @@ var OverlayPanel = /** @class */ (function () {
         }
     };
     OverlayPanel.prototype.toggle = function (event, target) {
-        if (!this.target || this.target === (target || event.currentTarget || event.target)) {
-            if (this.visible)
-                this.hide();
-            else
-                this.show(event, target);
+        var _this = this;
+        if (event.type === 'click') {
+            this.targetClickEvent = true;
+        }
+        if (this.visible) {
+            this.visible = false;
+            if (this.hasTargetChanged(event, target)) {
+                this.target = target || event.currentTarget || event.target;
+                setTimeout(function () {
+                    _this.visible = true;
+                }, 200);
+            }
         }
         else {
             this.show(event, target);
         }
     };
     OverlayPanel.prototype.show = function (event, target) {
-        this.onBeforeShow.emit(null);
-        this.target = target || event.currentTarget || event.target;
-        this.container.style.zIndex = ++domhandler_1.DomHandler.zindex;
-        this.visible = true;
-        this.willShow = true;
         if (event.type === 'click') {
             this.targetClickEvent = true;
         }
+        this.target = target || event.currentTarget || event.target;
+        this.visible = true;
+    };
+    OverlayPanel.prototype.hasTargetChanged = function (event, target) {
+        return this.target != null && this.target !== (target || event.currentTarget || event.target);
+    };
+    OverlayPanel.prototype.appendContainer = function () {
+        if (this.appendTo) {
+            if (this.appendTo === 'body')
+                document.body.appendChild(this.container);
+            else
+                this.domHandler.appendChild(this.container, this.appendTo);
+        }
+    };
+    OverlayPanel.prototype.restoreAppend = function () {
+        if (this.container && this.appendTo) {
+            this.el.nativeElement.appendChild(this.container);
+        }
+    };
+    OverlayPanel.prototype.onAnimationStart = function (event) {
+        switch (event.toState) {
+            case 'visible':
+                this.container = event.element;
+                this.onShow.emit(null);
+                this.appendContainer();
+                if (this.autoZIndex) {
+                    this.container.style.zIndex = String(this.baseZIndex + (++domhandler_1.DomHandler.zindex));
+                }
+                this.domHandler.absolutePosition(this.container, this.target);
+                this.bindDocumentClickListener();
+                this.bindDocumentResizeListener();
+                break;
+            case 'void':
+                this.onContainerDestroy();
+                this.onHide.emit({});
+                break;
+        }
     };
     OverlayPanel.prototype.hide = function () {
-        if (this.visible) {
-            this.onBeforeHide.emit(null);
-            this.willHide = true;
-            this.visible = false;
-            this.selfClick = false;
-            this.targetClickEvent = false;
-            this.unbindDocumentClickListener();
-        }
+        this.visible = false;
     };
     OverlayPanel.prototype.onPanelClick = function (event) {
         if (this.closeClick) {
@@ -101,27 +114,48 @@ var OverlayPanel = /** @class */ (function () {
         this.closeClick = true;
         event.preventDefault();
     };
-    OverlayPanel.prototype.ngOnDestroy = function () {
-        this.unbindDocumentClickListener();
-        if (this.appendTo) {
-            this.el.nativeElement.appendChild(this.container);
+    OverlayPanel.prototype.onWindowResize = function (event) {
+        this.hide();
+    };
+    OverlayPanel.prototype.bindDocumentResizeListener = function () {
+        this.documentResizeListener = this.onWindowResize.bind(this);
+        window.addEventListener('resize', this.documentResizeListener);
+    };
+    OverlayPanel.prototype.unbindDocumentResizeListener = function () {
+        if (this.documentResizeListener) {
+            window.removeEventListener('resize', this.documentResizeListener);
+            this.documentResizeListener = null;
         }
+    };
+    OverlayPanel.prototype.onContainerDestroy = function () {
+        this.unbindDocumentClickListener();
+        this.unbindDocumentResizeListener();
+        this.selfClick = false;
+        this.targetClickEvent = false;
+    };
+    OverlayPanel.prototype.ngOnDestroy = function () {
         this.target = null;
+        if (this.container) {
+            this.restoreAppend();
+            this.onContainerDestroy();
+        }
     };
     OverlayPanel.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-overlayPanel',
-                    template: "\n        <div [ngClass]=\"'ui-overlaypanel ui-widget ui-widget-content ui-corner-all ui-shadow'\" [ngStyle]=\"style\" [class]=\"styleClass\"\n            [style.display]=\"visible ? 'block' : 'none'\" (click)=\"onPanelClick($event)\" [@panelState]=\"visible ? 'visible' : 'hidden'\">\n            <div class=\"ui-overlaypanel-content\">\n                <ng-content></ng-content>\n            </div>\n            <a href=\"#\" *ngIf=\"showCloseIcon\" class=\"ui-overlaypanel-close ui-state-default\" (click)=\"onCloseClick($event)\">\n                <span class=\"pi pi-times\"></span>\n            </a>\n        </div>\n    ",
+                    template: "\n        <div [ngClass]=\"'ui-overlaypanel ui-widget ui-widget-content ui-corner-all ui-shadow'\" [ngStyle]=\"style\" [class]=\"styleClass\" (click)=\"onPanelClick($event)\"\n            [@animation]=\"{value: 'visible', params: {showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions}}\" (@animation.start)=\"onAnimationStart($event)\" *ngIf=\"visible\">\n            <div class=\"ui-overlaypanel-content\">\n                <ng-content></ng-content>\n            </div>\n            <a href=\"#\" *ngIf=\"showCloseIcon\" class=\"ui-overlaypanel-close ui-state-default\" (click)=\"onCloseClick($event)\">\n                <span class=\"ui-overlaypanel-close-icon pi pi-times\"></span>\n            </a>\n        </div>\n    ",
                     animations: [
-                        animations_1.trigger('panelState', [
-                            animations_1.state('hidden', animations_1.style({
+                        animations_1.trigger('animation', [
+                            animations_1.state('void', animations_1.style({
+                                transform: 'translateY(5%)',
                                 opacity: 0
                             })),
                             animations_1.state('visible', animations_1.style({
+                                transform: 'translateY(0)',
                                 opacity: 1
                             })),
-                            animations_1.transition('visible => hidden', animations_1.animate('400ms ease-in')),
-                            animations_1.transition('hidden => visible', animations_1.animate('400ms ease-out'))
+                            animations_1.transition('void => visible', animations_1.animate('{{showTransitionParams}}')),
+                            animations_1.transition('visible => void', animations_1.animate('{{hideTransitionParams}}'))
                         ])
                     ],
                     providers: [domhandler_1.DomHandler]
@@ -140,10 +174,12 @@ var OverlayPanel = /** @class */ (function () {
         style: [{ type: core_1.Input }],
         styleClass: [{ type: core_1.Input }],
         appendTo: [{ type: core_1.Input }],
-        onBeforeShow: [{ type: core_1.Output }],
-        onAfterShow: [{ type: core_1.Output }],
-        onBeforeHide: [{ type: core_1.Output }],
-        onAfterHide: [{ type: core_1.Output }]
+        autoZIndex: [{ type: core_1.Input }],
+        baseZIndex: [{ type: core_1.Input }],
+        showTransitionOptions: [{ type: core_1.Input }],
+        hideTransitionOptions: [{ type: core_1.Input }],
+        onShow: [{ type: core_1.Output }],
+        onHide: [{ type: core_1.Output }]
     };
     return OverlayPanel;
 }());

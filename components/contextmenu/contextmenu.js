@@ -97,17 +97,18 @@ var ContextMenu = /** @class */ (function () {
         this.zone = zone;
         this.autoZIndex = true;
         this.baseZIndex = 0;
+        this.triggerEvent = 'contextmenu';
     }
     ContextMenu.prototype.ngAfterViewInit = function () {
         var _this = this;
         if (this.global) {
-            this.rightClickListener = this.renderer.listen('document', 'contextmenu', function (event) {
+            this.triggerEventListener = this.renderer.listen('document', this.triggerEvent, function (event) {
                 _this.show(event);
                 event.preventDefault();
             });
         }
         else if (this.target) {
-            this.rightClickListener = this.renderer.listen(this.target, 'contextmenu', function (event) {
+            this.triggerEventListener = this.renderer.listen(this.target, this.triggerEvent, function (event) {
                 _this.show(event);
                 event.preventDefault();
                 event.stopPropagation();
@@ -205,8 +206,8 @@ var ContextMenu = /** @class */ (function () {
     };
     ContextMenu.prototype.ngOnDestroy = function () {
         this.unbindGlobalListeners();
-        if (this.rightClickListener) {
-            this.rightClickListener();
+        if (this.triggerEventListener) {
+            this.triggerEventListener();
         }
         if (this.appendTo) {
             this.el.nativeElement.appendChild(this.containerViewChild.nativeElement);
@@ -235,6 +236,7 @@ var ContextMenu = /** @class */ (function () {
         appendTo: [{ type: core_1.Input }],
         autoZIndex: [{ type: core_1.Input }],
         baseZIndex: [{ type: core_1.Input }],
+        triggerEvent: [{ type: core_1.Input }],
         containerViewChild: [{ type: core_1.ViewChild, args: ['container',] }]
     };
     return ContextMenu;

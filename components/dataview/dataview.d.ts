@@ -22,6 +22,7 @@ export declare class DataView implements OnInit, AfterContentInit, BlockableUI {
     filterBy: string;
     loading: boolean;
     loadingIcon: string;
+    first: number;
     onPage: EventEmitter<any>;
     onSort: EventEmitter<any>;
     header: any;
@@ -31,8 +32,10 @@ export declare class DataView implements OnInit, AfterContentInit, BlockableUI {
     listItemTemplate: TemplateRef<any>;
     gridItemTemplate: TemplateRef<any>;
     itemTemplate: TemplateRef<any>;
-    first: number;
+    paginatorLeftTemplate: TemplateRef<any>;
+    paginatorRightTemplate: TemplateRef<any>;
     filteredValue: any[];
+    filterValue: string;
     _sortField: string;
     _sortOrder: number;
     initialized: boolean;
@@ -50,7 +53,8 @@ export declare class DataView implements OnInit, AfterContentInit, BlockableUI {
     isEmpty(): boolean;
     createLazyLoadMetadata(): any;
     getBlockableElement(): HTMLElement;
-    filter(value: string): void;
+    filter(filter: string): void;
+    hasFilter(): boolean;
 }
 export declare class DataViewLayoutOptions {
     dv: DataView;

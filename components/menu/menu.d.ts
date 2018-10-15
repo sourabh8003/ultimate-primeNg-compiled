@@ -1,4 +1,5 @@
-import { ElementRef, AfterViewInit, OnDestroy, Renderer2 } from '@angular/core';
+import { ElementRef, OnDestroy, Renderer2 } from '@angular/core';
+import { AnimationEvent } from '@angular/animations';
 import { DomHandler } from '../dom/domhandler';
 import { MenuItem } from '../common/menuitem';
 export declare class MenuItemContent {
@@ -6,7 +7,7 @@ export declare class MenuItemContent {
     item: MenuItem;
     constructor(menu: Menu);
 }
-export declare class Menu implements AfterViewInit, OnDestroy {
+export declare class Menu implements OnDestroy {
     el: ElementRef;
     domHandler: DomHandler;
     renderer: Renderer2;
@@ -17,19 +18,30 @@ export declare class Menu implements AfterViewInit, OnDestroy {
     appendTo: any;
     autoZIndex: boolean;
     baseZIndex: number;
+    showTransitionOptions: string;
+    hideTransitionOptions: string;
     containerViewChild: ElementRef;
     container: HTMLDivElement;
     documentClickListener: any;
-    preventDocumentDefault: any;
-    onResizeTarget: any;
+    documentResizeListener: any;
+    preventDocumentDefault: boolean;
+    target: any;
+    visible: boolean;
     constructor(el: ElementRef, domHandler: DomHandler, renderer: Renderer2);
-    ngAfterViewInit(): void;
     toggle(event: any): void;
-    onResize(event: any): void;
     show(event: any): void;
+    onOverlayAnimationStart(event: AnimationEvent): void;
+    appendOverlay(): void;
+    restoreOverlayAppend(): void;
     moveOnTop(): void;
     hide(): void;
+    onWindowResize(): void;
     itemClick(event: any, item: MenuItem): void;
+    bindDocumentClickListener(): void;
+    unbindDocumentClickListener(): void;
+    bindDocumentResizeListener(): void;
+    unbindDocumentResizeListener(): void;
+    onOverlayHide(): void;
     ngOnDestroy(): void;
     hasSubMenu(): boolean;
 }

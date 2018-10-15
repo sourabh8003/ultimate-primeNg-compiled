@@ -42,5 +42,39 @@ describe('SelectButton', function () {
         var active = fixture.nativeElement.querySelector('.ui-state-active').children[0];
         expect(active.textContent).toContain('Apartment');
     }));
+    it('should disabled', function () {
+        selectButton.disabled = true;
+        selectButton.options = [{ label: 'Apartment', value: { name: 'Apartment' } }, { label: 'House', value: { name: 'House' } }, { label: 'Studio', value: { name: 'Studio' } }];
+        fixture.detectChanges();
+        var onItemClickSpy = spyOn(selectButton, 'onItemClick').and.callThrough();
+        var buttonEls = fixture.debugElement.queryAll(platform_browser_1.By.css('.ui-button'));
+        expect(buttonEls.length).toEqual(3);
+        buttonEls[1].nativeElement.click();
+        fixture.detectChanges();
+        expect(onItemClickSpy).toHaveBeenCalled();
+        expect(selectButton.value).toEqual(undefined);
+    });
+    it('should select multiple', function () {
+        selectButton.multiple = true;
+        selectButton.options = [{ label: 'Apartment', value: { name: 'Apartment' } }, { label: 'House', value: { name: 'House' } }, { label: 'Studio', value: { name: 'Studio' } }];
+        fixture.detectChanges();
+        var valueOptionClick;
+        var valueChange;
+        selectButton.onOptionClick.subscribe(function (data) { return valueOptionClick = data; });
+        selectButton.onChange.subscribe(function (data) { return valueChange = data; });
+        var onItemClickSpy = spyOn(selectButton, 'onItemClick').and.callThrough();
+        var buttonEls = fixture.debugElement.queryAll(platform_browser_1.By.css('.ui-button'));
+        expect(buttonEls.length).toEqual(3);
+        buttonEls[0].nativeElement.click();
+        buttonEls[1].nativeElement.click();
+        buttonEls[2].nativeElement.click();
+        fixture.detectChanges();
+        buttonEls[2].nativeElement.click();
+        fixture.detectChanges();
+        expect(onItemClickSpy).toHaveBeenCalled();
+        expect(selectButton.value.length).toEqual(2);
+        expect(valueOptionClick.option).toBeTruthy();
+        expect(valueChange.value).toBeTruthy();
+    });
 });
 //# sourceMappingURL=selectbutton.spec.js.map

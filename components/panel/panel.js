@@ -12,11 +12,23 @@ var Panel = /** @class */ (function () {
         this.expandIcon = 'pi pi-plus';
         this.collapseIcon = 'pi pi-minus';
         this.showHeader = true;
+        this.toggler = "icon";
         this.collapsedChange = new core_1.EventEmitter();
         this.onBeforeToggle = new core_1.EventEmitter();
         this.onAfterToggle = new core_1.EventEmitter();
+        this.transitionOptions = '400ms cubic-bezier(0.86, 0, 0.07, 1)';
         this.id = "ui-panel-" + idx++;
     }
+    Panel.prototype.onHeaderClick = function (event) {
+        if (this.toggler === 'header') {
+            this.toggle(event);
+        }
+    };
+    Panel.prototype.onIconClick = function (event) {
+        if (this.toggler === 'icon') {
+            this.toggle(event);
+        }
+    };
     Panel.prototype.toggle = function (event) {
         if (this.animating) {
             return false;
@@ -49,7 +61,7 @@ var Panel = /** @class */ (function () {
     Panel.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-panel',
-                    template: "\n        <div [attr.id]=\"id\" [ngClass]=\"'ui-panel ui-widget ui-widget-content ui-corner-all'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-panel-titlebar ui-widget-header ui-helper-clearfix ui-corner-all\" *ngIf=\"showHeader\">\n                <span class=\"ui-panel-title\" *ngIf=\"header\">{{header}}</span>\n                <ng-content select=\"p-header\"></ng-content>\n                <a *ngIf=\"toggleable\" [attr.id]=\"id + '-label'\" class=\"ui-panel-titlebar-icon ui-panel-titlebar-toggler ui-corner-all ui-state-default\" href=\"#\"\n                    (click)=\"toggle($event)\" [attr.aria-controls]=\"id + '-content'\" role=\"tab\" [attr.aria-expanded]=\"!collapsed\">\n                    <span [class]=\"collapsed ? expandIcon : collapseIcon\"></span>\n                </a>\n            </div>\n            <div [attr.id]=\"id + '-content'\" class=\"ui-panel-content-wrapper\" [@panelContent]=\"collapsed ? 'hidden' : 'visible'\" (@panelContent.done)=\"onToggleDone($event)\"\n                [ngClass]=\"{'ui-panel-content-wrapper-overflown': collapsed||animating}\"\n                role=\"region\" [attr.aria-hidden]=\"collapsed\" [attr.aria-labelledby]=\"id + '-label'\">\n                <div class=\"ui-panel-content ui-widget-content\">\n                    <ng-content></ng-content>\n                </div>\n                \n                <div class=\"ui-panel-footer ui-widget-content\" *ngIf=\"footerFacet\">\n                    <ng-content select=\"p-footer\"></ng-content>\n                </div>\n            </div>\n        </div>\n    ",
+                    template: "\n        <div [attr.id]=\"id\" [ngClass]=\"'ui-panel ui-widget ui-widget-content ui-corner-all'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div [ngClass]=\"{'ui-panel-titlebar ui-widget-header ui-helper-clearfix ui-corner-all': true, 'ui-panel-titlebar-clickable': (toggleable && toggler === 'header')}\" \n                *ngIf=\"showHeader\" (click)=\"onHeaderClick($event)\">\n                <span class=\"ui-panel-title\" *ngIf=\"header\">{{header}}</span>\n                <ng-content select=\"p-header\"></ng-content>\n                <a *ngIf=\"toggleable\" [attr.id]=\"id + '-label'\" class=\"ui-panel-titlebar-icon ui-panel-titlebar-toggler ui-corner-all ui-state-default\" href=\"#\"\n                    (click)=\"onIconClick($event)\" [attr.aria-controls]=\"id + '-content'\" role=\"tab\" [attr.aria-expanded]=\"!collapsed\">\n                    <span [class]=\"collapsed ? expandIcon : collapseIcon\"></span>\n                </a>\n            </div>\n            <div [attr.id]=\"id + '-content'\" class=\"ui-panel-content-wrapper\" [@panelContent]=\"collapsed ? {value: 'hidden', params: {transitionParams: transitionOptions}} : {value: 'visible', params: {transitionParams: transitionOptions}}\" (@panelContent.done)=\"onToggleDone($event)\"\n                [ngClass]=\"{'ui-panel-content-wrapper-overflown': collapsed||animating}\"\n                role=\"region\" [attr.aria-hidden]=\"collapsed\" [attr.aria-labelledby]=\"id + '-label'\">\n                <div class=\"ui-panel-content ui-widget-content\">\n                    <ng-content></ng-content>\n                </div>\n                \n                <div class=\"ui-panel-footer ui-widget-content\" *ngIf=\"footerFacet\">\n                    <ng-content select=\"p-footer\"></ng-content>\n                </div>\n            </div>\n        </div>\n    ",
                     animations: [
                         animations_1.trigger('panelContent', [
                             animations_1.state('hidden', animations_1.style({
@@ -60,7 +72,7 @@ var Panel = /** @class */ (function () {
                                 height: '*',
                                 opacity: 1
                             })),
-                            animations_1.transition('visible <=> hidden', animations_1.animate('400ms cubic-bezier(0.86, 0, 0.07, 1)'))
+                            animations_1.transition('visible <=> hidden', animations_1.animate('{{transitionParams}}'))
                         ])
                     ]
                 },] },
@@ -78,9 +90,11 @@ var Panel = /** @class */ (function () {
         expandIcon: [{ type: core_1.Input }],
         collapseIcon: [{ type: core_1.Input }],
         showHeader: [{ type: core_1.Input }],
+        toggler: [{ type: core_1.Input }],
         collapsedChange: [{ type: core_1.Output }],
         onBeforeToggle: [{ type: core_1.Output }],
         onAfterToggle: [{ type: core_1.Output }],
+        transitionOptions: [{ type: core_1.Input }],
         footerFacet: [{ type: core_1.ContentChild, args: [shared_1.Footer,] }]
     };
     return Panel;

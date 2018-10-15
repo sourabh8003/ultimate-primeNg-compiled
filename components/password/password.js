@@ -4,29 +4,16 @@ var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var domhandler_1 = require("../dom/domhandler");
 var Password = /** @class */ (function () {
-    function Password(el, domHandler) {
+    function Password(el, domHandler, zone) {
         this.el = el;
         this.domHandler = domHandler;
-        this.promptLabel = 'Please enter a password';
+        this.zone = zone;
+        this.promptLabel = 'Enter a password';
         this.weakLabel = 'Weak';
         this.mediumLabel = 'Medium';
         this.strongLabel = 'Strong';
         this.feedback = true;
     }
-    Password.prototype.ngAfterViewInit = function () {
-        this.panel = document.createElement('div');
-        this.panel.className = 'ui-password-panel ui-widget ui-state-highlight ui-corner-all ui-helper-hidden ui-password-panel-overlay';
-        this.meter = document.createElement('div');
-        this.meter.className = 'ui-password-meter';
-        this.info = document.createElement('div');
-        this.info.className = 'ui-password-info';
-        this.info.textContent = this.promptLabel;
-        if (this.feedback) {
-            this.panel.appendChild(this.meter);
-            this.panel.appendChild(this.info);
-            document.body.appendChild(this.panel);
-        }
-    };
     Password.prototype.ngDoCheck = function () {
         this.updateFilledState();
     };
@@ -37,38 +24,72 @@ var Password = /** @class */ (function () {
     Password.prototype.updateFilledState = function () {
         this.filled = this.el.nativeElement.value && this.el.nativeElement.value.length;
     };
+    Password.prototype.createPanel = function () {
+        this.panel = document.createElement('div');
+        this.panel.className = 'ui-password-panel ui-widget ui-state-highlight ui-corner-all';
+        this.meter = document.createElement('div');
+        this.meter.className = 'ui-password-meter';
+        this.info = document.createElement('div');
+        this.info.className = 'ui-password-info';
+        this.info.textContent = this.promptLabel;
+        this.panel.appendChild(this.meter);
+        this.panel.appendChild(this.info);
+        this.panel.style.minWidth = this.domHandler.getOuterWidth(this.el.nativeElement) + 'px';
+        document.body.appendChild(this.panel);
+    };
     Password.prototype.onFocus = function (e) {
-        this.panel.style.zIndex = String(++domhandler_1.DomHandler.zindex);
-        this.domHandler.removeClass(this.panel, 'ui-helper-hidden');
-        this.domHandler.absolutePosition(this.panel, this.el.nativeElement);
-        this.domHandler.fadeIn(this.panel, 250);
+        var _this = this;
+        if (this.feedback) {
+            if (!this.panel) {
+                this.createPanel();
+            }
+            this.panel.style.zIndex = String(++domhandler_1.DomHandler.zindex);
+            this.zone.runOutsideAngular(function () {
+                setTimeout(function () {
+                    _this.domHandler.addClass(_this.panel, 'ui-password-panel-visible');
+                    _this.domHandler.removeClass(_this.panel, 'ui-password-panel-hidden');
+                }, 1);
+                _this.domHandler.absolutePosition(_this.panel, _this.el.nativeElement);
+            });
+        }
     };
     Password.prototype.onBlur = function (e) {
-        this.domHandler.addClass(this.panel, 'ui-helper-hidden');
+        var _this = this;
+        if (this.feedback) {
+            this.domHandler.addClass(this.panel, 'ui-password-panel-hidden');
+            this.domHandler.removeClass(this.panel, 'ui-password-panel-visible');
+            this.zone.runOutsideAngular(function () {
+                setTimeout(function () {
+                    _this.ngOnDestroy();
+                }, 150);
+            });
+        }
     };
     Password.prototype.onKeyup = function (e) {
-        var value = e.target.value, label = null, meterPos = null;
-        if (value.length === 0) {
-            label = this.promptLabel;
-            meterPos = '0px 0px';
+        if (this.feedback) {
+            var value = e.target.value, label = null, meterPos = null;
+            if (value.length === 0) {
+                label = this.promptLabel;
+                meterPos = '0px 0px';
+            }
+            else {
+                var score = this.testStrength(value);
+                if (score < 30) {
+                    label = this.weakLabel;
+                    meterPos = '0px -10px';
+                }
+                else if (score >= 30 && score < 80) {
+                    label = this.mediumLabel;
+                    meterPos = '0px -20px';
+                }
+                else if (score >= 80) {
+                    label = this.strongLabel;
+                    meterPos = '0px -30px';
+                }
+            }
+            this.meter.style.backgroundPosition = meterPos;
+            this.info.textContent = label;
         }
-        else {
-            var score = this.testStrength(value);
-            if (score < 30) {
-                label = this.weakLabel;
-                meterPos = '0px -10px';
-            }
-            else if (score >= 30 && score < 80) {
-                label = this.mediumLabel;
-                meterPos = '0px -20px';
-            }
-            else if (score >= 80) {
-                label = this.strongLabel;
-                meterPos = '0px -30px';
-            }
-        }
-        this.meter.style.backgroundPosition = meterPos;
-        this.info.textContent = label;
     };
     Password.prototype.testStrength = function (str) {
         var grade = 0;
@@ -99,14 +120,12 @@ var Password = /** @class */ (function () {
         configurable: true
     });
     Password.prototype.ngOnDestroy = function () {
-        if (!this.feedback)
-            return;
-        this.panel.removeChild(this.meter);
-        this.panel.removeChild(this.info);
-        document.body.removeChild(this.panel);
-        this.panel = null;
-        this.meter = null;
-        this.info = null;
+        if (this.panel) {
+            document.body.removeChild(this.panel);
+            this.panel = null;
+            this.meter = null;
+            this.info = null;
+        }
     };
     Password.decorators = [
         { type: core_1.Directive, args: [{
@@ -124,7 +143,8 @@ var Password = /** @class */ (function () {
     /** @nocollapse */
     Password.ctorParameters = function () { return [
         { type: core_1.ElementRef },
-        { type: domhandler_1.DomHandler }
+        { type: domhandler_1.DomHandler },
+        { type: core_1.NgZone }
     ]; };
     Password.propDecorators = {
         promptLabel: [{ type: core_1.Input }],

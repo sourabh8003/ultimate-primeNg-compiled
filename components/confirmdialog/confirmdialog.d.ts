@@ -1,14 +1,16 @@
-import { ElementRef, AfterViewInit, OnDestroy, AfterViewChecked, Renderer2, NgZone } from '@angular/core';
+import { ElementRef, OnDestroy, Renderer2, NgZone } from '@angular/core';
+import { AnimationEvent } from '@angular/animations';
 import { DomHandler } from '../dom/domhandler';
 import { Confirmation } from '../common/confirmation';
 import { ConfirmationService } from '../common/confirmationservice';
 import { Subscription } from 'rxjs';
-export declare class ConfirmDialog implements AfterViewInit, AfterViewChecked, OnDestroy {
+export declare class ConfirmDialog implements OnDestroy {
     el: ElementRef;
     domHandler: DomHandler;
     renderer: Renderer2;
     private confirmationService;
     zone: NgZone;
+    visible: boolean;
     header: string;
     icon: string;
     message: string;
@@ -28,20 +30,22 @@ export declare class ConfirmDialog implements AfterViewInit, AfterViewChecked, O
     responsive: boolean;
     appendTo: any;
     key: string;
+    autoZIndex: boolean;
+    baseZIndex: number;
+    transitionOptions: string;
     footer: any;
     confirmation: Confirmation;
     _visible: boolean;
     documentEscapeListener: any;
     documentResponsiveListener: any;
     mask: any;
-    contentContainer: any;
-    positionInitialized: boolean;
+    container: HTMLDivElement;
+    contentContainer: HTMLDivElement;
     subscription: Subscription;
-    executePostShowActions: boolean;
     constructor(el: ElementRef, domHandler: DomHandler, renderer: Renderer2, confirmationService: ConfirmationService, zone: NgZone);
-    visible: boolean;
-    ngAfterViewInit(): void;
-    ngAfterViewChecked(): void;
+    onAnimationStart(event: AnimationEvent): void;
+    appendContainer(): void;
+    restoreAppend(): void;
     center(): void;
     enableModality(): void;
     disableModality(): void;
@@ -50,6 +54,7 @@ export declare class ConfirmDialog implements AfterViewInit, AfterViewChecked, O
     moveOnTop(): void;
     bindGlobalListeners(): void;
     unbindGlobalListeners(): void;
+    onOverlayHide(): void;
     ngOnDestroy(): void;
     accept(): void;
     reject(): void;

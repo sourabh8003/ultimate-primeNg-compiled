@@ -1,11 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
+var animations_1 = require("@angular/animations");
 var common_1 = require("@angular/common");
 var domhandler_1 = require("../dom/domhandler");
 var router_1 = require("@angular/router");
 var TieredMenuSub = /** @class */ (function () {
-    function TieredMenuSub(domHandler) {
+    function TieredMenuSub(tieredMenu, domHandler) {
+        this.tieredMenu = tieredMenu;
         this.domHandler = domHandler;
         this.autoZIndex = true;
         this.baseZIndex = 0;
@@ -51,6 +53,9 @@ var TieredMenuSub = /** @class */ (function () {
                 item: item
             });
         }
+        if (!item.items && this.tieredMenu.popup) {
+            this.tieredMenu.hide();
+        }
     };
     TieredMenuSub.prototype.listClick = function (event) {
         this.activeItem = null;
@@ -64,6 +69,7 @@ var TieredMenuSub = /** @class */ (function () {
     ];
     /** @nocollapse */
     TieredMenuSub.ctorParameters = function () { return [
+        { type: TieredMenu, decorators: [{ type: core_1.Inject, args: [core_1.forwardRef(function () { return TieredMenu; }),] }] },
         { type: domhandler_1.DomHandler }
     ]; };
     TieredMenuSub.propDecorators = {
@@ -84,46 +90,61 @@ var TieredMenu = /** @class */ (function () {
         this.autoZIndex = true;
         this.baseZIndex = 0;
         this.hideDelay = 250;
+        this.showTransitionOptions = '225ms ease-out';
+        this.hideTransitionOptions = '195ms ease-in';
     }
-    TieredMenu.prototype.ngAfterViewInit = function () {
-        this.container = this.el.nativeElement.children[0];
-        if (this.popup) {
-            if (this.appendTo) {
-                if (this.appendTo === 'body')
-                    document.body.appendChild(this.container);
-                else
-                    this.domHandler.appendChild(this.container, this.appendTo);
-            }
-        }
-    };
     TieredMenu.prototype.toggle = function (event) {
-        if (this.container.offsetParent)
+        if (this.visible)
             this.hide();
         else
             this.show(event);
+        this.preventDocumentDefault = true;
     };
     TieredMenu.prototype.show = function (event) {
+        this.target = event.currentTarget;
+        this.visible = true;
         this.preventDocumentDefault = true;
-        this.moveOnTop();
-        this.container.style.display = 'block';
-        this.domHandler.absolutePosition(this.container, event.currentTarget);
-        this.domHandler.fadeIn(this.container, 250);
-        this.bindDocumentClickListener();
     };
-    TieredMenu.prototype.hide = function () {
-        this.container.style.display = 'none';
-        this.unbindDocumentClickListener();
+    TieredMenu.prototype.onOverlayAnimationStart = function (event) {
+        switch (event.toState) {
+            case 'visible':
+                if (this.popup) {
+                    this.container = event.element;
+                    this.moveOnTop();
+                    this.appendOverlay();
+                    this.domHandler.absolutePosition(this.container, this.target);
+                    this.bindDocumentClickListener();
+                    this.bindDocumentResizeListener();
+                }
+                break;
+            case 'void':
+                this.onOverlayHide();
+                break;
+        }
+    };
+    TieredMenu.prototype.appendOverlay = function () {
+        if (this.appendTo) {
+            if (this.appendTo === 'body')
+                document.body.appendChild(this.container);
+            else
+                this.domHandler.appendChild(this.container, this.appendTo);
+        }
+    };
+    TieredMenu.prototype.restoreOverlayAppend = function () {
+        if (this.container && this.appendTo) {
+            this.el.nativeElement.appendChild(this.container);
+        }
     };
     TieredMenu.prototype.moveOnTop = function () {
         if (this.autoZIndex) {
             this.container.style.zIndex = String(this.baseZIndex + (++domhandler_1.DomHandler.zindex));
         }
     };
-    TieredMenu.prototype.unbindDocumentClickListener = function () {
-        if (this.documentClickListener) {
-            this.documentClickListener();
-            this.documentClickListener = null;
-        }
+    TieredMenu.prototype.hide = function () {
+        this.visible = false;
+    };
+    TieredMenu.prototype.onWindowResize = function () {
+        this.hide();
     };
     TieredMenu.prototype.bindDocumentClickListener = function () {
         var _this = this;
@@ -136,20 +157,52 @@ var TieredMenu = /** @class */ (function () {
             });
         }
     };
+    TieredMenu.prototype.unbindDocumentClickListener = function () {
+        if (this.documentClickListener) {
+            this.documentClickListener();
+            this.documentClickListener = null;
+        }
+    };
+    TieredMenu.prototype.bindDocumentResizeListener = function () {
+        this.documentResizeListener = this.onWindowResize.bind(this);
+        window.addEventListener('resize', this.documentResizeListener);
+    };
+    TieredMenu.prototype.unbindDocumentResizeListener = function () {
+        if (this.documentResizeListener) {
+            window.removeEventListener('resize', this.documentResizeListener);
+            this.documentResizeListener = null;
+        }
+    };
+    TieredMenu.prototype.onOverlayHide = function () {
+        this.unbindDocumentClickListener();
+        this.unbindDocumentResizeListener();
+        this.preventDocumentDefault = false;
+        this.target = null;
+    };
     TieredMenu.prototype.ngOnDestroy = function () {
         if (this.popup) {
-            if (this.documentClickListener) {
-                this.unbindDocumentClickListener();
-            }
-            if (this.appendTo) {
-                this.el.nativeElement.appendChild(this.container);
-            }
+            this.restoreOverlayAppend();
+            this.onOverlayHide();
         }
     };
     TieredMenu.decorators = [
         { type: core_1.Component, args: [{
                     selector: 'p-tieredMenu',
-                    template: "\n        <div [ngClass]=\"{'ui-tieredmenu ui-widget ui-widget-content ui-corner-all':true, 'ui-tieredmenu-dynamic ui-shadow':popup}\" \n            [class]=\"styleClass\" [ngStyle]=\"style\">\n            <p-tieredMenuSub [item]=\"model\" root=\"root\" [baseZIndex]=\"baseZIndex\" [autoZIndex]=\"autoZIndex\" [hideDelay]=\"hideDelay\"></p-tieredMenuSub>\n        </div>\n    ",
+                    template: "\n        <div [ngClass]=\"{'ui-tieredmenu ui-widget ui-widget-content ui-corner-all':true, 'ui-tieredmenu-dynamic ui-shadow':popup}\" [class]=\"styleClass\" [ngStyle]=\"style\"\n            [@overlayAnimation]=\"{value: 'visible', params: {showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions}}\" [@.disabled]=\"popup !== true\" (@overlayAnimation.start)=\"onOverlayAnimationStart($event)\" *ngIf=\"!popup || visible\">\n            <p-tieredMenuSub [item]=\"model\" root=\"root\" [baseZIndex]=\"baseZIndex\" [autoZIndex]=\"autoZIndex\" [hideDelay]=\"hideDelay\"></p-tieredMenuSub>\n        </div>\n    ",
+                    animations: [
+                        animations_1.trigger('overlayAnimation', [
+                            animations_1.state('void', animations_1.style({
+                                transform: 'translateY(5%)',
+                                opacity: 0
+                            })),
+                            animations_1.state('visible', animations_1.style({
+                                transform: 'translateY(0)',
+                                opacity: 1
+                            })),
+                            animations_1.transition('void => visible', animations_1.animate('{{showTransitionParams}}')),
+                            animations_1.transition('visible => void', animations_1.animate('{{hideTransitionParams}}'))
+                        ])
+                    ],
                     providers: [domhandler_1.DomHandler]
                 },] },
     ];
@@ -167,7 +220,9 @@ var TieredMenu = /** @class */ (function () {
         appendTo: [{ type: core_1.Input }],
         autoZIndex: [{ type: core_1.Input }],
         baseZIndex: [{ type: core_1.Input }],
-        hideDelay: [{ type: core_1.Input }]
+        hideDelay: [{ type: core_1.Input }],
+        showTransitionOptions: [{ type: core_1.Input }],
+        hideTransitionOptions: [{ type: core_1.Input }]
     };
     return TieredMenu;
 }());
