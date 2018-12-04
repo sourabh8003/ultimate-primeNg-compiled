@@ -20,6 +20,7 @@ export declare class MultiSelect implements OnInit, AfterViewInit, AfterContentI
     panelStyleClass: string;
     inputId: string;
     disabled: boolean;
+    readonly: boolean;
     filter: boolean;
     filterPlaceHolder: string;
     overlayVisible: boolean;
@@ -38,6 +39,7 @@ export declare class MultiSelect implements OnInit, AfterViewInit, AfterContentI
     showHeader: boolean;
     autoZIndex: boolean;
     baseZIndex: number;
+    filterBy: string;
     showTransitionOptions: string;
     hideTransitionOptions: string;
     containerViewChild: ElementRef;
@@ -64,9 +66,12 @@ export declare class MultiSelect implements OnInit, AfterViewInit, AfterContentI
     filtered: boolean;
     itemTemplate: TemplateRef<any>;
     selectedItemsTemplate: TemplateRef<any>;
-    focusedItemCheckbox: HTMLInputElement | null;
+    headerCheckboxFocus: boolean;
     _options: any[];
     maxSelectionLimitReached: boolean;
+    documentResizeListener: any;
+    focusedOption: any;
+    focusedIndex: number;
     constructor(el: ElementRef, domHandler: DomHandler, renderer: Renderer2, objectUtils: ObjectUtils, cd: ChangeDetectorRef);
     options: any[];
     ngOnInit(): void;
@@ -81,7 +86,7 @@ export declare class MultiSelect implements OnInit, AfterViewInit, AfterContentI
     onItemClick(event: any, option: any): void;
     isSelected(value: any): boolean;
     findSelectionIndex(val: any): number;
-    toggleAll(event: any, checkbox: any): void;
+    toggleAll(event: any): void;
     isAllChecked(): boolean;
     getEnabledOptionCount(): number;
     show(): void;
@@ -94,14 +99,22 @@ export declare class MultiSelect implements OnInit, AfterViewInit, AfterContentI
     onMouseclick(event: any, input: any): void;
     onInputFocus(event: any): void;
     onInputBlur(event: any): void;
-    onInputKeydown(event: any): void;
+    onKeyDown(event: KeyboardEvent): void;
+    findNextOption(row: any): any;
+    findPrevOption(row: any): any;
     updateLabel(): void;
     findLabelByValue(val: any): string;
-    onFilter(event: any): void;
+    onFilter(): void;
+    activateFilter(): void;
     isItemVisible(option: SelectItem): boolean;
     getVisibleOptions(): SelectItem[];
+    onHeaderCheckboxFocus(): void;
+    onHeaderCheckboxBlur(): void;
     bindDocumentClickListener(): void;
     unbindDocumentClickListener(): void;
+    bindDocumentResizeListener(): void;
+    unbindDocumentResizeListener(): void;
+    onWindowResize(): void;
     onOverlayHide(): void;
     ngOnDestroy(): void;
 }

@@ -1,4 +1,13 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var testing_1 = require("@angular/core/testing");
 var platform_browser_1 = require("@angular/platform-browser");
@@ -9,7 +18,6 @@ var api_1 = require("../common/api");
 var TestConfirmDialogComponent = /** @class */ (function () {
     function TestConfirmDialogComponent(confirmationService) {
         this.confirmationService = confirmationService;
-        this.msgs = [];
     }
     TestConfirmDialogComponent.prototype.confirm1 = function () {
         var _this = this;
@@ -18,27 +26,23 @@ var TestConfirmDialogComponent = /** @class */ (function () {
             header: 'Confirmation',
             icon: 'pi pi-exclamation-triangle',
             accept: function () {
-                _this.msgs = [{ severity: 'info', summary: 'Confirmed', detail: 'You have accepted' }];
+                _this.header = "accept";
             },
             reject: function () {
-                _this.msgs = [{ severity: 'info', summary: 'Rejected', detail: 'You have rejected' }];
+                _this.header = "reject";
             }
         });
     };
-    TestConfirmDialogComponent.decorators = [
-        { type: core_1.Component, args: [{
-                    template: "<p-confirmDialog></p-confirmDialog>\n\n  <button type=\"button\" (click)=\"confirm1()\" pButton icon=\"pi pi-check\" label=\"Confirm\"></button>\n    \n  <p-messages [value]=\"msgs\"></p-messages>"
-                },] },
-    ];
-    /** @nocollapse */
-    TestConfirmDialogComponent.ctorParameters = function () { return [
-        { type: api_1.ConfirmationService }
-    ]; };
+    TestConfirmDialogComponent = __decorate([
+        core_1.Component({
+            template: "<p-confirmDialog></p-confirmDialog>\n\n  <button type=\"button\" (click)=\"confirm1()\" pButton icon=\"pi pi-check\" label=\"Confirm\"></button>"
+        }),
+        __metadata("design:paramtypes", [api_1.ConfirmationService])
+    ], TestConfirmDialogComponent);
     return TestConfirmDialogComponent;
 }());
 describe('ConfirmDialog', function () {
     var confirmDialog;
-    var testComponent;
     var fixture;
     beforeEach(function () {
         testing_1.TestBed.configureTestingModule({
@@ -56,7 +60,6 @@ describe('ConfirmDialog', function () {
         });
         fixture = testing_1.TestBed.createComponent(TestConfirmDialogComponent);
         confirmDialog = fixture.debugElement.query(platform_browser_1.By.css('p-confirmDialog')).componentInstance;
-        testComponent = fixture.debugElement.componentInstance;
     });
     it('should display the header', function () {
         confirmDialog.header = "PrimengRocks!";
@@ -120,28 +123,20 @@ describe('ConfirmDialog', function () {
         expect(fixture.debugElement.query(platform_browser_1.By.css('.ui-dialog-footer')).children[1]).toBeFalsy();
     });
     it('should run accept', function () {
-        var messagesEl = fixture.debugElement.query(platform_browser_1.By.css('p-messages'));
         var confirmEl = fixture.debugElement.query(platform_browser_1.By.css('button')).nativeElement;
         confirmEl.click();
         fixture.detectChanges();
         var acceptButtonEl = fixture.debugElement.query(platform_browser_1.By.css('.ui-dialog-footer')).children[0].nativeElement;
         acceptButtonEl.click();
-        fixture.detectChanges();
-        expect(messagesEl.nativeElement.value[0]).toBeTruthy();
-        expect(messagesEl.nativeElement.value[0].summary).toContain("Confirmed");
-        expect(messagesEl.nativeElement.value[0].detail).toContain("You have accepted");
+        expect(fixture.componentInstance.header).toEqual("accept");
     });
     it('should run reject', function () {
-        var messagesEl = fixture.debugElement.query(platform_browser_1.By.css('p-messages'));
         var confirmEl = fixture.debugElement.query(platform_browser_1.By.css('button')).nativeElement;
         confirmEl.click();
         fixture.detectChanges();
-        var acceptButtonEl = fixture.debugElement.query(platform_browser_1.By.css('.ui-dialog-footer')).children[1].nativeElement;
-        acceptButtonEl.click();
-        fixture.detectChanges();
-        expect(messagesEl.nativeElement.value[0]).toBeTruthy();
-        expect(messagesEl.nativeElement.value[0].summary).toContain("Rejected");
-        expect(messagesEl.nativeElement.value[0].detail).toContain("You have rejected");
+        var rejectButtonEl = fixture.debugElement.query(platform_browser_1.By.css('.ui-dialog-footer')).children[1].nativeElement;
+        rejectButtonEl.click();
+        expect(fixture.componentInstance.header).toEqual("reject");
     });
 });
 //# sourceMappingURL=confirmdialog.spec.js.map

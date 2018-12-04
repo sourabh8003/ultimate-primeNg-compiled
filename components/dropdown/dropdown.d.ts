@@ -85,6 +85,7 @@ export declare class Dropdown implements OnInit, AfterViewInit, AfterContentInit
     searchTimeout: any;
     previousSearchChar: string;
     currentSearchChar: string;
+    documentResizeListener: any;
     constructor(el: ElementRef, domHandler: DomHandler, renderer: Renderer2, cd: ChangeDetectorRef, objectUtils: ObjectUtils, zone: NgZone);
     ngAfterContentInit(): void;
     ngOnInit(): void;
@@ -131,6 +132,9 @@ export declare class Dropdown implements OnInit, AfterViewInit, AfterContentInit
     bindDocumentClickListener(): void;
     clearClickState(): void;
     unbindDocumentClickListener(): void;
+    bindDocumentResizeListener(): void;
+    unbindDocumentResizeListener(): void;
+    onWindowResize(): void;
     updateFilledState(): void;
     clear(event: Event): void;
     onOverlayHide(): void;

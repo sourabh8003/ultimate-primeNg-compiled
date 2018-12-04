@@ -1,4 +1,13 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
@@ -58,58 +67,95 @@ var Panel = /** @class */ (function () {
         this.animating = false;
         this.onAfterToggle.emit({ originalEvent: event, collapsed: this.collapsed });
     };
-    Panel.decorators = [
-        { type: core_1.Component, args: [{
-                    selector: 'p-panel',
-                    template: "\n        <div [attr.id]=\"id\" [ngClass]=\"'ui-panel ui-widget ui-widget-content ui-corner-all'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div [ngClass]=\"{'ui-panel-titlebar ui-widget-header ui-helper-clearfix ui-corner-all': true, 'ui-panel-titlebar-clickable': (toggleable && toggler === 'header')}\" \n                *ngIf=\"showHeader\" (click)=\"onHeaderClick($event)\">\n                <span class=\"ui-panel-title\" *ngIf=\"header\">{{header}}</span>\n                <ng-content select=\"p-header\"></ng-content>\n                <a *ngIf=\"toggleable\" [attr.id]=\"id + '-label'\" class=\"ui-panel-titlebar-icon ui-panel-titlebar-toggler ui-corner-all ui-state-default\" href=\"#\"\n                    (click)=\"onIconClick($event)\" [attr.aria-controls]=\"id + '-content'\" role=\"tab\" [attr.aria-expanded]=\"!collapsed\">\n                    <span [class]=\"collapsed ? expandIcon : collapseIcon\"></span>\n                </a>\n            </div>\n            <div [attr.id]=\"id + '-content'\" class=\"ui-panel-content-wrapper\" [@panelContent]=\"collapsed ? {value: 'hidden', params: {transitionParams: transitionOptions}} : {value: 'visible', params: {transitionParams: transitionOptions}}\" (@panelContent.done)=\"onToggleDone($event)\"\n                [ngClass]=\"{'ui-panel-content-wrapper-overflown': collapsed||animating}\"\n                role=\"region\" [attr.aria-hidden]=\"collapsed\" [attr.aria-labelledby]=\"id + '-label'\">\n                <div class=\"ui-panel-content ui-widget-content\">\n                    <ng-content></ng-content>\n                </div>\n                \n                <div class=\"ui-panel-footer ui-widget-content\" *ngIf=\"footerFacet\">\n                    <ng-content select=\"p-footer\"></ng-content>\n                </div>\n            </div>\n        </div>\n    ",
-                    animations: [
-                        animations_1.trigger('panelContent', [
-                            animations_1.state('hidden', animations_1.style({
-                                height: '0',
-                                opacity: 0
-                            })),
-                            animations_1.state('visible', animations_1.style({
-                                height: '*',
-                                opacity: 1
-                            })),
-                            animations_1.transition('visible <=> hidden', animations_1.animate('{{transitionParams}}'))
-                        ])
-                    ]
-                },] },
-    ];
-    /** @nocollapse */
-    Panel.ctorParameters = function () { return [
-        { type: core_1.ElementRef }
-    ]; };
-    Panel.propDecorators = {
-        toggleable: [{ type: core_1.Input }],
-        header: [{ type: core_1.Input }],
-        collapsed: [{ type: core_1.Input }],
-        style: [{ type: core_1.Input }],
-        styleClass: [{ type: core_1.Input }],
-        expandIcon: [{ type: core_1.Input }],
-        collapseIcon: [{ type: core_1.Input }],
-        showHeader: [{ type: core_1.Input }],
-        toggler: [{ type: core_1.Input }],
-        collapsedChange: [{ type: core_1.Output }],
-        onBeforeToggle: [{ type: core_1.Output }],
-        onAfterToggle: [{ type: core_1.Output }],
-        transitionOptions: [{ type: core_1.Input }],
-        footerFacet: [{ type: core_1.ContentChild, args: [shared_1.Footer,] }]
-    };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], Panel.prototype, "toggleable", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Panel.prototype, "header", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], Panel.prototype, "collapsed", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], Panel.prototype, "style", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Panel.prototype, "styleClass", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Panel.prototype, "expandIcon", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Panel.prototype, "collapseIcon", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], Panel.prototype, "showHeader", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Panel.prototype, "toggler", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], Panel.prototype, "collapsedChange", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], Panel.prototype, "onBeforeToggle", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], Panel.prototype, "onAfterToggle", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], Panel.prototype, "transitionOptions", void 0);
+    __decorate([
+        core_1.ContentChild(shared_1.Footer),
+        __metadata("design:type", Object)
+    ], Panel.prototype, "footerFacet", void 0);
+    Panel = __decorate([
+        core_1.Component({
+            selector: 'p-panel',
+            template: "\n        <div [attr.id]=\"id\" [ngClass]=\"'ui-panel ui-widget ui-widget-content ui-corner-all'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div [ngClass]=\"{'ui-panel-titlebar ui-widget-header ui-helper-clearfix ui-corner-all': true, 'ui-panel-titlebar-clickable': (toggleable && toggler === 'header')}\" \n                *ngIf=\"showHeader\" (click)=\"onHeaderClick($event)\">\n                <span class=\"ui-panel-title\" *ngIf=\"header\">{{header}}</span>\n                <ng-content select=\"p-header\"></ng-content>\n                <a *ngIf=\"toggleable\" [attr.id]=\"id + '-label'\" class=\"ui-panel-titlebar-icon ui-panel-titlebar-toggler ui-corner-all ui-state-default\" tabindex=\"0\"\n                    (click)=\"onIconClick($event)\" (keydown.enter)=\"onIconClick($event)\" [attr.aria-controls]=\"id + '-content'\" role=\"tab\" [attr.aria-expanded]=\"!collapsed\">\n                    <span [class]=\"collapsed ? expandIcon : collapseIcon\"></span>\n                </a>\n            </div>\n            <div [attr.id]=\"id + '-content'\" class=\"ui-panel-content-wrapper\" [@panelContent]=\"collapsed ? {value: 'hidden', params: {transitionParams: transitionOptions}} : {value: 'visible', params: {transitionParams: transitionOptions}}\" (@panelContent.done)=\"onToggleDone($event)\"\n                [ngClass]=\"{'ui-panel-content-wrapper-overflown': collapsed||animating}\"\n                role=\"region\" [attr.aria-hidden]=\"collapsed\" [attr.aria-labelledby]=\"id + '-label'\">\n                <div class=\"ui-panel-content ui-widget-content\">\n                    <ng-content></ng-content>\n                </div>\n                \n                <div class=\"ui-panel-footer ui-widget-content\" *ngIf=\"footerFacet\">\n                    <ng-content select=\"p-footer\"></ng-content>\n                </div>\n            </div>\n        </div>\n    ",
+            animations: [
+                animations_1.trigger('panelContent', [
+                    animations_1.state('hidden', animations_1.style({
+                        height: '0',
+                        opacity: 0
+                    })),
+                    animations_1.state('visible', animations_1.style({
+                        height: '*',
+                        opacity: 1
+                    })),
+                    animations_1.transition('visible <=> hidden', animations_1.animate('{{transitionParams}}'))
+                ])
+            ]
+        }),
+        __metadata("design:paramtypes", [core_1.ElementRef])
+    ], Panel);
     return Panel;
 }());
 exports.Panel = Panel;
 var PanelModule = /** @class */ (function () {
     function PanelModule() {
     }
-    PanelModule.decorators = [
-        { type: core_1.NgModule, args: [{
-                    imports: [common_1.CommonModule],
-                    exports: [Panel, shared_1.SharedModule],
-                    declarations: [Panel]
-                },] },
-    ];
+    PanelModule = __decorate([
+        core_1.NgModule({
+            imports: [common_1.CommonModule],
+            exports: [Panel, shared_1.SharedModule],
+            declarations: [Panel]
+        })
+    ], PanelModule);
     return PanelModule;
 }());
 exports.PanelModule = PanelModule;

@@ -1,4 +1,13 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var animations_1 = require("@angular/animations");
@@ -31,6 +40,7 @@ var MultiSelect = /** @class */ (function () {
         this.showHeader = true;
         this.autoZIndex = true;
         this.baseZIndex = 0;
+        this.filterBy = 'label';
         this.showTransitionOptions = '225ms ease-out';
         this.hideTransitionOptions = '195ms ease-in';
         this.onChange = new core_1.EventEmitter();
@@ -132,6 +142,7 @@ var MultiSelect = /** @class */ (function () {
                 this.maxSelectionLimitReached = true;
             }
         }
+        this.focusedOption = option;
         this.onModelChange(this.value);
         this.onChange.emit({ originalEvent: event, value: this.value, itemValue: value });
         this.updateLabel();
@@ -152,8 +163,8 @@ var MultiSelect = /** @class */ (function () {
         }
         return index;
     };
-    MultiSelect.prototype.toggleAll = function (event, checkbox) {
-        if (checkbox.checked) {
+    MultiSelect.prototype.toggleAll = function (event) {
+        if (this.isAllChecked()) {
             this.value = [];
         }
         else {
@@ -168,7 +179,6 @@ var MultiSelect = /** @class */ (function () {
                 }
             }
         }
-        checkbox.checked = !checkbox.checked;
         this.onModelChange(this.value);
         this.onChange.emit({ originalEvent: event, value: this.value });
         this.updateLabel();
@@ -198,7 +208,17 @@ var MultiSelect = /** @class */ (function () {
         }
     };
     MultiSelect.prototype.show = function () {
-        this.overlayVisible = true;
+        var _this = this;
+        if (!this.overlayVisible) {
+            this.overlayVisible = true;
+        }
+        if (this.filter) {
+            setTimeout(function () {
+                if (_this.filterInputChild != undefined) {
+                    _this.filterInputChild.nativeElement.focus();
+                }
+            }, 200);
+        }
         this.bindDocumentClickListener();
     };
     MultiSelect.prototype.onOverlayAnimationStart = function (event) {
@@ -211,6 +231,7 @@ var MultiSelect = /** @class */ (function () {
                 }
                 this.alignOverlay();
                 this.bindDocumentClickListener();
+                this.bindDocumentResizeListener();
                 this.onPanelShow.emit();
                 break;
             case 'void':
@@ -244,8 +265,8 @@ var MultiSelect = /** @class */ (function () {
         this.overlayVisible = false;
         this.unbindDocumentClickListener();
         if (this.resetFilterOnHide) {
-            this.filterValue = null;
-            this.filterInputChild.nativeElement.value = null;
+            this.filterInputChild.nativeElement.value = '';
+            this.onFilter();
         }
         this.onPanelHide.emit();
     };
@@ -255,7 +276,7 @@ var MultiSelect = /** @class */ (function () {
         event.stopPropagation();
     };
     MultiSelect.prototype.onMouseclick = function (event, input) {
-        if (this.disabled) {
+        if (this.disabled || this.readonly) {
             return;
         }
         if (!this.panelClick) {
@@ -278,20 +299,90 @@ var MultiSelect = /** @class */ (function () {
         this.onBlur.emit({ originalEvent: event });
         this.onModelTouched();
     };
-    MultiSelect.prototype.onInputKeydown = function (event) {
+    MultiSelect.prototype.onKeyDown = function (event) {
+        var currentOption, opts;
+        if (this.readonly) {
+            return;
+        }
+        if (this.overlayVisible) {
+            opts = this.getVisibleOptions();
+            currentOption = event.target;
+            this.focusedIndex = this.domHandler.indexWithDisplay(currentOption);
+            this.focusedOption = opts[this.focusedIndex];
+        }
         switch (event.which) {
             //down
             case 40:
                 if (!this.overlayVisible && event.altKey) {
                     this.show();
                 }
+                if (this.overlayVisible) {
+                    var nextOption = this.findNextOption(currentOption);
+                    this.focusedIndex = this.focusedIndex + 1;
+                    if (this.focusedIndex != (opts.length)) {
+                        this.focusedOption = opts[this.focusedIndex];
+                    }
+                    if (nextOption) {
+                        nextOption.focus();
+                    }
+                }
                 event.preventDefault();
                 break;
-            //escape and tab
-            case 27:
-            case 9:
-                this.hide();
+            //up
+            case 38:
+                if (this.overlayVisible) {
+                    var prevOption = this.findPrevOption(currentOption);
+                    this.focusedIndex = this.focusedIndex - 1;
+                    this.focusedOption = opts[this.focusedIndex];
+                    if (prevOption) {
+                        prevOption.focus();
+                    }
+                }
+                event.preventDefault();
                 break;
+            //enter
+            case 13:
+                if (this.overlayVisible) {
+                    if (this.focusedOption) {
+                        this.onItemClick(event, this.focusedOption);
+                    }
+                }
+                event.preventDefault();
+                break;
+            //space
+            case 32:
+                if (!this.overlayVisible) {
+                    this.show();
+                    event.preventDefault();
+                }
+                break;
+            //escape
+            case 27:
+                this.hide();
+        }
+    };
+    MultiSelect.prototype.findNextOption = function (row) {
+        var nextOption = row.nextElementSibling;
+        if (nextOption) {
+            if (this.domHandler.hasClass(nextOption, 'ui-multiselect-item') && nextOption.style.display == 'block')
+                return nextOption;
+            else
+                return this.findNextOption(nextOption);
+        }
+        else {
+            return null;
+        }
+    };
+    MultiSelect.prototype.findPrevOption = function (row) {
+        var prevOption = row.previousElementSibling;
+        if (prevOption) {
+            if (this.domHandler.hasClass(prevOption, 'ui-multiselect-item') && prevOption.style.display == 'block')
+                return prevOption;
+            else
+                return this.findPrevOption(prevOption);
+        }
+        else {
+            return null;
         }
     };
     MultiSelect.prototype.updateLabel = function () {
@@ -331,16 +422,27 @@ var MultiSelect = /** @class */ (function () {
         }
         return label;
     };
-    MultiSelect.prototype.onFilter = function (event) {
-        this.filterValue = event.target.value.trim().toLowerCase();
-        this.visibleOptions = [];
-        for (var i = 0; i < this.options.length; i++) {
-            var option = this.options[i];
-            if (option.label.toLowerCase().indexOf(this.filterValue.toLowerCase()) > -1) {
-                this.visibleOptions.push(option);
-            }
+    MultiSelect.prototype.onFilter = function () {
+        var inputValue = this.filterInputChild.nativeElement.value.trim().toLowerCase();
+        if (inputValue && inputValue.length) {
+            this.filterValue = inputValue;
+            this.visibleOptions = [];
+            this.activateFilter();
         }
-        this.filtered = true;
+        else {
+            this.filterValue = null;
+            this.visibleOptions = this.options;
+            this.filtered = false;
+        }
+        this.focusedOption = null;
+        this.focusedIndex = null;
+    };
+    MultiSelect.prototype.activateFilter = function () {
+        if (this.options && this.options.length) {
+            var searchFields = this.filterBy.split(',');
+            this.visibleOptions = this.objectUtils.filter(this.options, searchFields, this.filterValue);
+            this.filtered = true;
+        }
     };
     MultiSelect.prototype.isItemVisible = function (option) {
         if (this.filterValue && this.filterValue.trim().length) {
@@ -362,6 +464,12 @@ var MultiSelect = /** @class */ (function () {
             return this.options;
         }
     };
+    MultiSelect.prototype.onHeaderCheckboxFocus = function () {
+        this.headerCheckboxFocus = true;
+    };
+    MultiSelect.prototype.onHeaderCheckboxBlur = function () {
+        this.headerCheckboxFocus = false;
+    };
     MultiSelect.prototype.bindDocumentClickListener = function () {
         var _this = this;
         if (!this.documentClickListener) {
@@ -381,100 +489,235 @@ var MultiSelect = /** @class */ (function () {
             this.documentClickListener = null;
         }
     };
+    MultiSelect.prototype.bindDocumentResizeListener = function () {
+        this.documentResizeListener = this.onWindowResize.bind(this);
+        window.addEventListener('resize', this.documentResizeListener);
+    };
+    MultiSelect.prototype.unbindDocumentResizeListener = function () {
+        if (this.documentResizeListener) {
+            window.removeEventListener('resize', this.documentResizeListener);
+            this.documentResizeListener = null;
+        }
+    };
+    MultiSelect.prototype.onWindowResize = function () {
+        this.hide();
+    };
     MultiSelect.prototype.onOverlayHide = function () {
         this.unbindDocumentClickListener();
+        this.unbindDocumentResizeListener();
         this.overlay = null;
     };
     MultiSelect.prototype.ngOnDestroy = function () {
         this.restoreOverlayAppend();
         this.onOverlayHide();
     };
-    MultiSelect.decorators = [
-        { type: core_1.Component, args: [{
-                    selector: 'p-multiSelect',
-                    template: "\n        <div #container [ngClass]=\"{'ui-multiselect ui-widget ui-state-default ui-corner-all':true,'ui-multiselect-open':overlayVisible,'ui-state-focus':focus,'ui-state-disabled': disabled}\" [ngStyle]=\"style\" [class]=\"styleClass\"\n            (click)=\"onMouseclick($event,in)\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #in type=\"text\" readonly=\"readonly\" [attr.id]=\"inputId\" [attr.name]=\"name\" (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\" [disabled]=\"disabled\" [attr.tabindex]=\"tabindex\" (keydown)=\"onInputKeydown($event)\">\n            </div>\n            <div class=\"ui-multiselect-label-container\" [title]=\"valuesAsString\">\n                <label class=\"ui-multiselect-label ui-corner-all\">\n                    <ng-container *ngIf=\"!selectedItemsTemplate\">{{valuesAsString}}</ng-container>\n                    <ng-container *ngTemplateOutlet=\"selectedItemsTemplate; context: {$implicit: value}\"></ng-container>\n                </label>\n            </div>\n            <div [ngClass]=\"{'ui-multiselect-trigger ui-state-default ui-corner-right':true}\">\n                <span class=\"ui-multiselect-trigger-icon ui-clickable\" [ngClass]=\"dropdownIcon\"></span>\n            </div>\n            <div *ngIf=\"overlayVisible\" [ngClass]=\"['ui-multiselect-panel ui-widget ui-widget-content ui-corner-all ui-shadow']\" [@overlayAnimation]=\"{value: 'visible', params: {showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions}}\" (@overlayAnimation.start)=\"onOverlayAnimationStart($event)\"\n                [ngStyle]=\"panelStyle\" [class]=\"panelStyleClass\" (click)=\"panelClick=true\">\n                <div class=\"ui-widget-header ui-corner-all ui-multiselect-header ui-helper-clearfix\" [ngClass]=\"{'ui-multiselect-header-no-toggleall': !showToggleAll}\" *ngIf=\"showHeader\">\n                    <div class=\"ui-chkbox ui-widget\" *ngIf=\"showToggleAll && !selectionLimit\">\n                        <div class=\"ui-helper-hidden-accessible\">\n                            <input #cb type=\"checkbox\" readonly=\"readonly\" [checked]=\"isAllChecked()\">\n                        </div>\n                        <div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\" [ngClass]=\"{'ui-state-active':isAllChecked()}\" (click)=\"toggleAll($event,cb)\">\n                            <span class=\"ui-chkbox-icon ui-clickable\" [ngClass]=\"{'pi pi-check':isAllChecked()}\"></span>\n                        </div>\n                    </div>\n                    <div class=\"ui-multiselect-filter-container\" *ngIf=\"filter\">\n                        <input #filterInput type=\"text\" role=\"textbox\" [value]=\"filterValue||''\" (input)=\"onFilter($event)\" class=\"ui-inputtext ui-widget ui-state-default ui-corner-all\" [attr.placeholder]=\"filterPlaceHolder\">\n                        <span class=\"ui-multiselect-filter-icon pi pi-search\"></span>\n                    </div>\n                    <a class=\"ui-multiselect-close ui-corner-all\" href=\"#\" (click)=\"close($event)\">\n                        <span class=\"pi pi-times\"></span>\n                    </a>\n                </div>\n                <div class=\"ui-multiselect-items-wrapper\" [style.max-height]=\"scrollHeight||'auto'\">\n                    <ul class=\"ui-multiselect-items ui-multiselect-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\">\n                        <li *ngFor=\"let option of options; let i = index\" class=\"ui-multiselect-item ui-corner-all\" (click)=\"onItemClick($event,option)\"\n                            [style.display]=\"isItemVisible(option) ? 'block' : 'none'\"\n                            [ngClass]=\"{'ui-state-highlight': isSelected(option.value), 'ui-state-disabled': option.disabled || (maxSelectionLimitReached && !isSelected(option.value))}\">\n                            <div class=\"ui-chkbox ui-widget\">\n                                <div class=\"ui-helper-hidden-accessible\">\n                                    <input #itemcb type=\"checkbox\" readonly=\"readonly\" [checked]=\"isSelected(option.value)\" (focus)=\"focusedItemCheckbox=itemcb\" (blur)=\"focusedItemCheckbox=null\"\n                                        [attr.aria-label]=\"option.label\" [disabled]=\"option.disabled || (maxSelectionLimitReached && !isSelected(option.value))\">\n                                </div>\n                                <div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\"\n                                    [ngClass]=\"{'ui-state-active': isSelected(option.value),\n                                                'ui-state-focus': (focusedItemCheckbox === itemcb)}\">\n                                    <span class=\"ui-chkbox-icon ui-clickable\" [ngClass]=\"{'pi pi-check':isSelected(option.value)}\"></span>\n                                </div>\n                            </div>\n                            <label *ngIf=\"!itemTemplate\">{{option.label}}</label>\n                            <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: option, index: i}\"></ng-container>\n                        </li>\n                    </ul>\n                </div>\n                <div class=\"ui-multiselect-footer ui-widget-content\" *ngIf=\"footerFacet\">\n                    <ng-content select=\"p-footer\"></ng-content>\n                </div>\n            </div>\n        </div>\n    ",
-                    animations: [
-                        animations_1.trigger('overlayAnimation', [
-                            animations_1.state('void', animations_1.style({
-                                transform: 'translateY(5%)',
-                                opacity: 0
-                            })),
-                            animations_1.state('visible', animations_1.style({
-                                transform: 'translateY(0)',
-                                opacity: 1
-                            })),
-                            animations_1.transition('void => visible', animations_1.animate('{{showTransitionParams}}')),
-                            animations_1.transition('visible => void', animations_1.animate('{{hideTransitionParams}}'))
-                        ])
-                    ],
-                    host: {
-                        '[class.ui-inputwrapper-filled]': 'filled',
-                        '[class.ui-inputwrapper-focus]': 'focus'
-                    },
-                    providers: [domhandler_1.DomHandler, objectutils_1.ObjectUtils, exports.MULTISELECT_VALUE_ACCESSOR]
-                },] },
-    ];
-    /** @nocollapse */
-    MultiSelect.ctorParameters = function () { return [
-        { type: core_1.ElementRef },
-        { type: domhandler_1.DomHandler },
-        { type: core_1.Renderer2 },
-        { type: objectutils_1.ObjectUtils },
-        { type: core_1.ChangeDetectorRef }
-    ]; };
-    MultiSelect.propDecorators = {
-        scrollHeight: [{ type: core_1.Input }],
-        defaultLabel: [{ type: core_1.Input }],
-        style: [{ type: core_1.Input }],
-        styleClass: [{ type: core_1.Input }],
-        panelStyle: [{ type: core_1.Input }],
-        panelStyleClass: [{ type: core_1.Input }],
-        inputId: [{ type: core_1.Input }],
-        disabled: [{ type: core_1.Input }],
-        filter: [{ type: core_1.Input }],
-        filterPlaceHolder: [{ type: core_1.Input }],
-        overlayVisible: [{ type: core_1.Input }],
-        tabindex: [{ type: core_1.Input }],
-        appendTo: [{ type: core_1.Input }],
-        dataKey: [{ type: core_1.Input }],
-        name: [{ type: core_1.Input }],
-        displaySelectedLabel: [{ type: core_1.Input }],
-        maxSelectedLabels: [{ type: core_1.Input }],
-        selectionLimit: [{ type: core_1.Input }],
-        selectedItemsLabel: [{ type: core_1.Input }],
-        showToggleAll: [{ type: core_1.Input }],
-        resetFilterOnHide: [{ type: core_1.Input }],
-        dropdownIcon: [{ type: core_1.Input }],
-        optionLabel: [{ type: core_1.Input }],
-        showHeader: [{ type: core_1.Input }],
-        autoZIndex: [{ type: core_1.Input }],
-        baseZIndex: [{ type: core_1.Input }],
-        showTransitionOptions: [{ type: core_1.Input }],
-        hideTransitionOptions: [{ type: core_1.Input }],
-        containerViewChild: [{ type: core_1.ViewChild, args: ['container',] }],
-        filterInputChild: [{ type: core_1.ViewChild, args: ['filterInput',] }],
-        footerFacet: [{ type: core_1.ContentChild, args: [shared_1.Footer,] }],
-        templates: [{ type: core_1.ContentChildren, args: [shared_1.PrimeTemplate,] }],
-        onChange: [{ type: core_1.Output }],
-        onFocus: [{ type: core_1.Output }],
-        onBlur: [{ type: core_1.Output }],
-        onPanelShow: [{ type: core_1.Output }],
-        onPanelHide: [{ type: core_1.Output }],
-        options: [{ type: core_1.Input }]
-    };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], MultiSelect.prototype, "scrollHeight", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String),
+        __metadata("design:paramtypes", [String])
+    ], MultiSelect.prototype, "defaultLabel", null);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], MultiSelect.prototype, "style", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], MultiSelect.prototype, "styleClass", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], MultiSelect.prototype, "panelStyle", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], MultiSelect.prototype, "panelStyleClass", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], MultiSelect.prototype, "inputId", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], MultiSelect.prototype, "disabled", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], MultiSelect.prototype, "readonly", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], MultiSelect.prototype, "filter", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], MultiSelect.prototype, "filterPlaceHolder", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], MultiSelect.prototype, "overlayVisible", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Number)
+    ], MultiSelect.prototype, "tabindex", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], MultiSelect.prototype, "appendTo", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], MultiSelect.prototype, "dataKey", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], MultiSelect.prototype, "name", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], MultiSelect.prototype, "displaySelectedLabel", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Number)
+    ], MultiSelect.prototype, "maxSelectedLabels", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Number)
+    ], MultiSelect.prototype, "selectionLimit", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], MultiSelect.prototype, "selectedItemsLabel", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], MultiSelect.prototype, "showToggleAll", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], MultiSelect.prototype, "resetFilterOnHide", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], MultiSelect.prototype, "dropdownIcon", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], MultiSelect.prototype, "optionLabel", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], MultiSelect.prototype, "showHeader", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], MultiSelect.prototype, "autoZIndex", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Number)
+    ], MultiSelect.prototype, "baseZIndex", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], MultiSelect.prototype, "filterBy", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], MultiSelect.prototype, "showTransitionOptions", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], MultiSelect.prototype, "hideTransitionOptions", void 0);
+    __decorate([
+        core_1.ViewChild('container'),
+        __metadata("design:type", core_1.ElementRef)
+    ], MultiSelect.prototype, "containerViewChild", void 0);
+    __decorate([
+        core_1.ViewChild('filterInput'),
+        __metadata("design:type", core_1.ElementRef)
+    ], MultiSelect.prototype, "filterInputChild", void 0);
+    __decorate([
+        core_1.ContentChild(shared_1.Footer),
+        __metadata("design:type", Object)
+    ], MultiSelect.prototype, "footerFacet", void 0);
+    __decorate([
+        core_1.ContentChildren(shared_1.PrimeTemplate),
+        __metadata("design:type", core_1.QueryList)
+    ], MultiSelect.prototype, "templates", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], MultiSelect.prototype, "onChange", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], MultiSelect.prototype, "onFocus", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], MultiSelect.prototype, "onBlur", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], MultiSelect.prototype, "onPanelShow", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], MultiSelect.prototype, "onPanelHide", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Array),
+        __metadata("design:paramtypes", [Array])
+    ], MultiSelect.prototype, "options", null);
+    __decorate([
+        core_1.HostListener('keydown', ['$event']),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [KeyboardEvent]),
+        __metadata("design:returntype", void 0)
+    ], MultiSelect.prototype, "onKeyDown", null);
+    MultiSelect = __decorate([
+        core_1.Component({
+            selector: 'p-multiSelect',
+            template: "\n        <div #container [ngClass]=\"{'ui-multiselect ui-widget ui-state-default ui-corner-all':true,'ui-multiselect-open':overlayVisible,'ui-state-focus':focus,'ui-state-disabled': disabled}\" [ngStyle]=\"style\" [class]=\"styleClass\"\n            (click)=\"onMouseclick($event,in)\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #in type=\"text\" readonly=\"readonly\" [attr.id]=\"inputId\" [attr.name]=\"name\" (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\"\n                       [disabled]=\"disabled\" [attr.tabindex]=\"tabindex\">\n            </div>\n            <div class=\"ui-multiselect-label-container\" [title]=\"valuesAsString\">\n                <label class=\"ui-multiselect-label ui-corner-all\">\n                    <ng-container *ngIf=\"!selectedItemsTemplate\">{{valuesAsString}}</ng-container>\n                    <ng-container *ngTemplateOutlet=\"selectedItemsTemplate; context: {$implicit: value}\"></ng-container>\n                </label>\n            </div>\n            <div [ngClass]=\"{'ui-multiselect-trigger ui-state-default ui-corner-right':true}\">\n                <span class=\"ui-multiselect-trigger-icon ui-clickable\" [ngClass]=\"dropdownIcon\"></span>\n            </div>\n            <div *ngIf=\"overlayVisible\" [ngClass]=\"['ui-multiselect-panel ui-widget ui-widget-content ui-corner-all ui-shadow']\" [@overlayAnimation]=\"{value: 'visible', params: {showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions}}\" (@overlayAnimation.start)=\"onOverlayAnimationStart($event)\"\n                [ngStyle]=\"panelStyle\" [class]=\"panelStyleClass\" (click)=\"panelClick=true\">\n                <div class=\"ui-widget-header ui-corner-all ui-multiselect-header ui-helper-clearfix\" [ngClass]=\"{'ui-multiselect-header-no-toggleall': !showToggleAll}\" *ngIf=\"showHeader\">\n                    <div class=\"ui-chkbox ui-widget\" *ngIf=\"showToggleAll && !selectionLimit\">\n                        <div class=\"ui-helper-hidden-accessible\">\n                            <input type=\"checkbox\" readonly=\"readonly\" [checked]=\"isAllChecked()\" (focus)=\"onHeaderCheckboxFocus()\" (blur)=\"onHeaderCheckboxBlur()\" (keydown.space)=\"toggleAll($event)\">\n                        </div>\n                        <div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\" [ngClass]=\"{'ui-state-active':isAllChecked(), 'ui-state-focus': headerCheckboxFocus}\" (click)=\"toggleAll($event)\">\n                            <span class=\"ui-chkbox-icon ui-clickable\" [ngClass]=\"{'pi pi-check':isAllChecked()}\"></span>\n                        </div>\n                    </div>\n                    <div class=\"ui-multiselect-filter-container\" *ngIf=\"filter\">\n                        <input #filterInput type=\"text\" role=\"textbox\" [value]=\"filterValue||''\" (input)=\"onFilter()\" class=\"ui-inputtext ui-widget ui-state-default ui-corner-all\" [attr.placeholder]=\"filterPlaceHolder\">\n                        <span class=\"ui-multiselect-filter-icon pi pi-search\"></span>\n                    </div>\n                    <a class=\"ui-multiselect-close ui-corner-all\" tabindex=\"0\" (click)=\"close($event)\" (keydown.enter)=\"close($event)\">\n                        <span class=\"pi pi-times\"></span>\n                    </a>\n                    <ng-content select=\"p-header\"></ng-content>\n                </div>\n                <div class=\"ui-multiselect-items-wrapper\" [style.max-height]=\"scrollHeight||'auto'\">\n                    <ul class=\"ui-multiselect-items ui-multiselect-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\">\n                        <li *ngFor=\"let option of options; let i = index\" class=\"ui-multiselect-item ui-corner-all\" (click)=\"onItemClick($event,option)\"\n                            [style.display]=\"isItemVisible(option) ? 'block' : 'none'\" [attr.tabindex]=\"0\"\n                            [ngClass]=\"{'ui-state-highlight': isSelected(option.value), 'ui-state-disabled': option.disabled || (maxSelectionLimitReached && !isSelected(option.value))}\">\n                            <div class=\"ui-chkbox ui-widget\">\n                                <div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\"\n                                    [ngClass]=\"{'ui-state-active': isSelected(option.value)}\">\n                                    <span class=\"ui-chkbox-icon ui-clickable\" [ngClass]=\"{'pi pi-check':isSelected(option.value)}\"></span>\n                                </div>\n                            </div>\n                            <label *ngIf=\"!itemTemplate\">{{option.label}}</label>\n                            <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: option, index: i}\"></ng-container>\n                        </li>\n                    </ul>\n                </div>\n                <div class=\"ui-multiselect-footer ui-widget-content\" *ngIf=\"footerFacet\">\n                    <ng-content select=\"p-footer\"></ng-content>\n                </div>\n            </div>\n        </div>\n    ",
+            animations: [
+                animations_1.trigger('overlayAnimation', [
+                    animations_1.state('void', animations_1.style({
+                        transform: 'translateY(5%)',
+                        opacity: 0
+                    })),
+                    animations_1.state('visible', animations_1.style({
+                        transform: 'translateY(0)',
+                        opacity: 1
+                    })),
+                    animations_1.transition('void => visible', animations_1.animate('{{showTransitionParams}}')),
+                    animations_1.transition('visible => void', animations_1.animate('{{hideTransitionParams}}'))
+                ])
+            ],
+            host: {
+                '[class.ui-inputwrapper-filled]': 'filled',
+                '[class.ui-inputwrapper-focus]': 'focus'
+            },
+            providers: [domhandler_1.DomHandler, objectutils_1.ObjectUtils, exports.MULTISELECT_VALUE_ACCESSOR]
+        }),
+        __metadata("design:paramtypes", [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer2, objectutils_1.ObjectUtils, core_1.ChangeDetectorRef])
+    ], MultiSelect);
     return MultiSelect;
 }());
 exports.MultiSelect = MultiSelect;
 var MultiSelectModule = /** @class */ (function () {
     function MultiSelectModule() {
     }
-    MultiSelectModule.decorators = [
-        { type: core_1.NgModule, args: [{
-                    imports: [common_1.CommonModule, shared_1.SharedModule],
-                    exports: [MultiSelect, shared_1.SharedModule],
-                    declarations: [MultiSelect]
-                },] },
-    ];
+    MultiSelectModule = __decorate([
+        core_1.NgModule({
+            imports: [common_1.CommonModule, shared_1.SharedModule],
+            exports: [MultiSelect, shared_1.SharedModule],
+            declarations: [MultiSelect]
+        })
+    ], MultiSelectModule);
     return MultiSelectModule;
 }());
 exports.MultiSelectModule = MultiSelectModule;

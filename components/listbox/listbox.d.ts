@@ -24,6 +24,7 @@ export declare class Listbox implements AfterContentInit, ControlValueAccessor {
     optionLabel: string;
     onChange: EventEmitter<any>;
     onDblClick: EventEmitter<any>;
+    headerCheckboxViewChild: ElementRef;
     headerFacet: any;
     footerFacet: any;
     templates: QueryList<any>;
@@ -36,6 +37,9 @@ export declare class Listbox implements AfterContentInit, ControlValueAccessor {
     optionTouched: boolean;
     focus: boolean;
     _options: any[];
+    headerCheckboxFocus: boolean;
+    focusedIndex: number;
+    focusedOption: any;
     constructor(el: ElementRef, domHandler: DomHandler, objectUtils: ObjectUtils, cd: ChangeDetectorRef);
     options: any[];
     filterValue: string;
@@ -56,10 +60,16 @@ export declare class Listbox implements AfterContentInit, ControlValueAccessor {
     getEnabledOptionCount(): number;
     allFilteredSelected(): boolean;
     onFilter(event: any): void;
-    toggleAll(event: any, checkbox: any): void;
+    toggleAll(event: any): void;
     isItemVisible(option: SelectItem): boolean;
     onInputFocus(event: any): void;
     onInputBlur(event: any): void;
+    onKeyDown(event: KeyboardEvent): void;
+    findPrevOption(row: any): any;
+    findNextOption(row: any): any;
+    getFilteredOptions(): any[];
+    onHeaderCheckboxFocus(): void;
+    onHeaderCheckboxBlur(): void;
 }
 export declare class ListboxModule {
 }

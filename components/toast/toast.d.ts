@@ -3,6 +3,7 @@ import { Message } from '../common/message';
 import { DomHandler } from '../dom/domhandler';
 import { MessageService } from '../common/messageservice';
 import { Subscription } from 'rxjs';
+import { AnimationEvent } from '@angular/animations';
 export declare class ToastItem implements AfterViewInit, OnDestroy {
     message: Message;
     index: number;
@@ -43,10 +44,10 @@ export declare class Toast implements OnInit, AfterContentInit, OnDestroy {
     constructor(messageService: MessageService, domHandler: DomHandler);
     ngOnInit(): void;
     ngAfterContentInit(): void;
-    ngAfterViewInit(): void;
     onMessageClose(event: any): void;
     enableModality(): void;
     disableModality(): void;
+    onAnimationStart(event: AnimationEvent): void;
     ngOnDestroy(): void;
 }
 export declare class ToastModule {

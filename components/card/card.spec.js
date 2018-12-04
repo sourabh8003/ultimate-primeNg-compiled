@@ -1,4 +1,10 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var testing_1 = require("@angular/core/testing");
 var platform_browser_1 = require("@angular/platform-browser");
@@ -9,14 +15,14 @@ var shared_1 = require("../common/shared");
 var TestCardComponent = /** @class */ (function () {
     function TestCardComponent() {
     }
-    TestCardComponent.decorators = [
-        { type: core_1.Component, args: [{
-                    template: "<p-card>\n  <p-header>\n      <img src=\"Card\" src=\"assets/showcase/images/usercard.png\">\n  </p-header>\n  <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt\n      quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas!</div>\n  <p-footer>\n      <button  type=\"button\" label=\"Save\" icon=\"pi pi-check\" style=\"margin-right: .25em\"></button>\n      <button  type=\"button\" label=\"Cancel\" icon=\"pi pi-times\" class=\"ui-button-secondary\"></button>\n  </p-footer>\n</p-card>"
-                },] },
-    ];
+    TestCardComponent = __decorate([
+        core_1.Component({
+            template: "<p-card>\n  <p-header>\n      <img src=\"Card\" src=\"assets/showcase/images/usercard.png\">\n  </p-header>\n  <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae numquam deserunt\n      quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis esse, cupiditate neque quas!</div>\n  <p-footer>\n      <button  type=\"button\" label=\"Save\" icon=\"pi pi-check\" style=\"margin-right: .25em\"></button>\n      <button  type=\"button\" label=\"Cancel\" icon=\"pi pi-times\" class=\"ui-button-secondary\"></button>\n  </p-footer>\n</p-card>"
+        })
+    ], TestCardComponent);
     return TestCardComponent;
 }());
-describe('Accordion', function () {
+describe('Card', function () {
     var card;
     var fixture;
     beforeEach(testing_1.async(function () {
@@ -44,13 +50,13 @@ describe('Accordion', function () {
         expect(cardEl.nativeElement).toBeTruthy();
     });
     it('should display the title', function () {
-        card.title = "Primeng ROCKS!";
+        card.header = "Primeng ROCKS!";
         fixture.detectChanges();
         var cardEl = fixture.debugElement.query(platform_browser_1.By.css('.ui-card-title')).nativeElement;
         expect(cardEl.textContent).toEqual("Primeng ROCKS!");
     });
     it('should display the subtitle', function () {
-        card.subtitle = "Primeng ROCKS!";
+        card.subheader = "Primeng ROCKS!";
         fixture.detectChanges();
         var cardEl = fixture.debugElement.query(platform_browser_1.By.css('.ui-card-subtitle')).nativeElement;
         expect(cardEl.textContent).toEqual("Primeng ROCKS!");

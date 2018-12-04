@@ -1,4 +1,4 @@
-import { OnDestroy, EventEmitter, Renderer2, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { OnDestroy, EventEmitter, Renderer2, ElementRef, ChangeDetectorRef, NgZone } from '@angular/core';
 import { DomHandler } from '../dom/domhandler';
 import { AnimationEvent } from '@angular/animations';
 export declare class OverlayPanel implements OnDestroy {
@@ -6,6 +6,7 @@ export declare class OverlayPanel implements OnDestroy {
     domHandler: DomHandler;
     renderer: Renderer2;
     private cd;
+    private zone;
     dismissable: boolean;
     showCloseIcon: boolean;
     style: any;
@@ -26,7 +27,7 @@ export declare class OverlayPanel implements OnDestroy {
     targetClickEvent: boolean;
     closeClick: boolean;
     documentResizeListener: any;
-    constructor(el: ElementRef, domHandler: DomHandler, renderer: Renderer2, cd: ChangeDetectorRef);
+    constructor(el: ElementRef, domHandler: DomHandler, renderer: Renderer2, cd: ChangeDetectorRef, zone: NgZone);
     bindDocumentClickListener(): void;
     unbindDocumentClickListener(): void;
     toggle(event: any, target?: any): void;

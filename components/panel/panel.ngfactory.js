@@ -16,9 +16,12 @@ var styles_Panel = [];
 var RenderType_Panel = i0.ɵcrt({ encapsulation: 2, styles: styles_Panel, data: { "animation": [{ type: 7, name: "panelContent", definitions: [{ type: 0, name: "hidden", styles: { type: 6, styles: { height: "0", opacity: 0 }, offset: null }, options: undefined }, { type: 0, name: "visible", styles: { type: 6, styles: { height: "*", opacity: 1 }, offset: null }, options: undefined }, { type: 1, expr: "visible <=> hidden", animation: { type: 4, styles: null, timings: "{{transitionParams}}" }, options: null }], options: {} }] } });
 exports.RenderType_Panel = RenderType_Panel;
 function View_Panel_2(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, null, 1, "span", [["class", "ui-panel-title"]], null, null, null, null, null)), (_l()(), i0.ɵted(1, null, ["", ""]))], null, function (_ck, _v) { var _co = _v.component; var currVal_0 = _co.header; _ck(_v, 1, 0, currVal_0); }); }
-function View_Panel_3(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, null, 1, "a", [["class", "ui-panel-titlebar-icon ui-panel-titlebar-toggler ui-corner-all ui-state-default"], ["href", "#"], ["role", "tab"]], [[1, "id", 0], [1, "aria-controls", 0], [1, "aria-expanded", 0]], [[null, "click"]], function (_v, en, $event) { var ad = true; var _co = _v.component; if (("click" === en)) {
+function View_Panel_3(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, null, 1, "a", [["class", "ui-panel-titlebar-icon ui-panel-titlebar-toggler ui-corner-all ui-state-default"], ["role", "tab"], ["tabindex", "0"]], [[1, "id", 0], [1, "aria-controls", 0], [1, "aria-expanded", 0]], [[null, "click"], [null, "keydown.enter"]], function (_v, en, $event) { var ad = true; var _co = _v.component; if (("click" === en)) {
         var pd_0 = (_co.onIconClick($event) !== false);
         ad = (pd_0 && ad);
+    } if (("keydown.enter" === en)) {
+        var pd_1 = (_co.onIconClick($event) !== false);
+        ad = (pd_1 && ad);
     } return ad; }, null, null)), (_l()(), i0.ɵeld(1, 0, null, null, 0, "span", [], [[8, "className", 0]], null, null, null, null))], null, function (_ck, _v) { var _co = _v.component; var currVal_0 = (_co.id + "-label"); var currVal_1 = (_co.id + "-content"); var currVal_2 = !_co.collapsed; _ck(_v, 0, 0, currVal_0, currVal_1, currVal_2); var currVal_3 = (_co.collapsed ? _co.expandIcon : _co.collapseIcon); _ck(_v, 1, 0, currVal_3); }); }
 function View_Panel_1(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, null, 7, "div", [], null, [[null, "click"]], function (_v, en, $event) { var ad = true; var _co = _v.component; if (("click" === en)) {
         var pd_0 = (_co.onHeaderClick($event) !== false);

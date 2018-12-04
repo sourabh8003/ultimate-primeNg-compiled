@@ -1,4 +1,10 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var testing_1 = require("@angular/core/testing");
 var platform_browser_1 = require("@angular/platform-browser");
@@ -6,14 +12,15 @@ var tabview_1 = require("./tabview");
 var animations_1 = require("@angular/platform-browser/animations");
 var core_1 = require("../../../../node_modules/@angular/core");
 var tooltip_1 = require("../tooltip/tooltip");
+var shared_1 = require("../common/shared");
 var TestTabViewComponent = /** @class */ (function () {
     function TestTabViewComponent() {
     }
-    TestTabViewComponent.decorators = [
-        { type: core_1.Component, args: [{
-                    template: "<p-tabView>\n        <p-tabPanel header=\"Godfather I\" leftIcon=\"pi pi-calendar\">\n            The story begins as Don Vito Corleone, the head of a New York Mafia family, overseeshis daughter's wedding. His beloved son ichael has just come home from the war, but does not intend to become part of his father's business. T hrough Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family.\n        </p-tabPanel>\n        <p-tabPanel header=\"Godfather II\" leftIcon=\"pi pi-inbox\">\n            Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream. In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy, killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows.\n        </p-tabPanel>\n        <p-tabPanel header=\"Godfather III\" leftIcon=\"pi pi-user\" rightIcon=\"pi pi-star\">\n            After a break of more than  15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate.\n        </p-tabPanel>\n    </p-tabView>"
-                },] },
-    ];
+    TestTabViewComponent = __decorate([
+        core_1.Component({
+            template: "<p-tabView>\n        <p-tabPanel header=\"Godfather I\" leftIcon=\"pi pi-calendar\">\n            The story begins as Don Vito Corleone, the head of a New York Mafia family, overseeshis daughter's wedding. His beloved son ichael has just come home from the war, but does not intend to become part of his father's business. T hrough Michael's life the nature of the family business becomes clear. The business of the family is just like the head of the family, kind and benevolent to those who give respect, but given to ruthless violence whenever anything stands against the good of the family.\n        </p-tabPanel>\n        <p-tabPanel header=\"Godfather II\" leftIcon=\"pi pi-inbox\">\n            Francis Ford Coppola's legendary continuation and sequel to his landmark 1972 film, The_Godfather parallels the young Vito Corleone's rise with his son Michael's spiritual fall, deepening The_Godfather's depiction of the dark side of the American dream. In the early 1900s, the child Vito flees his Sicilian village for America after the local Mafia kills his family. Vito struggles to make a living, legally or illegally, for his wife and growing brood in Little Italy, killing the local Black Hand Fanucci after he demands his customary cut of the tyro's business. With Fanucci gone, Vito's communal stature grows.\n        </p-tabPanel>\n        <p-tabPanel>\n            <ng-template pTemplate=\"header\">Godfather III</ng-template>\n            <ng-template pTemplate=\"content\">\n                After a break of more than  15 years, director Francis Ford Coppola and writer Mario Puzo returned to the well for this third and final story of the fictional Corleone crime family. Two decades have passed, and crime kingpin Michael Corleone, now divorced from his wife Kay has nearly succeeded in keeping his promise that his family would one day be completely legitimate.\n            </ng-template>\n        </p-tabPanel>\n    </p-tabView>"
+        })
+    ], TestTabViewComponent);
     return TestTabViewComponent;
 }());
 describe('TabView', function () {
@@ -32,7 +39,8 @@ describe('TabView', function () {
                 tabview_1.TabPanel,
                 tabview_1.TabViewNav,
                 tooltip_1.Tooltip,
-                TestTabViewComponent
+                TestTabViewComponent,
+                shared_1.PrimeTemplate
             ]
         }).compileComponents();
         fixture = testing_1.TestBed.createComponent(TestTabViewComponent);
@@ -135,6 +143,12 @@ describe('TabView', function () {
         tabview.activeIndexChange.subscribe(function (value) { return activeIndex = value; });
         firstTabViewNavEl.click();
         expect(activeIndex).toEqual(0);
+    });
+    it('should display header template', function () {
+        tabview.activeIndex = 2;
+        fixture.detectChanges();
+        var thirdTabViewNavEl = fixture.debugElement.children[0].children[0].children[0].children[2].nativeElement;
+        expect(thirdTabViewNavEl.textContent).toContain("Godfather III");
     });
 });
 //# sourceMappingURL=tabview.spec.js.map

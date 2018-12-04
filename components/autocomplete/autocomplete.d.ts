@@ -51,6 +51,7 @@ export declare class AutoComplete implements AfterViewChecked, AfterContentInit,
     immutable: boolean;
     showTransitionOptions: string;
     hideTransitionOptions: string;
+    autofocus: boolean;
     inputEL: ElementRef;
     multiInputEL: ElementRef;
     multiContainerEL: ElementRef;
@@ -77,6 +78,7 @@ export declare class AutoComplete implements AfterViewChecked, AfterContentInit,
     differ: any;
     inputFieldValue: string;
     loading: boolean;
+    documentResizeListener: any;
     constructor(el: ElementRef, domHandler: DomHandler, renderer: Renderer2, objectUtils: ObjectUtils, cd: ChangeDetectorRef, differs: IterableDiffers);
     suggestions: any[];
     ngDoCheck(): void;
@@ -114,6 +116,9 @@ export declare class AutoComplete implements AfterViewChecked, AfterContentInit,
     bindDocumentClickListener(): void;
     isDropdownClick(event: any): boolean;
     unbindDocumentClickListener(): void;
+    bindDocumentResizeListener(): void;
+    unbindDocumentResizeListener(): void;
+    onWindowResize(): void;
     onOverlayHide(): void;
     ngOnDestroy(): void;
 }

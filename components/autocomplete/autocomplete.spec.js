@@ -1,4 +1,10 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var testing_1 = require("@angular/core/testing");
 var platform_browser_1 = require("@angular/platform-browser");
@@ -32,11 +38,11 @@ var TestAutocompleteComponent = /** @class */ (function () {
     TestAutocompleteComponent.prototype.deleteLastEl = function () {
         this.brands.pop();
     };
-    TestAutocompleteComponent.decorators = [
-        { type: core_1.Component, args: [{
-                    template: "<p-autoComplete [(ngModel)]=\"brand\" [suggestions]=\"filteredBrands\" (completeMethod)=\"filterBrands($event)\"></p-autoComplete>\n  <a (click)=\"deleteLastEl()\"></a>\n  <p-autoComplete [(ngModel)]=\"car\" [suggestions]=\"filteredCars\" (completeMethod)=\"filterBrandsWithField($event)\"></p-autoComplete>\n  "
-                },] },
-    ];
+    TestAutocompleteComponent = __decorate([
+        core_1.Component({
+            template: "<p-autoComplete [(ngModel)]=\"brand\" [suggestions]=\"filteredBrands\" (completeMethod)=\"filterBrands($event)\"></p-autoComplete>\n  <a (click)=\"deleteLastEl()\"></a>\n  <p-autoComplete [(ngModel)]=\"car\" [suggestions]=\"filteredCars\" (completeMethod)=\"filterBrandsWithField($event)\"></p-autoComplete>\n  "
+        })
+    ], TestAutocompleteComponent);
     return TestAutocompleteComponent;
 }());
 describe('AutoComplete', function () {
@@ -403,14 +409,6 @@ describe('AutoComplete', function () {
         expect(spanEl.nativeElement.className).toContain('ui-autocomplete-multiple');
         expect(listEl.nativeElement.className).toContain('ui-autocomplete-multiple-container');
     });
-    it('should multiple', function () {
-        autocomplete.multiple = true;
-        fixture.detectChanges();
-        var spanEl = fixture.debugElement.query(platform_browser_1.By.css('span'));
-        var listEl = fixture.debugElement.query(platform_browser_1.By.css('ul'));
-        expect(spanEl.nativeElement.className).toContain('ui-autocomplete-multiple');
-        expect(listEl.nativeElement.className).toContain('ui-autocomplete-multiple-container');
-    });
     it('should select item with multiSelect', testing_1.fakeAsync(function () {
         autocomplete.multiple = true;
         autocomplete.forceSelection = true;
@@ -524,7 +522,6 @@ describe('AutoComplete', function () {
         autocomplete.overlayVisible = true;
         var event = { 'which': 40, preventDefault: function () { } };
         autocomplete.onKeydown(event);
-        autocomplete.highlightOption = 'VW';
         fixture.detectChanges();
         event.which = 38;
         autocomplete.onKeydown(event);

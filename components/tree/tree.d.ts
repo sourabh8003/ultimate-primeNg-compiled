@@ -29,6 +29,7 @@ export declare class UITreeNode implements OnInit {
     onNodeRightClick(event: MouseEvent): void;
     isSelected(): boolean;
     onDropPoint(event: Event, position: number): void;
+    processPointDrop(dragNode: any, dragNodeIndex: any, position: any): void;
     onDropPointDragOver(event: any): void;
     onDropPointDragEnter(event: Event, position: number): void;
     onDropPointDragLeave(event: Event): void;
@@ -36,6 +37,7 @@ export declare class UITreeNode implements OnInit {
     onDragStop(event: any): void;
     onDropNodeDragOver(event: any): void;
     onDropNode(event: any): void;
+    processNodeDrop(dragNode: any): void;
     onDropNodeDragEnter(event: any): void;
     onDropNodeDragLeave(event: any): void;
     onKeyDown(event: KeyboardEvent): void;
@@ -73,6 +75,7 @@ export declare class Tree implements OnInit, AfterContentInit, OnDestroy, Blocka
     emptyMessage: string;
     ariaLabel: string;
     ariaLabelledBy: string;
+    validateDrop: boolean;
     nodeTrackBy: Function;
     templates: QueryList<any>;
     templateMap: any;
@@ -89,7 +92,7 @@ export declare class Tree implements OnInit, AfterContentInit, OnDestroy, Blocka
     ngOnInit(): void;
     readonly horizontal: boolean;
     ngAfterContentInit(): void;
-    onNodeClick(event: MouseEvent, node: TreeNode): void;
+    onNodeClick(event: any, node: TreeNode): void;
     onNodeTouchEnd(): void;
     onNodeRightClick(event: MouseEvent, node: TreeNode): void;
     findIndexInSelection(node: TreeNode): number;

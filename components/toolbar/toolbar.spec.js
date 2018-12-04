@@ -1,4 +1,10 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var testing_1 = require("@angular/core/testing");
 var platform_browser_1 = require("@angular/platform-browser");
@@ -8,11 +14,11 @@ var core_1 = require("@angular/core");
 var TestToolbarComponent = /** @class */ (function () {
     function TestToolbarComponent() {
     }
-    TestToolbarComponent.decorators = [
-        { type: core_1.Component, args: [{
-                    template: "<p-toolbar>\n  <div class=\"ui-toolbar-group-left\">\n      <button  type=\"button\" label=\"New\" icon=\"pi pi-plus\"></button>\n      <button  type=\"button\" label=\"Upload\" icon=\"pi pi-upload\" class=\"ui-button-success\"></button>\n  </div>\n  \n  <div class=\"ui-toolbar-group-right\">\n      <button  type=\"button\" icon=\"pi pi-search\"></button>\n      <button  type=\"button\" icon=\"pi pi-calendar\" class=\"ui-button-success\"></button>\n      <button  type=\"button\" icon=\"pi pi-times\" class=\"ui-button-danger\"></button>\n  </div>\n</p-toolbar>"
-                },] },
-    ];
+    TestToolbarComponent = __decorate([
+        core_1.Component({
+            template: "<p-toolbar>\n  <div class=\"ui-toolbar-group-left\">\n      <button  type=\"button\" label=\"New\" icon=\"pi pi-plus\"></button>\n      <button  type=\"button\" label=\"Upload\" icon=\"pi pi-upload\" class=\"ui-button-success\"></button>\n  </div>\n  \n  <div class=\"ui-toolbar-group-right\">\n      <button  type=\"button\" icon=\"pi pi-search\"></button>\n      <button  type=\"button\" icon=\"pi pi-calendar\" class=\"ui-button-success\"></button>\n      <button  type=\"button\" icon=\"pi pi-times\" class=\"ui-button-danger\"></button>\n  </div>\n</p-toolbar>"
+        })
+    ], TestToolbarComponent);
     return TestToolbarComponent;
 }());
 describe('Toolbar', function () {

@@ -31,6 +31,8 @@ export declare class OrderList implements AfterViewChecked, AfterContentInit {
     draggedItemIndex: number;
     dragOverItemIndex: number;
     dragging: boolean;
+    focusedIndex: number;
+    focusedOption: any;
     filterValue: string;
     visibleOptions: any[];
     _value: any[];
@@ -55,6 +57,9 @@ export declare class OrderList implements AfterViewChecked, AfterContentInit {
     onDrop(event: DragEvent, index: number): void;
     onDragEnd(event: DragEvent): void;
     onListMouseMove(event: MouseEvent): void;
+    onKeyDown(event: KeyboardEvent): void;
+    findPrevOption(row: any): any;
+    findNextOption(row: any): any;
 }
 export declare class OrderListModule {
 }

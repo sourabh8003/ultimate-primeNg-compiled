@@ -48,10 +48,10 @@ describe('Listbox', function () {
         fixture.detectChanges();
         var listboxEl = fixture.debugElement.query(platform_browser_1.By.css('div')).nativeElement;
         var filterInputEl = fixture.debugElement.query(platform_browser_1.By.css('.ui-listbox-filter-container')).query(platform_browser_1.By.css('input')).nativeElement;
-        var checkboxEl = fixture.debugElement.query(platform_browser_1.By.css('li')).query(platform_browser_1.By.css('input')).nativeElement;
+        var checkboxEl = fixture.debugElement.queryAll(platform_browser_1.By.css('li'))[1].query(platform_browser_1.By.css('.ui-chkbox-icon')).nativeElement;
         expect(listboxEl.className).toContain("ui-state-disabled");
         expect(filterInputEl.disabled).toEqual(true);
-        expect(checkboxEl.disabled).toEqual(true);
+        expect(checkboxEl.className).not.toContain("pi pi-check");
         expect(clickSingleSpy).not.toHaveBeenCalled();
     });
     it('should call onOptionTouchEnd', function () {
@@ -188,68 +188,6 @@ describe('Listbox', function () {
         expect(bmwEl.className).not.toContain("ui-state-highlight");
         expect(audiEl.className).not.toContain("ui-state-highlight");
         expect(clickMultipleSpy).toHaveBeenCalledTimes(4);
-    });
-    it('should select two item with multiple checkbox option', function () {
-        listbox.multiple = true;
-        listbox.checkbox = true;
-        listbox.options = [
-            { label: 'Audi', value: 'Audi' },
-            { label: 'BMW', value: 'BMW' },
-            { label: 'Fiat', value: 'Fiat' },
-            { label: 'Ford', value: 'Ford' },
-            { label: 'Honda', value: 'Honda' },
-            { label: 'Jaguar', value: 'Jaguar' },
-            { label: 'Mercedes', value: 'Mercedes' },
-            { label: 'Renault', value: 'Renault' },
-            { label: 'VW', value: 'VW' },
-            { label: 'Volvo', value: 'Volvo' }
-        ];
-        var clickCheckboxSpy = spyOn(listbox, 'onOptionClickCheckbox').and.callThrough();
-        fixture.detectChanges();
-        var bmwEl = fixture.debugElement.query(platform_browser_1.By.css('ul')).children[1].nativeElement;
-        var audiEl = fixture.debugElement.query(platform_browser_1.By.css('ul')).children[1].nativeElement;
-        var bmwCheckBoxEl = fixture.debugElement.query(platform_browser_1.By.css('ul')).children[1].query(platform_browser_1.By.css('input')).nativeElement;
-        var audiCheckBoxEl = fixture.debugElement.query(platform_browser_1.By.css('ul')).children[0].query(platform_browser_1.By.css('input')).nativeElement;
-        bmwCheckBoxEl.click();
-        audiCheckBoxEl.click();
-        fixture.detectChanges();
-        expect(listbox.value[0]).toEqual("BMW");
-        expect(listbox.value[1]).toEqual("Audi");
-        expect(bmwEl.className).toContain("ui-state-highlight");
-        expect(audiEl.className).toContain("ui-state-highlight");
-        expect(clickCheckboxSpy).toHaveBeenCalledTimes(2);
-    });
-    it('should drop two item when double click (checkbox)', function () {
-        listbox.multiple = true;
-        listbox.checkbox = true;
-        listbox.options = [
-            { label: 'Audi', value: 'Audi' },
-            { label: 'BMW', value: 'BMW' },
-            { label: 'Fiat', value: 'Fiat' },
-            { label: 'Ford', value: 'Ford' },
-            { label: 'Honda', value: 'Honda' },
-            { label: 'Jaguar', value: 'Jaguar' },
-            { label: 'Mercedes', value: 'Mercedes' },
-            { label: 'Renault', value: 'Renault' },
-            { label: 'VW', value: 'VW' },
-            { label: 'Volvo', value: 'Volvo' }
-        ];
-        var clickCheckboxSpy = spyOn(listbox, 'onOptionClickCheckbox').and.callThrough();
-        fixture.detectChanges();
-        var bmwEl = fixture.debugElement.query(platform_browser_1.By.css('ul')).children[1].nativeElement;
-        var audiEl = fixture.debugElement.query(platform_browser_1.By.css('ul')).children[1].nativeElement;
-        var bmwCheckBoxEl = fixture.debugElement.query(platform_browser_1.By.css('ul')).children[1].query(platform_browser_1.By.css('input')).nativeElement;
-        var audiCheckBoxEl = fixture.debugElement.query(platform_browser_1.By.css('ul')).children[0].query(platform_browser_1.By.css('input')).nativeElement;
-        bmwCheckBoxEl.click();
-        audiCheckBoxEl.click();
-        bmwCheckBoxEl.click();
-        audiCheckBoxEl.click();
-        fixture.detectChanges();
-        expect(listbox.value[0]).not.toEqual("BMW");
-        expect(listbox.value[1]).not.toEqual("Audi");
-        expect(bmwEl.className).not.toContain("ui-state-highlight");
-        expect(audiEl.className).not.toContain("ui-state-highlight");
-        expect(clickCheckboxSpy).toHaveBeenCalledTimes(4);
     });
     it('should select all', function () {
         listbox.multiple = true;
@@ -453,13 +391,11 @@ describe('Listbox', function () {
         var clickCheckboxSpy = spyOn(listbox, 'onOptionClickCheckbox').and.callThrough();
         fixture.detectChanges();
         var bmwEl = fixture.debugElement.query(platform_browser_1.By.css('ul')).children[1].nativeElement;
-        var audiEl = fixture.debugElement.query(platform_browser_1.By.css('ul')).children[1].nativeElement;
-        var bmwCheckBoxEl = fixture.debugElement.query(platform_browser_1.By.css('ul')).children[1].query(platform_browser_1.By.css('input')).nativeElement;
-        var audiCheckBoxEl = fixture.debugElement.query(platform_browser_1.By.css('ul')).children[0].query(platform_browser_1.By.css('input')).nativeElement;
-        bmwCheckBoxEl.click();
-        audiCheckBoxEl.click();
+        var audiEl = fixture.debugElement.query(platform_browser_1.By.css('ul')).children[0].nativeElement;
+        bmwEl.click();
+        audiEl.click();
         fixture.detectChanges();
-        audiCheckBoxEl.click();
+        audiEl.click();
         fixture.detectChanges();
         expect(listbox.value[0]).toEqual("BMW");
         expect(listbox.value.length).toEqual(1);

@@ -1,4 +1,13 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
@@ -222,6 +231,7 @@ var AutoComplete = /** @class */ (function () {
                 }
                 this.alignOverlay();
                 this.bindDocumentClickListener();
+                this.bindDocumentResizeListener();
                 break;
             case 'void':
                 this.onOverlayHide();
@@ -464,109 +474,256 @@ var AutoComplete = /** @class */ (function () {
             this.documentClickListener = null;
         }
     };
+    AutoComplete.prototype.bindDocumentResizeListener = function () {
+        this.documentResizeListener = this.onWindowResize.bind(this);
+        window.addEventListener('resize', this.documentResizeListener);
+    };
+    AutoComplete.prototype.unbindDocumentResizeListener = function () {
+        if (this.documentResizeListener) {
+            window.removeEventListener('resize', this.documentResizeListener);
+            this.documentResizeListener = null;
+        }
+    };
+    AutoComplete.prototype.onWindowResize = function () {
+        this.hide();
+    };
     AutoComplete.prototype.onOverlayHide = function () {
         this.unbindDocumentClickListener();
+        this.unbindDocumentResizeListener();
         this.overlay = null;
     };
     AutoComplete.prototype.ngOnDestroy = function () {
         this.restoreOverlayAppend();
         this.onOverlayHide();
     };
-    AutoComplete.decorators = [
-        { type: core_1.Component, args: [{
-                    selector: 'p-autoComplete',
-                    template: "\n        <span [ngClass]=\"{'ui-autocomplete ui-widget':true,'ui-autocomplete-dd':dropdown,'ui-autocomplete-multiple':multiple}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <input *ngIf=\"!multiple\" #in [attr.type]=\"type\" [attr.id]=\"inputId\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\" autocomplete=\"off\" [attr.required]=\"required\"\n            [ngClass]=\"'ui-inputtext ui-widget ui-state-default ui-corner-all ui-autocomplete-input'\" [value]=\"inputFieldValue\"\n            (click)=\"onInputClick($event)\" (input)=\"onInput($event)\" (keydown)=\"onKeydown($event)\" (keyup)=\"onKeyup($event)\" (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\" (change)=\"onInputChange($event)\" (paste)=\"onInputPaste($event)\"\n            [attr.placeholder]=\"placeholder\" [attr.size]=\"size\" [attr.maxlength]=\"maxlength\" [attr.tabindex]=\"tabindex\" [readonly]=\"readonly\" [disabled]=\"disabled\" [attr.aria-label]=\"ariaLabel\" [attr.aria-labelledby]=\"ariaLabelledBy\" [attr.aria-required]=\"required\"\n            ><ul *ngIf=\"multiple\" #multiContainer class=\"ui-autocomplete-multiple-container ui-widget ui-inputtext ui-state-default ui-corner-all\" [ngClass]=\"{'ui-state-disabled':disabled,'ui-state-focus':focus}\" (click)=\"multiIn.focus()\">\n                <li #token *ngFor=\"let val of value\" class=\"ui-autocomplete-token ui-state-highlight ui-corner-all\">\n                    <span class=\"ui-autocomplete-token-icon pi pi-fw pi-times\" (click)=\"removeItem(token)\" *ngIf=\"!disabled\"></span>\n                    <span *ngIf=\"!selectedItemTemplate\" class=\"ui-autocomplete-token-label\">{{field ? objectUtils.resolveFieldData(val, field): val}}</span>\n                    <ng-container *ngTemplateOutlet=\"selectedItemTemplate; context: {$implicit: val}\"></ng-container>\n                </li>\n                <li class=\"ui-autocomplete-input-token\">\n                    <input #multiIn [attr.type]=\"type\" [attr.id]=\"inputId\" [disabled]=\"disabled\" [attr.placeholder]=\"(value&&value.length ? null : placeholder)\" [attr.tabindex]=\"tabindex\" (input)=\"onInput($event)\"  (click)=\"onInputClick($event)\"\n                            (keydown)=\"onKeydown($event)\" [readonly]=\"readonly\" (keyup)=\"onKeyup($event)\" (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\" (change)=\"onInputChange($event)\" (paste)=\"onInputPaste($event)\" autocomplete=\"off\" \n                            [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\" [attr.aria-label]=\"ariaLabel\" [attr.aria-labelledby]=\"ariaLabelledBy\" [attr.aria-required]=\"required\">\n                </li>\n            </ul\n            ><i *ngIf=\"loading\" class=\"ui-autocomplete-loader pi pi-spinner pi-spin\"></i><button #ddBtn type=\"button\" pButton icon=\"pi pi-fw pi-caret-down\" class=\"ui-autocomplete-dropdown\" [disabled]=\"disabled\"\n                (click)=\"handleDropdownClick($event)\" *ngIf=\"dropdown\"></button>\n            <div #panel *ngIf=\"overlayVisible\" class=\"ui-autocomplete-panel ui-widget ui-widget-content ui-corner-all ui-shadow\" [style.max-height]=\"scrollHeight\"\n                [@overlayAnimation]=\"{value: 'visible', params: {showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions}}\" (@overlayAnimation.start)=\"onOverlayAnimationStart($event)\" (@overlayAnimation.done)=\"onOverlayAnimationDone($event)\">\n                <ul class=\"ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\">\n                    <li *ngFor=\"let option of suggestions; let idx = index\" [ngClass]=\"{'ui-autocomplete-list-item ui-corner-all':true,'ui-state-highlight':(highlightOption==option)}\"\n                        (mouseenter)=\"highlightOption=option\" (mouseleave)=\"highlightOption=null\" (click)=\"selectItem(option)\">\n                        <span *ngIf=\"!itemTemplate\">{{field ? objectUtils.resolveFieldData(option, field) : option}}</span>\n                        <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: option, index: idx}\"></ng-container>\n                    </li>\n                    <li *ngIf=\"noResults && emptyMessage\" class=\"ui-autocomplete-list-item ui-corner-all\">{{emptyMessage}}</li>\n                </ul>\n            </div>\n        </span>\n    ",
-                    animations: [
-                        animations_1.trigger('overlayAnimation', [
-                            animations_1.state('void', animations_1.style({
-                                transform: 'translateY(5%)',
-                                opacity: 0
-                            })),
-                            animations_1.state('visible', animations_1.style({
-                                transform: 'translateY(0)',
-                                opacity: 1
-                            })),
-                            animations_1.transition('void => visible', animations_1.animate('{{showTransitionParams}}')),
-                            animations_1.transition('visible => void', animations_1.animate('{{hideTransitionParams}}'))
-                        ])
-                    ],
-                    host: {
-                        '[class.ui-inputwrapper-filled]': 'filled',
-                        '[class.ui-inputwrapper-focus]': 'focus && !disabled'
-                    },
-                    providers: [domhandler_1.DomHandler, objectutils_1.ObjectUtils, exports.AUTOCOMPLETE_VALUE_ACCESSOR]
-                },] },
-    ];
-    /** @nocollapse */
-    AutoComplete.ctorParameters = function () { return [
-        { type: core_1.ElementRef },
-        { type: domhandler_1.DomHandler },
-        { type: core_1.Renderer2 },
-        { type: objectutils_1.ObjectUtils },
-        { type: core_1.ChangeDetectorRef },
-        { type: core_1.IterableDiffers }
-    ]; };
-    AutoComplete.propDecorators = {
-        minLength: [{ type: core_1.Input }],
-        delay: [{ type: core_1.Input }],
-        style: [{ type: core_1.Input }],
-        styleClass: [{ type: core_1.Input }],
-        inputStyle: [{ type: core_1.Input }],
-        inputId: [{ type: core_1.Input }],
-        inputStyleClass: [{ type: core_1.Input }],
-        placeholder: [{ type: core_1.Input }],
-        readonly: [{ type: core_1.Input }],
-        disabled: [{ type: core_1.Input }],
-        maxlength: [{ type: core_1.Input }],
-        required: [{ type: core_1.Input }],
-        size: [{ type: core_1.Input }],
-        appendTo: [{ type: core_1.Input }],
-        autoHighlight: [{ type: core_1.Input }],
-        forceSelection: [{ type: core_1.Input }],
-        type: [{ type: core_1.Input }],
-        autoZIndex: [{ type: core_1.Input }],
-        baseZIndex: [{ type: core_1.Input }],
-        ariaLabel: [{ type: core_1.Input }],
-        ariaLabelledBy: [{ type: core_1.Input }],
-        completeMethod: [{ type: core_1.Output }],
-        onSelect: [{ type: core_1.Output }],
-        onUnselect: [{ type: core_1.Output }],
-        onFocus: [{ type: core_1.Output }],
-        onBlur: [{ type: core_1.Output }],
-        onDropdownClick: [{ type: core_1.Output }],
-        onClear: [{ type: core_1.Output }],
-        onKeyUp: [{ type: core_1.Output }],
-        field: [{ type: core_1.Input }],
-        scrollHeight: [{ type: core_1.Input }],
-        dropdown: [{ type: core_1.Input }],
-        dropdownMode: [{ type: core_1.Input }],
-        multiple: [{ type: core_1.Input }],
-        tabindex: [{ type: core_1.Input }],
-        dataKey: [{ type: core_1.Input }],
-        emptyMessage: [{ type: core_1.Input }],
-        immutable: [{ type: core_1.Input }],
-        showTransitionOptions: [{ type: core_1.Input }],
-        hideTransitionOptions: [{ type: core_1.Input }],
-        inputEL: [{ type: core_1.ViewChild, args: ['in',] }],
-        multiInputEL: [{ type: core_1.ViewChild, args: ['multiIn',] }],
-        multiContainerEL: [{ type: core_1.ViewChild, args: ['multiContainer',] }],
-        dropdownButton: [{ type: core_1.ViewChild, args: ['ddBtn',] }],
-        templates: [{ type: core_1.ContentChildren, args: [shared_1.PrimeTemplate,] }],
-        suggestions: [{ type: core_1.Input }]
-    };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Number)
+    ], AutoComplete.prototype, "minLength", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Number)
+    ], AutoComplete.prototype, "delay", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], AutoComplete.prototype, "style", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "styleClass", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], AutoComplete.prototype, "inputStyle", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "inputId", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "inputStyleClass", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "placeholder", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], AutoComplete.prototype, "readonly", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], AutoComplete.prototype, "disabled", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Number)
+    ], AutoComplete.prototype, "maxlength", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], AutoComplete.prototype, "required", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Number)
+    ], AutoComplete.prototype, "size", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], AutoComplete.prototype, "appendTo", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], AutoComplete.prototype, "autoHighlight", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], AutoComplete.prototype, "forceSelection", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "type", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], AutoComplete.prototype, "autoZIndex", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Number)
+    ], AutoComplete.prototype, "baseZIndex", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "ariaLabel", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "ariaLabelledBy", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], AutoComplete.prototype, "completeMethod", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], AutoComplete.prototype, "onSelect", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], AutoComplete.prototype, "onUnselect", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], AutoComplete.prototype, "onFocus", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], AutoComplete.prototype, "onBlur", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], AutoComplete.prototype, "onDropdownClick", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], AutoComplete.prototype, "onClear", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], AutoComplete.prototype, "onKeyUp", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "field", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "scrollHeight", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], AutoComplete.prototype, "dropdown", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "dropdownMode", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], AutoComplete.prototype, "multiple", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Number)
+    ], AutoComplete.prototype, "tabindex", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "dataKey", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "emptyMessage", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], AutoComplete.prototype, "immutable", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "showTransitionOptions", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], AutoComplete.prototype, "hideTransitionOptions", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], AutoComplete.prototype, "autofocus", void 0);
+    __decorate([
+        core_1.ViewChild('in'),
+        __metadata("design:type", core_1.ElementRef)
+    ], AutoComplete.prototype, "inputEL", void 0);
+    __decorate([
+        core_1.ViewChild('multiIn'),
+        __metadata("design:type", core_1.ElementRef)
+    ], AutoComplete.prototype, "multiInputEL", void 0);
+    __decorate([
+        core_1.ViewChild('multiContainer'),
+        __metadata("design:type", core_1.ElementRef)
+    ], AutoComplete.prototype, "multiContainerEL", void 0);
+    __decorate([
+        core_1.ViewChild('ddBtn'),
+        __metadata("design:type", core_1.ElementRef)
+    ], AutoComplete.prototype, "dropdownButton", void 0);
+    __decorate([
+        core_1.ContentChildren(shared_1.PrimeTemplate),
+        __metadata("design:type", core_1.QueryList)
+    ], AutoComplete.prototype, "templates", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Array),
+        __metadata("design:paramtypes", [Array])
+    ], AutoComplete.prototype, "suggestions", null);
+    AutoComplete = __decorate([
+        core_1.Component({
+            selector: 'p-autoComplete',
+            template: "\n        <span [ngClass]=\"{'ui-autocomplete ui-widget':true,'ui-autocomplete-dd':dropdown,'ui-autocomplete-multiple':multiple}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <input *ngIf=\"!multiple\" #in [attr.type]=\"type\" [attr.id]=\"inputId\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\" autocomplete=\"off\" [attr.required]=\"required\"\n            [ngClass]=\"'ui-inputtext ui-widget ui-state-default ui-corner-all ui-autocomplete-input'\" [value]=\"inputFieldValue\"\n            (click)=\"onInputClick($event)\" (input)=\"onInput($event)\" (keydown)=\"onKeydown($event)\" (keyup)=\"onKeyup($event)\" [attr.autofocus]=\"autofocus\" (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\" (change)=\"onInputChange($event)\" (paste)=\"onInputPaste($event)\"\n            [attr.placeholder]=\"placeholder\" [attr.size]=\"size\" [attr.maxlength]=\"maxlength\" [attr.tabindex]=\"tabindex\" [readonly]=\"readonly\" [disabled]=\"disabled\" [attr.aria-label]=\"ariaLabel\" [attr.aria-labelledby]=\"ariaLabelledBy\" [attr.aria-required]=\"required\"\n            ><ul *ngIf=\"multiple\" #multiContainer class=\"ui-autocomplete-multiple-container ui-widget ui-inputtext ui-state-default ui-corner-all\" [ngClass]=\"{'ui-state-disabled':disabled,'ui-state-focus':focus}\" (click)=\"multiIn.focus()\">\n                <li #token *ngFor=\"let val of value\" class=\"ui-autocomplete-token ui-state-highlight ui-corner-all\">\n                    <span class=\"ui-autocomplete-token-icon pi pi-fw pi-times\" (click)=\"removeItem(token)\" *ngIf=\"!disabled\"></span>\n                    <span *ngIf=\"!selectedItemTemplate\" class=\"ui-autocomplete-token-label\">{{field ? objectUtils.resolveFieldData(val, field): val}}</span>\n                    <ng-container *ngTemplateOutlet=\"selectedItemTemplate; context: {$implicit: val}\"></ng-container>\n                </li>\n                <li class=\"ui-autocomplete-input-token\">\n                    <input #multiIn [attr.type]=\"type\" [attr.id]=\"inputId\" [disabled]=\"disabled\" [attr.placeholder]=\"(value&&value.length ? null : placeholder)\" [attr.tabindex]=\"tabindex\" (input)=\"onInput($event)\"  (click)=\"onInputClick($event)\"\n                            (keydown)=\"onKeydown($event)\" [readonly]=\"readonly\" (keyup)=\"onKeyup($event)\" [attr.autofocus]=\"autofocus\" (focus)=\"onInputFocus($event)\" (blur)=\"onInputBlur($event)\" (change)=\"onInputChange($event)\" (paste)=\"onInputPaste($event)\" autocomplete=\"off\" \n                            [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\" [attr.aria-label]=\"ariaLabel\" [attr.aria-labelledby]=\"ariaLabelledBy\" [attr.aria-required]=\"required\">\n                </li>\n            </ul\n            ><i *ngIf=\"loading\" class=\"ui-autocomplete-loader pi pi-spinner pi-spin\"></i><button #ddBtn type=\"button\" pButton icon=\"pi pi-fw pi-caret-down\" class=\"ui-autocomplete-dropdown\" [disabled]=\"disabled\"\n                (click)=\"handleDropdownClick($event)\" *ngIf=\"dropdown\"></button>\n            <div #panel *ngIf=\"overlayVisible\" class=\"ui-autocomplete-panel ui-widget ui-widget-content ui-corner-all ui-shadow\" [style.max-height]=\"scrollHeight\"\n                [@overlayAnimation]=\"{value: 'visible', params: {showTransitionParams: showTransitionOptions, hideTransitionParams: hideTransitionOptions}}\" (@overlayAnimation.start)=\"onOverlayAnimationStart($event)\" (@overlayAnimation.done)=\"onOverlayAnimationDone($event)\">\n                <ul class=\"ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\">\n                    <li *ngFor=\"let option of suggestions; let idx = index\" [ngClass]=\"{'ui-autocomplete-list-item ui-corner-all':true,'ui-state-highlight':(highlightOption==option)}\"\n                        (mouseenter)=\"highlightOption=option\" (mouseleave)=\"highlightOption=null\" (click)=\"selectItem(option)\">\n                        <span *ngIf=\"!itemTemplate\">{{field ? objectUtils.resolveFieldData(option, field) : option}}</span>\n                        <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: option, index: idx}\"></ng-container>\n                    </li>\n                    <li *ngIf=\"noResults && emptyMessage\" class=\"ui-autocomplete-list-item ui-corner-all\">{{emptyMessage}}</li>\n                </ul>\n            </div>\n        </span>\n    ",
+            animations: [
+                animations_1.trigger('overlayAnimation', [
+                    animations_1.state('void', animations_1.style({
+                        transform: 'translateY(5%)',
+                        opacity: 0
+                    })),
+                    animations_1.state('visible', animations_1.style({
+                        transform: 'translateY(0)',
+                        opacity: 1
+                    })),
+                    animations_1.transition('void => visible', animations_1.animate('{{showTransitionParams}}')),
+                    animations_1.transition('visible => void', animations_1.animate('{{hideTransitionParams}}'))
+                ])
+            ],
+            host: {
+                '[class.ui-inputwrapper-filled]': 'filled',
+                '[class.ui-inputwrapper-focus]': 'focus && !disabled'
+            },
+            providers: [domhandler_1.DomHandler, objectutils_1.ObjectUtils, exports.AUTOCOMPLETE_VALUE_ACCESSOR]
+        }),
+        __metadata("design:paramtypes", [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer2, objectutils_1.ObjectUtils, core_1.ChangeDetectorRef, core_1.IterableDiffers])
+    ], AutoComplete);
     return AutoComplete;
 }());
 exports.AutoComplete = AutoComplete;
 var AutoCompleteModule = /** @class */ (function () {
     function AutoCompleteModule() {
     }
-    AutoCompleteModule.decorators = [
-        { type: core_1.NgModule, args: [{
-                    imports: [common_1.CommonModule, inputtext_1.InputTextModule, button_1.ButtonModule, shared_1.SharedModule],
-                    exports: [AutoComplete, shared_1.SharedModule],
-                    declarations: [AutoComplete]
-                },] },
-    ];
+    AutoCompleteModule = __decorate([
+        core_1.NgModule({
+            imports: [common_1.CommonModule, inputtext_1.InputTextModule, button_1.ButtonModule, shared_1.SharedModule],
+            exports: [AutoComplete, shared_1.SharedModule],
+            declarations: [AutoComplete]
+        })
+    ], AutoCompleteModule);
     return AutoCompleteModule;
 }());
 exports.AutoCompleteModule = AutoCompleteModule;

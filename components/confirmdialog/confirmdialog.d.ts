@@ -24,6 +24,9 @@ export declare class ConfirmDialog implements OnDestroy {
     rejectButtonStyleClass: string;
     width: any;
     height: any;
+    positionLeft: number;
+    positionTop: number;
+    breakpoint: number;
     closeOnEscape: boolean;
     rtl: boolean;
     closable: boolean;
@@ -34,6 +37,7 @@ export declare class ConfirmDialog implements OnDestroy {
     baseZIndex: number;
     transitionOptions: string;
     footer: any;
+    contentViewChild: ElementRef;
     confirmation: Confirmation;
     _visible: boolean;
     documentEscapeListener: any;
@@ -42,8 +46,11 @@ export declare class ConfirmDialog implements OnDestroy {
     container: HTMLDivElement;
     contentContainer: HTMLDivElement;
     subscription: Subscription;
+    preWidth: number;
     constructor(el: ElementRef, domHandler: DomHandler, renderer: Renderer2, confirmationService: ConfirmationService, zone: NgZone);
     onAnimationStart(event: AnimationEvent): void;
+    onWindowResize(event: any): void;
+    positionOverlay(): void;
     appendContainer(): void;
     restoreAppend(): void;
     center(): void;

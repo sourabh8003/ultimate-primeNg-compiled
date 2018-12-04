@@ -1,9 +1,16 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var DomHandler = /** @class */ (function () {
     function DomHandler() {
         this.calculatedScrollbarWidth = null;
+        this.calculatedScrollbarHeight = null;
     }
     DomHandler.prototype.addClass = function (element, className) {
         if (element.classList)
@@ -55,6 +62,17 @@ var DomHandler = /** @class */ (function () {
             if (children[i] == element)
                 return num;
             if (children[i].nodeType == 1)
+                num++;
+        }
+        return -1;
+    };
+    DomHandler.prototype.indexWithDisplay = function (element) {
+        var children = element.parentNode.childNodes;
+        var num = 0;
+        for (var i = 0; i < children.length; i++) {
+            if (children[i] == element && children[i].style.display == 'block')
+                return num;
+            if (children[i].nodeType == 1 && children[i].style.display == 'block')
                 num++;
         }
         return -1;
@@ -200,7 +218,7 @@ var DomHandler = /** @class */ (function () {
     };
     DomHandler.prototype.matches = function (element, selector) {
         var p = Element.prototype;
-        var f = p['matches'] || p.webkitMatchesSelector || p['mozMatchesSelector'] || p.msMatchesSelector || function (s) {
+        var f = p['matches'] || p.webkitMatchesSelector || p['mozMatchesSelector'] || p['msMatchesSelector'] || function (s) {
             return [].indexOf.call(document.querySelectorAll(s), this) !== -1;
         };
         return f.call(element, selector);
@@ -331,6 +349,17 @@ var DomHandler = /** @class */ (function () {
         this.calculatedScrollbarWidth = scrollbarWidth;
         return scrollbarWidth;
     };
+    DomHandler.prototype.calculateScrollbarHeight = function () {
+        if (this.calculatedScrollbarHeight !== null)
+            return this.calculatedScrollbarHeight;
+        var scrollDiv = document.createElement("div");
+        scrollDiv.className = "ui-scrollbar-measure";
+        document.body.appendChild(scrollDiv);
+        var scrollbarHeight = scrollDiv.offsetHeight - scrollDiv.clientHeight;
+        document.body.removeChild(scrollDiv);
+        this.calculatedScrollbarWidth = scrollbarHeight;
+        return scrollbarHeight;
+    };
     DomHandler.prototype.invokeElementMethod = function (element, methodName, args) {
         element[methodName].apply(element, args);
     };
@@ -391,9 +420,9 @@ var DomHandler = /** @class */ (function () {
         }
     };
     DomHandler.zindex = 1000;
-    DomHandler.decorators = [
-        { type: core_1.Injectable },
-    ];
+    DomHandler = __decorate([
+        core_1.Injectable()
+    ], DomHandler);
     return DomHandler;
 }());
 exports.DomHandler = DomHandler;

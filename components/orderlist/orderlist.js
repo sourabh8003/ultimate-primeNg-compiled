@@ -1,4 +1,13 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
@@ -94,6 +103,7 @@ var OrderList = /** @class */ (function () {
                 this.objectUtils.insertIntoOrderedArray(item, index, this._selection, this.value);
             }
         }
+        this.focusedOption = item;
         //binding
         this.selectionChange.emit(this._selection);
         //event
@@ -110,6 +120,8 @@ var OrderList = /** @class */ (function () {
     OrderList.prototype.filter = function () {
         var searchFields = this.filterBy.split(',');
         this.visibleOptions = this.objectUtils.filter(this.value, searchFields, this.filterValue);
+        this.focusedOption = null;
+        this.focusedIndex = null;
     };
     OrderList.prototype.isItemVisible = function (item) {
         if (this.filterValue && this.filterValue.trim().length) {
@@ -202,6 +214,7 @@ var OrderList = /** @class */ (function () {
         }
     };
     OrderList.prototype.onDragStart = function (event, index) {
+        event.target.blur();
         this.dragging = true;
         this.draggedItemIndex = index;
         if (this.dragdropScope) {
@@ -238,54 +251,176 @@ var OrderList = /** @class */ (function () {
                 this.listViewChild.nativeElement.scrollTop -= 15;
         }
     };
-    OrderList.decorators = [
-        { type: core_1.Component, args: [{
-                    selector: 'p-orderList',
-                    template: "\n        <div [ngClass]=\"{'ui-orderlist ui-widget': true, 'ui-orderlist-controls-left': controlsPosition === 'left',\n                    'ui-orderlist-controls-right': controlsPosition === 'right'}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-orderlist-controls\">\n                <button type=\"button\" pButton icon=\"pi pi-angle-up\" (click)=\"moveUp($event)\"></button>\n                <button type=\"button\" pButton icon=\"pi pi-angle-double-up\" (click)=\"moveTop($event)\"></button>\n                <button type=\"button\" pButton icon=\"pi pi-angle-down\" (click)=\"moveDown($event)\"></button>\n                <button type=\"button\" pButton icon=\"pi pi-angle-double-down\" (click)=\"moveBottom($event)\"></button>\n            </div>\n            <div class=\"ui-orderlist-list-container\">\n                <div class=\"ui-orderlist-caption ui-widget-header ui-corner-top\" *ngIf=\"header\">{{header}}</div>\n                <div class=\"ui-orderlist-filter-container ui-widget-content\" *ngIf=\"filterBy\">\n                    <input type=\"text\" role=\"textbox\" (keyup)=\"onFilterKeyup($event)\" class=\"ui-inputtext ui-widget ui-state-default ui-corner-all\" [attr.placeholder]=\"filterPlaceholder\">\n                    <span class=\"ui-orderlist-filter-icon pi pi-search\"></span>\n                </div>\n                <ul #listelement class=\"ui-widget-content ui-orderlist-list ui-corner-bottom\" [ngStyle]=\"listStyle\" (dragover)=\"onListMouseMove($event)\">\n                    <ng-template ngFor [ngForTrackBy]=\"trackBy\" let-item [ngForOf]=\"value\" let-i=\"index\" let-l=\"last\">\n                        <li class=\"ui-orderlist-droppoint\" *ngIf=\"dragdrop && isItemVisible(item)\" (dragover)=\"onDragOver($event, i)\" (drop)=\"onDrop($event, i)\" (dragleave)=\"onDragLeave($event)\" \n                            [ngClass]=\"{'ui-state-highlight': (i === dragOverItemIndex)}\"></li>\n                        <li class=\"ui-orderlist-item\"\n                            [ngClass]=\"{'ui-state-highlight':isSelected(item)}\" \n                            (click)=\"onItemClick($event,item,i)\" (touchend)=\"onItemTouchEnd($event)\"\n                            [style.display]=\"isItemVisible(item) ? 'block' : 'none'\"\n                            [draggable]=\"dragdrop\" (dragstart)=\"onDragStart($event, i)\" (dragend)=\"onDragEnd($event)\">\n                            <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: item, index: i}\"></ng-container>\n                        </li>\n                        <li class=\"ui-orderlist-droppoint\" *ngIf=\"dragdrop && l\" (dragover)=\"onDragOver($event, i + 1)\" (drop)=\"onDrop($event, i + 1)\" (dragleave)=\"onDragLeave($event)\" \n                            [ngClass]=\"{'ui-state-highlight': (i + 1 === dragOverItemIndex)}\"></li>\n                    </ng-template>\n                </ul>\n            </div>\n        </div>\n    ",
-                    providers: [domhandler_1.DomHandler, objectutils_1.ObjectUtils]
-                },] },
-    ];
-    /** @nocollapse */
-    OrderList.ctorParameters = function () { return [
-        { type: core_1.ElementRef },
-        { type: domhandler_1.DomHandler },
-        { type: objectutils_1.ObjectUtils }
-    ]; };
-    OrderList.propDecorators = {
-        header: [{ type: core_1.Input }],
-        style: [{ type: core_1.Input }],
-        styleClass: [{ type: core_1.Input }],
-        listStyle: [{ type: core_1.Input }],
-        responsive: [{ type: core_1.Input }],
-        filterBy: [{ type: core_1.Input }],
-        filterPlaceholder: [{ type: core_1.Input }],
-        metaKeySelection: [{ type: core_1.Input }],
-        dragdrop: [{ type: core_1.Input }],
-        dragdropScope: [{ type: core_1.Input }],
-        controlsPosition: [{ type: core_1.Input }],
-        selectionChange: [{ type: core_1.Output }],
-        trackBy: [{ type: core_1.Input }],
-        onReorder: [{ type: core_1.Output }],
-        onSelectionChange: [{ type: core_1.Output }],
-        onFilterEvent: [{ type: core_1.Output }],
-        listViewChild: [{ type: core_1.ViewChild, args: ['listelement',] }],
-        templates: [{ type: core_1.ContentChildren, args: [shared_1.PrimeTemplate,] }],
-        selection: [{ type: core_1.Input }],
-        value: [{ type: core_1.Input }]
+    OrderList.prototype.onKeyDown = function (event) {
+        var opts = this.filterValue ? this.visibleOptions : this.value;
+        var currentOption = event.target;
+        this.focusedIndex = this.domHandler.indexWithDisplay(currentOption);
+        this.focusedOption = opts[this.focusedIndex];
+        switch (event.which) {
+            //down
+            case 40:
+                this.focusedIndex = this.focusedIndex + 1;
+                if (this.focusedIndex != (opts.length)) {
+                    this.focusedOption = opts[this.focusedIndex];
+                }
+                var nextOption = this.findNextOption(currentOption);
+                if (nextOption) {
+                    nextOption.focus();
+                }
+                event.preventDefault();
+                break;
+            //up
+            case 38:
+                this.focusedIndex = this.focusedIndex - 1;
+                this.focusedOption = opts[this.focusedIndex];
+                var prevOption = this.findPrevOption(currentOption);
+                if (prevOption) {
+                    prevOption.focus();
+                }
+                event.preventDefault();
+                break;
+            //enter
+            case 13:
+                if (this.focusedOption) {
+                    this.onItemClick(event, this.focusedOption, this.focusedIndex);
+                }
+                event.preventDefault();
+                break;
+        }
     };
+    OrderList.prototype.findPrevOption = function (row) {
+        var prevOption = row.previousElementSibling;
+        if (prevOption) {
+            if (this.domHandler.hasClass(prevOption, 'ui-orderlist-item') && prevOption.style.display == 'block')
+                return prevOption;
+            else
+                return this.findPrevOption(prevOption);
+        }
+        else {
+            return null;
+        }
+    };
+    OrderList.prototype.findNextOption = function (row) {
+        var nextOption = row.nextElementSibling;
+        if (nextOption) {
+            if (this.domHandler.hasClass(nextOption, 'ui-orderlist-item') && nextOption.style.display == 'block')
+                return nextOption;
+            else
+                return this.findNextOption(nextOption);
+        }
+        else {
+            return null;
+        }
+    };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], OrderList.prototype, "header", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], OrderList.prototype, "style", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], OrderList.prototype, "styleClass", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], OrderList.prototype, "listStyle", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], OrderList.prototype, "responsive", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], OrderList.prototype, "filterBy", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], OrderList.prototype, "filterPlaceholder", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], OrderList.prototype, "metaKeySelection", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], OrderList.prototype, "dragdrop", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], OrderList.prototype, "dragdropScope", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], OrderList.prototype, "controlsPosition", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], OrderList.prototype, "selectionChange", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Function)
+    ], OrderList.prototype, "trackBy", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], OrderList.prototype, "onReorder", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], OrderList.prototype, "onSelectionChange", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], OrderList.prototype, "onFilterEvent", void 0);
+    __decorate([
+        core_1.ViewChild('listelement'),
+        __metadata("design:type", core_1.ElementRef)
+    ], OrderList.prototype, "listViewChild", void 0);
+    __decorate([
+        core_1.ContentChildren(shared_1.PrimeTemplate),
+        __metadata("design:type", core_1.QueryList)
+    ], OrderList.prototype, "templates", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Array),
+        __metadata("design:paramtypes", [Array])
+    ], OrderList.prototype, "selection", null);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Array),
+        __metadata("design:paramtypes", [Array])
+    ], OrderList.prototype, "value", null);
+    __decorate([
+        core_1.HostListener('keydown', ['$event']),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [KeyboardEvent]),
+        __metadata("design:returntype", void 0)
+    ], OrderList.prototype, "onKeyDown", null);
+    OrderList = __decorate([
+        core_1.Component({
+            selector: 'p-orderList',
+            template: "\n        <div [ngClass]=\"{'ui-orderlist ui-widget': true, 'ui-orderlist-controls-left': controlsPosition === 'left',\n                    'ui-orderlist-controls-right': controlsPosition === 'right'}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-orderlist-controls\">\n                <button type=\"button\" pButton icon=\"pi pi-angle-up\" (click)=\"moveUp($event)\"></button>\n                <button type=\"button\" pButton icon=\"pi pi-angle-double-up\" (click)=\"moveTop($event)\"></button>\n                <button type=\"button\" pButton icon=\"pi pi-angle-down\" (click)=\"moveDown($event)\"></button>\n                <button type=\"button\" pButton icon=\"pi pi-angle-double-down\" (click)=\"moveBottom($event)\"></button>\n            </div>\n            <div class=\"ui-orderlist-list-container\">\n                <div class=\"ui-orderlist-caption ui-widget-header ui-corner-top\" *ngIf=\"header\">{{header}}</div>\n                <div class=\"ui-orderlist-filter-container ui-widget-content\" *ngIf=\"filterBy\">\n                    <input type=\"text\" role=\"textbox\" (keyup)=\"onFilterKeyup($event)\" class=\"ui-inputtext ui-widget ui-state-default ui-corner-all\" [attr.placeholder]=\"filterPlaceholder\">\n                    <span class=\"ui-orderlist-filter-icon pi pi-search\"></span>\n                </div>\n                <ul #listelement class=\"ui-widget-content ui-orderlist-list ui-corner-bottom\" [ngStyle]=\"listStyle\" (dragover)=\"onListMouseMove($event)\">\n                    <ng-template ngFor [ngForTrackBy]=\"trackBy\" let-item [ngForOf]=\"value\" let-i=\"index\" let-l=\"last\">\n                        <li class=\"ui-orderlist-droppoint\" *ngIf=\"dragdrop && isItemVisible(item)\" (dragover)=\"onDragOver($event, i)\" (drop)=\"onDrop($event, i)\" (dragleave)=\"onDragLeave($event)\" \n                            [ngClass]=\"{'ui-orderlist-droppoint-highlight': (i === dragOverItemIndex)}\"></li>\n                        <li class=\"ui-orderlist-item\" [attr.tabindex]=\"0\"\n                            [ngClass]=\"{'ui-state-highlight':isSelected(item)}\" \n                            (click)=\"onItemClick($event,item,i)\" (touchend)=\"onItemTouchEnd($event)\"\n                            [style.display]=\"isItemVisible(item) ? 'block' : 'none'\"\n                            [draggable]=\"dragdrop\" (dragstart)=\"onDragStart($event, i)\" (dragend)=\"onDragEnd($event)\">\n                            <ng-container *ngTemplateOutlet=\"itemTemplate; context: {$implicit: item, index: i}\"></ng-container>\n                        </li>\n                        <li class=\"ui-orderlist-droppoint\" *ngIf=\"dragdrop && l\" (dragover)=\"onDragOver($event, i + 1)\" (drop)=\"onDrop($event, i + 1)\" (dragleave)=\"onDragLeave($event)\" \n                            [ngClass]=\"{'ui-orderlist-droppoint-highlight': (i + 1 === dragOverItemIndex)}\"></li>\n                    </ng-template>\n                </ul>\n            </div>\n        </div>\n    ",
+            providers: [domhandler_1.DomHandler, objectutils_1.ObjectUtils]
+        }),
+        __metadata("design:paramtypes", [core_1.ElementRef, domhandler_1.DomHandler, objectutils_1.ObjectUtils])
+    ], OrderList);
     return OrderList;
 }());
 exports.OrderList = OrderList;
 var OrderListModule = /** @class */ (function () {
     function OrderListModule() {
     }
-    OrderListModule.decorators = [
-        { type: core_1.NgModule, args: [{
-                    imports: [common_1.CommonModule, button_1.ButtonModule, shared_1.SharedModule],
-                    exports: [OrderList, shared_1.SharedModule],
-                    declarations: [OrderList]
-                },] },
-    ];
+    OrderListModule = __decorate([
+        core_1.NgModule({
+            imports: [common_1.CommonModule, button_1.ButtonModule, shared_1.SharedModule],
+            exports: [OrderList, shared_1.SharedModule],
+            declarations: [OrderList]
+        })
+    ], OrderListModule);
     return OrderListModule;
 }());
 exports.OrderListModule = OrderListModule;

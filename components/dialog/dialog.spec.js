@@ -1,4 +1,10 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var testing_1 = require("@angular/core/testing");
 var platform_browser_1 = require("@angular/platform-browser");
@@ -13,11 +19,11 @@ var TestDialogComponent = /** @class */ (function () {
     TestDialogComponent.prototype.showDialog = function () {
         this.display = true;
     };
-    TestDialogComponent.decorators = [
-        { type: core_1.Component, args: [{
-                    template: "\n    <p-dialog [(visible)]=\"display\">\n    <p-footer>\n            <button type=\"button\" pButton icon=\"pi pi-check\" (click)=\"display=false\" label=\"Yes\"></button>\n            <button type=\"button\" pButton icon=\"pi pi-close\" (click)=\"display=false\" label=\"No\" class=\"ui-button-secondary\"></button>\n    </p-footer>\n    </p-dialog>\n    <button type=\"button\" (click)=\"showDialog()\" pButton icon=\"pi pi-info-circle\" label=\"Show\"></button>\n    "
-                },] },
-    ];
+    TestDialogComponent = __decorate([
+        core_1.Component({
+            template: "\n    <p-dialog [(visible)]=\"display\">\n    <p-footer>\n            <button type=\"button\" pButton icon=\"pi pi-check\" (click)=\"display=false\" label=\"Yes\"></button>\n            <button type=\"button\" pButton icon=\"pi pi-close\" (click)=\"display=false\" label=\"No\" class=\"ui-button-secondary\"></button>\n    </p-footer>\n    </p-dialog>\n    <button type=\"button\" (click)=\"showDialog()\" pButton icon=\"pi pi-info-circle\" label=\"Show\"></button>\n    "
+        })
+    ], TestDialogComponent);
     return TestDialogComponent;
 }());
 describe('Dialog', function () {
@@ -230,6 +236,76 @@ describe('Dialog', function () {
         expect(onOverlayHideSpy).toHaveBeenCalled();
         expect(disableModalitySpy).toHaveBeenCalled();
         expect(dialog.container).toEqual(null);
+    }));
+    it('should change location with drag actions', testing_1.fakeAsync(function () {
+        fixture.detectChanges();
+        var buttonEl = fixture.debugElement.query(platform_browser_1.By.css('button'));
+        buttonEl.nativeElement.click();
+        fixture.detectChanges();
+        testing_1.tick(300);
+        var firstLeft = dialog.container.style.left;
+        var firstTop = dialog.container.style.top;
+        var event = {
+            'pageX': 500,
+            'pageY': 500
+        };
+        dialog.initDrag(event);
+        expect(dialog.dragging).toEqual(true);
+        event.pageX = 505;
+        event.pageY = 505;
+        dialog.onDrag(event);
+        dialog.endDrag(event);
+        fixture.detectChanges();
+        expect(dialog.container.style.left).not.toEqual(firstLeft);
+        expect(dialog.container.style.top).not.toEqual(firstTop);
+        expect(parseInt(dialog.container.style.top) - parseInt(firstTop)).toEqual(5);
+        expect(parseInt(dialog.container.style.left) - parseInt(firstLeft)).toEqual(5);
+        expect(dialog.dragging).toEqual(false);
+        var mousedown;
+        dialog.onCloseMouseDown(mousedown);
+        dialog.initDrag(event);
+        fixture.detectChanges();
+        expect(dialog.dragging).toEqual(false);
+    }));
+    it('should change location with resize actions', testing_1.fakeAsync(function () {
+        fixture.detectChanges();
+        var buttonEl = fixture.debugElement.query(platform_browser_1.By.css('button'));
+        buttonEl.nativeElement.click();
+        fixture.detectChanges();
+        testing_1.tick(300);
+        var firstWidth = dialog.container.offsetWidth;
+        var firstHeight = dialog.container.offsetHeight;
+        var event = {
+            'pageX': 500,
+            'pageY': 500
+        };
+        dialog.initResize(event);
+        expect(dialog.resizing).toEqual(true);
+        event.pageX = 505;
+        event.pageY = 505;
+        dialog.onResize(event);
+        dialog.onResizeEnd(event);
+        fixture.detectChanges();
+        expect(parseInt(dialog.container.style.width)).not.toEqual(firstWidth);
+        expect(parseInt(dialog.container.style.height)).not.toEqual(firstHeight);
+        expect(parseInt(dialog.container.style.height) - firstHeight).toEqual(5);
+        expect(parseInt(dialog.container.style.width) - firstWidth).toEqual(5);
+        expect(dialog.resizing).toEqual(false);
+    }));
+    it('should close when press esc key', testing_1.fakeAsync(function () {
+        fixture.detectChanges();
+        var buttonEl = fixture.debugElement.query(platform_browser_1.By.css('button'));
+        buttonEl.nativeElement.click();
+        var closeSpy = spyOn(dialog, "close").and.callThrough();
+        fixture.detectChanges();
+        testing_1.tick(300);
+        var escapeEvent = document.createEvent('CustomEvent');
+        escapeEvent.which = 27;
+        escapeEvent.initEvent('keydown', true, true);
+        document.dispatchEvent(escapeEvent);
+        document.dispatchEvent(escapeEvent);
+        fixture.detectChanges();
+        expect(closeSpy).toHaveBeenCalled();
     }));
 });
 //# sourceMappingURL=dialog.spec.js.map

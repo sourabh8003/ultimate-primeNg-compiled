@@ -1,4 +1,10 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var testing_1 = require("@angular/core/testing");
 var platform_browser_1 = require("@angular/platform-browser");
@@ -24,11 +30,11 @@ var TestPickListComponent = /** @class */ (function () {
         ];
         this.targetCars = [];
     };
-    TestPickListComponent.decorators = [
-        { type: core_1.Component, args: [{
-                    template: "<p-pickList [source]=\"sourceCars\" [target]=\"targetCars\">\n    <ng-template let-car pTemplate=\"item\">\n        <div class=\"ui-helper-clearfix\">\n            <img src=\"assets/showcase/images/demo/car/{{car.brand}}.png\" style=\"display:inline-block;margin:2px 0 2px 2px\" width=\"48\">\n            <div style=\"font-size:14px;float:right;margin:15px 5px 0 0\">{{car.brand}} - {{car.year}} - {{car.color}}</div>\n        </div>\n    </ng-template>\n</p-pickList>"
-                },] },
-    ];
+    TestPickListComponent = __decorate([
+        core_1.Component({
+            template: "<p-pickList [source]=\"sourceCars\" [target]=\"targetCars\">\n    <ng-template let-car pTemplate=\"item\">\n        <div class=\"ui-helper-clearfix\">\n            <img src=\"assets/showcase/images/demo/car/{{car.brand}}.png\" style=\"display:inline-block;margin:2px 0 2px 2px\" width=\"48\">\n            <div style=\"font-size:14px;float:right;margin:15px 5px 0 0\">{{car.brand}} - {{car.year}} - {{car.color}}</div>\n        </div>\n    </ng-template>\n</p-pickList>"
+        })
+    ], TestPickListComponent);
     return TestPickListComponent;
 }());
 describe('PickList', function () {
@@ -624,7 +630,9 @@ describe('PickList', function () {
     it('should move items(source) with dragging with reorder', function () {
         fixture.detectChanges();
         var dragEvent = new DragEvent('drag');
-        picklist.onDragStart(dragEvent, 0, -1);
+        picklist.dragging = true;
+        picklist.fromListType = -1;
+        fixture.detectChanges();
         picklist.onDragOver(dragEvent, 0, -1);
         picklist.onDrop(dragEvent, 2, -1);
         picklist.onDragEnd(dragEvent);
@@ -632,13 +640,15 @@ describe('PickList', function () {
         expect(picklist.source[0].brand).toEqual("Audi");
         expect(picklist.source[1].brand).toEqual("VW");
     });
-    it('should move items(target) with dragging with', function () {
+    it('should move items(target) with dragging', function () {
         fixture.detectChanges();
         var controlAllRightButton = fixture.debugElement.queryAll(platform_browser_1.By.css('.ui-picklist-buttons-cell'))[1].queryAll(platform_browser_1.By.css('button'))[1];
         controlAllRightButton.nativeElement.click();
         fixture.detectChanges();
         var dragEvent = new DragEvent('drag');
-        picklist.onDragStart(dragEvent, 0, 1);
+        picklist.dragging = true;
+        picklist.fromListType = 1;
+        fixture.detectChanges();
         picklist.onDragOver(dragEvent, 0, 1);
         picklist.onDrop(dragEvent, 2, 1);
         picklist.onDragEnd(dragEvent);
@@ -649,7 +659,9 @@ describe('PickList', function () {
     it('should move item to right with dragging', function () {
         fixture.detectChanges();
         var dragEvent = new DragEvent('drag');
-        picklist.onDragStart(dragEvent, 0, -1);
+        picklist.dragging = true;
+        picklist.fromListType = -1;
+        fixture.detectChanges();
         picklist.onDragOver(dragEvent, 0, -1);
         picklist.onDragLeave(dragEvent, 1);
         picklist.onListDrop(dragEvent, 1);
@@ -665,7 +677,9 @@ describe('PickList', function () {
         controlAllRightButton.nativeElement.click();
         fixture.detectChanges();
         var dragEvent = new DragEvent('drag');
-        picklist.onDragStart(dragEvent, 0, 1);
+        picklist.dragging = true;
+        picklist.fromListType = 1;
+        fixture.detectChanges();
         picklist.onDragOver(dragEvent, 0, 1);
         picklist.onDragLeave(dragEvent, -1);
         picklist.onListDrop(dragEvent, -1);

@@ -15,9 +15,12 @@ exports.MessagesModuleNgFactory = MessagesModuleNgFactory;
 var styles_Messages = [];
 var RenderType_Messages = i0.ɵcrt({ encapsulation: 2, styles: styles_Messages, data: { "animation": [{ type: 7, name: "messageAnimation", definitions: [{ type: 0, name: "visible", styles: { type: 6, styles: { transform: "translateY(0)", opacity: 1 }, offset: null }, options: undefined }, { type: 1, expr: "void => *", animation: [{ type: 6, styles: { transform: "translateY(-25%)", opacity: 0 }, offset: null }, { type: 4, styles: null, timings: "{{showTransitionParams}}" }], options: null }, { type: 1, expr: "* => void", animation: [{ type: 4, styles: { type: 6, styles: { opacity: 0, transform: "translateY(-25%)" }, offset: null }, timings: "{{hideTransitionParams}}" }], options: null }], options: {} }] } });
 exports.RenderType_Messages = RenderType_Messages;
-function View_Messages_2(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, null, 1, "a", [["class", "ui-messages-close"], ["href", "#"]], null, [[null, "click"]], function (_v, en, $event) { var ad = true; var _co = _v.component; if (("click" === en)) {
+function View_Messages_2(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, null, 1, "a", [["class", "ui-messages-close"], ["tabindex", "0"]], null, [[null, "click"], [null, "keydown.enter"]], function (_v, en, $event) { var ad = true; var _co = _v.component; if (("click" === en)) {
         var pd_0 = (_co.clear($event) !== false);
         ad = (pd_0 && ad);
+    } if (("keydown.enter" === en)) {
+        var pd_1 = (_co.clear($event) !== false);
+        ad = (pd_1 && ad);
     } return ad; }, null, null)), (_l()(), i0.ɵeld(1, 0, null, null, 0, "i", [["class", "pi pi-times"]], null, null, null, null, null))], null, null); }
 function View_Messages_4(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, null, 0, "span", [["class", "ui-messages-summary"]], [[8, "innerHTML", 1]], null, null, null, null))], null, function (_ck, _v) { var currVal_0 = _v.parent.context.$implicit.summary; _ck(_v, 0, 0, currVal_0); }); }
 function View_Messages_5(_l) { return i0.ɵvid(0, [(_l()(), i0.ɵeld(0, 0, null, null, 0, "span", [["class", "ui-messages-detail"]], [[8, "innerHTML", 1]], null, null, null, null))], null, function (_ck, _v) { var currVal_0 = _v.parent.context.$implicit.detail; _ck(_v, 0, 0, currVal_0); }); }

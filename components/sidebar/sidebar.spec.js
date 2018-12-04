@@ -1,4 +1,10 @@
 "use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var testing_1 = require("@angular/core/testing");
 var platform_browser_1 = require("@angular/platform-browser");
@@ -8,11 +14,11 @@ var core_1 = require("@angular/core");
 var TestSideBarComponent = /** @class */ (function () {
     function TestSideBarComponent() {
     }
-    TestSideBarComponent.decorators = [
-        { type: core_1.Component, args: [{
-                    template: "<p-sidebar [(visible)]=\"visibleSidebar1\">\n  <h1 style=\"font-weight:normal\">Full Screen Sidebar</h1>\n  <button type=\"button\" (click)=\"visibleSidebar1 = false\" label=\"Save\" class=\"ui-button-success\"></button>\n  <button type=\"button\" (click)=\"visibleSidebar1 = false\" label=\"Cancel\" class=\"ui-button-secondary\"></button>\n  </p-sidebar>\n  <button type=\"button\" (click)=\"visibleSidebar1 = true\" icon=\"pi pi-arrow-right\"></button>"
-                },] },
-    ];
+    TestSideBarComponent = __decorate([
+        core_1.Component({
+            template: "<p-sidebar [(visible)]=\"visibleSidebar1\">\n  <h1 style=\"font-weight:normal\">Full Screen Sidebar</h1>\n  <button type=\"button\" (click)=\"visibleSidebar1 = false\" label=\"Save\" class=\"ui-button-success\"></button>\n  <button type=\"button\" (click)=\"visibleSidebar1 = false\" label=\"Cancel\" class=\"ui-button-secondary\"></button>\n  </p-sidebar>\n  <button type=\"button\" (click)=\"visibleSidebar1 = true\" icon=\"pi pi-arrow-right\"></button>"
+        })
+    ], TestSideBarComponent);
     return TestSideBarComponent;
 }());
 describe('Sidebar', function () {

@@ -32,6 +32,7 @@ export declare class SplitButton implements OnDestroy {
     documentClickListener: any;
     dropdownClick: boolean;
     shown: boolean;
+    documentResizeListener: any;
     constructor(el: ElementRef, domHandler: DomHandler, renderer: Renderer2, router: Router, cd: ChangeDetectorRef);
     onDefaultButtonClick(event: Event): void;
     itemClick(event: Event, item: MenuItem): void;
@@ -43,6 +44,9 @@ export declare class SplitButton implements OnDestroy {
     restoreOverlayAppend(): void;
     bindDocumentClickListener(): void;
     unbindDocumentClickListener(): void;
+    bindDocumentResizeListener(): void;
+    unbindDocumentResizeListener(): void;
+    onWindowResize(): void;
     onOverlayHide(): void;
     ngOnDestroy(): void;
 }
